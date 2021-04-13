@@ -28,5 +28,12 @@
     	 inner join
     	 	branch b on a.branchCode=b.branchCode;
    	</select>
+   	
+   	<select id="selectaa" resultMap="BranchAndAdminMap">
+   		select
+   			*
+   		from
+   			adminAccount;
+   	</select>
 </mapper>
 

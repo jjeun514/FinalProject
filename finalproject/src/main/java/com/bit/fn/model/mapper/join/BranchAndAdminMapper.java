@@ -12,4 +12,5 @@ import com.bit.fn.model.vo.join.BranchAndAdminVo;
 @Mapper
 public interface BranchAndAdminMapper {
 	public List<BranchAndAdminVo> selectAll();
+	public List<BranchAndAdminVo> selectaa();
 }

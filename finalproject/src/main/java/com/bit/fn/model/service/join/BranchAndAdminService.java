@@ -17,4 +17,8 @@ public class BranchAndAdminService {
 	public List<BranchAndAdminVo> selectAll(){
 		return branchAndAdminMapper.selectAll();
 	}
+	
+	public List<BranchAndAdminVo> selectaa(){
+		return branchAndAdminMapper.selectaa();
+	}
 }

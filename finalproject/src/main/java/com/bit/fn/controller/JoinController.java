@@ -18,6 +18,7 @@ public class JoinController {
 	public ModelAndView index() {
 		ModelAndView mav=new ModelAndView();
 		mav.addObject("list",branchAndAdminService.selectAll());
+		mav.addObject("aa",branchAndAdminService.selectaa());
 		return mav;
 	}
 	
