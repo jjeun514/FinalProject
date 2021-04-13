@@ -4,15 +4,15 @@
 <mapper namespace="com.bit.fn.model.mapper.join.BranchAndAdminMapper">
     <resultMap type="com.bit.fn.model.vo.BranchVo" id="BranchMap">
     	<id property="branchCode" column="branchCode"/>
-    	<id property="branchName" column="branchName"/>
+    	<result property="branchName" column="branchName"/>
     </resultMap>
     
     <resultMap type="com.bit.fn.model.vo.AdminAccountVo" id="AdminAccountMap">
     	<id property="id" column="id"/>
-    	<id property="branchCode" column="branchCode"/>
-    	<id property="password" column="password"/>
-    	<id property="nickName" column="nickName"/>
-    	<id property="profile" column="profile"/>
+    	<result property="branchCode" column="branchCode"/>
+    	<result property="password" column="password"/>
+    	<result property="nickName" column="nickName"/>
+    	<result property="profile" column="profile"/>
     </resultMap>
     
     <resultMap type="com.bit.fn.model.vo.join.BranchAndAdminVo" id="BranchAndAdminMap">
@@ -20,7 +20,7 @@
     	<collection property="branch" resultMap="BranchMap"/>
     </resultMap>
     
-    <select id="selectAll" resultType="BranchAndAdminVo">
+    <select id="selectAll" resultMap="BranchAndAdminMap">
     	 SELECT 
     	 	*
     	 from 

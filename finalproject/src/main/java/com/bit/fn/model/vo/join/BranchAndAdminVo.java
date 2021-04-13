@@ -4,32 +4,32 @@ import com.bit.fn.model.vo.AdminAccountVo;
 import com.bit.fn.model.vo.BranchVo;
 
 public class BranchAndAdminVo {
-	private BranchVo branchVo;
-	private AdminAccountVo adminAccountVo;
+	private BranchVo branch;
+	private AdminAccountVo adminAccount;
 	public BranchAndAdminVo() {}
-	public BranchAndAdminVo(BranchVo branchVo, AdminAccountVo adminAccountVo) {
+	public BranchAndAdminVo(BranchVo branch, AdminAccountVo adminAccount) {
 		super();
-		this.branchVo = branchVo;
-		this.adminAccountVo = adminAccountVo;
+		this.branch = branch;
+		this.adminAccount = adminAccount;
 	}
-	public BranchVo getBranchVo() {
-		return branchVo;
+	public BranchVo getBranch() {
+		return branch;
 	}
-	public void setBranchVo(BranchVo branchVo) {
-		this.branchVo = branchVo;
+	public void setBranch(BranchVo branch) {
+		this.branch = branch;
 	}
-	public AdminAccountVo getAdminAccountVo() {
-		return adminAccountVo;
+	public AdminAccountVo getAdminAccount() {
+		return adminAccount;
 	}
-	public void setAdminAccountVo(AdminAccountVo adminAccountVo) {
-		this.adminAccountVo = adminAccountVo;
+	public void setAdminAccount(AdminAccountVo adminAccount) {
+		this.adminAccount = adminAccount;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((adminAccountVo == null) ? 0 : adminAccountVo.hashCode());
-		result = prime * result + ((branchVo == null) ? 0 : branchVo.hashCode());
+		result = prime * result + ((adminAccount == null) ? 0 : adminAccount.hashCode());
+		result = prime * result + ((branch == null) ? 0 : branch.hashCode());
 		return result;
 	}
 	@Override
@@ -41,21 +41,21 @@ public class BranchAndAdminVo {
 		if (getClass() != obj.getClass())
 			return false;
 		BranchAndAdminVo other = (BranchAndAdminVo) obj;
-		if (adminAccountVo == null) {
-			if (other.adminAccountVo != null)
+		if (adminAccount == null) {
+			if (other.adminAccount != null)
 				return false;
-		} else if (!adminAccountVo.equals(other.adminAccountVo))
+		} else if (!adminAccount.equals(other.adminAccount))
 			return false;
-		if (branchVo == null) {
-			if (other.branchVo != null)
+		if (branch == null) {
+			if (other.branch != null)
 				return false;
-		} else if (!branchVo.equals(other.branchVo))
+		} else if (!branch.equals(other.branch))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "BranchAndAdmin [branchVo=" + branchVo + ", adminAccountVo=" + adminAccountVo + "]";
+		return "BranchAndAdminVo [branch=" + branch + ", adminAccount=" + adminAccount + "]";
 	}
 	
 }
