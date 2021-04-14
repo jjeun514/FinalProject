@@ -21,4 +21,8 @@ public class LoginController {
 		mav.addObject("list",adminAccountService.selectAll());
 		return mav;
 	}
+	
+	@RequestMapping("/login")
+	public void login() {
+	}
 }

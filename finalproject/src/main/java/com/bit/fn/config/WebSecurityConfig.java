@@ -46,23 +46,14 @@ public void configureGlobal(AuthenticationManagerBuilder auth)
       //비밀번호 암호화 반영
       .passwordEncoder(passwordEncoder())
       //인증처리
-      .usersByUsernameQuery("SELECT id,PASSWORD,enabled "
-      		+ "from adminaccount "
+      .usersByUsernameQuery("select id,password,enabled "
+      		+ "from account "
       		+ "WHERE id = ? "
-      		+ "UNION "
-      		+ "SELECT id,PASSWORD,enabled "
-      		+ "from "
-      		+ "memberaccount "
-      		+ "WHERE id = ? "
-      		+ "UNION "
-      		+ "SELECT "
-      		+ "id,PASSWORD,enabled "
-      		+ "from "
-      		+ "masteraccount "
-      		+ "WHERE id = ? ")
+      		)
       //권한처리
-      .authoritiesByUsernameQuery("select id,authority "
-        + "from authorities "
+      .authoritiesByUsernameQuery("select id,roleId "
+        + "from accountrole ar inner join account a on ar.accountNum = a.num "
+        + "inner join role r on ar.roleNum = r.num"
         + "where id = ?");
 }	
 
