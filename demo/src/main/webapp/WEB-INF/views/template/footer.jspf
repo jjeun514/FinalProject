@@ -1,0 +1,20 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<footer><!--footer start-->
+     <div class="row r5">
+        <div class="col" id="icon">
+            <a href="#"><img src="imgs/instagram.svg" style="width:50px;"></a>
+            <a href="#"><img src="imgs/facebook.svg" style="width:50px;"></a>
+            <a href="#"><img src="imgs/twitter.svg" style="width:50px;"></a>
+        </div>
+        <div class="col">
+            <p>
+            	192-86-01409<br>
+                기업은행 323-137659-04-xxx (주)9:Clack<br>
+                Tel : 02-6408-2325<br>
+                YEONHUI : 서울시 서대문구 연희로25길 13 덕화빌딩 3층<br>
+                GANGNAM : 서울시 강남구 논현로 102 덕흥빌딩 4, 5, 6층 (개포동 1239-15)
+           </p>
+       </div>
+    </div><!--row(r5) end-->
+</footer><!--footer end-->
