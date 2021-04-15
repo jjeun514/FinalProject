@@ -11,7 +11,5 @@ import com.bit.fn.model.vo.AdminAccountVo;
 @Repository
 @Mapper
 public interface AdminAccountMapper {
-	
 	public List<AdminAccountVo> selectAll();
-	
 }

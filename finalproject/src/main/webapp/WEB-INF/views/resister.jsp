@@ -82,7 +82,7 @@
 <body class="text-center">
 <form class="form-signin" method="post">
   <img class="mb-4" src="https://getbootstrap.com/docs/4.6/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> 
-  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <h1 class="h3 mb-3 font-weight-normal">회원가입</h1>
   <!-- 아이디, 패스워드가 틀렸을 경우 -->
 	<c:if test="${param.error != null}">
 	<div class="alert alert-danger" role="alert">
@@ -106,7 +106,7 @@
       <input type="checkbox" value="remember-me"> Remember me
     </label>
   </div> -->
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">회원가입</button>
   <p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
 </form>
 

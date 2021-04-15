@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 import com.bit.fn.model.mapper.AdminAccountMapper;
 import com.bit.fn.model.vo.AdminAccountVo;
 
-
 @Service
 public class AdminAccountService {
 	@Autowired
-	AdminAccountMapper accountMapper;
+	AdminAccountMapper adminAccountMapper;
 	
 	public List<AdminAccountVo> selectAll(){
-		return accountMapper.selectAll();
+		return adminAccountMapper.selectAll();
 	}
 }

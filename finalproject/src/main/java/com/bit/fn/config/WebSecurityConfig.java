@@ -25,16 +25,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			//로그인 인증 없어도 접근 가능한 영역
-				.antMatchers("/", "/home","/index","/join").permitAll()
+				.antMatchers("/","/resource/**","/home","/index","/join","/resister").permitAll()
+			//어드민 계정만 접근 가능
+				.antMatchers("/user").hasRole("ADMIN")
+			//그 외 모든 요청은 인증된 사용자만 접근이 가능하다
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
-			//로그인 없이 접근 시 이동하는 경로
+			//로그인 페이지 설정
 				.loginPage("/login")
+			//로그인 성공시 이동 경로
+				.defaultSuccessUrl("/index",true)
 				.permitAll()
 				.and()
 			.logout()
-			//로그아웃은 누구나 가능하다
+				//로그아웃 경로
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/index")
 				.permitAll();
 	}
 
@@ -42,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 public void configureGlobal(AuthenticationManagerBuilder auth) 
   throws Exception {
     auth.jdbcAuthentication()
+      //데이타 소스 연결
       .dataSource(dataSource)
       //비밀번호 암호화 반영
       .passwordEncoder(passwordEncoder())
