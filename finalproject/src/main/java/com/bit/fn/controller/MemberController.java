@@ -13,17 +13,22 @@ public class MemberController {
 	
 	@RequestMapping("/board")
 	public String bbs() {
-		return "memberBbs";
+		return "memberBoard";
 	}
 	
-	@RequestMapping("/board")
+	@RequestMapping("/notice")
 	public String notice() {
-		return "memberBbs";
+		return "memberNotice";
 	}
 	
-	@RequestMapping("/board")
+	@RequestMapping("/reservation")
 	public String roomREZ() {
-		return "memberBbs";
+		return "memberREZ";
+	}
+	
+	@RequestMapping("/schedule")
+	public String schedule() {
+		return "memberSchedule";
 	}
 	
 }

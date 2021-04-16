@@ -54,59 +54,70 @@
     
 </script>
 <body>
-	<div class="content main"><!--content start-->
-		<div id="carouselExampleIndicators" class="carousel slide"
-			data-ride="carousel">
-			<ol class="carousel-indicators">
-				<li data-target="#carouselExampleIndicators" data-slide-to="0"
-					class="active"></li>
-				<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-				<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-			</ol>
-			<div class="carousel-inner">
-				<div class="carousel-item active">
-					<img src="imgs/11.jpg" class="d-block w-100" alt="...">
+	<div class="content bbs"><!--content start-->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<form action="#" method="get">
+						<div class="input-group">
+							<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+							<input class="form-control" id="system-search" name="q"
+								placeholder="Search for" required> <span
+								class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</form>
 				</div>
-				<div class="carousel-item">
-					<img src="imgs/11.jpg" class="d-block w-100" alt="...">
-				</div>
-				<div class="carousel-item">
-					<img src="imgs/11.jpg" class="d-block w-100" alt="...">
+				<div class="col-md-9">
+					<table class="table table-list-search">
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>회사명</th>
+								<th>닉네임</th>
+								<th>제목</th>
+								<th>날짜</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Sample</td>
+								<td>Filter</td>
+								<td>12-11-2011 11:11</td>
+								<td>OK</td>
+								<td>123</td>
+							</tr>
+							<tr>
+								<td>호호</td>
+								<td>It</td>
+								<td>11-20-2013 08:56</td>
+								<td>It</td>
+								<td>Works</td>
+							</tr>
+							<tr>
+								<td>안농</td>
+								<td>It</td>
+								<td>11-20-2013 08:56</td>
+								<td>It</td>
+								<td>Works</td>
+							</tr>
+							<tr>
+								<td>더미더미</td>
+								<td>It</td>
+								<td>11-20-2013 08:56</td>
+								<td>It</td>
+								<td>Works</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<a class="carousel-control-prev" href="#carouselExampleIndicators"
-				role="button" data-slide="prev"> <span
-				class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-				class="sr-only">Previous</span>
-			</a> <a class="carousel-control-next" href="#carouselExampleIndicators"
-				role="button" data-slide="next"> <span
-				class="carousel-control-next-icon" aria-hidden="true"></span> <span
-				class="sr-only">Next</span>
-			</a>
 		</div>
-		<div class="container t1">
-			<!-- 이미지템플릿  start-->
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x800"> <span>First
-					floor&nbsp;&nbsp;</span>
-			</div>
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x802"> <span>Second
-					floor</span>
-			</div>
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x804"> <span>Third
-					floor</span>
-			</div>
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x806"> <span>Fourth
-					floor</span>
-			</div>
-		</div>
-		<!--이미지템플릿  end-->
 	</div><!--centent end-->
-</body>
-<!--body end-->
+</body><!--body end-->
 <%@ include file="../template/footer.jspf" %>
 </html>
 
