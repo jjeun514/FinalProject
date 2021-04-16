@@ -1,10 +1,10 @@
-package com.example.demo.controller;
+package com.bit.fn.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class TestController {
+public class ViewTestController {
 
 	@RequestMapping("/index")
 	public String main() {
@@ -26,9 +26,9 @@ public class TestController {
 		return "myPage";
 	}
 	
-	@RequestMapping("/sample")
+	@RequestMapping("/test")
 	public String sample() {
-		return "sample";
+		return "test";
 	}
 	
 }
