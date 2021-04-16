@@ -21,6 +21,11 @@ public class TestController {
 		return "detail";
 	}
 	
+	@RequestMapping("/mypage")
+	public String myPage() {
+		return "myPage";
+	}
+	
 	@RequestMapping("/sample")
 	public String sample() {
 		return "sample";
