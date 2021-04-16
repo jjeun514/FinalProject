@@ -18,7 +18,7 @@ public class Role {
 	private int num;
 	
 	//권한이름
-	private String roleId; 
+	private String authority; 
 	
 	@ManyToMany(mappedBy = "roles")
 	private List<Account> accounts;

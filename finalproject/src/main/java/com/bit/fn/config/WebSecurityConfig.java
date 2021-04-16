@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			//로그인 인증 없어도 접근 가능한 영역
-				.antMatchers("/","/resource/**","/home","/index","/join","/resister").permitAll()
+				.antMatchers("/","/resource/**","/home","/index","/join","/resister","/jungbok").permitAll()
 			//어드민 계정만 접근 가능
 				.antMatchers("/user").hasRole("ADMIN")
 			//그 외 모든 요청은 인증된 사용자만 접근이 가능하다
@@ -50,19 +50,18 @@ public void configureGlobal(AuthenticationManagerBuilder auth)
   throws Exception {
     auth.jdbcAuthentication()
       //데이타 소스 연결
-      .dataSource(dataSource)
+      .dataSource(dataSource)	
       //비밀번호 암호화 반영
       .passwordEncoder(passwordEncoder())
       //인증처리
-      .usersByUsernameQuery("select id,password,enabled "
+      .usersByUsernameQuery("select username,password,enabled "
       		+ "from account "
-      		+ "WHERE id = ? "
-      		)
+      		+ "WHERE username = ?")
       //권한처리
-      .authoritiesByUsernameQuery("select id,roleId "
-        + "from accountrole ar inner join account a on ar.accountNum = a.num "
-        + "inner join role r on ar.roleNum = r.num"
-        + "where id = ?");
+      .authoritiesByUsernameQuery("select a.username, r.authority "
+        + "from accountrole ar inner join account a on ar.account_num = a.num "
+        + "inner join role r on ar.role_num = r.num "
+        + "where a.username = ?");
 }	
 
 //Authentication = 로그인

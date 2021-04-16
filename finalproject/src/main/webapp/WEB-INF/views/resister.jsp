@@ -92,13 +92,13 @@
 	<!-- 로그아웃을 하였을 경우 -->
 	<c:if test="${param.logout != null}">
 	<div class="alert alert-primary" role="alert">
-		로그아웃하셨습니다.
+		로그아웃하셨습니다.	
 	</div>
 	</c:if>
   <!-- csrf -->
   <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
-  <label for="id" class="sr-only">ID</label>
-  <input type="email" id="id" name="id" class="form-control" placeholder="id" required autofocus>
+  <label for="username" class="sr-only">ID</label>
+  <input type="email" id="username" name="username" class="form-control" placeholder="username" required autofocus>
   <label for="password" class="sr-only">Password</label>
   <input type="password" id="password" name="password" class="form-control" placeholder="password" required>
   <!-- <div class="checkbox mb-3">

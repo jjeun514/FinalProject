@@ -23,15 +23,15 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int num;
 	
-	private String id;
+	private String username;
 	private String password;
 	private Boolean enabled;
 	
 	@ManyToMany
 	@JoinTable(
 			name = "accountrole",
-			joinColumns= @JoinColumn(name = "accountnum"),
-			inverseJoinColumns = @JoinColumn(name = "rolenum"))
+			joinColumns= @JoinColumn(name = "account_num"),
+			inverseJoinColumns = @JoinColumn(name = "role_num"))
 	private List<Role> roles = new ArrayList<Role>();
 
 }

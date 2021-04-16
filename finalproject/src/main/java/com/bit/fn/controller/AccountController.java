@@ -40,10 +40,33 @@ public class AccountController {
 		return "resister";
 	}
 	
+	@GetMapping("/jungbok")
+	public String jungbok() {
+		
+		return "jungbok";
+	}
+	
+	@GetMapping("/user")
+	public String user() {
+		
+		return "user";
+	}
+	
+	@GetMapping("/denied")
+	public String denied() {
+		
+		return "denied";
+	}
+	
 	@PostMapping("/resister")
 	public String resister(Account account) {
+		try {
 		accountService.save(account);
+		}catch (Exception e) {
+			return "redirect:/jungbok";
+		}
 		return "redirect:/index";
 	}
+	
 	
 }
