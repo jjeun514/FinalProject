@@ -17,15 +17,44 @@
   <div class="right">
     <div class="tab-content" id="v-pills-tabContent">
       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      
-        <form>
+        	<!-- 시큐리티 정보로 아이디 불러오기 -->
         	<div>아이디 <sec:authorize access="isAuthenticated()">
                     <sec:authentication property="principal.username" var="user_id" />
                      ${user_id }
                 </sec:authorize> 
             </div>
-        	<input type="text" name= value="">
-        </form>
+              
+          
+		    <!-- 어드민일경우  -->
+      
+            <sec:authorize access="hasRole('ADMIN')">
+	            <p> ${admin.nickName }</p>
+	            <p> ${admin.branchCode }</p>
+             	<p> ${admin.profile }</p>
+            </sec:authorize>
+            
+           
+            <!-- 마스터일경우  -->
+       
+            <sec:authorize access="hasRole('MASTER')">
+	            <p> ${master.comCode }</p>
+	            <p> ${master.signdate }</p>
+             	<p> ${master.profile }</p>
+             	<p> ${master.admission }</p>
+            </sec:authorize>
+   
+            
+            <!-- 멤버일경우  -->
+               
+            <sec:authorize access="hasRole('MEMBER')">
+	            <p> ${member.memId }</p>
+	            <p> ${member.comCode }</p>
+             	<p> ${member.signdate }</p>
+             	<p> ${member.profile }</p>
+             	<p> ${member.admission }</p>
+            </sec:authorize>
+
+        
       </div>
       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
         반가워요

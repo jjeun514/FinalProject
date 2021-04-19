@@ -4,15 +4,14 @@ import java.sql.Date;
 
 public class MasterAccountVo {
 	private int comCode,admission;
-	private String id,password,profile;
+	private String id,profile;
 	private Date signdate;
 	public MasterAccountVo() {}
-	public MasterAccountVo(int comCode, int admission, String id, String password, String profile, Date signdate) {
+	public MasterAccountVo(int comCode, int admission, String id, String profile, Date signdate) {
 		super();
 		this.comCode = comCode;
 		this.admission = admission;
 		this.id = id;
-		this.password = password;
 		this.profile = profile;
 		this.signdate = signdate;
 	}
@@ -34,12 +33,6 @@ public class MasterAccountVo {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	public String getProfile() {
 		return profile;
 	}
@@ -59,7 +52,6 @@ public class MasterAccountVo {
 		result = prime * result + admission;
 		result = prime * result + comCode;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + ((signdate == null) ? 0 : signdate.hashCode());
 		return result;
@@ -82,11 +74,6 @@ public class MasterAccountVo {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
 		if (profile == null) {
 			if (other.profile != null)
 				return false;
@@ -101,8 +88,8 @@ public class MasterAccountVo {
 	}
 	@Override
 	public String toString() {
-		return "MasterAccountVo [comCode=" + comCode + ", admission=" + admission + ", id=" + id + ", password="
-				+ password + ", profile=" + profile + ", signdate=" + signdate + "]";
+		return "MasterAccountVo [comCode=" + comCode + ", admission=" + admission + ", id=" + id + ", profile="
+				+ profile + ", signdate=" + signdate + "]";
 	}
 	
 }

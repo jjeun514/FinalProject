@@ -17,4 +17,8 @@ public class MasterAccountService {
 	public List<MasterAccountVo> selectAll(){
 		return masterAccountMapper.selectAll();
 	}
+	
+	public MasterAccountVo selectOne(String id) {
+		return masterAccountMapper.selectOne(id);
+	}
 }

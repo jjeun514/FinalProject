@@ -1,13 +1,12 @@
 package com.bit.fn.model.vo;
 
 public class AdminAccountVo {
-	private String id,password,nickName,profile;
+	private String id,nickName,profile;
 	private int branchCode;
 	public AdminAccountVo() {}
-	public AdminAccountVo(String id, String password, String nickName, String profile, int branchCode) {
+	public AdminAccountVo(String id, String nickName, String profile, int branchCode) {
 		super();
 		this.id = id;
-		this.password = password;
 		this.nickName = nickName;
 		this.profile = profile;
 		this.branchCode = branchCode;
@@ -17,12 +16,6 @@ public class AdminAccountVo {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getNickName() {
 		return nickName;
@@ -49,7 +42,6 @@ public class AdminAccountVo {
 		result = prime * result + branchCode;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		return result;
 	}
@@ -74,11 +66,6 @@ public class AdminAccountVo {
 				return false;
 		} else if (!nickName.equals(other.nickName))
 			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
 		if (profile == null) {
 			if (other.profile != null)
 				return false;
@@ -88,9 +75,9 @@ public class AdminAccountVo {
 	}
 	@Override
 	public String toString() {
-		return "AdminAccountVo [id=" + id + ", password=" + password + ", nickName=" + nickName + ", profile=" + profile
-				+ ", branchCode=" + branchCode + "]";
+		return "AdminAccountVo [id=" + id + ", nickName=" + nickName + ", profile=" + profile + ", branchCode="
+				+ branchCode + "]";
 	}
 	
-
+	
 }

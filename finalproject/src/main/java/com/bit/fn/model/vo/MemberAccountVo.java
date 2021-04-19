@@ -3,16 +3,15 @@ package com.bit.fn.model.vo;
 import java.sql.Date;
 
 public class MemberAccountVo {
-	private int comCode,admssion;
-	private String memId,password,profile;
+	private int comCode,admission;
+	private String memId,profile;
 	private Date signdate;
 	public MemberAccountVo() {}
-	public MemberAccountVo(int comCode, int admssion, String memId, String password, String profile, Date signdate) {
+	public MemberAccountVo(int comCode, int admission, String memId, String profile, Date signdate) {
 		super();
 		this.comCode = comCode;
-		this.admssion = admssion;
+		this.admission = admission;
 		this.memId = memId;
-		this.password = password;
 		this.profile = profile;
 		this.signdate = signdate;
 	}
@@ -22,23 +21,17 @@ public class MemberAccountVo {
 	public void setComCode(int comCode) {
 		this.comCode = comCode;
 	}
-	public int getAdmssion() {
-		return admssion;
+	public int getadmission() {
+		return admission;
 	}
-	public void setAdmssion(int admssion) {
-		this.admssion = admssion;
+	public void setadmission(int admission) {
+		this.admission = admission;
 	}
 	public String getMemId() {
 		return memId;
 	}
 	public void setMemId(String memId) {
 		this.memId = memId;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getProfile() {
 		return profile;
@@ -56,10 +49,9 @@ public class MemberAccountVo {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + admssion;
+		result = prime * result + admission;
 		result = prime * result + comCode;
 		result = prime * result + ((memId == null) ? 0 : memId.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + ((signdate == null) ? 0 : signdate.hashCode());
 		return result;
@@ -73,7 +65,7 @@ public class MemberAccountVo {
 		if (getClass() != obj.getClass())
 			return false;
 		MemberAccountVo other = (MemberAccountVo) obj;
-		if (admssion != other.admssion)
+		if (admission != other.admission)
 			return false;
 		if (comCode != other.comCode)
 			return false;
@@ -81,11 +73,6 @@ public class MemberAccountVo {
 			if (other.memId != null)
 				return false;
 		} else if (!memId.equals(other.memId))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
 			return false;
 		if (profile == null) {
 			if (other.profile != null)
@@ -101,8 +88,8 @@ public class MemberAccountVo {
 	}
 	@Override
 	public String toString() {
-		return "MemberAccountVo [comCode=" + comCode + ", admssion=" + admssion + ", memId=" + memId + ", password="
-				+ password + ", profile=" + profile + ", signdate=" + signdate + "]";
+		return "MemberAccountVo [comCode=" + comCode + ", admission=" + admission + ", memId=" + memId + ", profile="
+				+ profile + ", signdate=" + signdate + "]";
 	}
 	
 }

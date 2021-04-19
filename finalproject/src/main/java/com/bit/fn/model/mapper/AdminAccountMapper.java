@@ -13,5 +13,5 @@ import com.bit.fn.model.vo.AdminAccountVo;
 public interface AdminAccountMapper {
 	
 	public List<AdminAccountVo> selectAll();
-	
+	public AdminAccountVo selectOne(String id);
 }

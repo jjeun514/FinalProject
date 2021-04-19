@@ -8,5 +8,14 @@
     	 from 
     	 	adminaccount
    	</select>
+   	<select id="selectOne" resultType="com.bit.fn.model.vo.AdminAccountVo">
+    	 SELECT 
+    	 	* 
+    	 from 
+    	 	adminaccount
+    	 where
+    	 id=#{value}
+   	</select>
+   	
 </mapper>
 

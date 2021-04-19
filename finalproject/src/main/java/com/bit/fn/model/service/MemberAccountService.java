@@ -17,4 +17,8 @@ public class MemberAccountService {
 	public List<MemberAccountVo> selectAll(){
 		return memberAccountMapper.selectAll();
 	}
+	
+	public MemberAccountVo selectOne(String id){
+		return memberAccountMapper.selectOne(id);
+	}
 }

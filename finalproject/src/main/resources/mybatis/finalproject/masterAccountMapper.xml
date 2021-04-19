@@ -5,4 +5,12 @@
     <select id="selectAll" resultType="com.bit.fn.model.vo.MasterAccountVo">
     	 SELECT * from masteraccount
    	</select>
+   	<select id="selectOne" resultType="com.bit.fn.model.vo.MasterAccountVo">
+    	 SELECT 
+    	 	* 
+    	 from 
+    	 	masteraccount
+    	 where
+    	 id=#{value}
+   	</select>
 </mapper>

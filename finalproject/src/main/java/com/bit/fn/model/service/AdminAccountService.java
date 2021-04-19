@@ -17,4 +17,8 @@ public class AdminAccountService {
 	public List<AdminAccountVo> selectAll(){
 		return accountMapper.selectAll();
 	}
+	
+	public AdminAccountVo selectOne(String id) {
+		return accountMapper.selectOne(id);
+	}
 }

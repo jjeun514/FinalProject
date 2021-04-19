@@ -12,4 +12,5 @@ import com.bit.fn.model.vo.MasterAccountVo;
 @Mapper
 public interface MasterAccountMapper {
 	public List<MasterAccountVo> selectAll();
+	public MasterAccountVo selectOne(String id);
 }

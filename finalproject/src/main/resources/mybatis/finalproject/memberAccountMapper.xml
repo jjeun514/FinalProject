@@ -5,4 +5,12 @@
     <select id="selectAll" resultType="com.bit.fn.model.vo.MemberAccountVo">
     	 SELECT * from memberaccount
    	</select>
+   	<select id="selectOne" resultType="com.bit.fn.model.vo.MemberAccountVo">
+    	 SELECT 
+    	 	* 
+    	 from 
+    	 	memberaccount
+    	 where
+    	 memId=#{value}
+   	</select>
 </mapper>
