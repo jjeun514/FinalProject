@@ -2,10 +2,10 @@ package com.bit.fn.model.vo;
 
 public class OfficeVo {
 	private int officeNum,branchCode,floor,rent,occupancy,max;
-	private String acreages,photo;
+	private String acreages,leaser,photo;
 	public OfficeVo() {}
 	public OfficeVo(int officeNum, int branchCode, int floor, int rent, int occupancy, int max, String acreages,
-			String photo) {
+			String leaser, String photo) {
 		super();
 		this.officeNum = officeNum;
 		this.branchCode = branchCode;
@@ -14,6 +14,7 @@ public class OfficeVo {
 		this.occupancy = occupancy;
 		this.max = max;
 		this.acreages = acreages;
+		this.leaser = leaser;
 		this.photo = photo;
 	}
 	public int getOfficeNum() {
@@ -58,6 +59,12 @@ public class OfficeVo {
 	public void setAcreages(String acreages) {
 		this.acreages = acreages;
 	}
+	public String getLeaser() {
+		return leaser;
+	}
+	public void setLeaser(String leaser) {
+		this.leaser = leaser;
+	}
 	public String getPhoto() {
 		return photo;
 	}
@@ -71,6 +78,7 @@ public class OfficeVo {
 		result = prime * result + ((acreages == null) ? 0 : acreages.hashCode());
 		result = prime * result + branchCode;
 		result = prime * result + floor;
+		result = prime * result + ((leaser == null) ? 0 : leaser.hashCode());
 		result = prime * result + max;
 		result = prime * result + occupancy;
 		result = prime * result + officeNum;
@@ -96,6 +104,11 @@ public class OfficeVo {
 			return false;
 		if (floor != other.floor)
 			return false;
+		if (leaser == null) {
+			if (other.leaser != null)
+				return false;
+		} else if (!leaser.equals(other.leaser))
+			return false;
 		if (max != other.max)
 			return false;
 		if (occupancy != other.occupancy)
@@ -113,9 +126,9 @@ public class OfficeVo {
 	}
 	@Override
 	public String toString() {
-		return "OfficeVo [officeNum=" + officeNum + ", branchCode=" + branchCode + ", floor=" + floor + ", rent=" + rent
-				+ ", occupancy=" + occupancy + ", max=" + max + ", acreages=" + acreages + ", photo=" + photo + "]";
+		return "officeVo [officeNum=" + officeNum + ", branchCode=" + branchCode + ", floor=" + floor + ", rent=" + rent
+				+ ", occupancy=" + occupancy + ", max=" + max + ", acreages=" + acreages + ", leaser=" + leaser
+				+ ", photo=" + photo + "]";
 	}
-	
 	
 }

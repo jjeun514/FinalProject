@@ -2,8 +2,6 @@ package com.bit.fn;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import javax.sql.DataSource;
-
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -28,9 +26,6 @@ import com.bit.fn.model.service.join.BranchAndAdminService;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FinalprojectApplicationTests {
-	
-	@Autowired
-	DataSource dataSource;
 	
 	@Autowired
 	AdminAccountService adminAccountService;
@@ -74,7 +69,6 @@ class FinalprojectApplicationTests {
 	@Order(1)
 	@Test
 	void contextLoads() {
-		System.out.println("데이타소스 불러오는지 확인 : "+dataSource);
 		assertNotNull(adminAccountService);
 		assertNotNull(boardService);
 		assertNotNull(branchService);

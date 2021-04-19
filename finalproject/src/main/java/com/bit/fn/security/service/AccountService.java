@@ -16,7 +16,7 @@ public class AccountService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	//회원가입
+	//어드민 회원가입
 	public Account save(Account account) {
 		//패스워드 단방향 암호화 설정
 		String encodedPassword = passwordEncoder.encode(account.getPassword());

@@ -22,40 +22,43 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 	
+	
+	/*
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		ModelAndView mav=new ModelAndView();
 		mav.addObject("list",adminAccountService.selectAll());
 		return mav;
 	}
+	*/
 	
 	@GetMapping("/login")
 	public String login() {
-		return "login";
+		return "test/login";
 	}
 	
 	@GetMapping("/resister")
 	public String resister() {
 		
-		return "resister";
+		return "test/resister";
 	}
 	
 	@GetMapping("/jungbok")
 	public String jungbok() {
 		
-		return "jungbok";
+		return "test/jungbok";
 	}
 	
 	@GetMapping("/user")
 	public String user() {
 		
-		return "user";
+		return "test/user";
 	}
 	
 	@GetMapping("/denied")
 	public String denied() {
 		
-		return "denied";
+		return "test/denied";
 	}
 	
 	@PostMapping("/resister")
