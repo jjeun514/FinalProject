@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  
+<%@ taglib prefix="sec"  uri="http://www.springframework.org/security/tags"%>
 <%@ include file="./template/header.jspf" %>
 <body>
 <div class="content mypage"><!--content start-->
@@ -17,7 +17,15 @@
   <div class="right">
     <div class="tab-content" id="v-pills-tabContent">
       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-        안녕하세요
+      
+        <form>
+        	<div>아이디 <sec:authorize access="isAuthenticated()">
+                    <sec:authentication property="principal.username" var="user_id" />
+                     ${user_id }
+                </sec:authorize> 
+            </div>
+        	<input type="text" name= value="">
+        </form>
       </div>
       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
         반가워요

@@ -1,8 +1,14 @@
 package com.bit.fn.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,12 +70,33 @@ public class AccountController {
 	@PostMapping("/resister")
 	public String resister(Account account) {
 		try {
-		accountService.save(account);
+		accountService.memverSave(account);
 		}catch (Exception e) {
 			return "redirect:/jungbok";
 		}
 		return "redirect:/index";
 	}
 	
+	@GetMapping("/test/info")
+	public String test(Principal  principal,Model model) {
+		
+		String id = principal.getName();
+		
+		int one=principal.toString().indexOf("ROLE_ADMIN");
+		
+		int two=principal.toString().indexOf("ROLE_MASTER");
+		
+		int three=principal.toString().indexOf("ROLE_MEMBER");
+		
+		System.out.println("아이디 = " + id);
+		System.out.println("admin 인가? = "+one);
+		System.out.println("master 인가? = "+two);
+		System.out.println("member 인가? = "+three);
+		
+		model.addAttribute("list",principal.toString().indexOf("ROLE_ADMIN"));
+		model.addAttribute("ss","send");
+		
+		return "test/info";
+	}
 	
 }
