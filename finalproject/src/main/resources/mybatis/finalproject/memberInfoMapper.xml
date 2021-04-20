@@ -6,11 +6,14 @@
     	 SELECT * from memberinfo
    	</select>
    	<select id="selectOne" resultType="com.bit.fn.model.vo.MemberInfoVo">
-    	  SELECT 
+    	 SELECT 
     	 	* 
     	 from 
     	 	memberinfo
     	 where
     	 id=#{value}
    	</select>
+   	<insert id="insertOne" parameterType="map">
+   		Insert into memberinfo (memName,memNickName,id,comCode,dept,memPhone,signdate,admission) values(#{memName},#{memNickName},#{id},#{comCode},#{dept},#{memPhone},now(),0)
+   	</insert>
 </mapper>

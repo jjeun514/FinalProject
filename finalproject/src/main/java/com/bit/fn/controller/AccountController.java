@@ -2,6 +2,7 @@ package com.bit.fn.controller;
 
 import java.security.Principal;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.Authentication;
@@ -12,9 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bit.fn.model.service.AdminAccountService;
+import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.security.model.Account;
 import com.bit.fn.security.service.AccountService;
 
@@ -28,6 +31,8 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 	
+	@Autowired
+	private MemberinfoService memberinfoService;
 	
 	/*
 	@RequestMapping("/index")
@@ -76,6 +81,28 @@ public class AccountController {
 		}
 		return "redirect:/index";
 	}
+	
+	
+	@PostMapping("/joinMember")
+	public String joinMember(Account account,@Param("memName")String memName, String memNickName, @RequestParam(name = "username") String id,int comCode,String dept, String memPhone) {
+		System.out.println(account);
+		System.out.println("memName="+memName);
+		System.out.println("memNickName="+memNickName);
+		System.out.println("id="+id);
+		System.out.println("comCode="+comCode);
+		System.out.println("dept="+dept);
+		System.out.println("memPhone="+memPhone);
+		try {
+		memberinfoService.insertOne(memName, memNickName, id, comCode, dept, memPhone);
+		accountService.memverSave(account);
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/jungbok";
+		}
+		return "redirect:/index";
+	}
+	
 	
 	@GetMapping("/test/info")
 	public String test(Principal  principal,Model model) {

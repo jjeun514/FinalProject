@@ -20,8 +20,7 @@ public class MailConfig {
 	public JavaMailSender getMailSender() {
 		System.out.println("[MailConfig] getMailSender()");
 		JavaMailSenderImpl mailSender=new JavaMailSenderImpl();
-		System.out.println("[MailConfig] user: "+emailBean.getUser()+"\npassword: "+emailBean.getPass()
-							+"\nhost: "+emailBean.getHost());
+		System.out.println("[MailConfig] user: "+emailBean.getUser()+"\nhost: "+emailBean.getHost());
 		mailSender.setUsername(emailBean.getUser());
 		mailSender.setPassword(emailBean.getPass());
 		mailSender.setHost(emailBean.getHost());

@@ -25,10 +25,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			//로그인 인증 없어도 접근 가능한 영역(이미지,css파일 영억은 main에서부터 시작한다)
-				.antMatchers("/","/resource/**","/home","/index","/join","/resister","/jungbok"
-						,"/bbs","/detail","/index","/mypage","/signUp","/test,/test/info"
-						,"/imgs/**","/libs/**"
-						).permitAll()
+//				.antMatchers("/","/resource/**","/home","/index","/join","/resister","/jungbok"
+//						,"/bbs","/detail","/index","/mypage","/signUp","/test,/test/info"
+//						,"/imgs/**","/libs/**"
+//						).permitAll()
+				.antMatchers("/**").permitAll()
 			//어드민 계정만 접근 가능
 				.antMatchers("/user").hasRole("ADMIN")
 			//그 외 모든 요청은 인증된 사용자만 접근이 가능하다

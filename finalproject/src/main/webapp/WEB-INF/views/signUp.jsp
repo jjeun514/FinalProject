@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -182,7 +183,7 @@ $(document).on('click','#authBtn',function() {
 		
 		// 비동기 통신(POST: 데이터를 body에 담아서 보냄)
 		$.ajax({
-			url: "/emailTest",
+			url: "/signup",
 			type: "POST",
 			data: {
 				// 이메일 입력 값 (전체 공백 제거)
@@ -213,13 +214,15 @@ $(document).on('click','#authBtn',function() {
 					codeVerification=false;
 					// 인증번호
 					code=data;
-					console.log('[emailTest] ajax로 받은 인증번호: '+code);
 					var codeInput=$('#codeInput').val();
 					if(codeInput!=""||code!=""){
 						if(codeInput==code){
 							console.log('인증코드 일치');
 						} else{
 							console.log('인증코드 불일치');
+							$(".btnRegister").click(function(){
+								return false;
+							});
 						}
 					}
 				});
@@ -241,7 +244,8 @@ $(document).on('click','#authBtn',function() {
 				<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
 				<h3>9'o Clock</h3>
 				<p>즐거운~♪<br>회원가입~♬<br>우와~♪</p>
-				<input type="submit" name="" value="로그인"/><br/>
+				<input type="submit" name="id" value="로그인"/><br/>
+				
 			</div>
 			
 			<div class="col-md-9 register-right">
@@ -250,27 +254,48 @@ $(document).on('click','#authBtn',function() {
 						<h3 class="register-heading">회원 가입</h3>
 							<div class="row register-form">
 								<div class="col-md-11">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="이름 *" value="" />
-									</div>
+									<form action="/joinMember" method="post">
+									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
 									
 									<!-- emailInput에 이메일을 입력하고, 이메일 인증 버튼을 누르면,
 										 input값을 넘겨서 이메일 전송 시 to로 받아서 그 이메일로 인증번호 발송 -->
-										<div class="form-group">
-										<!-- name=서버로 전달되는 이름 -->
-											<input type="email" class="form-control" placeholder="아이디(gmail) *" value="" id="emailInput" name="email"/>
-											<input type="submit" class="btn" id="authBtn" value="인증" data-toggle="modal" data-target="#modal"/>
-										</div>
+									<div class="form-group">
+									<!-- name=서버로 전달되는 이름 -->
+										<input type="email" class="form-control" placeholder="아이디(gmail) *" value="" id="emailInput" name="username"/>
+										
+									</div>
                                     <div class="form-group">
 										<input type="text" class="form-control" id="codeInput" placeholder="인증번호(6자리) *" value="" disabled/>
 									</div>
 									<div class="form-group">
-										<input type="password" class="form-control" placeholder="비밀번호 *" value="" />
+										<input type="password" class="form-control ps1" placeholder="비밀번호 *" value="" name="password" />
 									</div>
 									<div class="form-group" id="emailPart">
-										<input type="password" class="form-control"  placeholder="비밀번호 확인 *" value="" />
+										<input type="password" class="form-control ps2"  placeholder="비밀번호 확인 *" value="" />
 									</div>
+									<div class="form-group">
+										<input type="text" class="form-control"  placeholder="이름 *" value="" name="memName"/>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control"  placeholder="닉네임 *" value="" name="memNickName"/>
+									</div>
+									<div class="form-group">
+									<select name="comCode">      
+										<c:forEach items="${company }" var="bean">
+								        	<option value="${bean.comCode }" >${bean.comName }</option>
+								        </c:forEach>
+									</select>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control"  placeholder="부서 *" value="" name="dept"/>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control"  placeholder="번호 *" value="" name="memPhone"/>
+									</div>
+									
 									 <input type="submit" class="btnRegister"  value="회원가입"/>
+									 </form>
+									 <input type="submit" class="btn" id="authBtn" value="인증" data-toggle="modal" data-target="#modal"/>
 								</div>
 								
 							<div class="col-md-1">
