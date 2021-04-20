@@ -76,20 +76,22 @@
 						<thead>
 							<tr>
 								<th>번호</th>
-								<th>회사명</th>
-								<th>닉네임</th>
 								<th>제목</th>
+								<th>작성자</th>
+								<th>조회수</th>
 								<th>날짜</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>Sample</td>
-								<td>Filter</td>
-								<td>12-11-2011 11:11</td>
-								<td>OK</td>
-								<td>123</td>
-							</tr>
+							<c:forEach var = "list" items = "${noticeList }">
+								<tr>
+									<td>${list.num }</td>
+									<td>${list.title }</td>
+									<td>${list.nickName }</td>
+									<td>${list.count }</td>
+									<td>${list.date }</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

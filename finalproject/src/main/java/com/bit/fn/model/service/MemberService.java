@@ -12,14 +12,15 @@ import com.bit.fn.model.vo.NoticeVo;
 
 @Service
 public class MemberService {
+
 	@Autowired
-	MemberMapper boardMapper;
+	MemberMapper memberMapper;
 	
 	public List<BoardVo> memberBoardList(){
-		return boardMapper.memberBoardList();
+		return memberMapper.memberBoardList();
 	}
 	
 	public List<NoticeVo> noticeList(){
-		return boardMapper.noticeList();
+		return memberMapper.noticeList();
 	}
 }

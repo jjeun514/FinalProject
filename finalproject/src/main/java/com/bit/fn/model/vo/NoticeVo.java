@@ -4,18 +4,19 @@ import java.sql.*;
 
 public class NoticeVo {
 	private int num,count;
-	private String title, content;
+	private String title, content, nickName;
 	private Date date;
 
 	public NoticeVo() {
 	}
 
-	public NoticeVo(int num, int count, String title, String content, Date date) {
+	public NoticeVo(int num, int count, String title, String content, String nickName, Date date) {
 		super();
 		this.num = num;
 		this.count = count;
 		this.title = title;
 		this.content = content;
+		this.nickName = nickName;
 		this.date = date;
 	}
 
@@ -51,6 +52,14 @@ public class NoticeVo {
 		this.content = content;
 	}
 
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -66,6 +75,7 @@ public class NoticeVo {
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + count;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
 		result = prime * result + num;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
@@ -92,6 +102,11 @@ public class NoticeVo {
 				return false;
 		} else if (!date.equals(other.date))
 			return false;
+		if (nickName == null) {
+			if (other.nickName != null)
+				return false;
+		} else if (!nickName.equals(other.nickName))
+			return false;
 		if (num != other.num)
 			return false;
 		if (title == null) {
@@ -104,8 +119,10 @@ public class NoticeVo {
 
 	@Override
 	public String toString() {
-		return "NoticeVo [num=" + num + ", count=" + count + ", title=" + title + ", content=" + content + ", date="
-				+ date + "]";
+		return "NoticeVo [num=" + num + ", count=" + count + ", title=" + title + ", content=" + content + ", nickName="
+				+ nickName + ", date=" + date + "]";
 	}
+
+	
 
 }

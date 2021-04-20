@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.fn.model.service.MemberService;
 import com.bit.fn.model.vo.BoardVo;
+import com.bit.fn.model.vo.NoticeVo;
 
 @Controller
 public class MemberController {
@@ -21,7 +22,7 @@ public class MemberController {
 		return "memberIntro";
 	}
 	
-	// 멤버 페이지 게시판
+	// 멤버 파트 게시판 인트로 페이지 ( 구현해야 하는 기능 : 페이징 / 디테일 / 수정삭제 / 댓글 )
 	@RequestMapping("/board")
 	public String bbs(Model model) {
 		
@@ -31,20 +32,23 @@ public class MemberController {
 		return "memberBoard";
 	}
 	
-	// 멤버 페이지 공지 게시판
+	// 멤버 파트 공지 게시판 인트로 페이지 ( 구현해야 하는 기능 : 페이징 / 디테일 / 댓글 )
 	@RequestMapping("/notice")
-	public String notice() {
+	public String notice(Model model) {
 		
-		
+		List<NoticeVo> noticeList = service.noticeList();
+		model.addAttribute("noticeList", noticeList);
 		
 		return "memberNotice";
 	}
 	
+	// 멤버 파트 회의실 예약 인트로 페이지
 	@RequestMapping("/reservation")
 	public String roomREZ() {
 		return "memberREZ";
 	}
 	
+	// 멤버 파트 내 스케쥴 관리 인트로 페이지
 	@RequestMapping("/schedule")
 	public String schedule() {
 		return "memberSchedule";

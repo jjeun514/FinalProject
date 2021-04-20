@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bit.fn.model.mapper.BoardMapper">
+<mapper namespace="com.bit.fn.model.mapper.MemberMapper">
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
 		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
-		order by num asc
+		order by num desc
    	</select>
+   	<!-- 해결해야 하는 부분 : 회사명과 작성자가 매칭이 안됨 -->
    	
 	<select id="noticeList" resultType="com.bit.fn.model.vo.NoticeVo">
-		select * from notice
+		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
+		from notice noti left outer join adminAccount adm
+		on noti.adminNum=adm.adminNum
+		order by num desc;
    	</select>
 </mapper>
