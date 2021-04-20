@@ -17,4 +17,7 @@ public class MemberinfoService {
 	public List<MemberInfoVo> selectAll(){
 		return memberInfoMapper.selectAll();
 	}
+	public MemberInfoVo selectOne(String id) {
+		return memberInfoMapper.selectOne(id);
+	}
 }

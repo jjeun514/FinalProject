@@ -15,7 +15,7 @@ import com.bit.fn.model.service.BoardService;
 import com.bit.fn.model.service.BranchService;
 import com.bit.fn.model.service.CommentService;
 import com.bit.fn.model.service.CompanyinfoService;
-import com.bit.fn.model.service.MemberAccountService;
+import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.service.MettingRoomFacilitiesService;
 import com.bit.fn.model.service.MettingRoomService;
 import com.bit.fn.model.service.OfficefacilitiesService;
@@ -46,7 +46,7 @@ class FinalprojectApplicationTests {
 	MasterAccountMapper masterAccountMapper;
 	
 	@Autowired
-	MemberAccountService memberAccountService;
+	MemberinfoService memberinfoService;
 	
 	@Autowired
 	MettingRoomFacilitiesService mettingRoomFacilitiesService;
@@ -75,7 +75,7 @@ class FinalprojectApplicationTests {
 		assertNotNull(commentService);
 		assertNotNull(companyinfoService);
 		assertNotNull(masterAccountMapper);
-		assertNotNull(memberAccountService);
+		assertNotNull(memberinfoService);
 		assertNotNull(mettingRoomFacilitiesService);
 		assertNotNull(mettingRoomService);
 		assertNotNull(officefacilitiesService);
@@ -93,7 +93,7 @@ class FinalprojectApplicationTests {
 		assertNotNull(commentService.selectAll());
 		assertNotNull(companyinfoService.selectAll());
 		assertNotNull(masterAccountMapper.selectAll());
-		assertNotNull(memberAccountService.selectAll());
+		assertNotNull(memberinfoService.selectAll());
 		assertNotNull(mettingRoomFacilitiesService.selectAll());
 		assertNotNull(mettingRoomService.selectAll());
 		assertNotNull(officefacilitiesService.selectAll());

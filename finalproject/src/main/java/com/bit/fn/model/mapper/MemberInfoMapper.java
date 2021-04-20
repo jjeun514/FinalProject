@@ -12,4 +12,5 @@ import com.bit.fn.model.vo.MemberInfoVo;
 @Mapper
 public interface MemberInfoMapper {
 	public List<MemberInfoVo> selectAll();
+	public MemberInfoVo selectOne(String id);
 }

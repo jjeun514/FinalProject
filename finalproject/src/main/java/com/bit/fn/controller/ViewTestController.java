@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.fn.model.service.AdminAccountService;
 import com.bit.fn.model.service.MasterAccountService;
-import com.bit.fn.model.service.MemberAccountService;
+import com.bit.fn.model.service.MemberinfoService;
 
 @Controller
 public class ViewTestController {
@@ -20,7 +20,7 @@ public class ViewTestController {
 	MasterAccountService masterAccountService;
 	
 	@Autowired
-	MemberAccountService memberAccountService;
+	MemberinfoService memberinfoService;
 	
 	
 	@RequestMapping("/index")
@@ -67,8 +67,8 @@ public class ViewTestController {
 			model.addAttribute("master",masterAccountService.selectOne(id));
 		}else if(member != -1) {
 			System.out.println("접속하신 계정은 멤버입니다.");
-			System.out.println(memberAccountService.selectOne(id));
-			model.addAttribute("member",memberAccountService.selectOne(id));
+			System.out.println(memberinfoService.selectOne(id));
+			model.addAttribute("member",memberinfoService.selectOne(id));
 		}
 		
 		

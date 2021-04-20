@@ -24,34 +24,47 @@
                 </sec:authorize> 
             </div>
               
-          	<form >
+          	<form method="post">
 			    <!-- 어드민일경우  -->
 	      
 	            <sec:authorize access="hasRole('ADMIN')">
-		            <p> ${admin.nickName }</p>
-		            <p> ${admin.branchCode }</p>
-	             	<p> ${admin.profile }</p>
+	             <div>
+	            	 <label for="adminNickName">닉네임</label>
+	           		 <input type="text" name=adminNickName value="${admin.nickName }"/>
+	           	 </div>
+	           	 <div>
+	           	 	<label for="adminBranchCode">브랜치코드</label>
+	           	 	<c:if test="${admin.branchCode eq 1 }">
+	           	 		<input type="text" name=adminBranchCode value="종로"/>
+	           	 	</c:if>ㅎ
+	           	 </div>
+	           	 <div>
+	           	 	<label for="adminProfile">닉네임</label>
+	           	 	<input type="text" name=adminProfile value="${admin.profile }"/>
+	           	 </div>
 	            </sec:authorize>
+	            
 	            
 	           
 	            <!-- 마스터일경우  -->
 	       
 	            <sec:authorize access="hasRole('MASTER')">
-		            <p> ${master.comCode }</p>
-		            <p> ${master.signdate }</p>
-	             	<p> ${master.profile }</p>
-	             	<p> ${master.admission }</p>
+	             <input type="text" name=masterComCode value="${master.comCode }"/>
+	           	 <input type="text" name=masterSigndate value="${master.signdate }"/>
+	           	 <input type="text" name=masterProfile value="${master.profile }"/>
+	          	 <input type="text" name=masterAdmission value="${master.admission }"/>
 	            </sec:authorize>
 	   
 	            
 	            <!-- 멤버일경우  -->
 	               
 	            <sec:authorize access="hasRole('MEMBER')">
-		            <p> ${member.id }</p>
-		            <p> ${member.comCode }</p>
-	             	<p> ${member.signdate }</p>
-	             	<p> ${member.profile }</p>
-	             	<p> ${member.admission }</p>
+	           	 <input type="text" name=memName value="${member.memName }"/>
+	           	 <input type="text" name=memNickName value="${member.memNickName }"/>
+	          	 <input type="text" name=comCode value="${member.comCode }"/>
+	          	 <input type="text" name=memPhone value="${member.memPhone }"/>
+	          	 <input type="text" name=signdate value="${member.signdate }"/>
+	          	 <input type="text" name=admission value="${member.admission }"/>
 	            </sec:authorize>
 			</form>
         
