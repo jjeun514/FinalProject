@@ -24,36 +24,36 @@
                 </sec:authorize> 
             </div>
               
-          
-		    <!-- 어드민일경우  -->
-      
-            <sec:authorize access="hasRole('ADMIN')">
-	            <p> ${admin.nickName }</p>
-	            <p> ${admin.branchCode }</p>
-             	<p> ${admin.profile }</p>
-            </sec:authorize>
-            
-           
-            <!-- 마스터일경우  -->
-       
-            <sec:authorize access="hasRole('MASTER')">
-	            <p> ${master.comCode }</p>
-	            <p> ${master.signdate }</p>
-             	<p> ${master.profile }</p>
-             	<p> ${master.admission }</p>
-            </sec:authorize>
-   
-            
-            <!-- 멤버일경우  -->
-               
-            <sec:authorize access="hasRole('MEMBER')">
-	            <p> ${member.memId }</p>
-	            <p> ${member.comCode }</p>
-             	<p> ${member.signdate }</p>
-             	<p> ${member.profile }</p>
-             	<p> ${member.admission }</p>
-            </sec:authorize>
-
+          	<form >
+			    <!-- 어드민일경우  -->
+	      
+	            <sec:authorize access="hasRole('ADMIN')">
+		            <p> ${admin.nickName }</p>
+		            <p> ${admin.branchCode }</p>
+	             	<p> ${admin.profile }</p>
+	            </sec:authorize>
+	            
+	           
+	            <!-- 마스터일경우  -->
+	       
+	            <sec:authorize access="hasRole('MASTER')">
+		            <p> ${master.comCode }</p>
+		            <p> ${master.signdate }</p>
+	             	<p> ${master.profile }</p>
+	             	<p> ${master.admission }</p>
+	            </sec:authorize>
+	   
+	            
+	            <!-- 멤버일경우  -->
+	               
+	            <sec:authorize access="hasRole('MEMBER')">
+		            <p> ${member.id }</p>
+		            <p> ${member.comCode }</p>
+	             	<p> ${member.signdate }</p>
+	             	<p> ${member.profile }</p>
+	             	<p> ${member.admission }</p>
+	            </sec:authorize>
+			</form>
         
       </div>
       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">

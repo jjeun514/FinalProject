@@ -11,6 +11,6 @@
     	 from 
     	 	memberaccount
     	 where
-    	 memId=#{value}
+    	 id=#{value}
    	</select>
 </mapper>

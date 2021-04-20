@@ -4,14 +4,14 @@ import java.sql.Date;
 
 public class MemberAccountVo {
 	private int comCode,admission;
-	private String memId,profile;
+	private String id,profile;
 	private Date signdate;
 	public MemberAccountVo() {}
-	public MemberAccountVo(int comCode, int admission, String memId, String profile, Date signdate) {
+	public MemberAccountVo(int comCode, int admission, String id, String profile, Date signdate) {
 		super();
 		this.comCode = comCode;
 		this.admission = admission;
-		this.memId = memId;
+		this.id = id;
 		this.profile = profile;
 		this.signdate = signdate;
 	}
@@ -27,11 +27,11 @@ public class MemberAccountVo {
 	public void setadmission(int admission) {
 		this.admission = admission;
 	}
-	public String getMemId() {
-		return memId;
+	public String getid() {
+		return id;
 	}
-	public void setMemId(String memId) {
-		this.memId = memId;
+	public void setid(String id) {
+		this.id = id;
 	}
 	public String getProfile() {
 		return profile;
@@ -51,7 +51,7 @@ public class MemberAccountVo {
 		int result = 1;
 		result = prime * result + admission;
 		result = prime * result + comCode;
-		result = prime * result + ((memId == null) ? 0 : memId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + ((signdate == null) ? 0 : signdate.hashCode());
 		return result;
@@ -69,10 +69,10 @@ public class MemberAccountVo {
 			return false;
 		if (comCode != other.comCode)
 			return false;
-		if (memId == null) {
-			if (other.memId != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!memId.equals(other.memId))
+		} else if (!id.equals(other.id))
 			return false;
 		if (profile == null) {
 			if (other.profile != null)
@@ -88,7 +88,7 @@ public class MemberAccountVo {
 	}
 	@Override
 	public String toString() {
-		return "MemberAccountVo [comCode=" + comCode + ", admission=" + admission + ", memId=" + memId + ", profile="
+		return "MemberAccountVo [comCode=" + comCode + ", admission=" + admission + ", id=" + id + ", profile="
 				+ profile + ", signdate=" + signdate + "]";
 	}
 	

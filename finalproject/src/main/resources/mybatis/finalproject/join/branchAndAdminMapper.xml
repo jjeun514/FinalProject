@@ -10,7 +10,6 @@
     <resultMap type="com.bit.fn.model.vo.AdminAccountVo" id="AdminAccountMap">
     	<id property="id" column="id"/>
     	<result property="branchCode" column="branchCode"/>
-    	<result property="password" column="password"/>
     	<result property="nickName" column="nickName"/>
     	<result property="profile" column="profile"/>
     </resultMap>
