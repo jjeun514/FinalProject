@@ -14,7 +14,7 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	public List<BoardVo> selectAll(){
-		return boardMapper.selectAll();
+	public List<BoardVo> memberBoardList(){
+		return boardMapper.memberBoardList();
 	}
 }

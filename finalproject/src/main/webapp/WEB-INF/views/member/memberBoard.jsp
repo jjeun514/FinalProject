@@ -83,13 +83,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>Sample</td>
-								<td>Filter</td>
-								<td>12-11-2011 11:11</td>
-								<td>OK</td>
-								<td>123</td>
-							</tr>
+							<c:forEach var = "list" items = "${boardList }">
+								<tr>
+									<td>${list.num }</td>
+									<td>회사명 불러와야 함</td>
+									<td>${list.writer }</td>
+									<td>${list.title }</td>
+									<td>${list.date }</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

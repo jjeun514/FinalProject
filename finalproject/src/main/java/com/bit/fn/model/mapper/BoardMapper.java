@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.bit.fn.model.vo.BoardVo;
 
-
 @Repository
 @Mapper
 public interface BoardMapper {
-	public List<BoardVo> selectAll();
+	public List<BoardVo> memberBoardList();
 }
