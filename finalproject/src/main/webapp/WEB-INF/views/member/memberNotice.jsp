@@ -90,27 +90,6 @@
 								<td>OK</td>
 								<td>123</td>
 							</tr>
-							<tr>
-								<td>호호</td>
-								<td>It</td>
-								<td>11-20-2013 08:56</td>
-								<td>It</td>
-								<td>Works</td>
-							</tr>
-							<tr>
-								<td>안농</td>
-								<td>It</td>
-								<td>11-20-2013 08:56</td>
-								<td>It</td>
-								<td>Works</td>
-							</tr>
-							<tr>
-								<td>더미더미</td>
-								<td>It</td>
-								<td>11-20-2013 08:56</td>
-								<td>It</td>
-								<td>Works</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>

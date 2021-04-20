@@ -76,9 +76,9 @@
 						<thead>
 							<tr>
 								<th>번호</th>
-								<th>회사명</th>
-								<th>닉네임</th>
 								<th>제목</th>
+								<th>닉네임</th>
+								<th>회사명</th>
 								<th>날짜</th>
 							</tr>
 						</thead>
@@ -86,9 +86,9 @@
 							<c:forEach var = "list" items = "${boardList }">
 								<tr>
 									<td>${list.num }</td>
-									<td>회사명 불러와야 함</td>
-									<td>${list.writer }</td>
 									<td>${list.title }</td>
+									<td>${list.memName }</td>
+									<td>${list.comName }</td>
 									<td>${list.date }</td>
 								</tr>
 							</c:forEach>

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bit.fn.model.service.BoardService;
+import com.bit.fn.model.service.MemberService;
 import com.bit.fn.model.vo.BoardVo;
 
 @Controller
 public class MemberController {
 
 	@Autowired
-	private BoardService service;
+	private MemberService service;
 	
 	@RequestMapping("/intro")
 	public String intro() {
@@ -23,7 +23,7 @@ public class MemberController {
 	
 	// 멤버 페이지 게시판
 	@RequestMapping("/board")
-	public String bbs(Model model) { // 스프링이 자동으로 모델 객체를 참조해줌
+	public String bbs(Model model) {
 		
 		List<BoardVo> boardList = service.memberBoardList();
 		model.addAttribute("boardList", boardList);
@@ -31,8 +31,12 @@ public class MemberController {
 		return "memberBoard";
 	}
 	
+	// 멤버 페이지 공지 게시판
 	@RequestMapping("/notice")
 	public String notice() {
+		
+		
+		
 		return "memberNotice";
 	}
 	
