@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bit.fn.model.service.AdminAccountService;
@@ -92,6 +94,7 @@ public class AccountController {
 		System.out.println("comCode="+comCode);
 		System.out.println("dept="+dept);
 		System.out.println("memPhone="+memPhone);
+		
 		try {
 		memberinfoService.insertOne(memName, memNickName, id, comCode, dept, memPhone);
 		accountService.memverSave(account);
@@ -125,5 +128,23 @@ public class AccountController {
 		
 		return "test/info";
 	}
+	
+	@PostMapping("usercheck")
+	public String usercheck(@RequestBody String username ) {
+		
+		String id=username.replace("%40", "@").split("username=")[1];
+		System.out.println(id);
+		id=memberinfoService.selectOne(id).getId();
+		System.out.println("바뀐후="+id);
+		if(id != null) {
+			id="notNull";
+		}else {
+			id="null";
+		}
+		System.out.println(id);
+		return id;
+	}
+	
+	
 	
 }

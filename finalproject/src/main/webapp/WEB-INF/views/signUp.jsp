@@ -150,9 +150,28 @@
 	border-top-left-radius: 0;
 	border-top-right-radius: 0; 
 }
+
+.problem{
+	color: red;
+}
 </style>
 <script type="text/javascript">
-// 인증 버튼 제어
+
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+	if (options['type'].toLowerCase() === "post") {
+		jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+	}
+});
+
+var pattern_num = /[0-9]/;	// 숫자 
+
+var pattern_eng = /[a-zA-Z]/;	// 문자 
+
+var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+
+var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글체크
+
 $(document).on('click','#authBtn',function() {
 	console.log("인증 버튼 누름");
 	var code='';
@@ -174,12 +193,7 @@ $(document).on('click','#authBtn',function() {
 			csrf 토큰 검사를 하게 되는데 ajax header에 csrf 토큰이 없으면
 			403 에러 발생
 		*/
-		var csrfToken = $("meta[name='_csrf']").attr("content");
-		$.ajaxPrefilter(function(options, originalOptions, jqXHR){
-			if (options['type'].toLowerCase() === "post") {
-				jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-			}
-		});
+		
 		
 		// 비동기 통신(POST: 데이터를 body에 담아서 보냄)
 		$.ajax({
@@ -210,7 +224,12 @@ $(document).on('click','#authBtn',function() {
 					1. 일치 여부를 input박스 하단에 표기 등
 					2. 회원가입 버튼을 눌렀을 때 검증
 				*/
-				$(".btnRegister").on("click", function(){
+				
+				
+				//요청 후 회원가입 시 값 체크를 위해 아이디 값 저장.
+			 	var user=$(".username").val();
+				
+				$(".btncheck").on("click", function(){
 					codeVerification=false;
 					// 인증번호
 					code=data;
@@ -218,13 +237,101 @@ $(document).on('click','#authBtn',function() {
 					if(codeInput!=""||code!=""){
 						if(codeInput==code){
 							console.log('인증코드 일치');
+							$('.problem').html("인증에 성공하였습니다.");
+							
+							//인증 성공 후 회원가입버튼 인증 요청 알림 기능 삭제
+							$(".btnRegister").off('click');
+							
+							//회원가입 버튼 활성화
+							$(".joinForm").append($(".btnRegister"));
+							
+							//회원가입 버튼 클릭 시 값 체크 후 회원가입 완료
+							$(".btnRegister").click(function(){
+								
+								//이메일 인증 시 아이디 값과 현재 값이 다른지 체크 
+								if(!(user==$(".username").val())){
+									$('.problem').html("강제 변경된 아이디는 허용하지 않습니다.");
+									return false;
+								//패스워드 값 체크
+									//1. 8~16자리 이내
+								}else if($('.password1').val().length>16 || $('.password1').val().length<8){
+									$('.problem').html('비밀번호는 8~16자리까지 입력해야합니다.');
+									return false;
+									
+									//2. 숫자,영어,특수문자 모두 포함
+								}else if(!(pattern_spc.test($('.password1').val())) ||
+										!(pattern_num.test($('.password1').val())) ||
+										!(pattern_eng.test($('.password1').val())) ){
+									$('.problem').html("숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.");
+									return false;
+									//3. 비밀번호 확인 번호와 일치 여부 체크
+								}else if(!($('.password1').val()==$('.password2').val())){
+									$('.problem').html("비밀번호와 확인번호가 서로 일치하지 않습니다.");
+									return false;
+									
+								//이름 체크
+									//1. 2자이상 10자 이하	
+								}else if($('.memName').val().length>10 || $('.memName').val().length<2){
+									$('.problem').html("이름은 2자 이상 10자리 이내로 입력해주세요.");
+									return false;
+									//2. $('.memName').val('이름')을 통한 특수문자, 숫자 입력 방어
+								}else if(pattern_spc.test($('.memName').val()) || 
+										 pattern_num.test($('.memName').val())){
+									$('.problem').html("강제 입력한 이름은 허용하지 않습니다.");
+									$('.memName').val("");
+									return false;
+								
+								//닉네임 체크
+									//1. 2자이상 10자 이하	
+								}else if($('.memNickName').val().length>10 || $('.memNickName').val().length<2){
+									$('.problem').html("닉네임은 2자 이상 10자리 이내로 입력해주세요.");
+									return false;
+									//2. $('.memNickName').val('닉네임')을 통한 특수문자 입력 방어
+								}else if(pattern_spc.test($('.memNickName').val())){
+									$('.problem').html("강제 입력은 허용하지 않습니다.");
+									$('.memNickName').val("");
+									return false;
+								
+								//부서 체크
+									//1. 2자이상 20자 이하	
+								}else if($('.dept').val().length>20 || $('.dept').val().length<2){
+									$('.problem').html("부서는 2자 이상 20자리 이내로 입력해주세요.");
+									return false;
+									//2. $('.dept').val('부서')을 통한 특수문자 입력 방어
+								}else if(pattern_spc.test($('.dept').val())){
+									$('.problem').html("강제 입력은 허용하지 않습니다.");
+									$('.dept').val("");
+									return false;
+								
+								//번호 체크
+									//1. 9자이상 15자 이하	
+								}else if($('.memPhone').val().length>15 || $('.memPhone').val().length<9){
+									$('.problem').html("번호는 9자 이상 15자리 이내로 입력해주세요.");
+									return false;
+									//2. $('.memPhone').val('번호')을 통한 문자,특수문자 입력 방어
+								}else if(!(pattern_num.test($('.memPhone').val()))){
+									$('.problem').html("강제 입력은 허용하지 않습니다.");
+									$('.memPhone').val("");
+									return false;
+									
+								}else{
+									//값을 모두 체크 후 회원가입 신청 완료
+									return true
+								}
+								
+							});
+							
+							
 						} else{
 							console.log('인증코드 불일치');
+							$('.problem').html("인증코드가 일치하지 않습니다.")
+							$(".joinForm")
 							$(".btnRegister").click(function(){
 								return false;
 							});
 						}
 					}
+
 				});
 			},
 			error: function(){
@@ -234,6 +341,113 @@ $(document).on('click','#authBtn',function() {
 		});
 	}
 });
+
+$(function(){
+	
+	//아이디(이메일)중복검사 하기 전 이메일 인증번호 전송버튼 비활성화
+	$("#authBtn").prop('disabled',"true");
+	
+	//비동기 통신 (아이디 중복검사)
+	$(".userCheck").click(function(){
+		var username = $(".username").val();
+		$.ajax({
+			url: "/usercheck",
+			type: "POST",
+			data: {username},
+			contentType : "application/json; charset=utf-8",
+			success: function(data){
+						console.log(data);
+						if(data=="notNull"){
+							alert("사용가능한 아이디입니다.");
+							//인증버튼 활성화
+							$("#authBtn").removeProp('disabled');
+							//인증요청을 하였을 때 아이디를 바꾸지 못하게 readonly
+							$(".username").prop("readonly","readonly");
+						}else{
+							alert("사용중인 아이디입니다.");
+						}
+					 },
+			error: function(){
+				console.log("ajax 에러");
+				$('#error').modal('show');
+			}
+			
+		});
+	});
+	
+	
+	$(".btnRegister").on("click", function(){
+		$('.problem').html("인증 먼저 부탁드립니다.");
+	});
+	
+	//패스워드 16자 제한
+	$(".password1").keyup(function(){
+		if($('.password1').val().length>16){
+			$('.password1').val($('.password1').val().substring(0,16));
+	}});
+	
+	$(".password2").keyup(function(){
+		if($('.password2').val().length>16){
+			$('.password2').val($('.password2').val().substring(0,16));
+	}});
+	
+	//이름 10자 제한 및 숫자, 특수문자 사용 재한
+	$('.memName').keyup(function(data){
+		if($('.memName').val().length>10){
+			$('.memName').val($('.memName').val().substring(0,10));
+		}
+		
+		if(pattern_spc.test($(data).prop('key')) || pattern_num.test($(data).prop('key'))){
+			if($(data).prop('key')!='Backspace'){
+				$('.problem').html("이름에 숫자 및 특수문자는 사용할 수 없습니다.");
+				$('.memName').val("").focus();
+			}
+		}
+	});
+	
+	//닉네임 10자 제한 및 특수문자 사용 제한
+	$('.memNickName').keyup(function(data){
+		if($('.memNickName').val().length>10){
+			$('.memNickName').val($('.memNickName').val().substring(0,10));
+		}
+		
+		if(pattern_spc.test($(data).prop('key'))){
+			if($(data).prop('key')!='Backspace'){
+				$('.problem').html("닉네임에 특수문자는 사용할 수 없습니다.");
+				$('.memNickName').val("").focus();
+			}
+		}
+	});
+	
+	//부서 20자 제한 및 특수문자 사용 제한
+	$(".dept").keyup(function(data){
+		if($('.dept').val().length>20){
+			$('.dept').val($('.dept').val().substring(0,20));
+		}
+		
+		if(pattern_spc.test($(data).prop('key'))){
+			if($(data).prop('key')!='Backspace'){
+				$('.problem').html("부서에 특수문자는 사용할 수 없습니다.");
+				$('.dept').val("").focus();
+			}
+		}
+	});
+	
+	//번호 15자 제한 및 숫자 외 입력 제한
+	$(".memPhone").keyup(function(data){
+		if($('.memPhone').val().length>15){
+			$('.memPhone').val($('.memPhone').val().substring(0,15));
+		}
+		if(!pattern_num.test($(data).prop('key'))){
+			if($(data).prop('key')!='Backspace'){
+				$('.problem').html("숫자만 입력 가능합니다.");
+				$('.memPhone').val("").focus();
+			}
+		}
+	});
+	
+});
+
 </script>
 <title>이메일인증</title>
 </head>
@@ -254,30 +468,31 @@ $(document).on('click','#authBtn',function() {
 						<h3 class="register-heading">회원 가입</h3>
 							<div class="row register-form">
 								<div class="col-md-11">
-									<form action="/joinMember" method="post">
+								
+								 	<form action="/joinMember" method="post" class="joinForm">  
 									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
 									
 									<!-- emailInput에 이메일을 입력하고, 이메일 인증 버튼을 누르면,
 										 input값을 넘겨서 이메일 전송 시 to로 받아서 그 이메일로 인증번호 발송 -->
 									<div class="form-group">
 									<!-- name=서버로 전달되는 이름 -->
-										<input type="email" class="form-control" placeholder="아이디(gmail) *" value="" id="emailInput" name="username"/>
+										<input type="email" class="form-control username" placeholder="아이디(gmail) *" value="" id="emailInput" name="username"/>
 										
 									</div>
                                     <div class="form-group">
 										<input type="text" class="form-control" id="codeInput" placeholder="인증번호(6자리) *" value="" disabled/>
 									</div>
 									<div class="form-group">
-										<input type="password" class="form-control ps1" placeholder="비밀번호 *" value="" name="password" />
+										<input type="password" class="form-control password1" placeholder="비밀번호 *" value="" name="password" />
 									</div>
 									<div class="form-group" id="emailPart">
-										<input type="password" class="form-control ps2"  placeholder="비밀번호 확인 *" value="" />
+										<input type="password" class="form-control password2"  placeholder="비밀번호 확인 *" value="" />
 									</div>
 									<div class="form-group">
-										<input type="text" class="form-control"  placeholder="이름 *" value="" name="memName"/>
+										<input type="text" class="form-control memName"  placeholder="이름 *" value="" name="memName" />
 									</div>
 									<div class="form-group">
-										<input type="text" class="form-control"  placeholder="닉네임 *" value="" name="memNickName"/>
+										<input type="text" class="form-control memNickName"  placeholder="닉네임 *" value="" name="memNickName"/>
 									</div>
 									<div class="form-group">
 									<select name="comCode">      
@@ -287,15 +502,23 @@ $(document).on('click','#authBtn',function() {
 									</select>
 									</div>
 									<div class="form-group">
-										<input type="text" class="form-control"  placeholder="부서 *" value="" name="dept"/>
+										<input type="text" class="form-control dept"  placeholder="부서 *" value="" name="dept"/>
 									</div>
 									<div class="form-group">
-										<input type="text" class="form-control"  placeholder="번호 *" value="" name="memPhone"/>
+										<input type="text" class="form-control memPhone"  placeholder="번호 *" value="" name="memPhone"/>
 									</div>
-									
+									<c:if test="${param.isempty != null }">
+									</c:if>
+									</form> 
 									 <input type="submit" class="btnRegister"  value="회원가입"/>
-									 </form>
 									 <input type="submit" class="btn" id="authBtn" value="인증" data-toggle="modal" data-target="#modal"/>
+									 <input type="submit" class="btncheck"  value="인증확인"/>
+									 <input type="submit" class="userCheck"  value="아이디중복검증"/>
+									 
+									 <!-- 문제사항을 작성하는 란 -->
+									 <div class="form-group problem">
+										
+									 </div>
 								</div>
 								
 							<div class="col-md-1">
