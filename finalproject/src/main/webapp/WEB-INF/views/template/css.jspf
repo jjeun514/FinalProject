@@ -193,6 +193,11 @@
     	position: relative;
     	left: 45%;
     }
+    
+    #REZapplyClick{
+    	background-color: rgba(187,240,237,1);
+    	border-color: gray;
+    }
 
 /*게시판*/
 	

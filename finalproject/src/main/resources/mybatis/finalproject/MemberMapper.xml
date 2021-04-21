@@ -6,13 +6,17 @@
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
 		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
-		order by num desc
+		order by date desc, num
    	</select>
    	
 	<select id="noticeList" resultType="com.bit.fn.model.vo.NoticeVo">
 		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
 		from notice noti left outer join adminAccount adm
 		on noti.adminNum=adm.adminNum
-		order by num desc;
+		order by num desc
+   	</select>
+   	
+   	<select id="mettingRoomList" resultType="com.bit.fn.model.vo.ReservationVo">
+		select roomNum from mettingRoom where branchCode = 1
    	</select>
 </mapper>

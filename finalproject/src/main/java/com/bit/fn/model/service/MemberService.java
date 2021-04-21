@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.bit.fn.model.mapper.MemberMapper;
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
+import com.bit.fn.model.vo.ReservationVo;
 
 
 @Service
@@ -22,5 +23,9 @@ public class MemberService {
 	
 	public List<NoticeVo> noticeList(){
 		return memberMapper.noticeList();
+	}
+	
+	public List<ReservationVo> mettingRoomList(){
+		return memberMapper.mettingRoomList();
 	}
 }

@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.fn.model.service.MemberService;
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
+import com.bit.fn.model.vo.ReservationVo;
 
 @Controller
 public class MemberController {
@@ -44,8 +47,23 @@ public class MemberController {
 	
 	// 멤버 파트 회의실 예약 인트로 페이지
 	@RequestMapping("/reservation")
-	public String roomREZ() {
+	public String roomREZ(Model model) {
+		
+		List<ReservationVo> roomList = service.mettingRoomList();
+		model.addAttribute("roomList", roomList);
+		
 		return "memberREZ";
+	}
+	
+	// 멤버 파트 회의실 예약 신청에 필요한 정보 전달
+	@RequestMapping(value = "/reservation/apply", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ReservationVo> roomInfo(Model model) {
+		
+		List<ReservationVo> roomList = service.mettingRoomList();
+		model.addAttribute("roomList", roomList);
+		
+		return roomList;
 	}
 	
 	// 멤버 파트 내 스케쥴 관리 인트로 페이지
