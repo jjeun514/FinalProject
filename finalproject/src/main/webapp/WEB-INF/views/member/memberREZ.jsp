@@ -3,60 +3,83 @@
   <title>MEMBER : RESERVATION</title>
 <%@ include file="../template/memberPageHeader.jspf" %>
 <script>
-//게시판 검색기능//
-  $(document).ready(function() {
-    var activeSystemClass = $('.list-group-item.active');
 
-    //something is entered in search form
-    $('#system-search').keyup( function() {
-       var that = this;
-        // affect all table rows on in systems table
-        var tableBody = $('.table-list-search tbody');
-        var tableRowsClass = $('.table-list-search tbody tr');
-        $('.search-sf').remove();
-        tableRowsClass.each( function(i, val) {
-        
-            //Lower text for case insensitive
-            var rowText = $(val).text().toLowerCase();
-            var inputText = $(that).val().toLowerCase();
-            if(inputText != '')
-            {
-                $('.search-query-sf').remove();
-                tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "'
-                    + $(that).val()
-                    + '"</strong></td></tr>');
-            }
-            else
-            {
-                $('.search-query-sf').remove();
-            }
-
-            if( rowText.indexOf( inputText ) == -1 )
-            {
-                //hide rows
-                tableRowsClass.eq(i).hide();
-                
-            }
-            else
-            {
-                $('.search-sf').remove();
-                tableRowsClass.eq(i).show();
-            }
-        });
-        //all tr elements are hidden
-        if(tableRowsClass.children(':visible').length == 0)
-        {
-            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
-        }
-    });
-});  
-//게시판 검색기능//  
     
 </script>
 <body>
-
-<!-- 회의실 예약 페이지 뷰 셋팅 -->
-
+	<div class = "content bbs">
+		<div class = "container">
+			<div class = "row">
+				<div class = "col-md-12">
+					<table class = "table table-bordered">
+						<thead>
+							<tr>
+								<th></th>
+								<th id = "REZTimeCell">09시</th>
+								<th id = "REZTimeCell">10시</th>
+								<th id = "REZTimeCell">11시</th>
+								<th id = "REZTimeCell">12시</th>
+								<th id = "REZTimeCell">13시</th>
+								<th id = "REZTimeCell">14시</th>
+								<th id = "REZTimeCell">15시</th>
+								<th id = "REZTimeCell">16시</th>
+								<th id = "REZTimeCell">17시</th>
+								<th id = "REZTimeCell">18시</th>
+								<th id = "REZTimeCell">19시</th>
+								<th id = "REZTimeCell">20시</th>
+								<th id = "REZTimeCell">21시</th>
+								<th id = "REZTimeCell">22시</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id = "roomCell">121</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<td id = "roomCell">131</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+					<div>
+						<button id = "REZbtn" type="button" class="btn btn-default">사용예약</button>
+					</div>
+				</div>
+			</div>
+			<p></p>
+			<p>* 회의실 예약은 최대 2시간까지 가능합니다.</p>
+			<p>* 회의실 예약은 결제가 완료되어야 확정됩니다.</p>
+			<p>* 문의 : 112</p>
+		</div>
+	</div>
 </body>
 <!--body end-->
 <%@ include file="../template/footer.jspf" %>

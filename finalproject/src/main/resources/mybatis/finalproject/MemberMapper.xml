@@ -8,7 +8,6 @@
 		left outer join companyInfo com on mem.comCode=com.comCode
 		order by num desc
    	</select>
-   	<!-- 해결해야 하는 부분 : 회사명과 작성자가 매칭이 안됨 -->
    	
 	<select id="noticeList" resultType="com.bit.fn.model.vo.NoticeVo">
 		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName

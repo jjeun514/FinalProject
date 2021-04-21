@@ -178,6 +178,22 @@
         box-sizing: border-box;
         padding:50px;
     }
+    
+    #roomCell{
+    	text-align:center;
+    	background-color: rgba(187,240,237,1);
+    }
+    
+    #REZTimeCell{
+    	text-align:center;
+    }
+    
+    #REZbtn{
+    	border: 1px solid;
+    	position: relative;
+    	left: 45%;
+    }
+
 /*게시판*/
 	
 </style>

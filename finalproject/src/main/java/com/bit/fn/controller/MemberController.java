@@ -22,7 +22,7 @@ public class MemberController {
 		return "memberIntro";
 	}
 	
-	// 멤버 파트 게시판 인트로 페이지 ( 구현해야 하는 기능 : 페이징 / 디테일 / 수정삭제 / 댓글 )
+	// 멤버 파트 게시판 인트로 페이지
 	@RequestMapping("/board")
 	public String bbs(Model model) {
 		
@@ -32,7 +32,7 @@ public class MemberController {
 		return "memberBoard";
 	}
 	
-	// 멤버 파트 공지 게시판 인트로 페이지 ( 구현해야 하는 기능 : 페이징 / 디테일 / 댓글 )
+	// 멤버 파트 공지 게시판 인트로 페이지
 	@RequestMapping("/notice")
 	public String notice(Model model) {
 		
