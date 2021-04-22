@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./css.jspf" %>
+</head>
+
+<header class="fixed-top">
+  <div class="row r1 my-3">
+    <div class="col-sm">
+      <img id="logo" src="/imgs/logo_black.png">
+    </div>
+    <div class="col-sm hr">
+     <span class="mr-4"><a href="#">관리자페이지</a></span>
+     <span class="mr-4"><a href="#">멤버페이지</a></span>
+     <span class="mr-4"><a href="#">회원가입</a></span>
+     <span class="mr-4"><a href="#">로그인</a></span>
+    </div>
+  </div><!--row(r1) end-->
+  
+  <div class="row r2">
+   <div class="col">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center my-2 " id="navbarNavDropdown">
+        <ul class="navbar-nav ">
+          <li class="nav-item mr-5">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item mr-5">
+            <a class="nav-link" href="#">Inquire</a>
+          </li>
+          <li class="nav-item mr-5">
+            <a class="nav-link" href="#">Q&A</a>
+          </li>
+          <li class="nav-item dropdown ">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              branch
+            </a>
+            <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="#">성수점</a>
+              <a class="dropdown-item" href="#">강남점</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav><!--nav end-->
+   </div><!--col end-->
+  </div><!--row(r2) end-->
+</header><!--header end-->
