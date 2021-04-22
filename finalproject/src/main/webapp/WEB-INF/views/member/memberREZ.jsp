@@ -6,13 +6,15 @@
 
 $(document).ready(function() {
 	$('#REZbtn').click(function() {
+		alert("사용신청 버튼 클릭");
 		$("#myModal").modal();
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
+		// roomInfo 함수가 모달 함수 위에 있으면 오류가 나서 모달도 안 띄워짐
 	});
 });
 
-// 이 함수때문에 모달창이 안 띄워짐 ... 모르겠네
 function roomInfo() {
+	alert("roomInfo 함수 실행");
 	$.ajax({
 		url : "/reservation/apply",
 		type : "GET",
@@ -20,15 +22,15 @@ function roomInfo() {
 			room : "${roomNum}",
 			useStartTime : "${useStartTime}"
 		},
+		dataType : "json",
 		beforeSend : function() {
 			alert("요청하신 ajax를 처리 시작했습니다.");
-			console.log("ajax 호출");
 		},
-		success : function(data) { console.log("요청하신 ajax 요청이 성공했습니다."); },
+		success : function(data) { alert("요청하신 ajax 요청이 성공했습니다."); },
 		error : function() { alert("요청하신 ajax 방식이 잘못되었습니다."); }
 	});
 }
-    
+
 </script>
 <body>
 	<div class = "content bbs">
@@ -125,7 +127,7 @@ function roomInfo() {
 							      </div>
 							      <div class="modal-footer">
 							        <button type="button" class="btn btn-default" data-dismiss="modal">뒤로가기</button>
-							        <button type="button" class="btn btn-default" id = "REZapplyClick">예약 신청</button>
+							        <button type="button" class="btn btn-default" id = "REZapplyClick" onclick = "#">예약 신청</button>
 							      </div>
 							    </div><!-- /.modal-content -->
 							  </div><!-- /.modal-dialog -->
