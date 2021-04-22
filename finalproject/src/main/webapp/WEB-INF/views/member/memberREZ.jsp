@@ -2,14 +2,17 @@
     pageEncoding="UTF-8"%>
   <title>MEMBER : RESERVATION</title>
 <%@ include file="../template/memberPageHeader.jspf" %>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
+<script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 <script>
 
+// 사용 신청 버튼을 눌렀을 때 발생하는 이벤트 : ajax로 회의실 데이터 가져오면서 모달 띄움
 $(document).ready(function() {
 	$('#REZbtn').click(function() {
 		alert("사용신청 버튼 클릭");
-		$("#myModal").modal();
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
-		// roomInfo 함수가 모달 함수 위에 있으면 오류가 나서 모달도 안 띄워짐
+		$("#myModal").modal();
 	});
 });
 
@@ -23,9 +26,9 @@ function roomInfo() {
 			useStartTime : "${useStartTime}"
 		},
 		dataType : "json",
-		beforeSend : function() {
-			alert("요청하신 ajax를 처리 시작했습니다.");
-		},
+//		beforeSend : function() {
+//			alert("요청하신 ajax를 처리 시작했습니다.");
+//		},
 		success : function(data) { alert("요청하신 ajax 요청이 성공했습니다."); },
 		error : function() { alert("요청하신 ajax 방식이 잘못되었습니다."); }
 	});
@@ -50,20 +53,20 @@ function roomInfo() {
 							<c:forEach var = "list" items = "${roomList }">
 								<tr>
 									<td id = "roomCell">${list.roomNum }</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td>여</td>
+									<td>기</td>
+									<td>에</td>
+									<td>값</td>
+									<td>을</td>
+									<td>뿌</td>
+									<td>려</td>
+									<td>야</td>
+									<td>하</td>
+									<td>는</td>
+									<td>데</td>
+									<td>어</td>
+									<td>쩌</td>
+									<td>지</td>
 								</tr>
 							</c:forEach>
 						</tbody>
