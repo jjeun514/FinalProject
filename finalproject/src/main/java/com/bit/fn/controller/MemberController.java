@@ -62,6 +62,7 @@ public class MemberController {
 	@RequestMapping(value = "/reservation/apply", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> roomInfo() {
+		System.out.println("---------------------apply controller");
 		
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		

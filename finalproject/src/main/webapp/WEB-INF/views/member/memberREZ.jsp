@@ -17,21 +17,20 @@ $(document).ready(function() {
 });
 
 function roomInfo() {
-	alert("roomInfo 함수 실행");
+	alert("roomInfo 함수 실행"); // 여기까지 옴
 	$.ajax({
 		url : "/reservation/apply",
 		type : "GET",
 		data : {
-			room : roomNum,
-			useStartTime : useStartTime
+			roomData : "${roomNum}"
 		},
 		dataType : "json",
-//		beforeSend : function() {
-//			alert("요청하신 ajax를 처리 시작했습니다.");
-//		},
+		beforeSend : function() {
+			alert("요청하신 ajax를 처리 시작했습니다.");
+		},
 		success : function(data) { 
 			alert("요청하신 ajax 요청이 성공했습니다.");
-			
+			$('#roomNum').append("<option>ajax로 옵션 추가</option>");
 		
 		},
 		error : function() { alert("요청하신 ajax 방식이 잘못되었습니다."); }
