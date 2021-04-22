@@ -22,14 +22,18 @@ function roomInfo() {
 		url : "/reservation/apply",
 		type : "GET",
 		data : {
-			room : "${roomNum}",
-			useStartTime : "${useStartTime}"
+			room : roomNum,
+			useStartTime : useStartTime
 		},
 		dataType : "json",
 //		beforeSend : function() {
 //			alert("요청하신 ajax를 처리 시작했습니다.");
 //		},
-		success : function(data) { alert("요청하신 ajax 요청이 성공했습니다."); },
+		success : function(data) { 
+			alert("요청하신 ajax 요청이 성공했습니다.");
+			
+		
+		},
 		error : function() { alert("요청하신 ajax 방식이 잘못되었습니다."); }
 	});
 }
@@ -87,7 +91,7 @@ function roomInfo() {
 										  <div class="form-group">
 										    <label class="col-sm-10 control-label">예약하실 회의실을 선택해주세요</label>
 										    <div class="col-sm-12">
-											    <select name = "roomNum" class="form-control">
+											    <select id = "roomNum" class="form-control">
 												  <option>회의실 정보 받아와야 함</option>
 												</select>
 											</div>
@@ -96,7 +100,7 @@ function roomInfo() {
 										  <div class="form-group">
 										    <label class="col-sm-10 control-label">예약하실 시작 시간을 선택해주세요</label>
 										    <div class="col-sm-12">
-											    <select name = "useStartTime" class="form-control">
+											    <select id = "useStartTime" class="form-control">
 												  <option>사용 가능한 시간 받아와야 함</option>
 												</select>
 											</div>
@@ -105,7 +109,7 @@ function roomInfo() {
 										  <div class="form-group">
 										    <label class="col-sm-10 control-label">사용하실 시간을 선택해주세요</label>
 										    <div class="col-sm-12">
-											    <select name = "useFinishTime" class="form-control">
+											    <select id = "useFinishTime" class="form-control">
 												  <option value = "59">1시간</option>
 												  <option value = "119">2시간</option>
 												</select>
@@ -115,7 +119,7 @@ function roomInfo() {
 										  <div class="form-group">
 										    <label class="col-sm-10 control-label">사용하실 인원을 선택해주세요</label>
 										    <div class="col-sm-12">
-											    <select name = "useCount" class="form-control">
+											    <select id = "useCount" class="form-control">
 												  <option value = "1">1명</option>
 												  <option value = "2">2명</option>
 												  <option value = "3">3명</option>
