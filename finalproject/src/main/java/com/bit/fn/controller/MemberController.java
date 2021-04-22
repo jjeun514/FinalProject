@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cassandra.CassandraProperties.Request;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,10 +61,9 @@ public class MemberController {
 	}
 	
 	// 멤버 파트 회의실 예약 신청에 필요한 정보 전달
-	@RequestMapping(value = "/reservation/apply", method = RequestMethod.GET)
+	@RequestMapping(value = "/reservation/apply")
 	@ResponseBody
 	public Map<String, Object> roomInfo() {
-		System.out.println("---------------------apply controller");
 		
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		
@@ -79,6 +80,19 @@ public class MemberController {
 		roomData.put("roomData", dataList);
 		
 		return roomData;
+	}
+	
+	// 멤버 파트 회의실 예약 신청
+	@RequestMapping(value = "/reservation/applySuccess")
+	@ResponseBody
+	public String roomReservaionApply() {
+		
+		String roomNum;
+		String useStartTime;
+		String useFinishTime;
+		String useCount;
+		
+		return null;
 	}
 	
 	// 멤버 파트 내 스케쥴 관리 인트로 페이지

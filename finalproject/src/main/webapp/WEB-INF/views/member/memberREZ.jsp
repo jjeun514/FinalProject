@@ -7,33 +7,42 @@
 <script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 <script>
 
-// 사용 신청 버튼을 눌렀을 때 발생하는 이벤트 : ajax로 회의실 데이터 가져오면서 모달 띄움
+// 사용 신청 버튼을 눌렀을 때 발생하는 이벤트
 $(document).ready(function() {
 	$('#REZbtn').click(function() {
-		alert("사용신청 버튼 클릭");
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
 		$("#myModal").modal();
+	});
+	
+	$('#REZapplyClick').click(function() { // 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
+		console.log("예약 신청 버튼");
+		$.ajax({
+			url : "/reservation/applySuccess",
+			type : "POST",
+			data : $('#REZApply').serialize(),
+//			dataType = "json",
+			success : function() {
+				// alert("예약 신청이 완료되었습니다. 결제창으로 이동하시겠습니까?");
+				// 여기서 결제창으로 이동해야 함
+			}
+		});
 	});
 });
 
 function roomInfo() {
-	alert("roomInfo 함수 실행"); // 여기까지 옴
 	$.ajax({
 		url : "/reservation/apply",
 		type : "GET",
-		data : {
-			roomData : "${roomNum}"
-		},
+		data : null,
 		dataType : "json",
-		beforeSend : function() {
-			alert("요청하신 ajax를 처리 시작했습니다.");
-		},
+//		beforeSend : function() { alert("요청하신 ajax를 처리 시작했습니다."); },
 		success : function(data) { 
-			alert("요청하신 ajax 요청이 성공했습니다.");
-			$('#roomNum').append("<option>ajax로 옵션 추가</option>");
-		
+			$('#roomNum *').remove(); // 이전에 append 되었던 옵션 삭제
+			for (var no = 0; no < data.roomData.length; no++ ) {
+				$('#roomNum').append("<option value = "+data.roomData[no].roomNum+">"+data.roomData[no].roomNum+"</option>");
+			}
 		},
-		error : function() { alert("요청하신 ajax 방식이 잘못되었습니다."); }
+		error : function() { alert("요청하신 작업이 정상적으로 처리되지 않았습니다."); }
 	});
 }
 
@@ -86,12 +95,11 @@ function roomInfo() {
 							      <!-- 회의실 예약 정보 입력란 -->
 							      <div class="modal-body">
 
-							        	<form class="form-horizontal">
+							        	<form id = "REZApply" class="form-horizontal">
 										  <div class="form-group">
 										    <label class="col-sm-10 control-label">예약하실 회의실을 선택해주세요</label>
 										    <div class="col-sm-12">
 											    <select id = "roomNum" class="form-control">
-												  <option>회의실 정보 받아와야 함</option>
 												</select>
 											</div>
 										  </div>
@@ -100,7 +108,9 @@ function roomInfo() {
 										    <label class="col-sm-10 control-label">예약하실 시작 시간을 선택해주세요</label>
 										    <div class="col-sm-12">
 											    <select id = "useStartTime" class="form-control">
-												  <option>사용 가능한 시간 받아와야 함</option>
+												    <c:forEach var = "t" begin = "09" end = "22">
+													  <option value = "${t }">${t }시</option>
+													</c:forEach>
 												</select>
 											</div>
 										  </div>
@@ -133,7 +143,7 @@ function roomInfo() {
 							      </div>
 							      <div class="modal-footer">
 							        <button type="button" class="btn btn-default" data-dismiss="modal">뒤로가기</button>
-							        <button type="button" class="btn btn-default" id = "REZapplyClick" onclick = "#">예약 신청</button>
+							        <button type="button" class="btn btn-default" id = "REZapplyClick">예약 신청</button>
 							      </div>
 							    </div><!-- /.modal-content -->
 							  </div><!-- /.modal-dialog -->
