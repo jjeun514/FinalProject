@@ -21,5 +21,11 @@ public interface MemberMapper {
 
 	// 회의실 예약 현황 리스트
 	public List<ReservationVo> mettingRoomList();
+	
+	// 회의실 예약 현황 조회
+	public int selectReservaionList(int roomNum, String useStartTime, String reservationDay);
+	
+	// 회의실 예약 신청
+	public int roomReservationApply(ReservationVo reservaion);
 
 }

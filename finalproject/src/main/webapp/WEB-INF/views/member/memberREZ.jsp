@@ -19,17 +19,23 @@ $(document).ready(function() {
 		$.ajax({
 			url : "/reservation/applySuccess",
 			type : "POST",
-			data : $('#REZApply').serialize(),
+			data : {
+				roomNum : $("#roomNum").val(),
+				useStartTime : $("#useStartTime").val(),
+				useFinishTime : $("#useFinishTime").val(),
+				userCount : $("#userCount").val()
+			},
 //			dataType = "json",
 			success : function() {
+				
 				// alert("예약 신청이 완료되었습니다. 결제창으로 이동하시겠습니까?");
-				// 여기서 결제창으로 이동해야 함
-			}
+			},
+			error : function() { alert("요청하신 작업이 정상적으로 처리되지 않았습니다."); }
 		});
 	});
 });
 
-function roomInfo() {
+function roomInfo() { // 예약 신청 모달에서 보여줄 회의실 정보
 	$.ajax({
 		url : "/reservation/apply",
 		type : "GET",

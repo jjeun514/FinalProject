@@ -28,4 +28,12 @@ public class MemberService {
 	public List<ReservationVo> mettingRoomList(){
 		return memberMapper.mettingRoomList();
 	}
+	
+	public int selectReservaionList() {
+		return 0;
+	}
+	
+	public int roomReservationApply() {
+		return 0;
+	}
 }
