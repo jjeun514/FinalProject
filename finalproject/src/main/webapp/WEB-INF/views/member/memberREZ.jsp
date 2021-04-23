@@ -7,9 +7,8 @@
 <script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 <script>
 
-// 사용 신청 버튼을 눌렀을 때 발생하는 이벤트
 $(document).ready(function() {
-	$('#REZbtn').click(function() {
+	$('#REZbtn').click(function() { // 사용 신청 버튼을 눌렀을 때 발생하는 이벤트
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
 		$("#myModal").modal();
 	});
@@ -17,18 +16,24 @@ $(document).ready(function() {
 	$('#REZapplyClick').click(function() { // 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 		console.log("예약 신청 버튼");
 		$.ajax({
-			url : "/reservation/applySuccess",
+			url : "/reservation/applySubmit",
 			type : "POST",
 			data : {
 				roomNum : $("#roomNum").val(),
 				useStartTime : $("#useStartTime").val(),
 				useFinishTime : $("#useFinishTime").val(),
 				userCount : $("#userCount").val()
+				// 여기서 예약 날짜와 예약자도 전달해줘야 함
 			},
-//			dataType = "json",
-			success : function() {
-				
-				// alert("예약 신청이 완료되었습니다. 결제창으로 이동하시겠습니까?");
+			success : function(data) {
+				if ( data.resultCode == 0 ) {
+					alert(data.resultMessage);
+				} else if ( data.resultCode == 1 ) {
+					alert(data.resultMessage);
+				} else if ( data.resultCode == -1 ) {
+					alert(data.resultMessage);
+					// 기본키가 3개가 잡혀있기 때문에 사용자가 입력한 항목을 가지고 예약 내역이 있는지 확인한다. 이 주석은 추후 삭제할 것.
+				}
 			},
 			error : function() { alert("요청하신 작업이 정상적으로 처리되지 않았습니다."); }
 		});
@@ -41,7 +46,6 @@ function roomInfo() { // 예약 신청 모달에서 보여줄 회의실 정보
 		type : "GET",
 		data : null,
 		dataType : "json",
-//		beforeSend : function() { alert("요청하신 ajax를 처리 시작했습니다."); },
 		success : function(data) { 
 			$('#roomNum *').remove(); // 이전에 append 되었던 옵션 삭제
 			for (var no = 0; no < data.roomData.length; no++ ) {
@@ -125,8 +129,9 @@ function roomInfo() { // 예약 신청 모달에서 보여줄 회의실 정보
 										    <label class="col-sm-10 control-label">사용하실 시간을 선택해주세요</label>
 										    <div class="col-sm-12">
 											    <select id = "useFinishTime" class="form-control">
-												  <option value = "59">1시간</option>
-												  <option value = "119">2시간</option>
+												  <option value = "1">1시간</option>
+												  <option value = "2">2시간</option>
+												  <!-- 여기서 쿼리를 고려해서 value를 어떻게 줄 지 생각해봐야 함 -->
 												</select>
 											</div>
 										  </div>

@@ -29,11 +29,11 @@ public class MemberService {
 		return memberMapper.mettingRoomList();
 	}
 	
-	public int selectReservaionList() {
-		return 0;
+	public int checkReservaion(int roomNum, String useStartTime, String reservationDay) {
+		return memberMapper.checkReservaion(roomNum, useStartTime, reservationDay);
 	}
 	
-	public int roomReservationApply() {
-		return 0;
+	public int roomReservationApply(ReservationVo reservation) {
+		return memberMapper.roomReservationApply(reservation);
 	}
 }

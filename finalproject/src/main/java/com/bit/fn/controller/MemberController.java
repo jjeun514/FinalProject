@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cassandra.CassandraProperties.Request;
 import org.springframework.stereotype.Controller;
@@ -78,24 +80,70 @@ public class MemberController {
 		
 		Map<String, Object> roomData = new HashMap<String, Object>();
 		roomData.put("roomData", dataList);
+		// 예약날짜 예약자 정보도 전달해줘야 함
 		
 		return roomData;
 	}
 	
 	// 멤버 파트 회의실 예약 신청
-	@RequestMapping(value = "/reservation/applySuccess")
+	@RequestMapping(value = "/reservation/applySubmit", method = RequestMethod.POST)
 	@ResponseBody
-	public String roomReservaionApply() {
+	public HashMap<String, Object> roomReservaionApply(Model model, HttpServletRequest request) {
 		
-		String roomNum;
-		String useStartTime;
-		String useFinishTime;
-		String useCount;
+		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		return null;
+		// 여기서 request parameter를 한꺼번에 받을 수 있는 방법..뭐가 좋을까?
+		// 예약 날짜, 예약자 정보도 받아와야 함
+		int roomNum = Integer.parseInt(request.getParameter("roomNum"));
+		String useStartTime = request.getParameter("useStartTime");
+		String useFinishTime = request.getParameter("useFinishTime");
+		int useCount = Integer.parseInt(request.getParameter("useCount"));
+		
+		ReservationVo reservation = new ReservationVo();
+		reservation.setRoomNum(roomNum);
+		reservation.setUseStartTime(useStartTime);
+		reservation.setUseFinishTime(useFinishTime);
+		reservation.setUserCount(useCount);
+		
+		// 제대로 isert가 되는지(쿼리 정상 수행 여부 / 메소드 정상 수행 여부 / ajax 수행 여부) 확인 후 주석 풀어서 조회 메소드 수행되는지 확인
+//		int checkReservation = service.checkReservaion(roomNum, useStartTime, useFinishTime);
+//		
+//		if ( checkReservation > 0 ) { // 여기서 조회한 값이 있는 것을 먼저 처리하는 것이 나을지? 아니면 지금대로 해도 될지?
+//			
+//			String resultMessage = "이미 예약된 내용입니다. 예약 현황을 확인 후 다시 신청해주세요.";
+//			String resultCode = "-1";
+//			
+//			result.put("resultMessage", resultMessage);
+//			result.put("resultCode",resultCode);
+//			
+//			return result;
+//			
+//		} else {
+		
+			int insertReservaion = service.roomReservationApply(reservation);
+			
+			if ( insertReservaion > 0 ) {
+				String resultMessage = "예약 신청이 완료되었습니다. 결제창으로 이동하시겠습니까?";
+				String resultCode = "0";
+				
+				result.put("resultMessage", resultMessage);
+				result.put("resultCode", resultCode);
+				
+				return result;
+				
+			} else {
+				String resultMessage = "예약 신청에 실패했습니다. 다시 시도해주세요.";
+				String resultCode = "1";
+				
+				result.put("resultMessage", resultMessage);
+				result.put("resultCode", resultCode);
+				
+				return result;
+			}
+//		}
 	}
 	
-	// 멤버 파트 내 스케쥴 관리 인트로 페이지
+	// 멤버 파트 내 스케쥴 관리 인트로 페이지 ... 구현할 수 있을까?
 	@RequestMapping("/schedule")
 	public String schedule() {
 		return "memberSchedule";

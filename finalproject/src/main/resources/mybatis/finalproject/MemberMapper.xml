@@ -19,4 +19,21 @@
    	<select id="mettingRoomList" resultType="com.bit.fn.model.vo.ReservationVo">
 		select roomNum from mettingRoom where branchCode = 1
    	</select>
+   	
+   	<select id="checkReservaion" resultType="int">
+   		select count(roomNum) as countREZ from reservation
+   		where roomNum = #{roomNum} and
+   		reservationDay = '2021-04-26' and
+   		useStartTime = '2021-04-24 ${useStartTime}:00:00'
+   	</select>
+   	
+   	<insert id="roomReservationApply" parameterType="com.bit.fn.model.vo.ReservationVo">
+   		insert into reservation(
+   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, etc
+   		)
+   		values(
+   			#{roomNum}, 1, '2021-04-26', '2021-04-26 ${useStartTime}:00:00',
+   			'2021-04-26 ${useStartTime}:${useFinishTime}:00', #{userCount}, 'mapper test'
+   		)
+   	</insert>
 </mapper>

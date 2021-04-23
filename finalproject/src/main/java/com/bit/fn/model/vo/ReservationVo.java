@@ -5,14 +5,14 @@ import java.sql.Date;
 public class ReservationVo {
 	
 	private int roomNum, memNum, userCount, fee, rent;
-	private String etc, memName, comName;
-	private Date reservationDay, useStartTime, useFinishTime;
+	private String etc, memName, comName, useStartTime, useFinishTime;
+	private Date reservationDay;
 	
 	public ReservationVo() {
 	}
 
 	public ReservationVo(int roomNum, int memNum, int userCount, int fee, int rent, String etc, String memName,
-			String comName, Date reservationDay, Date useStartTime, Date useFinishTime) {
+			String comName, Date reservationDay, String useStartTime, String useFinishTime) {
 		super();
 		this.roomNum = roomNum;
 		this.memNum = memNum;
@@ -99,19 +99,19 @@ public class ReservationVo {
 		this.reservationDay = reservationDay;
 	}
 
-	public Date getUseStartTime() {
+	public String getUseStartTime() {
 		return useStartTime;
 	}
 
-	public void setUseStartTime(Date useStartTime) {
+	public void setUseStartTime(String useStartTime) {
 		this.useStartTime = useStartTime;
 	}
 
-	public Date getUseFinishTime() {
+	public String getUseFinishTime() {
 		return useFinishTime;
 	}
 
-	public void setUseFinishTime(Date useFinishTime) {
+	public void setUseFinishTime(String useFinishTime) {
 		this.useFinishTime = useFinishTime;
 	}
 
