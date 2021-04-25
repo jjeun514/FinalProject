@@ -88,22 +88,33 @@ public class MemberController {
 	// 멤버 파트 회의실 예약 신청
 	@RequestMapping(value = "/reservation/applySubmit", method = RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String, Object> roomReservaionApply(Model model, HttpServletRequest request) {
+	public HashMap<String, Object> roomReservaionApply(Model model, ReservationVo applyContent) {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		// 여기서 request parameter를 한꺼번에 받을 수 있는 방법..뭐가 좋을까?
 		// 예약 날짜, 예약자 정보도 받아와야 함
-		int roomNum = Integer.parseInt(request.getParameter("roomNum"));
-		String useStartTime = request.getParameter("useStartTime");
-		String useFinishTime = request.getParameter("useFinishTime");
-		int useCount = Integer.parseInt(request.getParameter("useCount"));
+		
+		int roomNum = applyContent.getRoomNum();
+		String useStartTime = applyContent.getUseStartTime();
+		String useFinishTime = applyContent.getUseFinishTime();
+		int userCount = applyContent.getUserCount();
+		System.out.println("회의실 번호 : "+roomNum);
+		System.out.println("사용 시작 시간 : "+useStartTime);
+		System.out.println("사용 종료 시간 : "+useFinishTime);
+		System.out.println("사용 인원 : "+userCount);
 		
 		ReservationVo reservation = new ReservationVo();
-		reservation.setRoomNum(roomNum);
-		reservation.setUseStartTime(useStartTime);
-		reservation.setUseFinishTime(useFinishTime);
-		reservation.setUserCount(useCount);
+		reservation.setRoomNum(applyContent.getRoomNum());
+		reservation.setUseStartTime(applyContent.getUseStartTime());
+		reservation.setUseFinishTime(applyContent.getUseFinishTime());
+		reservation.setUserCount(applyContent.getUserCount());
+		
+		/*
+		 * 주요한 문제 : 파라미터로 사용 시간을 받아올 때 1시간 / 2시간 이렇게 받아올텐데
+		 * 이걸 쿼리에 어떻게 심을건지 고민해봐야 함
+		 * 왜냐하면 현재 useFinishTime은 DATA 타입으로 설정되어 있기 때문에
+		 * 시작 시간에서 파라미터로 받아온 사용 시간을 어떻게 더해서 쿼리로 날릴지 확인해야 하기 때문
+		 */
 		
 		// 제대로 isert가 되는지(쿼리 정상 수행 여부 / 메소드 정상 수행 여부 / ajax 수행 여부) 확인 후 주석 풀어서 조회 메소드 수행되는지 확인
 //		int checkReservation = service.checkReservaion(roomNum, useStartTime, useFinishTime);
@@ -121,6 +132,7 @@ public class MemberController {
 //		} else {
 		
 			int insertReservaion = service.roomReservationApply(reservation);
+			System.out.println("신청 쿼리의 수행 결과 : "+insertReservaion);
 			
 			if ( insertReservaion > 0 ) {
 				String resultMessage = "예약 신청이 완료되었습니다. 결제창으로 이동하시겠습니까?";

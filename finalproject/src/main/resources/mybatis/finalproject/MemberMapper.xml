@@ -33,7 +33,7 @@
    		)
    		values(
    			#{roomNum}, 1, '2021-04-26', '2021-04-26 ${useStartTime}:00:00',
-   			'2021-04-26 ${useStartTime}:${useFinishTime}:00', #{userCount}, 'mapper test'
+   			'2021-04-26 ${useStartTime}:59:00', #{userCount}, 'mapper test'
    		)
    	</insert>
 </mapper>

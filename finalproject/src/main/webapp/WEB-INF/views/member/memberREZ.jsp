@@ -8,46 +8,64 @@
 <script>
 
 $(document).ready(function() {
-	$('#REZbtn').click(function() { // 사용 신청 버튼을 눌렀을 때 발생하는 이벤트
-		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
+	 // 사용 신청 버튼을 눌렀을 때 발생하는 이벤트
+	$('#REZbtn').click(function() {
+		// 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
+		roomInfo(); 
 		$("#myModal").modal();
 	});
 	
-	$('#REZapplyClick').click(function() { // 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
+	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
+	$('#REZapplyClick').click(function() { 
 		console.log("예약 신청 버튼");
+	
+		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
+		// 여기서 예약 날짜와 예약자도 전달해줘야 함
+		var applyContent = {
+			roomNum : $("#roomNum").val(),
+			useStartTime : $("#useStartTime").val(),
+			useFinishTime : $("#useFinishTime").val(),
+			userCount : $("#userCount").val()
+		};
+	
 		$.ajax({
 			url : "/reservation/applySubmit",
 			type : "POST",
-			data : {
-				roomNum : $("#roomNum").val(),
-				useStartTime : $("#useStartTime").val(),
-				useFinishTime : $("#useFinishTime").val(),
-				userCount : $("#userCount").val()
-				// 여기서 예약 날짜와 예약자도 전달해줘야 함
-			},
+			/* json Object 형태로 보내려면 서버로 전달할 데이터를 아래와 같이 사용해야 하는데
+				컨트롤러에서는 responsebody로 한꺼번에 받으면 된다.
+				아니면 컨트롤러에서 map 형태로 받아도 된다.
+				근데 map 형태로 받으면 명확하게 어떤 파라미터를 전달받는지 모른다는 단점이 있다.
+				어떤 파라미터를 전달받는지 모른다는게 무슨 말인지 ....
+			*/
+			data : { applyContent },
+//			contentType : "application/json; charset=UTF-8",
 			success : function(data) {
-				if ( data.resultCode == 0 ) {
+				// 예약 신청 완료
+				if ( data.resultCode == 0 ) { 
 					alert(data.resultMessage);
-				} else if ( data.resultCode == 1 ) {
+				// 예약 신청 실패
+				} else if ( data.resultCode == 1 ) { 
 					alert(data.resultMessage);
-				} else if ( data.resultCode == -1 ) {
+				// 중복된 예약 존재로 인해 신청 실패
+				} else if ( data.resultCode == -1 ) { 
 					alert(data.resultMessage);
-					// 기본키가 3개가 잡혀있기 때문에 사용자가 입력한 항목을 가지고 예약 내역이 있는지 확인한다. 이 주석은 추후 삭제할 것.
 				}
 			},
-			error : function() { alert("요청하신 작업이 정상적으로 처리되지 않았습니다."); }
+			error : function() { alert("요청하신 회의실 예약 신청이 정상적으로 처리되지 않았습니다."); }
 		});
 	});
 });
 
-function roomInfo() { // 예약 신청 모달에서 보여줄 회의실 정보
+//예약 신청 모달에서 보여줄 회의실 정보
+function roomInfo() { 
 	$.ajax({
 		url : "/reservation/apply",
 		type : "GET",
 		data : null,
 		dataType : "json",
 		success : function(data) { 
-			$('#roomNum *').remove(); // 이전에 append 되었던 옵션 삭제
+			// 이전에 append 되었던 옵션 삭제
+			$('#roomNum *').remove(); 
 			for (var no = 0; no < data.roomData.length; no++ ) {
 				$('#roomNum').append("<option value = "+data.roomData[no].roomNum+">"+data.roomData[no].roomNum+"</option>");
 			}
