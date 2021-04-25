@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  
-<%@ include file="./template/header.jspf" %>
-<body>
-<div class="content main"><!--content start-->
+<%@ include file="template/navbar.jspf" %>
+<div class="content main">
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -12,13 +10,13 @@
   </ol>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="imgs/11.jpg" class="d-block w-100" alt="...">
+      <img src="imgs/2.jpg" class="d-block w-100">
     </div>
     <div class="carousel-item">
-      <img src="imgs/11.jpg" class="d-block w-100" alt="...">
+      <img src="imgs/3.jpg" class="d-block w-100">
     </div>
     <div class="carousel-item">
-      <img src="imgs/11.jpg" class="d-block w-100" alt="...">
+      <img src="imgs/4.jpg" class="d-block w-100">
     </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -51,10 +49,7 @@
     <span>Fourth floor</span>
   </div>
 </div><!--이미지템플릿  end-->
-</div><!--centent end-->
-</body><!--body end-->
-<!--body end-->
-<%@ include file="./template/footer.jspf" %>
+</div>
 <!-- 모달-1 start-->
   <div class="modal fade" id="exampleModal-1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -344,21 +339,21 @@
        </ol>
        <div class="carousel-inner"><!--모달안에 캐러셀 start-->
         <div class="carousel-item active">
-         <img src="imgs/M3-1.jpg" class="d-block w-100" alt="...">
+         <img src="imgs/2.jpg" class="d-block w-100" alt="...">
          <div class="carousel-caption d-none d-md-block">
           <h5>First slide label</h5>
           <p>Some representative placeholder content for the first slide.</p>
          </div>
         </div>
         <div class="carousel-item">
-         <img src="imgs/M2-1.jpg" class="d-block w-100" alt="...">
+         <img src="imgs/3.jpg" class="d-block w-100" alt="...">
          <div class="carousel-caption d-none d-md-block">
           <h5>Second slide label</h5>
           <p>Some representative placeholder content for the second slide.</p>
          </div>
         </div>
         <div class="carousel-item">
-         <img src="imgs/M1-1.jpg" class="d-block w-100" alt="...">
+         <img src="imgs/4.jpg" class="d-block w-100" alt="...">
          <div class="carousel-caption d-none d-md-block">
           <h5>Third slide label</h5>
           <p>Some representative placeholder content for the third slide.</p>
@@ -415,14 +410,4 @@
     </div>
    </div>
   </div><!-- 모달-4 end-->  
-</html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->
+<%@ include file="template/footer.jspf" %>

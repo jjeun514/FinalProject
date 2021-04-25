@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec"  uri="http://www.springframework.org/security/tags"%>
-<%@ include file="./template/header.jspf" %>
-<body>
-<div class="content mypage"><!--content start-->
+<%@ include file="template/navbar.jspf" %>
+<div class="content main mypage">
  <div class="row vartical-menu">
   <div class="left left-nav">
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -84,18 +83,5 @@
     </div>
   </div>
 </div>   
-</div><!--centent end-->
-</body><!--body end-->
-<!--body end-->
-<%@ include file="./template/footer.jspf" %>
-</html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->
+</div>
+<%@ include file="template/footer.jspf" %>

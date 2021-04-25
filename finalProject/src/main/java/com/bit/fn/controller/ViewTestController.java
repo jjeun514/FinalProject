@@ -5,7 +5,6 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.fn.model.service.AdminAccountService;
@@ -27,9 +26,20 @@ public class ViewTestController {
 	public String main() {
 		return "index";
 	}
+	
 	@RequestMapping("/privacy")
 	public String privacy() {
 		return "privacy";
+	}
+	
+	@RequestMapping("/signin")
+	public String signin() {
+		return "signin";
+	}
+	
+	@RequestMapping("/chart")
+	public String chart() {
+		return "chart";
 	}
 	
 	@RequestMapping("/bbs")
@@ -74,8 +84,6 @@ public class ViewTestController {
 			System.out.println(memberinfoService.selectOne(id));
 			model.addAttribute("member",memberinfoService.selectOne(id));
 		}
-		
-		
 		return "myPage";
 	}
 	

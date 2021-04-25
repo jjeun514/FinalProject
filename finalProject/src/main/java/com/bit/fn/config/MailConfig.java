@@ -18,9 +18,9 @@ public class MailConfig {
 	
 	@Bean
 	public JavaMailSender getMailSender() {
-		System.out.println("[MailConfig] getMailSender()");
+		System.out.println("[MailConfig(getMailSender())] ");
 		JavaMailSenderImpl mailSender=new JavaMailSenderImpl();
-		System.out.println("[MailConfig] user: "+emailBean.getUser()+"\nhost: "+emailBean.getHost());
+		System.out.println("[MailConfig(getMailSender())] user: "+emailBean.getUser()+", host: "+emailBean.getHost());
 		mailSender.setUsername(emailBean.getUser());
 		mailSender.setPassword(emailBean.getPass());
 		mailSender.setHost(emailBean.getHost());
@@ -30,7 +30,7 @@ public class MailConfig {
 	}
 
 	private Properties getMailProperties() {
-		System.out.println("[MailConfig] getMailProperties()");
+		System.out.println("[MailConfig(getMailProperties())]");
 		Properties properties = new Properties();
 		// 이메일 발송을 처리해줄 STMP 서버
 		properties.setProperty("mail.smtp.host", emailBean.getHost());
