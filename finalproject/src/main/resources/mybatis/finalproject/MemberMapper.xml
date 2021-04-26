@@ -24,7 +24,12 @@
    		select count(roomNum) as countREZ from reservation
    		where roomNum = #{roomNum} and
    		reservationDay = '2021-04-26' and
-   		useStartTime = '2021-04-24 ${useStartTime}:00:00'
+   		useStartTime = '2021-04-26 ${useStartTime}:00:00'
+   	</select>
+   	
+   	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
+   		select roomNum, reservationDay, useStartTime, useFinishTime from reservation
+   		where memNum = 1
    	</select>
    	
    	<insert id="roomReservationApply" parameterType="com.bit.fn.model.vo.ReservationVo">
@@ -36,4 +41,11 @@
    			'2021-04-26 ${useStartTime}:59:00', #{userCount}, 'mapper test'
    		)
    	</insert>
+   	
+   	<delete id="">
+   		delete from reservation from reservation
+   		where roomNum = #{roomNum} and
+   		reservationDay = '${reservationDay}' and
+   		useStartTime = '${reservationDay} ${useStartTime}:00:00'
+   	</delete>
 </mapper>

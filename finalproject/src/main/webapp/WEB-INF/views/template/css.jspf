@@ -191,10 +191,16 @@
     #REZbtn{
     	border: 1px solid;
     	position: relative;
-    	left: 45%;
+    	left: 38%;
     }
     
-    #REZapplyClick{
+    #checkbtn{
+    	border: 1px solid;
+    	position: relative;
+    	left: 43%;
+    }
+    
+    #REZapplyClick, applyCancleREZ{
     	background-color: rgba(187,240,237,1);
     	border-color: gray;
     }

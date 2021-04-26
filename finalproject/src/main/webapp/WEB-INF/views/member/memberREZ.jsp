@@ -10,9 +10,8 @@
 $(document).ready(function() {
 	 // 사용 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZbtn').click(function() {
-		// 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
-		roomInfo(); 
-		$("#myModal").modal();
+		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
+		$("#REZModal").modal();
 	});
 	
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
@@ -31,14 +30,7 @@ $(document).ready(function() {
 		$.ajax({
 			url : "/reservation/applySubmit",
 			type : "POST",
-			/* json Object 형태로 보내려면 서버로 전달할 데이터를 아래와 같이 사용해야 하는데
-				컨트롤러에서는 responsebody로 한꺼번에 받으면 된다.
-				아니면 컨트롤러에서 map 형태로 받아도 된다.
-				근데 map 형태로 받으면 명확하게 어떤 파라미터를 전달받는지 모른다는 단점이 있다.
-				어떤 파라미터를 전달받는지 모른다는게 무슨 말인지 ....
-			*/
-			data : { applyContent },
-//			contentType : "application/json; charset=UTF-8",
+			data : applyContent,
 			success : function(data) {
 				// 예약 신청 완료
 				if ( data.resultCode == 0 ) { 
@@ -51,9 +43,20 @@ $(document).ready(function() {
 					alert(data.resultMessage);
 				}
 			},
-			error : function() { alert("요청하신 회의실 예약 신청이 정상적으로 처리되지 않았습니다."); }
+			error : function() { 
+				alert("회의실 예약 신청 요청이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.");
+			}
 		});
 	});
+	
+	// 회의실 예약 확인 버튼을 눌렀을 때 발생하는 이벤트
+	$('#checkbtn').click(function() {
+		myREZ(); // 나의 예약 현황을 불러오는 함수
+		$("#cancleModal").modal();
+	});
+	
+	// 회의실 예약 취소 버튼을 눌렀을 때 발생하는 이벤트
+	$('#applyCancleREZ').click();
 });
 
 //예약 신청 모달에서 보여줄 회의실 정보
@@ -70,7 +73,23 @@ function roomInfo() {
 				$('#roomNum').append("<option value = "+data.roomData[no].roomNum+">"+data.roomData[no].roomNum+"</option>");
 			}
 		},
-		error : function() { alert("요청하신 작업이 정상적으로 처리되지 않았습니다."); }
+		error : function() { alert("예약이 가능한 회의실 정보를 불러오지 못했습니다. 다시 시도해주세요."); }
+	});
+}
+
+// 나의 회의실 예약 내역 정보
+function myREZ() {
+	$.ajax({
+		url : "/reservation/myReservationList",
+		type : "GET",
+		dataType : "json",
+		success : function(data) {
+			$('#myREZList *').remove(); 
+			for ( var no = 0; no < data.myList.length; no++ ){
+				$('#myREZList').append("<option> 회의실 : "+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
+			}
+		},
+		error : function () { alert("나의 회의실 예약 정보를 불러오지 못했습니다. 다시 시도해주세요."); }
 	});
 }
 
@@ -113,7 +132,10 @@ function roomInfo() {
 					</table>
 					<div>
 						<button id = "REZbtn" type="button" class="btn btn-default">사용예약</button>
-							<div class="modal fade" id = "myModal" tabindex="-1" role="dialog">
+						<button id = "checkbtn" type="button" class="btn btn-default">예약취소</button>
+						
+							<!-- 예약 신청 모달 -->
+							<div class="modal fade" id = "REZModal" tabindex="-1" role="dialog">
 							  <div class="modal-dialog" role="document">
 							    <div class="modal-content">
 							      <div class="modal-header">
@@ -158,11 +180,9 @@ function roomInfo() {
 										    <label class="col-sm-10 control-label">사용하실 인원을 선택해주세요</label>
 										    <div class="col-sm-12">
 											    <select id = "useCount" class="form-control">
-												  <option value = "1">1명</option>
-												  <option value = "2">2명</option>
-												  <option value = "3">3명</option>
-												  <option value = "4">4명</option>
-												  <option value = "5">5명</option>
+											    	<c:forEach var = "user" begin = "1" end = "5">
+													  <option value = "${user }">${user }명</option>
+											    	</c:forEach>
 												</select>
 											</div>
 										  </div>
@@ -173,6 +193,37 @@ function roomInfo() {
 							      <div class="modal-footer">
 							        <button type="button" class="btn btn-default" data-dismiss="modal">뒤로가기</button>
 							        <button type="button" class="btn btn-default" id = "REZapplyClick">예약 신청</button>
+							      </div>
+							    </div><!-- /.modal-content -->
+							  </div><!-- /.modal-dialog -->
+							</div><!-- /.modal -->
+							
+							<!-- 예약 취소 모달 -->
+							<div class="modal fade" id = "cancleModal" tabindex="-1" role="dialog">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h4 class="modal-title">회의실 예약 취소</h4>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							      </div>
+							      <!-- 회의실 취소 입력란 -->
+							      <div class="modal-body">
+
+							        	<form id = "cancleREZ" class="form-horizontal">
+										  <div class="form-group">
+										    <label class="col-sm-10 control-label">취소하실 예약 내역을 선택해주세요</label>
+										    <div class="col-sm-12">
+											    <select id = "myREZList" class="form-control">
+												</select>
+											</div>
+										  </div>
+										  
+										</form>
+							        
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-default" data-dismiss="modal">뒤로가기</button>
+							        <button type="button" class="btn btn-default" id = "applyCancleREZ">예약 취소</button>
 							      </div>
 							    </div><!-- /.modal-content -->
 							  </div><!-- /.modal-dialog -->

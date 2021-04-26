@@ -5,13 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cassandra.CassandraProperties.Request;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -72,7 +68,7 @@ public class MemberController {
 		Map<String, String> data = null;
 		List<ReservationVo> roomList = service.mettingRoomList();
 		
-		for(ReservationVo REZ : roomList) {
+		for( ReservationVo REZ : roomList ) {
 			data = new HashMap<String, String>();
 			data.put("roomNum", Integer.toString(REZ.getRoomNum()));
 			dataList.add(data);
@@ -85,10 +81,39 @@ public class MemberController {
 		return roomData;
 	}
 	
+	// 나의 회의실 예약 정보 전달
+	@RequestMapping(value = "/reservation/myReservationList", method = RequestMethod.GET)
+	@ResponseBody
+	/*
+	 * 뷰에서 ajax로 받아온 멤버 넘버를 인자로 전달해줘야 함
+	 * 아직 뷰에서 사용자의 정보를 어떻게 받아오는지 몰라서 처리 안됨
+	 */
+	public Map<String, Object> myREZList(){
+
+		List<Map<String, String>> REZList = new ArrayList<Map<String, String>>();
+		
+		Map<String, String> data = null;
+		List<ReservationVo> myREZ = service.myReservationList();
+		
+		for ( ReservationVo reservation : myREZ ) {
+			data = new HashMap<String, String>();
+			data.put("roomNum", Integer.toString(reservation.getRoomNum()));
+			data.put("reservationDay", reservation.getReservationDay());
+			data.put("useStartTime", reservation.getUseStartTime().substring(11, 13));
+			data.put("useFinishTime", reservation.getUseFinishTime());
+			REZList.add(data);
+		}
+		
+		Map<String, Object> myList = new HashMap<String, Object>();
+		myList.put("myList", REZList);
+		
+		return myList;
+	}
+	
 	// 멤버 파트 회의실 예약 신청
 	@RequestMapping(value = "/reservation/applySubmit", method = RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String, Object> roomReservaionApply(Model model, ReservationVo applyContent) {
+	public HashMap<String, Object> roomReservaionApply(ReservationVo applyContent) {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
@@ -98,16 +123,12 @@ public class MemberController {
 		String useStartTime = applyContent.getUseStartTime();
 		String useFinishTime = applyContent.getUseFinishTime();
 		int userCount = applyContent.getUserCount();
-		System.out.println("회의실 번호 : "+roomNum);
-		System.out.println("사용 시작 시간 : "+useStartTime);
-		System.out.println("사용 종료 시간 : "+useFinishTime);
-		System.out.println("사용 인원 : "+userCount);
 		
 		ReservationVo reservation = new ReservationVo();
-		reservation.setRoomNum(applyContent.getRoomNum());
-		reservation.setUseStartTime(applyContent.getUseStartTime());
-		reservation.setUseFinishTime(applyContent.getUseFinishTime());
-		reservation.setUserCount(applyContent.getUserCount());
+		reservation.setRoomNum(roomNum);
+		reservation.setUseStartTime(useStartTime);
+		reservation.setUseFinishTime(useFinishTime);
+		reservation.setUserCount(userCount);
 		
 		/*
 		 * 주요한 문제 : 파라미터로 사용 시간을 받아올 때 1시간 / 2시간 이렇게 받아올텐데
@@ -116,23 +137,21 @@ public class MemberController {
 		 * 시작 시간에서 파라미터로 받아온 사용 시간을 어떻게 더해서 쿼리로 날릴지 확인해야 하기 때문
 		 */
 		
-		// 제대로 isert가 되는지(쿼리 정상 수행 여부 / 메소드 정상 수행 여부 / ajax 수행 여부) 확인 후 주석 풀어서 조회 메소드 수행되는지 확인
-//		int checkReservation = service.checkReservaion(roomNum, useStartTime, useFinishTime);
-//		
-//		if ( checkReservation > 0 ) { // 여기서 조회한 값이 있는 것을 먼저 처리하는 것이 나을지? 아니면 지금대로 해도 될지?
-//			
-//			String resultMessage = "이미 예약된 내용입니다. 예약 현황을 확인 후 다시 신청해주세요.";
-//			String resultCode = "-1";
-//			
-//			result.put("resultMessage", resultMessage);
-//			result.put("resultCode",resultCode);
-//			
-//			return result;
-//			
-//		} else {
+		int checkReservation = service.checkReservaion(roomNum, useStartTime, useFinishTime);
+		
+		if ( checkReservation > 0 ) {
+			
+			String resultMessage = "이미 예약된 내용입니다. 예약 현황을 확인 후 다시 신청해주세요.";
+			String resultCode = "-1";
+			
+			result.put("resultMessage", resultMessage);
+			result.put("resultCode",resultCode);
+			
+			return result;
+			
+		} else {
 		
 			int insertReservaion = service.roomReservationApply(reservation);
-			System.out.println("신청 쿼리의 수행 결과 : "+insertReservaion);
 			
 			if ( insertReservaion > 0 ) {
 				String resultMessage = "예약 신청이 완료되었습니다. 결제창으로 이동하시겠습니까?";
@@ -152,7 +171,19 @@ public class MemberController {
 				
 				return result;
 			}
-//		}
+		}
+	}
+	
+	// 회의실 예약 취소
+	@RequestMapping()
+	public String cancleReservation(Model model, ReservationVo cancleContent) {
+		
+		// 삭제할 내용 파라미터로 받아서 예약 취소 메소드 실행시켜야 함
+		
+		List<ReservationVo> roomList = service.mettingRoomList();
+		model.addAttribute("roomList", roomList);
+		
+		return "memberREZ";
 	}
 	
 	// 멤버 파트 내 스케쥴 관리 인트로 페이지 ... 구현할 수 있을까?

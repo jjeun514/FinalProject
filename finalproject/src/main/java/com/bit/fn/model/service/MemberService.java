@@ -36,4 +36,12 @@ public class MemberService {
 	public int roomReservationApply(ReservationVo reservation) {
 		return memberMapper.roomReservationApply(reservation);
 	}
+	
+	public List<ReservationVo> myReservationList() {
+		return memberMapper.myReservationList();
+	}
+	
+	public int cancleReservation(int roomNum, String useStartTime, String reservationDay) {
+		return memberMapper.cancleReservation(roomNum, useStartTime, reservationDay);
+	}
 }
