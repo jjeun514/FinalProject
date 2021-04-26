@@ -19,7 +19,7 @@ import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.service.MettingRoomFacilitiesService;
 import com.bit.fn.model.service.MettingRoomService;
 import com.bit.fn.model.service.OfficefacilitiesService;
-import com.bit.fn.model.service.OfiiceService;
+import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.ReservationService;
 import com.bit.fn.model.service.join.BranchAndAdminService;
 
@@ -58,7 +58,7 @@ class FinalprojectApplicationTests {
 	OfficefacilitiesService officefacilitiesService;
 	
 	@Autowired
-	OfiiceService ofiiceService; 
+	OfficeService ofiiceService; 
 	
 	@Autowired
 	ReservationService reservationService;

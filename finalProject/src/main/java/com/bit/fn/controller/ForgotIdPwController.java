@@ -78,10 +78,6 @@ public class ForgotIdPwController {
 			try {
 				JSONObject jobj=new JSONObject();
 				PrintWriter out;
-//				resp.setContentType("text/html;charset=UTF-8"); 
-//				jobj.put("checkInfo", checkInfo);
-//				out = resp.getWriter();
-//				out.print(jobj.toString());
 				if(checkInfo!=null) {
 					System.out.println("[ForgotIdPwController(forgotPw())] member정보: "+checkInfo);
 					code=mailController.forgotPw(id);

@@ -35,18 +35,10 @@
 			font-size: 20px;
 		}
 		
-	/* navbar */
-		.navbar-nav{
-			margin: 0px auto;
-			text-align: center;
-			font-size: 25px;
-			min-width: 400px;
-		}
-		
 	/* 배너 */
 		.carousel-item{
 				height: 700px;
-				top: -400px;
+				margin-top: -350px;
 		}
 		    
 	/* 마이페이지 */
@@ -132,7 +124,6 @@
 	/* header */
 		header{
 			background-color: black;
-			height: 15%;
 			min-height: 150px;
 		}
 		#topHeader{
@@ -143,6 +134,13 @@
 		span>a, span>a:hover, span>a:active, span>a:visited, span>a:link{
 			color: white;
 			text-decoration: none;
+		}
+	/* navbar */
+		.navbar-nav{
+			margin: 0px auto;
+			text-align: center;
+			font-size: 25px;
+			min-width: 400px;
 		}
 
 	/* body */
@@ -219,6 +217,52 @@
 			color: white;
 		}
 
+	/* 입주문의 */
+		#process{
+			margin: 50px auto;
+			text-align: center;
+			width: 100%;
+		}
+		.priceInfo{
+			margin: 0 auto;
+			text-align: center;
+			width: 80%;
+		}
+		#priceData a{
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+		#priceData>td{
+			padding: 0px;
+		}
+		#priceData:hover{
+			background-color: #eaf9f1;
+		}
+		#priceData>td>a:hover, #priceData>td>a:active, #priceData>td>a:visited, #priceData>td>a:link{
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		h1{
+			margin: 0 auto;
+			text-align: center;
+			padding-top: 30px;
+			margin-bottom: 30px;
+		}
+		#application{
+			margin: 0 auto;
+			text-align: center;
+			width: 80%;
+			background-color: lightyellow;
+			margin-top: 50px;
+		}
+		#formContents{
+			margin: 0 auto;
+			text-align: center;
+			width: 90%;
+		}
+
 	/*층별 이미지*/
 		.t1 {
 			display: flex;
@@ -226,7 +270,6 @@
 			padding: 4% 5%;
 			box-sizing: border-box;
 			height: 80vh;
-			margin-bottom: 400px;
 		}
 		.box_t1 {
 			flex: 1;
@@ -307,7 +350,6 @@
 		    -webkit-animation: mover 2s infinite  alternate;
 		    animation: mover 1s infinite  alternate;
 		}
-		/* 반응형 */
 		@-webkit-keyframes mover {
 		    0% { transform: translateY(0); }
 		    100% { transform: translateY(-20px); }

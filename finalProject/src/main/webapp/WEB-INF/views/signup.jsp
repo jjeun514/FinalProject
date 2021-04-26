@@ -167,4 +167,5 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
+</div>
 <%@ include file="template/footer.jspf" %>

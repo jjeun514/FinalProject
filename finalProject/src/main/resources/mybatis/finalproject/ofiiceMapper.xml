@@ -5,4 +5,7 @@
     <select id="selectAll" resultType="com.bit.fn.model.vo.OfficeVo">
     	 SELECT * from office
    	</select>
+    <select id="selectPriceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
+    	 select officeNum, floor, acreages, rent, max, photo, occupancy from office order by floor
+   	</select>
 </mapper>

@@ -12,7 +12,7 @@ import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.MemberinfoService;
 
 @Controller
-public class ViewTestController {
+public class ViewController {
 	@Autowired
 	AdminAccountService adminaccountservice;
 	
@@ -47,11 +47,6 @@ public class ViewTestController {
 		return "bbs";
 	} 
 	
-	@RequestMapping("/detail")
-	public String detail() {
-		return "detail";
-	}
-	
 	@RequestMapping("/mypage")
 	public String myPage(Principal  principal,Model model) {
 		//아이디
@@ -85,10 +80,5 @@ public class ViewTestController {
 			model.addAttribute("member",memberinfoService.selectOne(id));
 		}
 		return "myPage";
-	}
-	
-	@RequestMapping("/test")
-	public String sample() {
-		return "test";
 	}
 }

@@ -3,11 +3,11 @@
 <%@ include file="header.jspf" %>
 <%/*header & navbar 동일한 경우, 최상단에 navbar.jspf include 하면 됨
 	header만 가져오고 navbar는 변경할 경우, header.jspf include 하면 됨*/%>
-<nav class=" navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar-expand-lg navbar-dark bg-dark">
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="#">입주상담신청<span class="sr-only"></span></a></li>
-			<li class="nav-item"><a class="nav-link" href="#">문의게시판</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">9'o Clock | <span class="sr-only"></span></a></li>
+			<li class="nav-item"><a class="nav-link" href="priceInfo">입주문의 | </a></li>
 			<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           		지점</a>
         		<div class="dropdown-menu" aria-labelledby="navbarDropdown">

@@ -6,10 +6,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<%@ include file="css.jspf" %>
 <meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<%@ include file="css.jspf" %>
 </head>
 <body>
 <header>
