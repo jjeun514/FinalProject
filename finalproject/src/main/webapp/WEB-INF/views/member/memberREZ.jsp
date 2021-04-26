@@ -8,7 +8,7 @@
 <script>
 
 $(document).ready(function() {
-	 // 사용 신청 버튼을 눌렀을 때 발생하는 이벤트
+	 // 사용 예약 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZbtn').click(function() {
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
 		$("#REZModal").modal();
@@ -17,7 +17,7 @@ $(document).ready(function() {
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZapplyClick').click(function() { 
 		console.log("예약 신청 버튼");
-	
+
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
 		// 여기서 예약 날짜와 예약자도 전달해줘야 함
 		var applyContent = {
@@ -34,7 +34,7 @@ $(document).ready(function() {
 			success : function(data) {
 				// 예약 신청 완료
 				if ( data.resultCode == 0 ) { 
-					alert(data.resultMessage);
+					alert(data.resultMessage); // 확인 버튼을 누르면 결제창으로 이동.
 				// 예약 신청 실패
 				} else if ( data.resultCode == 1 ) { 
 					alert(data.resultMessage);
@@ -56,7 +56,29 @@ $(document).ready(function() {
 	});
 	
 	// 회의실 예약 취소 버튼을 눌렀을 때 발생하는 이벤트
-	$('#applyCancleREZ').click();
+	$('#applyCancleREZ').click(function() {
+		
+		var cancleContent = {
+			myREZ : $('#myREZList').val()
+		};
+		
+		$.ajax({
+			url : "/reservation/cancleReservation",
+			type : "POST",
+			data : cancleContent,
+			dataType : "json",
+			success : function(data) { 
+				// 예약 취소 성공
+				if ( data.resultCode == 1 ) { 
+					alert(data.resultMessage);
+				// 예약 취소 실패
+				} else if ( data.resultCode == 0 ) { 
+					alert(data.resultMessage);
+				}
+			},
+			error : function() { alert("회의실 취소 요청이 정상적으로 수행되지 않았습니다. 다시 시도해주세요."); }
+		});
+	});
 });
 
 //예약 신청 모달에서 보여줄 회의실 정보
@@ -69,6 +91,7 @@ function roomInfo() {
 		success : function(data) { 
 			// 이전에 append 되었던 옵션 삭제
 			$('#roomNum *').remove(); 
+			$('#roomNum').append("<option>선택해주세요</option>");
 			for (var no = 0; no < data.roomData.length; no++ ) {
 				$('#roomNum').append("<option value = "+data.roomData[no].roomNum+">"+data.roomData[no].roomNum+"</option>");
 			}
@@ -86,7 +109,7 @@ function myREZ() {
 		success : function(data) {
 			$('#myREZList *').remove(); 
 			for ( var no = 0; no < data.myList.length; no++ ){
-				$('#myREZList').append("<option> 회의실 : "+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
+				$('#myREZList').append("<option value = "+data.myList[no].roomNum+"/"+data.myList[no].reservationDay+"/"+data.myList[no].useStartTime+">"+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
 			}
 		},
 		error : function () { alert("나의 회의실 예약 정보를 불러오지 못했습니다. 다시 시도해주세요."); }
@@ -158,6 +181,7 @@ function myREZ() {
 										    <label class="col-sm-10 control-label">예약하실 시작 시간을 선택해주세요</label>
 										    <div class="col-sm-12">
 											    <select id = "useStartTime" class="form-control">
+											    	<option>선택해주세요</option>
 												    <c:forEach var = "t" begin = "09" end = "22">
 													  <option value = "${t }">${t }시</option>
 													</c:forEach>
@@ -169,6 +193,7 @@ function myREZ() {
 										    <label class="col-sm-10 control-label">사용하실 시간을 선택해주세요</label>
 										    <div class="col-sm-12">
 											    <select id = "useFinishTime" class="form-control">
+											      <option>선택해주세요</option>
 												  <option value = "1">1시간</option>
 												  <option value = "2">2시간</option>
 												  <!-- 여기서 쿼리를 고려해서 value를 어떻게 줄 지 생각해봐야 함 -->
@@ -180,6 +205,7 @@ function myREZ() {
 										    <label class="col-sm-10 control-label">사용하실 인원을 선택해주세요</label>
 										    <div class="col-sm-12">
 											    <select id = "useCount" class="form-control">
+											    <option>선택해주세요</option>
 											    	<c:forEach var = "user" begin = "1" end = "5">
 													  <option value = "${user }">${user }명</option>
 											    	</c:forEach>

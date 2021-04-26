@@ -29,7 +29,8 @@
    	
    	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
    		select roomNum, reservationDay, useStartTime, useFinishTime from reservation
-   		where memNum = 1
+   		where memNum = 1 and
+   		reservationDay >= '2021-04-26'
    	</select>
    	
    	<insert id="roomReservationApply" parameterType="com.bit.fn.model.vo.ReservationVo">
@@ -42,8 +43,8 @@
    		)
    	</insert>
    	
-   	<delete id="">
-   		delete from reservation from reservation
+   	<delete id="cancleReservation">
+   		delete from reservation
    		where roomNum = #{roomNum} and
    		reservationDay = '${reservationDay}' and
    		useStartTime = '${reservationDay} ${useStartTime}:00:00'

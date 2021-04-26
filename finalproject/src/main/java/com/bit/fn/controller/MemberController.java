@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,6 +102,7 @@ public class MemberController {
 			data.put("roomNum", Integer.toString(reservation.getRoomNum()));
 			data.put("reservationDay", reservation.getReservationDay());
 			data.put("useStartTime", reservation.getUseStartTime().substring(11, 13));
+			data.put("originStartTime", reservation.getUseStartTime());
 			data.put("useFinishTime", reservation.getUseFinishTime());
 			REZList.add(data);
 		}
@@ -175,15 +178,39 @@ public class MemberController {
 	}
 	
 	// 회의실 예약 취소
-	@RequestMapping()
-	public String cancleReservation(Model model, ReservationVo cancleContent) {
+	@RequestMapping(value = "/reservation/cancleReservation", method = RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> cancleReservation(Model model, HttpServletRequest request) {
 		
-		// 삭제할 내용 파라미터로 받아서 예약 취소 메소드 실행시켜야 함
+		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		List<ReservationVo> roomList = service.mettingRoomList();
-		model.addAttribute("roomList", roomList);
+		String cancleContent = request.getParameter("myREZ");
 		
-		return "memberREZ";
+		String[] cancle = cancleContent.split("/");
+		int roomNum = Integer.parseInt(cancle[0]);
+		String reservationDay = cancle[1];
+		String useStartTime = cancle[2];
+		
+		int cancleResult = service.cancleReservation(roomNum, useStartTime, reservationDay);
+		
+		if ( cancleResult == 1 ) {
+			String resultMessage = "예약이 정상적으로 취소되었습니다.";
+			String resultCode = "1";
+			
+			result.put("resultMessage", resultMessage);
+			result.put("resultCode", resultCode);
+			
+			return result;
+		} else {
+			String resultMessage = "예약이 정상적으로 취소되지 않았습니다. 다시 시도해주세요.";
+			String resultCode = "0";
+			
+			result.put("resultMessage", resultMessage);
+			result.put("resultCode", resultCode);
+			
+			return result;
+		}
+		
 	}
 	
 	// 멤버 파트 내 스케쥴 관리 인트로 페이지 ... 구현할 수 있을까?
