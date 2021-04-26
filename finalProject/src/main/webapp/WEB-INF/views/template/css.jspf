@@ -247,20 +247,40 @@
 		h1{
 			margin: 0 auto;
 			text-align: center;
-			padding-top: 30px;
-			margin-bottom: 30px;
+			padding-top: 50px;
+			margin-bottom: 50px;
 		}
 		#application{
 			margin: 0 auto;
 			text-align: center;
 			width: 80%;
-			background-color: lightyellow;
+			background-color: #eaf9f1;
 			margin-top: 50px;
+			padding-bottom: 50px;
+			border-radius: 25px 25px 25px 25px;
+		}
+		#required{
+			margin-right: 0px auto;
+			text-align: right;
+			padding-right: 5%;
+			color: red;
+			padding-bottom: 30px;
+		}
+		#submitApplication{
+			margin-top:30px;
+			background-color: #00893f;
+			border: 0;
+			width: 100%;
+			height: 50px;
+			font-size: 20px;
 		}
 		#formContents{
 			margin: 0 auto;
 			text-align: center;
 			width: 90%;
+		}
+		#yourMessage{
+			height: 200px;
 		}
 
 	/*층별 이미지*/
@@ -433,7 +453,6 @@
 		}
 		
 		#primaryModal, #dangerModal{
-			position: absolute;
 			width: 50%;
 			height: 50%;
 			margin: auto;
