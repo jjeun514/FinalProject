@@ -5,12 +5,13 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.fn.model.service.AdminAccountService;
 import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.MemberinfoService;
+import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
+import com.bit.fn.model.service.join.MemberInfoAndCompanyInfoService;
 
 @Controller
 public class ViewTestController {
@@ -23,6 +24,11 @@ public class ViewTestController {
 	@Autowired
 	MemberinfoService memberinfoService;
 	
+	@Autowired
+	MemberInfoAndCompanyInfoService memberInfoAndCompanyInfoService;
+	
+	@Autowired
+	MasteraccountAndCompanyInfoService masteraccountAndCompanyInfoService;
 	
 	@RequestMapping("/index")
 	public String main() {
@@ -64,14 +70,17 @@ public class ViewTestController {
 			model.addAttribute("admin",adminaccountservice.selectOne(id));
 		}else if(master != -1) {
 			System.out.println("접속하신 계정은 마스터입니다.");
-			System.out.println(masterAccountService.selectOne(id));
-			model.addAttribute("master",masterAccountService.selectOne(id));
+			//System.out.println(masterAccountService.selectOne(id));
+			masteraccountAndCompanyInfoService.masterOne(id).getMasteraccount().getId();
+			model.addAttribute("master",masteraccountAndCompanyInfoService.masterOne(id));
 		}else if(member != -1) {
 			System.out.println("접속하신 계정은 멤버입니다.");
-			System.out.println(memberinfoService.selectOne(id));
-			model.addAttribute("member",memberinfoService.selectOne(id));
+			System.out.println(memberInfoAndCompanyInfoService.memberOne(id).getMemberInfo().getMemName());
+			model.addAttribute("member",memberInfoAndCompanyInfoService.memberOne(id));
+			
+		}else {
+			return "redirect:/index";
 		}
-		
 		
 		return "myPage";
 	}

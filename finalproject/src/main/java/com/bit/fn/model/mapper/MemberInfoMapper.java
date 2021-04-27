@@ -14,5 +14,7 @@ import com.bit.fn.model.vo.MemberInfoVo;
 public interface MemberInfoMapper {
 	public List<MemberInfoVo> selectAll();
 	public MemberInfoVo selectOne(String id);
+	public int idCount(String id);
+	public int nicknameCount(String memNickName);
 	public int insertOne(@Param("memName") String memName,@Param("memNickName") String memNickName,@Param("id") String id,@Param("comCode") int comCode,@Param("dept") String dept,@Param("memPhone") String memPhone );
 }

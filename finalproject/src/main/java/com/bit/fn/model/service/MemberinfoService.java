@@ -20,6 +20,15 @@ public class MemberinfoService {
 	public MemberInfoVo selectOne(String id) {
 		return memberInfoMapper.selectOne(id);
 	}
+	
+	public int idCount(String id) {
+		return memberInfoMapper.idCount(id);
+	}
+	
+	public int nicknameCount(String memNickName) {
+		return memberInfoMapper.nicknameCount(memNickName);
+	}
+	
 	public int insertOne(String memName, String memNickName, String id,int comCode,String dept, String memPhone ) {
 		return memberInfoMapper.insertOne(memName, memNickName, id, comCode, dept, memPhone);
 	}

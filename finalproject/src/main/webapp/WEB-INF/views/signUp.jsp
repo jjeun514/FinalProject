@@ -229,6 +229,9 @@ $(document).on('click','#authBtn',function() {
 				//요청 후 회원가입 시 값 체크를 위해 아이디 값 저장.
 			 	var user=$(".username").val();
 				
+				//인증버튼 활성화
+			 	$(".btncheck").prop("disabled", false);
+				
 				$(".btncheck").on("click", function(){
 					codeVerification=false;
 					// 인증번호
@@ -245,11 +248,51 @@ $(document).on('click','#authBtn',function() {
 							//회원가입 버튼 활성화
 							$(".joinForm").append($(".btnRegister"));
 							
+							//닉네임 중복 검사 버튼 활성화
+							$(".nickNameCheck").prop("disabled", false);
+							
+							//비동기 통신 (닉네임 중복검사)
+							var check=0;
+							$(".nickNameCheck").click(function(){
+								var memNickName = $('.memNickName').val();
+								console.log(memNickName);
+								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
+									alert("공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요");
+								}else{
+									$.ajax({
+										url: "/nickNameCheck",
+										type : "POST",
+										data: {memNickName},
+										contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+										dataType: "text",
+										success: function(data){
+													console.log("data",data);
+													if(data=="Available"){
+														alert("사용가능한 닉네임입니다.");
+														//닉네임을 바꾸지 못하게 readonly
+														$(".memNickName").prop("readonly","readonly");
+														check=1;
+													}else{
+														alert("사용중인 닉네임입니다.");
+													}
+												 },
+										error: function(error){
+											console.log(error);
+											console.log("ajax 에러");
+										}
+										
+									});
+								}
+							});
+							
 							//회원가입 버튼 클릭 시 값 체크 후 회원가입 완료
 							$(".btnRegister").click(function(){
-								
+								//닉네임 중복 검사 유무 및 중복 여부 확인
+								if(check!=1){
+									$('.problem').html("닉네임 중복 검사를 완료하시기 바랍니다.");
+									return false;
 								//이메일 인증 시 아이디 값과 현재 값이 다른지 체크 
-								if(!(user==$(".username").val())){
+								}else if(!(user==$(".username").val())){
 									$('.problem').html("강제 변경된 아이디는 허용하지 않습니다.");
 									return false;
 								//패스워드 값 체크
@@ -344,35 +387,42 @@ $(document).on('click','#authBtn',function() {
 
 $(function(){
 	
-	//아이디(이메일)중복검사 하기 전 이메일 인증번호 전송버튼 비활성화
+	//아이디(이메일) 중복 검사 하기 전 이메일 인증번호 전송버튼 및 인증확인 버튼 닉네임 중복검사 버튼 비활성화
 	$("#authBtn").prop('disabled',"true");
+	$(".nickNameCheck").prop('disabled',"true");
+	$(".btncheck").prop('disabled',"true");
+	
 	
 	//비동기 통신 (아이디 중복검사)
 	$(".userCheck").click(function(){
-		var username = $(".username").val();
-		$.ajax({
-			url: "/usercheck",
-			type: "POST",
-			data: {username},
-			contentType : "application/json; charset=utf-8",
-			success: function(data){
-						console.log(data);
-						if(data=="notNull"){
-							alert("사용가능한 아이디입니다.");
-							//인증버튼 활성화
-							$("#authBtn").removeProp('disabled');
-							//인증요청을 하였을 때 아이디를 바꾸지 못하게 readonly
-							$(".username").prop("readonly","readonly");
-						}else{
-							alert("사용중인 아이디입니다.");
-						}
-					 },
-			error: function(){
-				console.log("ajax 에러");
-				$('#error').modal('show');
-			}
-			
-		});
+		var username = $(".username").val().replace(/\s/gi,"");
+		console.log(username);
+		if(username==""||!(username.endsWith("@gmail.com"))){
+			alert("공백 및 지메일 아이디를 확인해주세요");
+		}else{
+			$.ajax({
+				url: "/usercheck",
+				type : "POST",
+				data: {username},
+				contentType : "application/json; charset=utf-8",
+				success: function(data){
+							console.log("data",data);
+							if(data=="Available"){
+								alert("사용가능한 아이디입니다.");
+								//인증버튼 활성화
+								$("#authBtn").prop("disabled", false);
+								//인증요청을 하였을 때 아이디를 바꾸지 못하게 readonly
+								$(".username").prop("readonly","readonly");
+							}else{
+								alert("사용중인 아이디입니다.");
+							}
+						 },
+				error: function(error){
+					console.log("ajax 에러");
+				}
+				
+			});
+		}
 	});
 	
 	
@@ -514,6 +564,7 @@ $(function(){
 									 <input type="submit" class="btn" id="authBtn" value="인증" data-toggle="modal" data-target="#modal"/>
 									 <input type="submit" class="btncheck"  value="인증확인"/>
 									 <input type="submit" class="userCheck"  value="아이디중복검증"/>
+									 <input type="submit" class="nickNameCheck"  value="닉네임중복검증"/>
 									 
 									 <!-- 문제사항을 작성하는 란 -->
 									 <div class="form-group problem">

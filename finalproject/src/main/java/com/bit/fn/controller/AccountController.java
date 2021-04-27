@@ -2,21 +2,20 @@ package com.bit.fn.controller;
 
 import java.security.Principal;
 
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bit.fn.model.service.AdminAccountService;
 import com.bit.fn.model.service.MemberinfoService;
@@ -31,7 +30,10 @@ public class AccountController {
 	AdminAccountService adminAccountService;
 	
 	@Autowired
-	private AccountService accountService;
+	private AccountService s_accountService;
+	
+	@Autowired
+	private com.bit.fn.model.service.UserAccountService u_accountService;
 	
 	@Autowired
 	private MemberinfoService memberinfoService;
@@ -77,7 +79,7 @@ public class AccountController {
 	@PostMapping("/resister")
 	public String resister(Account account) {
 		try {
-		accountService.memverSave(account);
+			s_accountService.memverSave(account);
 		}catch (Exception e) {
 			return "redirect:/jungbok";
 		}
@@ -97,7 +99,7 @@ public class AccountController {
 		
 		try {
 		memberinfoService.insertOne(memName, memNickName, id, comCode, dept, memPhone);
-		accountService.memverSave(account);
+		s_accountService.memverSave(account);
 		
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -129,20 +131,86 @@ public class AccountController {
 		return "test/info";
 	}
 	
-	@PostMapping("usercheck")
+	@RequestMapping(path="/usercheck", method=RequestMethod.POST)
+	@ResponseBody
 	public String usercheck(@RequestBody String username ) {
 		
 		String id=username.replace("%40", "@").split("username=")[1];
 		System.out.println(id);
-		id=memberinfoService.selectOne(id).getId();
-		System.out.println("바뀐후="+id);
-		if(id != null) {
-			id="notNull";
+		int count=memberinfoService.idCount(id);
+		System.out.println("바뀐후="+count);
+		   
+		if(count != 0) {
+			System.out.println("Already in use");
+			 id="Already in use";
 		}else {
-			id="null";
+			System.out.println("Available");
+			 id="Available";
 		}
-		System.out.println(id);
 		return id;
+	}
+	
+	@RequestMapping(path="/nickNameCheck", method=RequestMethod.POST, produces = "application/x-www-form-urlencoded; charset=UTF-8")
+	@ResponseBody
+	public String nickNameCheck(String memNickName ) {
+		
+		System.out.println("---------------받은 닉네임 = "+memNickName);
+		int count=memberinfoService.nicknameCount(memNickName);
+		System.out.println("바뀐후="+count);
+		   
+		if(count != 0) {
+			System.out.println("Already in use");
+			memNickName="Already in use";
+			
+		}else {
+			System.out.println("Available");
+			memNickName="Available";
+		}
+		return memNickName;
+	}
+	
+	@RequestMapping(path="/checkPw", method=RequestMethod.POST, produces = "application/x-www-form-urlencoded; charset=UTF-8")
+	@ResponseBody
+	public String checkPw(String pw, Principal principal) {
+		
+		String username = principal.getName();
+		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■유저네임= "+username);
+		
+		String dbpassword=u_accountService.selectOne(username).getPassword();
+		
+		System.out.println(dbpassword);
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		String result = null;		
+		
+		if(encoder.matches(pw, dbpassword)) {
+		 result = "correct";	
+		}else {
+		 result = "incorrect";
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping(path="/updatePw", method=RequestMethod.POST, produces = "application/x-www-form-urlencoded; charset=UTF-8")
+	@ResponseBody
+	public String updatePw(String newCheckPw, Principal principal) {
+		
+		String username = principal.getName();
+		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■유저네임= "+username);
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		newCheckPw=encoder.encode(newCheckPw);
+		
+		int result=u_accountService.updatePw(newCheckPw, username);
+		System.out.println("결과값="+result);
+		String send="failure";
+		if(result == 1) {
+			send="success";
+		}
+		return send;
 	}
 	
 	

@@ -26,11 +26,11 @@ public class MailController {
 	String to;
 
 	// 회원 가입 페이지
-	@RequestMapping("/signup")
+	@RequestMapping("/signUp")
 	String signUp(Model model) {
 		System.out.println("[MailController] signup()");
 		model.addAttribute("company",companyinfoService.selectAll());
-		return "signup";
+		return "signUp";
 	}
 	
 	// 이메일 인증 코드가 발송되는 부분

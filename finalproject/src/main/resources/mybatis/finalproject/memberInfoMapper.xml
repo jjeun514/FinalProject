@@ -16,4 +16,21 @@
    	<insert id="insertOne" parameterType="map">
    		Insert into memberinfo (memName,memNickName,id,comCode,dept,memPhone,signdate,admission) values(#{memName},#{memNickName},#{id},#{comCode},#{dept},#{memPhone},now(),0)
    	</insert>
+   	<select id="idCount" resultType="int">
+    	 SELECT 
+    	 	count(id)
+    	 from 
+    	 	memberinfo
+    	 where
+    	 id=#{value}
+   	</select>
+   	 	<select id="nicknameCount" resultType="int">
+    	 SELECT 
+    	 	count(memNickName)
+    	 from 
+    	 	memberinfo
+    	 where
+    	 memNickName=#{value}
+   	</select>
+   	
 </mapper>
