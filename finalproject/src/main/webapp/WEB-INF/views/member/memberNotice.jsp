@@ -71,7 +71,7 @@
 						</div>
 					</form>
 				</div>
-				<div class="col-md-9">
+				<div class="col-md-12">
 					<table class="table table-list-search">
 						<thead>
 							<tr>

@@ -25,8 +25,12 @@ public class MemberService {
 		return memberMapper.noticeList();
 	}
 	
-	public List<ReservationVo> mettingRoomList(){
-		return memberMapper.mettingRoomList();
+	public List<NoticeVo> selectNoticeList(){
+		return memberMapper.selectNoticeList();
+	}
+	
+	public List<ReservationVo> meetingRoomList(){
+		return memberMapper.meetingRoomList();
 	}
 	
 	public int checkReservaion(int roomNum, String useStartTime, String reservationDay) {

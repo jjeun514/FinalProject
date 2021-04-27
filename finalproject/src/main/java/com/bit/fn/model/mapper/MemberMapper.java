@@ -18,9 +18,12 @@ public interface MemberMapper {
 	
 	// 멤버 페이지 공지사항 리스트
 	public List<NoticeVo> noticeList();
+	
+	// 멤버 페이지 게시판 내 공지사항 리스트
+	public List<NoticeVo> selectNoticeList();
 
 	// 회의실 예약 현황 리스트
-	public List<ReservationVo> mettingRoomList();
+	public List<ReservationVo> meetingRoomList();
 	
 	// 회의실 전체 예약 현황 조회
 	public int checkReservaion(int roomNum, String useStartTime, String reservationDay);

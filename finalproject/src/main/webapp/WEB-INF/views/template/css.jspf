@@ -178,7 +178,30 @@
         box-sizing: border-box;
         padding:50px;
     }
+
+	#notice{
+		background-color: rgba(0,0,0,0.1);
+		font-weight: bold;
+	}
+	
+	#bbsTable{
+		text-align: center;
+	}
+	
+	#writebtn{
+		border: 1px solid;
+    	position: relative;
+		left: 60%;
+		margin : 10px;
+		height : 40px;
+		padding: 5px;
+	}
+
+/*게시판*/
+
     
+/*회의실*/
+
     #roomCell{
     	text-align:center;
     	background-color: rgba(187,240,237,1);
@@ -204,7 +227,15 @@
     	background-color: rgba(187,240,237,1);
     	border-color: gray;
     }
-
-/*게시판*/
+    
+    #reservationDay{
+    	margin: 5px auto;
+    	text-align: center;
+    	width: 150px;
+    	height : 30px;
+    	position: relative;
+    	left: 150%;
+    }
+/*회의실*/
 	
 </style>

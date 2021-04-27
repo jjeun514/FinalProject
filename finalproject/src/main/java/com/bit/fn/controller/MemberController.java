@@ -35,7 +35,9 @@ public class MemberController {
 	public String bbs(Model model) {
 		
 		List<BoardVo> boardList = service.memberBoardList();
+		List<NoticeVo> selectNotice = service.selectNoticeList();
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("NoticeList", selectNotice);
 		
 		return "memberBoard";
 	}
@@ -54,7 +56,7 @@ public class MemberController {
 	@RequestMapping("/reservation")
 	public String roomREZ(Model model) {
 		
-		List<ReservationVo> roomList = service.mettingRoomList();
+		List<ReservationVo> roomList = service.meetingRoomList();
 		model.addAttribute("roomList", roomList);
 		
 		return "memberREZ";
@@ -68,7 +70,7 @@ public class MemberController {
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		
 		Map<String, String> data = null;
-		List<ReservationVo> roomList = service.mettingRoomList();
+		List<ReservationVo> roomList = service.meetingRoomList();
 		
 		for( ReservationVo REZ : roomList ) {
 			data = new HashMap<String, String>();
@@ -125,12 +127,15 @@ public class MemberController {
 		int roomNum = applyContent.getRoomNum();
 		String useStartTime = applyContent.getUseStartTime();
 		String useFinishTime = applyContent.getUseFinishTime();
+		String reservationDay = applyContent.getReservationDay();
 		int userCount = applyContent.getUserCount();
+
 		
 		ReservationVo reservation = new ReservationVo();
 		reservation.setRoomNum(roomNum);
 		reservation.setUseStartTime(useStartTime);
 		reservation.setUseFinishTime(useFinishTime);
+		reservation.setReservationDay(reservationDay);
 		reservation.setUserCount(userCount);
 		
 		/*
@@ -140,7 +145,7 @@ public class MemberController {
 		 * 시작 시간에서 파라미터로 받아온 사용 시간을 어떻게 더해서 쿼리로 날릴지 확인해야 하기 때문
 		 */
 		
-		int checkReservation = service.checkReservaion(roomNum, useStartTime, useFinishTime);
+		int checkReservation = service.checkReservaion(roomNum, useStartTime, reservationDay);
 		
 		if ( checkReservation > 0 ) {
 			

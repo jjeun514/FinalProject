@@ -7,6 +7,7 @@
 		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
 		order by date desc, num
+		limit 7
    	</select>
    	
 	<select id="noticeList" resultType="com.bit.fn.model.vo.NoticeVo">
@@ -16,15 +17,23 @@
 		order by num desc
    	</select>
    	
-   	<select id="mettingRoomList" resultType="com.bit.fn.model.vo.ReservationVo">
-		select roomNum from mettingRoom where branchCode = 1
+   	<select id="selectNoticeList" resultType="com.bit.fn.model.vo.NoticeVo">
+   		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
+   		from notice noti left outer join adminAccount adm
+   		on noti.adminNum=adm.adminNum
+   		where showCheck = 1
+   		limit 3
+   	</select>
+   	
+   	<select id="meetingRoomList" resultType="com.bit.fn.model.vo.ReservationVo">
+		select roomNum from meetingRoom where branchCode = 1
    	</select>
    	
    	<select id="checkReservaion" resultType="int">
    		select count(roomNum) as countREZ from reservation
    		where roomNum = #{roomNum} and
-   		reservationDay = '2021-04-26' and
-   		useStartTime = '2021-04-26 ${useStartTime}:00:00'
+   		reservationDay = '${reservationDay}' and
+   		useStartTime = '${reservationDay} ${useStartTime}:00:00'
    	</select>
    	
    	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
@@ -38,8 +47,8 @@
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, etc
    		)
    		values(
-   			#{roomNum}, 1, '2021-04-26', '2021-04-26 ${useStartTime}:00:00',
-   			'2021-04-26 ${useStartTime}:59:00', #{userCount}, 'mapper test'
+   			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
+   			'${reservationDay} ${useStartTime}:59:00', #{userCount}, 'date test'
    		)
    	</insert>
    	

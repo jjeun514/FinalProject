@@ -71,8 +71,9 @@
 						</div>
 					</form>
 				</div>
-				<div class="col-md-9">
-					<table class="table table-list-search">
+				<button id = "writebtn" type="button" class="btn btn-default">글쓰기</button>
+				<div class="col-md-12">
+					<table id = "bbsTable" class="table table-list-search">
 						<thead>
 							<tr>
 								<th>번호</th>
@@ -83,6 +84,15 @@
 							</tr>
 						</thead>
 						<tbody>
+							<c:forEach var = "list" items = "${NoticeList }">
+								<tr id = "notice">
+									<td>공지</td>
+									<td>${list.title }</td>
+									<td>admin</td>
+									<td>${list.nickName }</td>
+									<td>${list.date }</td>
+								</tr>
+							</c:forEach>
 							<c:forEach var = "list" items = "${boardList }">
 								<tr>
 									<td>${list.num }</td>

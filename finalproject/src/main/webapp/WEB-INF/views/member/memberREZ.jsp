@@ -5,6 +5,11 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
 <script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
+
+
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <link rel="stylesheet" href="/resources/demos/style.css">
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 
 $(document).ready(function() {
@@ -24,7 +29,8 @@ $(document).ready(function() {
 			roomNum : $("#roomNum").val(),
 			useStartTime : $("#useStartTime").val(),
 			useFinishTime : $("#useFinishTime").val(),
-			userCount : $("#userCount").val()
+			userCount : $("#userCount").val(),
+			reservationDay : $('#reservationDay').val()
 		};
 	
 		$.ajax({
@@ -32,7 +38,7 @@ $(document).ready(function() {
 			type : "POST",
 			data : applyContent,
 			success : function(data) {
-				// 예약 신청 완료
+				// 예약 신청 완료 
 				if ( data.resultCode == 0 ) { 
 					alert(data.resultMessage); // 확인 버튼을 누르면 결제창으로 이동.
 				// 예약 신청 실패
@@ -83,6 +89,9 @@ $(document).ready(function() {
 
 //예약 신청 모달에서 보여줄 회의실 정보
 function roomInfo() { 
+	
+	var day = $('#reservationDay').val();
+	
 	$.ajax({
 		url : "/reservation/apply",
 		type : "GET",
@@ -90,7 +99,10 @@ function roomInfo() {
 		dataType : "json",
 		success : function(data) { 
 			// 이전에 append 되었던 옵션 삭제
-			$('#roomNum *').remove(); 
+			// $('#day *').remove(); 
+			$('#roomNum *').remove();
+			$('#day *').remove();
+			$('#day').append("<p style=\"font:bold;\">신청하신 예약일 : "+day+"</p>");
 			$('#roomNum').append("<option>선택해주세요</option>");
 			for (var no = 0; no < data.roomData.length; no++ ) {
 				$('#roomNum').append("<option value = "+data.roomData[no].roomNum+">"+data.roomData[no].roomNum+"</option>");
@@ -116,11 +128,24 @@ function myREZ() {
 	});
 }
 
+// 달력 불러오는 함수
+$( function() {
+    $( "#reservationDay" ).datepicker({
+    	dateFormat : 'yy-mm-dd',
+    	daysOfWeekDisabled : [0,6],
+    	immediateUpdates: true,
+    	todayHighlight : true
+    });
+  } );
+
 </script>
 <body>
 	<div class = "content bbs">
 		<div class = "container">
 			<div class = "row">
+			<div id = "reservationDate" class = "com-md-12">
+				<input type = "text" id="reservationDay" class="form-control" value="">
+			</div>
 				<div class = "col-md-12">
 					<table class = "table table-bordered">
 						<thead>
@@ -169,6 +194,11 @@ function myREZ() {
 							      <div class="modal-body">
 
 							        	<form id = "REZApply" class="form-horizontal">
+							        	
+							        	  <div class="form-group">
+							        		<label id = "day" class="col-sm-12 control-label"></label>
+							        	  </div>
+							        	  
 										  <div class="form-group">
 										    <label class="col-sm-10 control-label">예약하실 회의실을 선택해주세요</label>
 										    <div class="col-sm-12">
