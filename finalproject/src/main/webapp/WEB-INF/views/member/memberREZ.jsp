@@ -6,13 +6,13 @@
 <link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
 <script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 
-
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
  <link rel="stylesheet" href="/resources/demos/style.css">
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 
 $(document).ready(function() {
+	
 	 // 사용 예약 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZbtn').click(function() {
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
@@ -24,7 +24,7 @@ $(document).ready(function() {
 		console.log("예약 신청 버튼");
 
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
-		// 여기서 예약 날짜와 예약자도 전달해줘야 함
+		// 여기서 예약자 전달해줘야 함
 		var applyContent = {
 			roomNum : $("#roomNum").val(),
 			useStartTime : $("#useStartTime").val(),
@@ -40,7 +40,17 @@ $(document).ready(function() {
 			success : function(data) {
 				// 예약 신청 완료 
 				if ( data.resultCode == 0 ) { 
-					alert(data.resultMessage); // 확인 버튼을 누르면 결제창으로 이동.
+					if ( !confirm(data.resultMessage) ){
+						// 여기서 신청한 쿼리 롤백해야 하는데 ...
+						
+						
+						
+						
+						
+						
+					} else { // 결제 창으로 이동
+						location.href = '/reservation/payment';
+					}
 				// 예약 신청 실패
 				} else if ( data.resultCode == 1 ) { 
 					alert(data.resultMessage);
@@ -64,9 +74,7 @@ $(document).ready(function() {
 	// 회의실 예약 취소 버튼을 눌렀을 때 발생하는 이벤트
 	$('#applyCancleREZ').click(function() {
 		
-		var cancleContent = {
-			myREZ : $('#myREZList').val()
-		};
+		var cancleContent = { myREZ : $('#myREZList').val() };
 		
 		$.ajax({
 			url : "/reservation/cancleReservation",
@@ -98,8 +106,6 @@ function roomInfo() {
 		data : null,
 		dataType : "json",
 		success : function(data) { 
-			// 이전에 append 되었던 옵션 삭제
-			// $('#day *').remove(); 
 			$('#roomNum *').remove();
 			$('#day *').remove();
 			$('#day').append("<p style=\"font:bold;\">신청하신 예약일 : "+day+"</p>");
@@ -130,12 +136,50 @@ function myREZ() {
 
 // 달력 불러오는 함수
 $( function() {
+	
+	var branchCode = 1;
+	
     $( "#reservationDay" ).datepicker({
     	dateFormat : 'yy-mm-dd',
-    	daysOfWeekDisabled : [0,6],
+    	daysOfWeekDisabled : [0,6], // 이거 왜 안 먹지..?
     	immediateUpdates: true,
-    	todayHighlight : true
-    });
+    	todayHighlight : true,
+    	
+    	// 달력의 날자가 바뀌었을 때 해당 날자의 예약 현황 불러오기
+    	onSelect : function(dateText, inst) {
+			$.ajax({
+				url : "/reservation/reservationList",
+				type : "GET",
+				data : {
+					branchCode : branchCode,
+					dateText : dateText
+				},
+				dataType : "json",
+				success : function(data) {
+					for ( no = 0; no < data.allList.length; no++ ){
+						var item = data.allList[no];
+						item.시작시간 = "10";
+						var 중간시간 = "11";
+						//if(종료시간 - 시작시간 > 1) {중간시간}
+						
+						//2시간 예약인 경우
+						//시작시간 칠하기
+						$("#"+item.roomNum+"_"+item.시작시간)[0].style = "background-color:rgba(187,240,237,1)";
+						//중간시간 있으면
+						$("#"+item.roomNum+"_"+중간시간)[0].style = "background-color:rgba(187,240,237,1)";
+						
+						//종료시간 - 시작시간 > 1 => 예약 2시간   시작시간, 중간시간(시작시간+1), 종료시간
+						
+						//$("#"+data.allList[no].roomNum+"_09")[0].style = "background-color:rgba(187,240,237,1)";
+						
+						//$('#reservationListTable').append("<p>"+data.allList[no].roomNum+" | "+data.allList[no].memNum+"</p>");
+						// 여기서 해당 시간에 해당 예약 내역을 꽂아줘야 하는데 ....
+					}
+				},
+				error : function () { alert("회의실 예약 현황을 불러오지 못했습니다. 다시 시도해주세요."); }
+			});
+		}
+    })
   } );
 
 </script>
@@ -147,7 +191,7 @@ $( function() {
 				<input type = "text" id="reservationDay" class="form-control" value="">
 			</div>
 				<div class = "col-md-12">
-					<table class = "table table-bordered">
+					<table id = "reservationListTable" class = "table table-bordered">
 						<thead>
 							<tr>
 								<th></th>
@@ -160,10 +204,10 @@ $( function() {
 							<c:forEach var = "list" items = "${roomList }">
 								<tr>
 									<td id = "roomCell">${list.roomNum }</td>
-									<td>여</td>
-									<td>기</td>
-									<td>에</td>
-									<td>값</td>
+									<td id ="${list.roomNum }_09">여</td>
+									<td id ="${list.roomNum }_10">기</td>
+									<td id ="${list.roomNum }_11">에</td>
+									<td id ="${list.roomNum }_12">값</td>
 									<td>을</td>
 									<td>뿌</td>
 									<td>려</td>

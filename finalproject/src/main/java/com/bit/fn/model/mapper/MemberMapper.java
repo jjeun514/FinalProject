@@ -22,11 +22,14 @@ public interface MemberMapper {
 	// 멤버 페이지 게시판 내 공지사항 리스트
 	public List<NoticeVo> selectNoticeList();
 
-	// 회의실 예약 현황 리스트
+	// 회의실 리스트
 	public List<ReservationVo> meetingRoomList();
 	
-	// 회의실 전체 예약 현황 조회
+	// 회의실 예약 여부 조회(멤버 코드 인자로 받아야 함)
 	public int checkReservaion(int roomNum, String useStartTime, String reservationDay);
+	
+	// 회의실 예약 현황 리스트 조회
+	public List<ReservationVo> reservationList(int branchCode, String reservationDay);
 	
 	// 회의실 예약 신청
 	public int roomReservationApply(ReservationVo reservaion);

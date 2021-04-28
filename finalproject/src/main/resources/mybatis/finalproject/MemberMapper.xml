@@ -25,6 +25,7 @@
    		limit 3
    	</select>
    	
+   	<!-- 여기서 브랜치 코드 컨트롤러에서 전달받아야 함 -->
    	<select id="meetingRoomList" resultType="com.bit.fn.model.vo.ReservationVo">
 		select roomNum from meetingRoom where branchCode = 1
    	</select>
@@ -36,19 +37,29 @@
    		useStartTime = '${reservationDay} ${useStartTime}:00:00'
    	</select>
    	
+   	<select id="reservationList" resultType="com.bit.fn.model.vo.ReservationVo">
+   		select REZ.roomNum, REZ.memNum from reservation REZ
+   		left outer join meetingRoom room
+   		on REZ.roomNum = room.roomNum
+   		where room.branchCode = ${branchCode} and 
+   		reservationDay = '${reservationDay}'
+   	</select>
+   	
+   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
    	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
    		select roomNum, reservationDay, useStartTime, useFinishTime from reservation
    		where memNum = 1 and
-   		reservationDay >= '2021-04-26'
+   		reservationDay >= date_format(sysdate(), '%Y-%m-%d')
    	</select>
    	
+   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
    	<insert id="roomReservationApply" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservation(
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, etc
    		)
    		values(
    			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
-   			'${reservationDay} ${useStartTime}:59:00', #{userCount}, 'date test'
+   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, 'finish time setting test'
    		)
    	</insert>
    	

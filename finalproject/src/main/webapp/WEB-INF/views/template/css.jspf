@@ -236,6 +236,21 @@
     	position: relative;
     	left: 150%;
     }
+    
+    #1{
+    	background-color: rgba(187,240,237,1);
+    }
 /*회의실*/
+
+/*결제*/
+
+	#applyPay{
+		border : 1px solid;
+		background-color: rgba(0, 0, 0, 0);
+		position: relative;
+		left : 43%;
+	}
+
+/*결제*/
 	
 </style>
