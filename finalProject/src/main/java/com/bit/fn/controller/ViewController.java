@@ -1,6 +1,11 @@
 package com.bit.fn.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.Principal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,11 +40,6 @@ public class ViewController {
 	@RequestMapping("/signin")
 	public String signin() {
 		return "signin";
-	}
-	
-	@RequestMapping("/chart")
-	public String chart() {
-		return "chart";
 	}
 	
 	@RequestMapping("/bbs")

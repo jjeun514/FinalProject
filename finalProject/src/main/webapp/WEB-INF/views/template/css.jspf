@@ -500,10 +500,28 @@
 		#dataTitle, #today{
 			margin: 0px auto;
 			text-align: center;
+			padding-top: 30px;
 		}
 		#chart{
 			margin: 0px auto;
 			width: 400px;
 			text-align: center;
+		}
+		#dateInput{
+			margin: 0 auto;
+			padding-left: 30px;
+			text-align: center;
+		}
+		#calendar{
+			width: 100%;
+			margin: 0px auto;
+			text-align: center;
+		}
+		#today{
+			display: inline-block;
+		}
+		#dateBtn{
+			height: 35px;
+			margin-top: -5px;
 		}
 </style>

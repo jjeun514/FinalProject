@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bit.fn.model.mapper.ReservationMapper;
-import com.bit.fn.model.vo.OfficeVo;
 import com.bit.fn.model.vo.ReservationVo;
 
 
@@ -17,5 +16,11 @@ public class ReservationService {
 	
 	public List<ReservationVo> selectAll(){
 		return reservationMapper.selectAll();
+	}
+	public List<ReservationVo> selectAllRoomNum(){
+		return reservationMapper.selectAllRoomNum();
+	}
+	public List<ReservationVo> countReservation(String today) {
+		return reservationMapper.countReservation(today);
 	}
 }

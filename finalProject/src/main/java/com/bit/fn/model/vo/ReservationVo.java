@@ -3,7 +3,7 @@ package com.bit.fn.model.vo;
 import java.sql.Date;
 
 public class ReservationVo {
-	private int roomNum,memNum,userCount,fee;
+	private int roomNum,memNum,userCount,fee, totalReservation;
 	private String etc;
 	private Date reservationDate,useStartDay,useFinishDay;
 	public ReservationVo() {}
@@ -18,6 +18,26 @@ public class ReservationVo {
 		this.reservationDate = reservationDate;
 		this.useStartDay = useStartDay;
 		this.useFinishDay = useFinishDay;
+	}
+	
+	public ReservationVo(int roomNum, int memNum, int userCount, int fee, int totalReservation, String etc,
+			Date reservationDate, Date useStartDay, Date useFinishDay) {
+		super();
+		this.roomNum = roomNum;
+		this.memNum = memNum;
+		this.userCount = userCount;
+		this.fee = fee;
+		this.totalReservation = totalReservation;
+		this.etc = etc;
+		this.reservationDate = reservationDate;
+		this.useStartDay = useStartDay;
+		this.useFinishDay = useFinishDay;
+	}
+	public int getTotalReservation() {
+		return totalReservation;
+	}
+	public void setTotalReservation(int totalReservation) {
+		this.totalReservation = totalReservation;
 	}
 	public int getRoomNum() {
 		return roomNum;
@@ -123,8 +143,8 @@ public class ReservationVo {
 	@Override
 	public String toString() {
 		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", fee=" + fee
-				+ ", etc=" + etc + ", reservationDate=" + reservationDate + ", useStartDay=" + useStartDay
-				+ ", useFinishDay=" + useFinishDay + "]";
+				+ ", totalReservation=" + totalReservation + ", etc=" + etc + ", reservationDate=" + reservationDate
+				+ ", useStartDay=" + useStartDay + ", useFinishDay=" + useFinishDay + "]";
 	}
 	
 }
