@@ -1,15 +1,19 @@
 package com.bit.fn.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,12 +22,22 @@ import com.bit.fn.model.service.MemberService;
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.ReservationVo;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 
 @Controller
 public class MemberController {
 
 	@Autowired
 	private MemberService service;
+	
+	private IamportClient api;
+	
+	public MemberController() {
+		this.api = new IamportClient("2685051238690929", "7Qmf22eaAAMqEnDEnqXB5yRprnWSZG56xsmzuBK4bxuPV8uizrUE0L3s90l9GqgeTCNneyrp6Wf15JjE");
+	}
 	
 	@RequestMapping("/intro")
 	public String intro() {
@@ -160,6 +174,9 @@ public class MemberController {
 			data = new HashMap<String, String>();
 			data.put("roomNum", Integer.toString(reservation.getRoomNum()));
 			data.put("memNum", Integer.toString(reservation.getMemNum()));
+			data.put("reservationDay", reservation.getReservationDay());
+			data.put("startT", reservation.getUseStartTime().substring(11,13));
+			data.put("finishT", reservation.getUseFinishTime().substring(11,13));
 			REZList.add(data);
 		}
 		
@@ -215,8 +232,8 @@ public class MemberController {
 			return result;
 			
 		} else { // 조회된 내역이 없다면 신청 로직을 태움
-		
-			// 예약 신청을 위한 insert 메소드 실행
+
+			// 예약 신청을 위한 insert 메소드 실행(예약 현황만 체크)
 			int insertReservaion = service.roomReservationApply(reservation); // 임시테이블에 넣어야하지 않을까?
 			
 			// insert 결과에 따른 로직
@@ -284,10 +301,22 @@ public class MemberController {
 		
 	}
 	
+	
+	
 	@RequestMapping(value = "/reservation/payment")
 	public String payment() {
 		
+		// 결제 정보를 가지고 페이지 이동해야 함
+		
 		return "reservationPayment";
+	}
+	
+	// 회의실 결제 요청
+	@ResponseBody
+	@RequestMapping(value = "/reservation/payment/{imp_uid}", method = RequestMethod.POST)
+	public IamportResponse<Payment> paymentByImpUid(Model model, Locale locale, HttpSession session, @PathVariable(value = "imp_uid") String imp_uid) throws IamportResponseException, IOException  {
+		System.out.println("컨트롤러는 잘 온건가?");
+		return api.paymentByImpUid(imp_uid);
 	}
 	
 	

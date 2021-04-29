@@ -40,14 +40,8 @@ $(document).ready(function() {
 			success : function(data) {
 				// 예약 신청 완료 
 				if ( data.resultCode == 0 ) { 
-					if ( !confirm(data.resultMessage) ){
-						// 여기서 신청한 쿼리 롤백해야 하는데 ...
-						
-						
-						
-						
-						
-						
+					if ( !confirm(data.resultMessage) ){ // 예약신청을 하고 취소를 누르면 다시 예약 페이지로 이동
+						location.href = '/reservation';
 					} else { // 결제 창으로 이동
 						location.href = '/reservation/payment';
 					}
@@ -146,6 +140,12 @@ $( function() {
     	todayHighlight : true,
     	
     	// 달력의 날자가 바뀌었을 때 해당 날자의 예약 현황 불러오기
+    	
+    	/*
+    	엄청난 문제! 스타일 색상이 계속 쌓인다 ...
+    	파라미터는 String 형태로 받아오기 때문에 int 형태의 연산이 안된다.
+    	*/
+    	
     	onSelect : function(dateText, inst) {
 			$.ajax({
 				url : "/reservation/reservationList",
@@ -156,24 +156,25 @@ $( function() {
 				},
 				dataType : "json",
 				success : function(data) {
+		    		$('roomCell *').style = "background-color:rgba(0,0,0,0)";
 					for ( no = 0; no < data.allList.length; no++ ){
-						var item = data.allList[no];
-						item.시작시간 = "10";
-						var 중간시간 = "11";
-						//if(종료시간 - 시작시간 > 1) {중간시간}
+						var list = data.allList[no];
 						
-						//2시간 예약인 경우
-						//시작시간 칠하기
-						$("#"+item.roomNum+"_"+item.시작시간)[0].style = "background-color:rgba(187,240,237,1)";
-						//중간시간 있으면
-						$("#"+item.roomNum+"_"+중간시간)[0].style = "background-color:rgba(187,240,237,1)";
-						
-						//종료시간 - 시작시간 > 1 => 예약 2시간   시작시간, 중간시간(시작시간+1), 종료시간
-						
-						//$("#"+data.allList[no].roomNum+"_09")[0].style = "background-color:rgba(187,240,237,1)";
-						
-						//$('#reservationListTable').append("<p>"+data.allList[no].roomNum+" | "+data.allList[no].memNum+"</p>");
-						// 여기서 해당 시간에 해당 예약 내역을 꽂아줘야 하는데 ....
+						if ( list.memNum == 1 ) {
+							if ( list.finishT-list.startT > 1 ) {
+								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
+								$("#"+list.roomNum+"_"+list.startT+1)[0].style = "background-color:rgba(0,0,0,0.5)";
+							} else {
+								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
+							}
+						} else {
+							if ( list.finishT-list.startT > 1 ) {
+								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(187,240,237,1)";
+								$("#"+list.roomNum+"_"+list.startT+1)[0].style = "background-color:rgba(187,240,237,1)";
+							} else {
+								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(187,240,237,1)";
+							}
+						}
 					}
 				},
 				error : function () { alert("회의실 예약 현황을 불러오지 못했습니다. 다시 시도해주세요."); }
@@ -204,20 +205,20 @@ $( function() {
 							<c:forEach var = "list" items = "${roomList }">
 								<tr>
 									<td id = "roomCell">${list.roomNum }</td>
-									<td id ="${list.roomNum }_09">여</td>
-									<td id ="${list.roomNum }_10">기</td>
-									<td id ="${list.roomNum }_11">에</td>
-									<td id ="${list.roomNum }_12">값</td>
-									<td>을</td>
-									<td>뿌</td>
-									<td>려</td>
-									<td>야</td>
-									<td>하</td>
-									<td>는</td>
-									<td>데</td>
-									<td>어</td>
-									<td>쩌</td>
-									<td>지</td>
+									<td id ="${list.roomNum }_09"></td>
+									<td id ="${list.roomNum }_10"></td>
+									<td id ="${list.roomNum }_11"></td>
+									<td id ="${list.roomNum }_12"></td>
+									<td id ="${list.roomNum }_13"></td>
+									<td id ="${list.roomNum }_14"></td>
+									<td id ="${list.roomNum }_15"></td>
+									<td id ="${list.roomNum }_16"></td>
+									<td id ="${list.roomNum }_17"></td>
+									<td id ="${list.roomNum }_18"></td>
+									<td id ="${list.roomNum }_19"></td>
+									<td id ="${list.roomNum }_20"></td>
+									<td id ="${list.roomNum }_21"></td>
+									<td id ="${list.roomNum }_22"></td>
 								</tr>
 							</c:forEach>
 						</tbody>

@@ -38,11 +38,9 @@
    	</select>
    	
    	<select id="reservationList" resultType="com.bit.fn.model.vo.ReservationVo">
-   		select REZ.roomNum, REZ.memNum from reservation REZ
-   		left outer join meetingRoom room
-   		on REZ.roomNum = room.roomNum
-   		where room.branchCode = ${branchCode} and 
-   		reservationDay = '${reservationDay}'
+   		select REZ.roomNum, REZ.memNum, REZ.reservationDay, REZ.useStartTime, REZ.useFinishTime
+   		from reservation REZ left outer join meetingRoom room on REZ.roomNum = room.roomNum
+   		where room.branchCode = ${branchCode} and reservationDay = '${reservationDay}'
    	</select>
    	
    	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
