@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.fn.model.service.MemberService;
@@ -33,12 +34,19 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
+	// 결제 기능 객체 생성
 	private IamportClient api;
 	
+	
+	
+	// 아임포트 결제 토큰 생성
 	public MemberController() {
 		this.api = new IamportClient("2685051238690929", "7Qmf22eaAAMqEnDEnqXB5yRprnWSZG56xsmzuBK4bxuPV8uizrUE0L3s90l9GqgeTCNneyrp6Wf15JjE");
 	}
 	
+	
+	
+	// 멤버 파트 인트로 페이지
 	@RequestMapping("/intro")
 	public String intro() {
 		return "memberIntro";
@@ -189,23 +197,22 @@ public class MemberController {
 	
 	
 	
-	// 멤버 파트 회의실 예약 신청
+	// 멤버 파트 회의실 예약 전 가능여부 조회
 	@RequestMapping(value = "/reservation/applySubmit", method = RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> roomReservaionApply(ReservationVo applyContent) {
 		
+		// 뷰로 전달할 결과값을 담을 객체 생성
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		// 예약 종료 시간 계산
 		// 종료 시간을 위해 파라미터 변환
 		int startTime = Integer.parseInt(applyContent.getUseStartTime());
-		int finishTime = Integer.parseInt(applyContent.getUseFinishTime());
+		int useTime = Integer.parseInt(applyContent.getUseFinishTime());
 		
 		// 예약자 정보도 받아와야 함
-		// 뷰에서 시작 시간과 종료 시간 받아옴
 		int roomNum = applyContent.getRoomNum();
 		String useStartTime = applyContent.getUseStartTime();
-		String useFinishTime = Integer.toString(startTime+finishTime);
+		String calFinishTime = Integer.toString(startTime+useTime); // 종료 시간 계산
 		String reservationDay = applyContent.getReservationDay();
 		int userCount = applyContent.getUserCount();
 		
@@ -213,7 +220,7 @@ public class MemberController {
 		ReservationVo reservation = new ReservationVo();
 		reservation.setRoomNum(roomNum);
 		reservation.setUseStartTime(useStartTime);
-		reservation.setUseFinishTime(useFinishTime);
+		reservation.setUseFinishTime(calFinishTime);
 		reservation.setReservationDay(reservationDay);
 		reservation.setUserCount(userCount);
 		
@@ -233,8 +240,8 @@ public class MemberController {
 			
 		} else { // 조회된 내역이 없다면 신청 로직을 태움
 
-			// 예약 신청을 위한 insert 메소드 실행(예약 현황만 체크)
-			int insertReservaion = service.roomReservationApply(reservation); // 임시테이블에 넣어야하지 않을까?
+			// 결제 전 history 테이블에 임시 저장
+			int insertReservaion = service.roomReservationTemp(reservation);
 			
 			// insert 결과에 따른 로직
 			if ( insertReservaion > 0 ) { // 신청이 정상적으로 수행되었을 때
@@ -243,6 +250,11 @@ public class MemberController {
 				
 				result.put("resultMessage", resultMessage);
 				result.put("resultCode", resultCode);
+				result.put("room", roomNum);
+				result.put("day", reservationDay);
+				result.put("startT", useStartTime);
+				result.put("useT", useTime);
+				result.put("userCount", userCount);
 				
 				return result;
 				
@@ -303,26 +315,94 @@ public class MemberController {
 	
 	
 	
+	// 결제 페이지
 	@RequestMapping(value = "/reservation/payment")
-	public String payment() {
+	public String payment(Model model, @RequestParam Map<String, String> allParameters) {
 		
-		// 결제 정보를 가지고 페이지 이동해야 함
+		int roomNum = Integer.parseInt(allParameters.get("roomNum"));
+		String reservationDay = allParameters.get("day");
+		String useStartTime = allParameters.get("startTime");
+		String useFinishTime = allParameters.get("useTime");
+		
+		ReservationVo content = new ReservationVo();
+		content.setRoomNum(roomNum);
+		content.setUseStartTime(useStartTime);
+		content.setUseFinishTime(useFinishTime);
+		content.setReservationDay(reservationDay);
+		
+		model.addAttribute("content", content);
 		
 		return "reservationPayment";
 	}
 	
-	// 회의실 결제 요청
+	
+	
+	// 결제 페이지에서 결제 요청
 	@ResponseBody
 	@RequestMapping(value = "/reservation/payment/{imp_uid}", method = RequestMethod.POST)
 	public IamportResponse<Payment> paymentByImpUid(Model model, Locale locale, HttpSession session, @PathVariable(value = "imp_uid") String imp_uid) throws IamportResponseException, IOException  {
-		System.out.println("컨트롤러는 잘 온건가?");
+
 		return api.paymentByImpUid(imp_uid);
 	}
+	
+	
+	
+	// 결제 성공 후 최종 예약
+	@RequestMapping("/reservation/success")
+	@ResponseBody
+	public HashMap<String, Object> fixReservation(ReservationVo payContent) {
+
+		// 뷰로 전달할 결과값을 담을 객체 생성
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		// 결제 요청된 파라미터 받음
+		String useStartTime = payContent.getUseStartTime();
+
+		// 쿼리를 위한 파라미터 변환
+		int startT = Integer.parseInt(useStartTime);
+		int finishT = Integer.parseInt(payContent.getUseFinishTime());
+		String useFinishTime = Integer.toString(startT+finishT);
+		
+		// 예약 메소드에 데이터 넣을 객체 생성 후 파라미터 받음
+		ReservationVo content = new ReservationVo();
+		content.setRoomNum(payContent.getRoomNum());
+		content.setUseStartTime(useStartTime);
+		content.setUseFinishTime(useFinishTime);
+		content.setReservationDay(payContent.getReservationDay());
+		content.setMerchant_uid(payContent.getMerchant_uid());
+		content.setAmount(payContent.getAmount());
+		content.setUserCount(payContent.getUserCount());
+		
+		// reservation 테이블에 insert
+		int reservationResult = service.fixReservation(content);
+		
+		// insert 결과를 토대로 뷰에 전달할 결과 메시지
+		if ( reservationResult > 0 ) {
+			String resultMessage = "결제 후 예약이 정상적으로 처리되었습니다. 감사합니다.";
+			String resultCode = "0";
+			
+			result.put("resultMessage", resultMessage);
+			result.put("resultCode", resultCode);
+			
+			return result;
+		} else {
+			String resultMessage = "결제와 예약이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.";
+			String resultCode = "1";
+			
+			result.put("resultMessage", resultMessage);
+			result.put("resultCode", resultCode);
+			
+			return result;
+		}
+		
+	}
+	
 	
 	
 	// 멤버 파트 내 스케쥴 관리 인트로 페이지 ... 구현할 수 있을까?
 	@RequestMapping("/schedule")
 	public String schedule() {
+
 		return "memberSchedule";
 	}
 	

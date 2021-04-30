@@ -18,32 +18,40 @@ $(document).ready(function() {
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
 		$("#REZModal").modal();
 	});
+	 
 	
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZapplyClick').click(function() { 
 		console.log("예약 신청 버튼");
 
+		var roomNum = $("#roomNum").val();
+		var useStartTime = $("#useStartTime").val();
+		var useFinishTime = $("#useFinishTime").val();
+		var userCount = $("#userCount").val();
+		var reservationDay = $('#reservationDay').val();
+		
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
 		// 여기서 예약자 전달해줘야 함
 		var applyContent = {
-			roomNum : $("#roomNum").val(),
-			useStartTime : $("#useStartTime").val(),
-			useFinishTime : $("#useFinishTime").val(),
-			userCount : $("#userCount").val(),
-			reservationDay : $('#reservationDay').val()
+			roomNum : roomNum,
+			useStartTime : useStartTime,
+			useFinishTime : useFinishTime,
+			userCount : userCount,
+			reservationDay : reservationDay
 		};
-	
+		
 		$.ajax({
 			url : "/reservation/applySubmit",
 			type : "POST",
 			data : applyContent,
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			success : function(data) {
 				// 예약 신청 완료 
 				if ( data.resultCode == 0 ) { 
 					if ( !confirm(data.resultMessage) ){ // 예약신청을 하고 취소를 누르면 다시 예약 페이지로 이동
 						location.href = '/reservation';
 					} else { // 결제 창으로 이동
-						location.href = '/reservation/payment';
+						location.href = '/reservation/payment?roomNum='+data.room+"&day="+data.day+"&startTime="+data.startT+"&useTime="+data.useT+"&userCount="+data.userCount;
 					}
 				// 예약 신청 실패
 				} else if ( data.resultCode == 1 ) { 
@@ -139,8 +147,6 @@ $( function() {
     	immediateUpdates: true,
     	todayHighlight : true,
     	
-    	// 달력의 날자가 바뀌었을 때 해당 날자의 예약 현황 불러오기
-    	
     	/*
     	엄청난 문제! 스타일 색상이 계속 쌓인다 ...
     	파라미터는 String 형태로 받아오기 때문에 int 형태의 연산이 안된다.
@@ -163,7 +169,7 @@ $( function() {
 						if ( list.memNum == 1 ) {
 							if ( list.finishT-list.startT > 1 ) {
 								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
-								$("#"+list.roomNum+"_"+list.startT+1)[0].style = "background-color:rgba(0,0,0,0.5)";
+								$("#"+list.roomNum+"_"+list.startT+1)[0].style = "background-color:rgba(0,0,0,0.5)"; // 이거 오류
 							} else {
 								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
 							}

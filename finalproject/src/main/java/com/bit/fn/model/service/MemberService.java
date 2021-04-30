@@ -41,12 +41,16 @@ public class MemberService {
 		return memberMapper.reservationList(branchCode, reservationDay);
 	}
 	
-	public int roomReservationApply(ReservationVo reservation) {
-		return memberMapper.roomReservationApply(reservation);
+	public int roomReservationTemp(ReservationVo reservation) {
+		return memberMapper.roomReservationTemp(reservation);
 	}
 	
 	public List<ReservationVo> myReservationList() {
 		return memberMapper.myReservationList();
+	}
+	
+	public int fixReservation(ReservationVo reservation) {
+		return memberMapper.fixReservation(reservation);
 	}
 	
 	public int cancleReservation(int roomNum, String useStartTime, String reservationDay) {

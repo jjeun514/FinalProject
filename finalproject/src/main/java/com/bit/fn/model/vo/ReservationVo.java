@@ -4,19 +4,19 @@ import java.sql.Date;
 
 public class ReservationVo {
 	
-	private int roomNum, memNum, userCount, fee, rent;
-	private String etc, memName, comName, useStartTime, useFinishTime, reservationDay;
+	private int roomNum, memNum, userCount, amount, rent;
+	private String etc, memName, comName, useStartTime, useFinishTime, reservationDay, merchant_uid;
 	
 	public ReservationVo() {
 	}
 
-	public ReservationVo(int roomNum, int memNum, int userCount, int fee, int rent, String etc, String memName,
-			String comName, String reservationDay, String useStartTime, String useFinishTime) {
+	public ReservationVo(int roomNum, int memNum, int userCount, int amount, int rent, String etc, String memName,
+			String comName, String reservationDay, String useStartTime, String useFinishTime, String merchant_uid) {
 		super();
 		this.roomNum = roomNum;
 		this.memNum = memNum;
 		this.userCount = userCount;
-		this.fee = fee;
+		this.amount = amount;
 		this.rent = rent;
 		this.etc = etc;
 		this.memName = memName;
@@ -24,6 +24,7 @@ public class ReservationVo {
 		this.reservationDay = reservationDay;
 		this.useStartTime = useStartTime;
 		this.useFinishTime = useFinishTime;
+		this.merchant_uid = merchant_uid;
 	}
 
 	public int getRoomNum() {
@@ -50,12 +51,12 @@ public class ReservationVo {
 		this.userCount = userCount;
 	}
 
-	public int getFee() {
-		return fee;
+	public int getAmount() {
+		return amount;
 	}
 
-	public void setFee(int fee) {
-		this.fee = fee;
+	public void setAmount(int fee) {
+		this.amount = fee;
 	}
 
 	public int getRent() {
@@ -114,15 +115,24 @@ public class ReservationVo {
 		this.useFinishTime = useFinishTime;
 	}
 
+	public String getMerchant_uid() {
+		return merchant_uid;
+	}
+
+	public void setMerchant_uid(String merchant_uid) {
+		this.merchant_uid = merchant_uid;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
 		result = prime * result + ((etc == null) ? 0 : etc.hashCode());
-		result = prime * result + fee;
+		result = prime * result + amount;
 		result = prime * result + ((memName == null) ? 0 : memName.hashCode());
 		result = prime * result + memNum;
+		result = prime * result + ((merchant_uid == null) ? 0 : merchant_uid.hashCode());
 		result = prime * result + rent;
 		result = prime * result + ((reservationDay == null) ? 0 : reservationDay.hashCode());
 		result = prime * result + roomNum;
@@ -151,7 +161,7 @@ public class ReservationVo {
 				return false;
 		} else if (!etc.equals(other.etc))
 			return false;
-		if (fee != other.fee)
+		if (amount != other.amount)
 			return false;
 		if (memName == null) {
 			if (other.memName != null)
@@ -159,6 +169,11 @@ public class ReservationVo {
 		} else if (!memName.equals(other.memName))
 			return false;
 		if (memNum != other.memNum)
+			return false;
+		if (merchant_uid == null) {
+			if (other.merchant_uid != null)
+				return false;
+		} else if (!merchant_uid.equals(other.merchant_uid))
 			return false;
 		if (rent != other.rent)
 			return false;
@@ -186,11 +201,13 @@ public class ReservationVo {
 
 	@Override
 	public String toString() {
-		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", fee=" + fee
+		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", amount=" + amount
 				+ ", rent=" + rent + ", etc=" + etc + ", memName=" + memName + ", comName=" + comName
-				+ ", reservationDay=" + reservationDay + ", useStartTime=" + useStartTime + ", useFinishTime="
-				+ useFinishTime + "]";
+				+ ", useStartTime=" + useStartTime + ", useFinishTime=" + useFinishTime + ", reservationDay="
+				+ reservationDay + ", merchant_uid=" + merchant_uid + "]";
 	}
+	
+	
 
 
 }

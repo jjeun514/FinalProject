@@ -6,37 +6,79 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
 
+
 // 가맹점 코드
-	IMP.init('imp14656270');
+IMP.init('imp14656270');
 	
 $(document).ready(function() {
+	
+	var check = document.getElementById('applyPay');
+	
+	if ($('#checkPay').is(":checked")==true){
+		$('#applyPay').prop('disabled', false);
+	}; // 왜 안되냐?
+	
 	$('#applyPay').click(function() { // 결제 버튼 눌렀을 때 실행되는 결제 기능 함수
+	
+		var payContent = {
+			merchant_uid : 'merchant_' + new Date().getTime(),
+			name : $('#room').text()+' 회의실 예약 결제',				 // 121 회의실 예약 결제
+			roomNum : $('#room').text(),							 // 121
+			useStartTime : $('#startT').val(),						 // 9
+			useFinishTime : $('#time').text().substring(0,1),		 // 1
+			reservationDay : $('#REZ').text().substring(0,10),		 // 2021-04-26
+			amount : $('#amount').text(),							 // 20000
+			memName : $('#memName').text(),							 // luna
+			userCount : $('#userCount').val() 						 // 이거 왜 0이지?
+		}
+
 		IMP.request_pay({
+		
 		    pg : 'kakao',
 		    pay_method : 'card',
-		    merchant_uid : 'merchant_' + new Date().getTime(), // 주문번호
-		    name : '주문명:결제테스트',
-		    amount : '100', //판매 가격
-		    buyer_email : 'dichotomy.bgm@gmail.com',
-		    buyer_name : 'LUNA'
+		    merchant_uid : payContent.merchant_uid,
+		    name : payContent.name,
+		    amount : payContent.amount
 		}, function(rsp) {
 			console.log(rsp);
 			if ( rsp.success ) {
 			$.ajax({
 				url : "/reservation/payment/" + rsp.imp_uid,
-	        	type : "POST",
+	        	type : "POST"
 			}).done(function(data) {
 				console.log(data);
 				
-				// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
+				// 요청 결제 금액과 실제 결제 금액이 같은지 확인
 	        	if(rsp.paid_amount == data.response.amount){
-		        	alert("결제 및 결제검증완료");
+	        		
+	        		$.ajax({
+	        			url : "/reservation/success",
+	        			type : "POST",
+	        			data : payContent,
+	        			dataType : "JSON",
+	        			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+	        			success : function(data) {
+							if ( data.resultCode == 0 ) { // 예약 성공
+								alert(data.resultMessage);
+								location.href = "/reservation"
+							} else if ( data.resultCode == 1 ) { // 예약 실패
+								alert(data.resultMessage);
+								location.href = "/reservation"
+							}
+						},
+	        			error : function() {
+							alert("회의실 예약이 정상적으로 처리되지 않았습니다. 관리자에게 문의해주세요.");
+							location.href = "/reservation"
+						}
+	        		});
+	        	
 	        	} else {
-	        		alert("결제 실패");
+	        		alert("결제하신 금액이 다릅니다. 다시 시도해주세요.");
 	        	}
+	        	
 			});
 			} else {
-				alert("결제 요청이 실패");
+				alert("결제가 실패했습니다. 다시 시도해주세요.");
 			}
 		});
 	});
@@ -58,37 +100,38 @@ $(document).ready(function() {
 				<div class="col-md-12">
 					<h2>결제 내역</h2>
 					<table id = "bbsTable" class="table table-bordered">
-						
-						<tr>
-							<td>예약자명</td>
-							<td></td>
-						</tr>
-						
-						<tr>
-							<td>예약일시</td>
-							<td></td>
-						</tr>
-						
-						<tr>
-							<td>예약 회의실</td>
-							<td></td>
-						</tr>
-						
-						<tr>
-							<td>예약시간</td>
-							<td></td>
-						</tr>
-						
-						<tr>
-							<td>결제금액</td>
-							<td></td>
-						</tr>
+							<tr>
+								<td>예약자명</td>
+								<td id = "memName">LUNA</td>
+							</tr>
+							
+							<tr>
+								<td>예약일시</td>
+								<td id = "REZ">${content.reservationDay } ${content.useStartTime }:00:00</td>
+							</tr>
+							
+							<tr>
+								<td>예약 회의실</td>
+								<td id = "room">${content.roomNum }</td>
+							</tr>
+							
+							<tr>
+								<td>예약시간</td>
+								<td id = "time">${content.useFinishTime }시간</td>
+							</tr>
+							
+							<tr>
+								<td>결제금액</td>
+								<td id = "amount">20000</td>
+							</tr>
+							<input id = "startT" value = "${content.useStartTime}" type = "hidden">
+							<input id = "userCount" value = "${content.userCount}" type = "hidden">
 					
 					</table>
 					<input id = "checkPay" type = "checkbox">
 					<label>결제하시겠습니까?</label>
 					<div>
-						<button id = "applyPay" type="button" class="btn btn-default">결제하기</button>
+						<button id = "applyPay" type="button" class="btn btn-default" disabled = "disabled">결제하기</button>
 					</div>
 				</div>
 			</div>

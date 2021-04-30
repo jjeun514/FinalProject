@@ -31,11 +31,14 @@ public interface MemberMapper {
 	// 회의실 예약 현황 리스트 조회
 	public List<ReservationVo> reservationList(int branchCode, String reservationDay);
 	
-	// 회의실 예약 신청
-	public int roomReservationApply(ReservationVo reservaion);
+	// 회의실 예약 신청(reservationHistory 테이블)
+	public int roomReservationTemp(ReservationVo reservaion);
 	
 	// 나의 예약 현황 조회
 	public List<ReservationVo> myReservationList();
+	
+	// 결제 후 최종 예약 테이블 저장(reservation 테이블)
+	public int fixReservation(ReservationVo reservaion);
 	
 	// 회의실 예약 취소
 	public int cancleReservation(int roomNum, String useStartTime, String reservationDay);

@@ -51,13 +51,23 @@
    	</select>
    	
    	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
-   	<insert id="roomReservationApply" parameterType="com.bit.fn.model.vo.ReservationVo">
-   		insert into reservation(
+   	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">
+   		insert into reservationHistory(
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, etc
    		)
    		values(
    			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
-   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, 'finish time setting test'
+   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, sysdate()
+   		)
+   	</insert>
+   	
+   	<insert id="fixReservation" parameterType="com.bit.fn.model.vo.ReservationVo">
+   		insert into reservation(
+   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, fee, merchant_uid, etc
+   		)
+   		values(
+   			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
+   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, #{amount}, #{merchant_uid},'payment test'
    		)
    	</insert>
    	
