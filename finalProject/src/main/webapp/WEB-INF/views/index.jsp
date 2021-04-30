@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/navbar.jspf" %>
+<title>Home</title>
 <div class="content main">
 	<%//배너 carousel %>
 	<div id="carouselIndicators" class="carousel slide" data-ride="carousel">
 		<ol class="carousel-indicators">
-			<li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+			<li data-target="#carouselIndicators" data-slide-to="0" class="active carouselLi"></li>
 			<li data-target="#carouselIndicators" data-slide-to="1"></li>
 			<li data-target="#carouselIndicators" data-slide-to="2"></li>
 			<li data-target="#carouselIndicators" data-slide-to="3"></li>

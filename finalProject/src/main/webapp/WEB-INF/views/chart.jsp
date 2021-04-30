@@ -2,10 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date, java.text.SimpleDateFormat" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="template/navbar.jspf"%>
-<div class="content main">
 	<div id="chartTitle">
-		<h1 id="dataTitle">회의실 예약현황</h1>
+		<h2 id="dataTitle">회의실 예약현황</h2>
+		<br><a href="#" id="more">더보기</a>
 			<%
 				Date today=new Date();
 				SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
@@ -126,5 +125,3 @@
 	
 	});
 	</script>
-</div>
-<%@ include file="template/footer.jspf" %>

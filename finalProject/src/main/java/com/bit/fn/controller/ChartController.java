@@ -2,8 +2,6 @@ package com.bit.fn.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.fn.model.service.ReservationService;
 import com.bit.fn.model.vo.ReservationVo;
@@ -33,36 +30,6 @@ public class ChartController {
 	List<ReservationVo> room;
 	List<ReservationVo> totalReservation;
 	int[] count;
-	
-	@RequestMapping("/chart")
-	public String chartGet(HttpServletRequest req) throws Exception{
-		System.out.println("[ChartController(chartGet())]");
-		room=reservationService.selectAllRoomNum();
-		System.out.println("[ChartController(chartGet())] roomNum list: "+room);
-		req.setAttribute("roomNum", room);
-		
-		Date date=new Date();
-		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
-		String today=sf.format(date);
-		req.setAttribute("today", today);
-		
-		for(int i=0; i<room.size(); i++) {
-			roomNum=room.get(i).getRoomNum();
-			System.out.println("[ChartController(chartGet())] roomNum: "+roomNum+", today: "+today);
-			
-			try {
-				totalReservation=reservationService.countReservation(today);
-				req.setAttribute("totalReservation", totalReservation);
-				System.out.println("[ChartController(chartGet())] totalReservation list: "+totalReservation);
-				System.out.println("[ChartController(chartGet())] totalReservationSize: "+totalReservation.size());
-				for(int j=0; j<totalReservation.size(); j++) {
-					total=totalReservation.get(j).getTotalReservation();
-					System.out.println("[ChartController(chartGet())] totalReservation: "+total);
-				}
-			}catch (Exception e) {}
-		}
-		return "chart";
-	}
 	
 	@RequestMapping(path="/chart", method = RequestMethod.POST)
 	public ResponseEntity chartPost(HttpServletRequest req, HttpServletResponse resp, String dateSelected) throws Exception {

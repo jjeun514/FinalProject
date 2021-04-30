@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <title>회원가입</title>
-<%@ include file="template/navbar.jspf"%>
+<%@ include file="template/navbar.jspf" %>
 <script type="text/javascript">
 <%//인증 버튼 제어%>
 $(document).ready(function(){

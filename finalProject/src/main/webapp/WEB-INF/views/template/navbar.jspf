@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="header.jspf" %>
 <%/*header & navbar 동일한 경우, 최상단에 navbar.jspf include 하면 됨
-	header만 가져오고 navbar는 변경할 경우, header.jspf include 하면 됨*/%>
+	header만 가져오고 navbar는 변경할 경우, 새로 만드는 navbar.jspf에 
+	새로운 header를 include */%>
+<%@ include file="header.jspf" %>
+
 <nav class="navbar-expand-lg navbar-dark bg-dark">
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
@@ -18,3 +20,4 @@
 		</ul>
 	</div>
 </nav>
+</header>
