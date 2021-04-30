@@ -5,7 +5,7 @@
 <%@ include file="template/navbar.jspf"%>
 <div class="content main">
 	<div id="chartTitle">
-		<h1 id="dataTitle">오늘의 회의실 예약현황</h1>
+		<h1 id="dataTitle">회의실 예약현황</h1>
 			<%
 				Date today=new Date();
 				SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
@@ -15,7 +15,8 @@
 			<button class="btn btn-dark me-md-2" type="submit" id="dateBtn">확인</button>
 		</div>
 	</div>
-	<canvas id="chart"></canvas>
+		<p id="resMsg">예약된 회의실이 없습니다.</p>
+		<canvas id="chart"></canvas>
 
 	<script type="text/javascript">
 	$(document).ready(function(){
@@ -47,7 +48,7 @@
 				  data: {
 				      labels: labels,
 				      datasets: [{
-				          label: '오늘의 회의실 예약현황',
+				          label: '회의실 예약현황',
 				          data: datas,
 				          backgroundColor: [
 				              'rgba(255, 99, 132, 0.2)',
@@ -95,6 +96,23 @@
 						});
 						console.log('[ajax성공] datas: ');
 						console.log(datas);
+						
+						console.log(datas.length);
+						var index;
+						var sum=0;
+						for(index=0; index<datas.length; index++){
+							console.log('index: '+index+', data: '+datas[index]);
+							sum=sum+datas[index];
+							console.log('sum: '+sum);
+						}
+						if(sum==0){
+							console.log('sum=0');
+							datas=[0];
+							$('#resMsg').css('color','red');
+							$('#resMsg').css('background-color','lightyellow');
+						}else{
+							console.log('sum!=0');
+						}
 						
 						chart.destroy();
 						drawing();

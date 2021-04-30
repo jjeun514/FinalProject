@@ -506,6 +506,7 @@
 			margin: 0px auto;
 			width: 400px;
 			text-align: center;
+			position: relative;
 		}
 		#dateInput{
 			margin: 0 auto;
@@ -523,5 +524,17 @@
 		#dateBtn{
 			height: 35px;
 			margin-top: -5px;
+		}
+		#resMsg{
+			position: absolute;
+			margin: 0px auto;
+			text-align: center;
+			width: 40%;
+			top: 60%;
+			font-size: 30px;
+			color: white;
+			margin-left: 30%;
+			margin-right: -30%;
+			background-color: transparent;
 		}
 </style>
