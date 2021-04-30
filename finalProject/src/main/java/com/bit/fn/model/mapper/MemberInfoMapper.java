@@ -16,4 +16,7 @@ public interface MemberInfoMapper {
 	public MemberInfoVo selectOne(String id);
 	public MemberInfoVo selectId(@Param("name") String name, @Param("phone") String phone);
 	public MemberInfoVo checkInfo(String name, String id, String phone);
+	public List<MemberInfoVo> admissionMgmt();
+	public List<MemberInfoVo> pending();
+	public List<MemberInfoVo> approved();
 }

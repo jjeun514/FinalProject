@@ -3,8 +3,7 @@
 <%@ page import="java.util.Date, java.text.SimpleDateFormat" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 	<div id="chartTitle">
-		<h2 id="dataTitle">회의실 예약현황</h2>
-		<br><a href="#" id="more">더보기</a>
+		<h2 id="dataTitle">〈회의실 예약현황〉</h2>
 			<%
 				Date today=new Date();
 				SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
@@ -14,8 +13,8 @@
 			<button class="btn btn-dark me-md-2" type="submit" id="dateBtn">확인</button>
 		</div>
 	</div>
-		<p id="resMsg">예약된 회의실이 없습니다.</p>
 		<canvas id="chart"></canvas>
+		<p id="resMsg">예약된 회의실이 없습니다.</p>
 
 	<script type="text/javascript">
 	$(document).ready(function(){

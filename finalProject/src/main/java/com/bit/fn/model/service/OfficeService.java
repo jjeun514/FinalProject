@@ -21,4 +21,8 @@ public class OfficeService {
 	public List<OfficeVo> selectPriceInfo(){
 		return officeMapper.selectPriceInfo();
 	}
+	
+	public List<OfficeVo> spaceInfo(){
+		return officeMapper.spaceInfo();
+	}
 }

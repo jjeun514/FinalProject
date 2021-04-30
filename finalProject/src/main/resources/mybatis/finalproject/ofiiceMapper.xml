@@ -8,4 +8,9 @@
     <select id="selectPriceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
     	 select officeNum, floor, acreages, rent, max, photo, occupancy from office order by floor
    	</select>
+    <select id="spaceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
+    	 select branchName, floor, a.officeNum, acreages, rent, occupancy, comName, max from office a 
+    	 left outer join companyInfo b on a.officeNum=b.officeNum 
+    	 left outer join branch c on a.branchCode=c.branchCode
+   	</select>
 </mapper>

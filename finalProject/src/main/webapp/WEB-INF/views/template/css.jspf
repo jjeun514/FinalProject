@@ -76,6 +76,13 @@
 			position: relative;
 		}
 		
+		#chart{
+			margin: 0px auto;
+			width: 300px;
+			text-align: center;
+			position: relative;
+		}
+		
 	/* 마이페이지 */
 		.mypage{
 			height:1000px;
@@ -592,14 +599,14 @@
 			margin-top: -5px;
 		}
 		#resMsg{
-			position: absolute;
+			display: table-cell;
 			margin: 0px auto;
 			margin-left: 17%;
 			text-align: center;
 			width: 15%;
 			top: 67%;
 			font-size: 20px;
-			color: white;
+			color: rgba(0,0,0,0);
 			background-color: transparent;
 		}
 		
@@ -623,23 +630,54 @@
 		
 	/* 관리자페이지 메인 */
 		#adminMain{
+			display: table;
 			width: 100%;
-			background-color: pink;
 		}
-		#adminMain td{
+		#adminMain h2{
+			font-weight: bold;
+		}
+		#signUpMgmt, #reservationMgmt, #spaceMgmt, #memberMgmt{
+			display: table-cell;
+			vertical-align: top;
 			width: 50%;
 			margin: 0 auto;
 			text-align: center;
 			padding-top: 20px;
+			padding: 30px;
 		}
 		#more{
 			float: right;
+			margin: 0 auto;
+			text-align: right;
+			margin-right: 20px;
+			font-weight: bold;
+			background-color: #dbedef;
+			border-radius: 5px 5px 5px 5px;
+			padding: 5px;
 		}
-		#signUpMgmt{
-			background-color: red;
+		#admissionTitle, #memberTitle, #spaceMgmtTitle{
+			margin-top: 43px;
 		}
-		#signUpMgmt>h2{
-			background-color: green;
-			margin-top: -196px;
+		#signUpMgmtTable, #memberMgmtTable, #spaceMgmtTable{
+			width: 90%;
+			min-width: 600px;
+			margin: 0 auto;
+			margin-top: 20px;
+			text-align: center;
+		}
+		#signUpMgmtTable tr td, th, #memberMgmtTable tr td, th, #spaceMgmtTable tr td, th{
+			border: 1px solid black;
+		}
+		#signUpMgmtTable tr th, #memberMgmtTable tr th, #spaceMgmtTable tr th{
+			background-color: #dbe7f4;
+			color: darkblue;
+		}
+		#text01{
+			margin-top: 10px;
+			float: left;
+			color: red;
+		}
+		#approval{
+			width: 40px;
 		}
 </style>

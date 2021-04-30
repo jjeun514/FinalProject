@@ -26,4 +26,10 @@ public class MemberinfoService {
 	public MemberInfoVo checkInfo(String name, String id, String phone) {
 		return memberInfoMapper.checkInfo(name, id, phone);
 	}
+	public List<MemberInfoVo> pending() {
+		return memberInfoMapper.pending();
+	}
+	public List<MemberInfoVo> approved() {
+		return memberInfoMapper.approved();
+	}
 }

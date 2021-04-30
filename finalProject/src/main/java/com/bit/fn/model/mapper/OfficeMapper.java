@@ -13,4 +13,5 @@ import com.bit.fn.model.vo.OfficeVo;
 public interface OfficeMapper {
 	public List<OfficeVo> selectAll();
 	public List<OfficeVo> selectPriceInfo();
+	public List<OfficeVo> spaceInfo();
 }
