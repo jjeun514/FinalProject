@@ -17,28 +17,19 @@
 /* 반응형(PC) */ 
 @media screen and (min-width: 993.5px) {
 	/* header 우측 상단 메뉴 */
-		#logoDiv{
-			float: left;
-		}
-		#logoImg{
-			width: 350px;
-			margin-top: 50px;
-		}
-		#topRightTable{
-			float: right;
+		.topRightMenu{
+			text-align: center;
+			font-size: 20px;
 			margin-right: 10px;
 		}
-		.topRightMenu{
-			min-width: 120px;
-			text-align: center;
-			padding-top: 60px;
-			font-size: 20px;
+		#topRightTable tr{
+			position: absolute;
 		}
 		
 	/* 배너 */
 		.carousel-item{
-				height: 700px;
-				margin-top: -350px;
+			height: 800px;
+			margin-top: -350px;
 		}
 		    
 	/* 마이페이지 */
@@ -77,20 +68,12 @@
 		}
 		
 	/* header 우측 상단 메뉴 */
-		#logoImg{
-			width: 230px;
-			margin-left: 35px;
-			margin-top: 30px;
-		}
-		#topRightTable{
-			margin: 0px auto;
-			text-align: center;
-		}
 		.topRightMenu{
-			min-width: 130px;
-			text-align: center;
-			padding-top: 30px;
-			font-size: 20px;
+			padding-left: 10px;
+			font-size: 15px;
+		}
+		#topRightTable tr{
+			position: relative;
 		}
 		
 	/* 마이페이지 */
@@ -145,6 +128,48 @@
 			width: 100%;
 			height: 150px;
 			background-color: black;
+			display: table;
+		}
+		#logoDiv{
+			width: 20%;
+			height: 100%;
+			margin: 0 auto;
+			display: table-cell;
+			vertical-align: middle;
+		}
+		#logoImg{
+			width: 300px;
+		}
+		#topRightTable{
+			margin: 0 auto;
+			width: 80%;
+			list-style: none;
+			display: table-cell;
+			vertical-align: middle;
+		}
+		#topRightTable tr{
+			margin: 0 auto;
+			margin-top: -13px;
+			right: 0;
+			text-align: right;
+		}
+		.topRightMenu{
+			margin: 0 auto;
+		}
+		/*(3글자)*/
+		#loginMenu,#profileMenu{
+			margin: 0 auto;
+			width: 80px;
+		}
+		/*(4글자)*/
+		#logoutMenu,#signupMenu{
+			margin: 0 auto;
+			width: 100px;
+		}
+		/*(5글자)*/
+		#mypageMenu,#memberpageMenu,#adminpageMenu{
+			margin: 0 auto;
+			width: 125px;
 		}
 		span>a, span>a:hover, span>a:active, span>a:visited, span>a:link{
 			color: white;
