@@ -58,6 +58,34 @@
 			margin: 50px;
 			font-size:20px;
 		}
+		
+	/* index 페이지 carousel */
+		.carousel-item {
+			margin-top: -200px;
+			height: 650px;
+		}
+		.carousel-control-prev, .carousel-control-next {
+			height: 450px;
+		}
+		
+	/* 공간 상세 정보 */
+		.spacePic {
+			margin-top: -50px;
+			height: 450px;
+		}
+		.prevIcon, .nextIcon {
+			height: 400px;
+		}
+		.spaceTable {
+			margin-top: 30px;
+		}
+		.modal-footer {
+			display: inline-block;
+			margin: 0 auto;
+			text-align: center;
+			border-top: 1px solid lightgray;
+			width: 100%;
+		}
 }
     
 /* 반응형(모바일) */   
@@ -250,7 +278,7 @@
     
 	/* footer */
 		footer{
-			position: absolute;
+			position: fixed;
 			left: 0;
 			bottom: 0;
 			width: 100%;
@@ -296,23 +324,28 @@
 			text-align: center;
 			width: 100%;
 		}
-		.priceInfo{
+		.priceInfo, .spaceMgmtTable{
 			margin: 0 auto;
 			text-align: center;
 			width: 80%;
 		}
-		#priceData a{
+		#priceData a, #spaceInfo a, #highlight a{
 			display: block;
 			width: 100%;
 			height: 100%;
 		}
-		#priceData>td{
+		#priceData>td, #spaceInfo>td, #highlight>td{
 			padding: 0px;
 		}
-		#priceData:hover{
+		#priceData:hover, #spaceInfo:hover{
 			background-color: #eaf9f1;
 		}
-		#priceData>td>a:hover, #priceData>td>a:active, #priceData>td>a:visited, #priceData>td>a:link{
+		#highlight:hover{
+			background-color: lightyellow;
+		}
+		#priceData>td>a:hover, #priceData>td>a:active, #priceData>td>a:visited, #priceData>td>a:link,
+		#spaceInfo>td>a:hover, #spaceInfo>td>a:active, #spaceInfo>td>a:visited, #spaceInfo>td>a:link,
+		#highlight>td>a:hover, #highlight>td>a:active, #highlight>td>a:visited, #highlight>td>a:link{
 			color: black;
 			text-decoration: none;
 			cursor: pointer;
@@ -327,7 +360,7 @@
 			margin: 0 auto;
 			text-align: center;
 			width: 80%;
-			background-color: #eaf9f1;
+			background-color: rgba(234, 245, 252, 0.4);
 			margin-top: 50px;
 			padding-bottom: 50px;
 			border-radius: 25px 25px 25px 25px;
@@ -341,7 +374,7 @@
 		}
 		#submitApplication{
 			margin-top:30px;
-			background-color: #00893f;
+			background-color: rgba(19, 97, 252, 0.7);
 			border: 0;
 			width: 100%;
 			height: 50px;
@@ -636,14 +669,20 @@
 		#adminMain h2{
 			font-weight: bold;
 		}
-		#signUpMgmt, #reservationMgmt, #spaceMgmt, #memberMgmt{
+		#signUpMgmt{
+			border-top: 3px dotted lightblue;
+			margin-top: 10px;
+		}
+		#spaceMgmt{
+			border-right: 3px dotted lightblue;
+		}
+		#signUpMgmt, #reservationMgmt, #spaceMgmt{
 			display: table-cell;
 			vertical-align: top;
-			width: 50%;
 			margin: 0 auto;
 			text-align: center;
 			padding-top: 20px;
-			padding: 30px;
+			border-radius: 80px 0px 80px 0px;
 		}
 		#more{
 			float: right;
@@ -655,25 +694,26 @@
 			border-radius: 5px 5px 5px 5px;
 			padding: 5px;
 		}
-		#admissionTitle, #memberTitle, #spaceMgmtTitle{
+		#admissionTitle, #spaceMgmtTitle{
 			margin-top: 43px;
 		}
-		#signUpMgmtTable, #memberMgmtTable, #spaceMgmtTable{
+		#signUpMgmtTable, #spaceMgmtTable{
 			width: 90%;
-			min-width: 600px;
+			min-width: 350px;
 			margin: 0 auto;
 			margin-top: 20px;
 			text-align: center;
 		}
-		#signUpMgmtTable tr td, th, #memberMgmtTable tr td, th, #spaceMgmtTable tr td, th{
+		#signUpMgmtTable tr td, th, #spaceMgmtTable tr td, th{
 			border: 1px solid black;
 		}
-		#signUpMgmtTable tr th, #memberMgmtTable tr th, #spaceMgmtTable tr th{
+		#signUpMgmtTable tr th, #spaceMgmtTable tr th{
 			background-color: #dbe7f4;
 			color: darkblue;
 		}
 		#text01{
 			margin-top: 10px;
+			margin-left: 5%;
 			float: left;
 			color: red;
 		}
