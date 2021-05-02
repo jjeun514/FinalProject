@@ -89,22 +89,30 @@
 					</div>
 	       
 					<table class="table spaceTable">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">First</th>
-								<th scope="col">Last</th>
-								<th scope="col">Handle</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">1</th>
-								<td>Mark</td>
-								<td>Otto</td>
-								<td>@mdo</td>
-		 					</tr>
-						</tbody>
+						<tr>
+							<th>지점</th>
+							<td>here</td>
+							<th>가격</th>
+							<td>here</td>
+						</tr>
+						<tr>
+							<th>층</th>
+							<td>here</td>
+							<th>임대현황</th>
+							<td>here</td>
+						</tr>
+						<tr>
+							<th>호수</th>
+							<td>here</td>
+							<th>가용인원</th>
+							<td>here</td>
+						</tr>
+						<tr>
+							<th>평수</th>
+							<td>here</td>
+							<th>현재입주사</th>
+							<td>here</td>
+						</tr>
 					</table>
 	
 					<a class="carousel-control-prev prevIcon" href="#carouselExampleCaptions" role="button" data-slide="prev">

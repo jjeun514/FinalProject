@@ -5,7 +5,7 @@ public class OfficeVo {
 	private String branchName,comName,acreages,photo;
 	public OfficeVo() {}
 	public OfficeVo(int officeNum, int branchCode, int floor, int rent, int occupancy, int max, String acreages,
-			String photo) {
+			String photo, String branchName, String comName) {
 		super();
 		this.officeNum = officeNum;
 		this.branchName = branchName;

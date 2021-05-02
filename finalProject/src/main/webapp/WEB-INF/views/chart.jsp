@@ -28,13 +28,11 @@
 		var labels=[];
 		<c:forEach items="${roomNum}" var="roomNum">
 			labels.push('${roomNum.roomNum}');
-			console.log(${roomNum.roomNum});
 		</c:forEach>
 		
 		var datas=[];
 		<c:forEach items="${totalReservation}" var="totalReservation">
 			datas.push(${totalReservation.totalReservation});
-			console.log(${totalReservation.totalReservation});
 		</c:forEach>
 		
 		var ctx = document.getElementById("chart").getContext('2d');
@@ -68,15 +66,26 @@
 				      }]
 				  }
 				});
+			
+			var index;
+			var sum=0;
+			for(index=0; index<datas.length; index++){
+				sum=sum+datas[index];
+			}
+			if(sum==0){
+				datas=[0];
+				$('#resMsg').css('color','red');
+				$('#resMsg').css('background-color','lightyellow');
+			}else{
+				$('#resMsg').css('color','rgba(0,0,0,0)');
+				$('#resMsg').css('background-color','transparent');
+			}
 		};
 		
 		drawing();
 
 		$(document).on('click','#dateBtn',function() {
 			var dateSelected=$('#dateInput').val();
-			console.log('선택날짜:');
-			console.log(dateSelected);
-			console.log($('#dateInput').val());
 				$.ajax({
 					url: "/chart",
 					type: "POST",
@@ -86,32 +95,10 @@
 						dateSelected: dateSelected
 					},
 					success: function(updatedTotalReservation){
-						console.log('[ajax 성공]');
 						$.each(updatedTotalReservation, function(key, value){
 							datas=value;
-							console.log(key);
-							console.log(value);
 						});
-						console.log('[ajax성공] datas: ');
-						console.log(datas);
-						
-						console.log(datas.length);
-						var index;
-						var sum=0;
-						for(index=0; index<datas.length; index++){
-							console.log('index: '+index+', data: '+datas[index]);
-							sum=sum+datas[index];
-							console.log('sum: '+sum);
-						}
-						if(sum==0){
-							console.log('sum=0');
-							datas=[0];
-							$('#resMsg').css('color','red');
-							$('#resMsg').css('background-color','lightyellow');
-						}else{
-							console.log('sum!=0');
-						}
-						
+
 						chart.destroy();
 						drawing();
 					},

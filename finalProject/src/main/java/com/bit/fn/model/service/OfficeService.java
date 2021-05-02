@@ -25,4 +25,8 @@ public class OfficeService {
 	public List<OfficeVo> spaceInfo(){
 		return officeMapper.spaceInfo();
 	}
+	
+	public List<OfficeVo> officeDetail(int officeNum){
+		return officeMapper.officeDetail(officeNum);
+	}
 }
