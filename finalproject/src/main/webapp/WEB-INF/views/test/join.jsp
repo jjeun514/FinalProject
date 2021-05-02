@@ -10,6 +10,7 @@
 <body>
 	<h1>조인</h1>
 	<div>
+	<!-- 
 	<c:forEach items="${list }" var="bean">
 		${bean }
 		${bean.branch.branchCode}
@@ -18,5 +19,6 @@
 		${aa }
 	</c:forEach>
 	</div>
+	 -->
 </body>
 </html>

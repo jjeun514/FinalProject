@@ -17,4 +17,8 @@ public class MemberInfoAndCompanyInfoService {
 		return memberInfoAndCompanyInfoMapper.memberOne(id);
 	}
 	
+	public int updateInfo(String memNickName, String memPhone, String dept, String id) {
+		return memberInfoAndCompanyInfoMapper.updateInfo(memNickName, memPhone, dept, id);
+	}
+	
 }

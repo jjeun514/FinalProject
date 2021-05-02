@@ -13,4 +13,11 @@
     	 where
     	 id=#{value}
    	</select>
+   	<delete id="deleteOne">
+   		DELETE
+   		FROM
+   			masteraccount
+   		WHERE
+   			id=#{value}
+   	</delete>
 </mapper>

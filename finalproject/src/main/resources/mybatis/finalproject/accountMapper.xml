@@ -5,15 +5,15 @@
     <select id="selectAll" resultType="com.bit.fn.security.model.Account">
     	 SELECT 
     	 	* 
-    	 from 
+    	 FROM 
     	 	account
    	</select>
    	<select id="selectOne" resultType="com.bit.fn.security.model.Account">
     	 SELECT 
     	 	* 
-    	 from 
+    	 FROM 
     	 	account 
-    	 where 
+    	 WHERE 
     	 username=#{username}
    	</select>
    	<update id="updatePw">
@@ -25,6 +25,13 @@
    			username=#{username}
    	
    	</update>
+   	<delete id="deleteOne">
+   		DELETE 
+   		FROM 
+   			account
+   		WHERE
+   			username=#{username}
+   	</delete>
    	
 </mapper>
 

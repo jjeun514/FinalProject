@@ -2,6 +2,7 @@ package com.bit.fn.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.fn.model.service.AccountRoleService;
 import com.bit.fn.model.service.AdminAccountService;
+import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.security.model.Account;
 import com.bit.fn.security.service.AccountService;
@@ -27,16 +31,22 @@ import com.bit.fn.security.service.AccountService;
 @ComponentScan
 public class AccountController {
 	@Autowired
-	AdminAccountService adminAccountService;
+	private com.bit.fn.model.service.UserAccountService u_accountService;
 	
 	@Autowired
 	private AccountService s_accountService;
 	
 	@Autowired
-	private com.bit.fn.model.service.UserAccountService u_accountService;
+	AdminAccountService adminAccountService;
+	
+	@Autowired
+	MasterAccountService masterAccountService;
 	
 	@Autowired
 	private MemberinfoService memberinfoService;
+	
+	@Autowired
+	AccountRoleService accountRoleService;
 	
 	/*
 	@RequestMapping("/index")
@@ -193,7 +203,7 @@ public class AccountController {
 		return result;
 	}
 	
-	@RequestMapping(path="/updatePw", method=RequestMethod.POST, produces = "application/x-www-form-urlencoded; charset=UTF-8")
+	@RequestMapping(path="/updatePw", method=RequestMethod.PUT, produces = "application/x-www-form-urlencoded; charset=UTF-8")
 	@ResponseBody
 	public String updatePw(String newCheckPw, Principal principal) {
 		
@@ -212,6 +222,46 @@ public class AccountController {
 		}
 		return send;
 	}
+	
+	@DeleteMapping("/withdraw" )
+	public String withdraw(Principal principal, HttpSession session) {
+		//아이디
+		String username = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//권한에 따른 계정 정보 삭제
+		if(admin != -1) {
+			System.out.println("탈퇴할 계정은 어드민입니다.");
+			adminAccountService.deleteOne(username);
+		}else if(master != -1) {
+			System.out.println("탈퇴할 계정은 마스터입니다.");
+			masterAccountService.deleteOne(username);
+		}else if(member != -1) {
+			System.out.println("탈퇴할 계정은 멤버입니다.");
+			memberinfoService.deleteOne(username);
+		}else {
+			return "redirect:/index";
+		}
+		
+		//accountRole 권한 삭제
+		int accountNum = u_accountService.selectOne(username).getNum();
+		accountRoleService.deleteOne(accountNum);
+		
+		//account 계정 삭제
+		u_accountService.deleteOne(username);
+		
+		//로그아웃
+		session.invalidate();
+		
+		return "redirect:/index";
+	}
+	
+	
+	
 	
 	
 	

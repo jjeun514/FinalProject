@@ -32,5 +32,12 @@
     	 where
     	 memNickName=#{value}
    	</select>
+   	<delete id="deleteOne">
+   		DELETE
+   		FROM
+   			memberinfo
+   		WHERE
+   			id=#{value}
+   	</delete>
    	
 </mapper>

@@ -14,8 +14,23 @@
     	 from 
     	 	adminaccount
     	 where
-    	 id=#{value}
+    		id=#{value}
    	</select>
+   	<update id="updateInfo">
+   		UPDATE 
+   			adminaccount 
+   		SET 
+   			nickName=#{nickName} 
+   		WHERE 
+   			id=#{id}
+   	</update>
+   	<delete id="deleteOne">
+   		DELETE
+   		FROM
+   		 adminaccount
+   		WHERE
+   			id=#{value}
+   	</delete>
    	
 </mapper>
 

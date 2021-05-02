@@ -34,19 +34,24 @@
     
     <select id="memberOne" resultMap="MemberInfoAndCompanyInfoMap">
     	 select
-    	 a.memNum, a.memName, a.memNickName, a.id, a.comCode, a.dept, a.memPhone, a.signdate, b.comName	
+    	 a.memNum, a.memName, a.memNickName, a.id, a.comCode, a.dept, a.memPhone, a.signdate, b.comName, b.ceo, b.manager, b.comPhone, b.contractDate, b.rentStartDate, b.rentFinishDate,b.point 
     	 from	
     	 (SELECT
-    	 	*
+    	 	memNum, memName, memNickName, id, comCode, dept, memPhone, signdate 
     	 from
     	 	memberInfo 
     	 where id=#{id}
     	 ) a
     	 inner join
     	 	companyInfo b on a.comCode=b.comCode
-    	 
-    	 
    	</select>
-   	
+   	<update id="updateInfo">
+   			UPDATE 
+   				memberInfo  
+			SET 
+				memNickName=#{memNickName}, memPhone=#{memPhone}, dept=#{dept} 
+			WHERE
+				id=#{id}
+   	</update>
 </mapper>
 

@@ -19,20 +19,19 @@
     	<collection property="branch" resultMap="BranchMap"/>
     </resultMap>
     
-    <select id="selectAll" resultMap="BranchAndAdminMap">
+    <select id="adminOne" resultMap="BranchAndAdminMap">
     	 SELECT 
-    	 	*
-    	 from 
-    	 	adminAccount a
+    	 a.adminNum, a.id, a.branchCode, a.nickName, a.profile, b.branchName 
+    	 from	
+    	 (SELECT
+    	 	adminNum, id, branchCode, nickName, profile
+    	 from
+    	 	adminAccount 
+    	 WHERE id=#{id}
+    	 ) a
     	 inner join
-    	 	branch b on a.branchCode=b.branchCode;
+    	 	branch b on a.branchCode=b.branchCode
    	</select>
    	
-   	<select id="selectaa" resultMap="BranchAndAdminMap">
-   		select
-   			*
-   		from
-   			adminAccount;
-   	</select>
 </mapper>
 

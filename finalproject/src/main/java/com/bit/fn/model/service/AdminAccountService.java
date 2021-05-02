@@ -21,4 +21,11 @@ public class AdminAccountService {
 	public AdminAccountVo selectOne(String id) {
 		return accountMapper.selectOne(id);
 	}
+	
+	public int deleteOne(String id) {
+		return accountMapper.deleteOne(id);
+	}
+	public int updateInfo(String nickName, String id) {
+		return accountMapper.updateInfo(nickName,id);
+	}
 }

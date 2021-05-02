@@ -32,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**").permitAll()
 			//어드민 계정만 접근 가능
 				.antMatchers("/user").hasRole("ADMIN")
+			//로그인한 사용자 접근
+				.antMatchers("/withdraw").hasAnyRole("ADMIN","MASTER","MEMBER")
 			//그 외 모든 요청은 인증된 사용자만 접근이 가능하다
 				.anyRequest().authenticated()
 				.and()

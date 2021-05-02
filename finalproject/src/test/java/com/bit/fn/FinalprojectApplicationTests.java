@@ -99,10 +99,10 @@ class FinalprojectApplicationTests {
 		assertNotNull(officefacilitiesService.selectAll());
 		assertNotNull(ofiiceService.selectAll());
 		assertNotNull(reservationService.selectAll());
-		assertNotNull(branchAndAdminService.selectAll());
+		//assertNotNull(branchAndAdminService.selectAll());
 		
 		System.out.println(reservationService.selectAll());
-		System.out.println(branchAndAdminService.selectAll());
+		//System.out.println(branchAndAdminService.selectAll());
 	}
 
 }

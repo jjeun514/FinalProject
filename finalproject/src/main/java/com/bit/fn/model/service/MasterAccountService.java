@@ -21,4 +21,8 @@ public class MasterAccountService {
 	public MasterAccountVo selectOne(String id) {
 		return masterAccountMapper.selectOne(id);
 	}
+	
+	public int deleteOne(String id) {
+		return masterAccountMapper.deleteOne(id);
+	}
 }

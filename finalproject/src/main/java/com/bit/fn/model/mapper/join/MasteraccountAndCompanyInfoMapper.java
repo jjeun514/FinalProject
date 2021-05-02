@@ -12,4 +12,11 @@ import com.bit.fn.model.vo.join.MasteraccountAndCompanyInfoVo;
 @Mapper
 public interface MasteraccountAndCompanyInfoMapper {
 	public MasteraccountAndCompanyInfoVo masterOne(@Param("id") String id);
+	public int updateInfo(
+						  @Param("comName") String comName, 
+						  @Param("ceo") String ceo, 
+						  @Param("manager") String manager, 
+						  @Param("comPhone") String comPhone, 
+						  @Param("id") String id
+						 );
 }

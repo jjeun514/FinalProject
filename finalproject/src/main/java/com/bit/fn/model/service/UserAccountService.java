@@ -16,6 +16,9 @@ public class UserAccountService {
 	public Account selectOne(String id){
 		return accountMapper.selectOne(id);
 	}
+	public int deleteOne(String id){
+		return accountMapper.deleteOne(id);
+	}
 	
 	public int updatePw(String password, String username) {
 		return accountMapper.updatePw(password, username);

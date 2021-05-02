@@ -30,19 +30,26 @@
     
     <select id="masterOne" resultMap="MasteraccountAndCompanyInfoMap">
     	 select
-    	 a.masterNum, a.id, a.comCode, a.signdate, a.profile, b.comName	
+    	 a.masterNum, a.id, a.comCode, a.signdate, a.profile, b.comName, b.ceo, b.manager, b.comPhone, b.contractDate, b.rentStartDate, b.rentFinishDate,b.point 
     	 from	
     	 (SELECT
-    	 	*
+    	 	 masterNum, id, comCode, signdate, profile 
     	 from
     	 	masteraccount 
     	 where id=#{id}
     	 ) a
     	 inner join
     	 	companyInfo b on a.comCode=b.comCode
-    	 
-    	 
    	</select>
+   	<update id="updateInfo">
+   			UPDATE 
+   				companyInfo b inner join masteraccount a 
+				on a.comCode=b.comCode 
+			SET 
+				b.comName=#{comName}, b.ceo=#{ceo}, b.manager=#{manager}, b.comPhone=#{comPhone}  
+			WHERE
+				a.id=#{id}
+   	</update>
    	
 </mapper>
 
