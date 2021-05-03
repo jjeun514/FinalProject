@@ -1,22 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
- <div class="container-fluid c2">
-  <footer><!--footer start-->
-   <div class="row r5">
-    <div class="col" id="icon">
-     <a href="#"><img src="imgs/instagram.svg" ></a>
-     <a href="#"><img src="imgs/facebook.svg" ></a>
-     <a href="#"><img src="imgs/twitter.svg" ></a>
-    </div>
-   </div><!--row(r5) end-->
-   <div class="row r6">
-    <div class="col">
-     <p>
-      192-86-01409 / 기업은행 323-137659-04-xxx (주)9:Clack<br>
-      Tel : 02-6408-2325 / YEONHUI : 서울시 서대문구 연희로25길 13 덕화빌딩 3층<br>
-      GANGNAM : 서울시 강남구 논현로 102 덕흥빌딩 4, 5, 6층 (개포동 1239-15)
-     </p>
-    </div>
-   </div><!--row(r6) end-->
-  </footer><!--footer end-->
- </div>
+<div class="container-fluid footerDiv">
+<footer>
+	<table id="footerTable">
+		<tr>
+			<td id="btmLeftTd">
+				<div id="btmLinks">
+					<a href="/privacy">개인정보처리방침</a>
+				</div>
+			</td>
+			<td id="iconTd">
+				<div id="icon">
+					<a href="https://www.instagram.com/"><img src="imgs/instagram.png" ></a>
+					<a href="https://www.facebook.com/"><img src="imgs/facebook.png" ></a>
+					<a href="https://twitter.com/"><img src="imgs/twitter.png" ></a>
+				</div>
+		  	</td>
+  		</tr>
+	</table>
+  	<address>
+		서울시 강남구 역삼1동 1057 170-10<br>
+		Copyright &copy; <strong>9'o Clock</strong>
+	</address>
+</footer>
+</div>
+</body>
+</html>

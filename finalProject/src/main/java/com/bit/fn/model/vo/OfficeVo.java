@@ -2,12 +2,14 @@ package com.bit.fn.model.vo;
 
 public class OfficeVo {
 	private int officeNum,branchCode,floor,rent,occupancy,max;
-	private String acreages,photo;
+	private String branchName,comName,acreages,photo;
 	public OfficeVo() {}
 	public OfficeVo(int officeNum, int branchCode, int floor, int rent, int occupancy, int max, String acreages,
-			String photo) {
+			String photo, String branchName, String comName) {
 		super();
 		this.officeNum = officeNum;
+		this.branchName = branchName;
+		this.comName = comName;
 		this.branchCode = branchCode;
 		this.floor = floor;
 		this.rent = rent;
@@ -15,6 +17,18 @@ public class OfficeVo {
 		this.max = max;
 		this.acreages = acreages;
 		this.photo = photo;
+	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	public String getComName() {
+		return comName;
+	}
+	public void setComName(String comName) {
+		this.comName = comName;
 	}
 	public int getOfficeNum() {
 		return officeNum;
@@ -70,6 +84,8 @@ public class OfficeVo {
 		int result = 1;
 		result = prime * result + ((acreages == null) ? 0 : acreages.hashCode());
 		result = prime * result + branchCode;
+		result = prime * result + ((branchName == null) ? 0 : branchName.hashCode());
+		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
 		result = prime * result + floor;
 		result = prime * result + max;
 		result = prime * result + occupancy;
@@ -94,6 +110,16 @@ public class OfficeVo {
 			return false;
 		if (branchCode != other.branchCode)
 			return false;
+		if (branchName == null) {
+			if (other.branchName != null)
+				return false;
+		} else if (!branchName.equals(other.branchName))
+			return false;
+		if (comName == null) {
+			if (other.comName != null)
+				return false;
+		} else if (!comName.equals(other.comName))
+			return false;
 		if (floor != other.floor)
 			return false;
 		if (max != other.max)
@@ -114,8 +140,7 @@ public class OfficeVo {
 	@Override
 	public String toString() {
 		return "OfficeVo [officeNum=" + officeNum + ", branchCode=" + branchCode + ", floor=" + floor + ", rent=" + rent
-				+ ", occupancy=" + occupancy + ", max=" + max + ", acreages=" + acreages + ", photo=" + photo + "]";
+				+ ", occupancy=" + occupancy + ", max=" + max + ", branchName=" + branchName + ", comName=" + comName
+				+ ", acreages=" + acreages + ", photo=" + photo + "]";
 	}
-	
-	
 }

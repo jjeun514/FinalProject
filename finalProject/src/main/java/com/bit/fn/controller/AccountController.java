@@ -99,7 +99,7 @@ public class AccountController {
 	
 	//멤버 회원가입
 	@PostMapping("/joinMember")
-	public String joinMember(Account account,@Param("memName")String memName, String memNickName, @RequestParam(name = "username") String id,int comCode,String dept, String memPhone) {
+	public String joinMember(Account account,@Param("memName")String memName, String memNickName, @RequestParam(name = "username", required = true) String id,int comCode,String dept, String memPhone) {
 		System.out.println(account);
 		System.out.println("memName="+memName);
 		System.out.println("memNickName="+memNickName);

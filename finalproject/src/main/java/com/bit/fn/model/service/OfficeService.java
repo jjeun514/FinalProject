@@ -10,11 +10,23 @@ import com.bit.fn.model.vo.OfficeVo;
 
 
 @Service
-public class OfiiceService {
+public class OfficeService {
 	@Autowired
 	OfficeMapper officeMapper;
 	
 	public List<OfficeVo> selectAll(){
 		return officeMapper.selectAll();
+	}
+	
+	public List<OfficeVo> selectPriceInfo(){
+		return officeMapper.selectPriceInfo();
+	}
+	
+	public List<OfficeVo> spaceInfo(){
+		return officeMapper.spaceInfo();
+	}
+	
+	public List<OfficeVo> officeDetail(int officeNum){
+		return officeMapper.officeDetail(officeNum);
 	}
 }

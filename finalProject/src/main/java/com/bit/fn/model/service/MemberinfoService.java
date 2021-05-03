@@ -25,6 +25,21 @@ public class MemberinfoService {
 		return memberInfoMapper.idCount(id);
 	}
 	
+	public MemberInfoVo selectId(String name, String phone) {
+		return memberInfoMapper.selectId(name, phone);
+	}
+	
+	public MemberInfoVo checkInfo(String name, String id, String phone) {
+		return memberInfoMapper.checkInfo(name, id, phone);
+	}
+	
+	public List<MemberInfoVo> pending() {
+		return memberInfoMapper.pending();
+	}
+	public List<MemberInfoVo> approved() {
+		return memberInfoMapper.approved();
+	}
+	
 	public int nicknameCount(String memNickName) {
 		return memberInfoMapper.nicknameCount(memNickName);
 	}

@@ -19,7 +19,6 @@ import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.service.MettingRoomFacilitiesService;
 import com.bit.fn.model.service.MettingRoomService;
 import com.bit.fn.model.service.OfficefacilitiesService;
-import com.bit.fn.model.service.OfiiceService;
 import com.bit.fn.model.service.ReservationService;
 import com.bit.fn.model.service.join.BranchAndAdminService;
 
@@ -58,9 +57,6 @@ class FinalprojectApplicationTests {
 	OfficefacilitiesService officefacilitiesService;
 	
 	@Autowired
-	OfiiceService ofiiceService; 
-	
-	@Autowired
 	ReservationService reservationService;
 	
 	@Autowired
@@ -79,7 +75,6 @@ class FinalprojectApplicationTests {
 		assertNotNull(mettingRoomFacilitiesService);
 		assertNotNull(mettingRoomService);
 		assertNotNull(officefacilitiesService);
-		assertNotNull(ofiiceService);
 		assertNotNull(reservationService);
 		assertNotNull(branchAndAdminService);
 	}
@@ -97,7 +92,6 @@ class FinalprojectApplicationTests {
 		assertNotNull(mettingRoomFacilitiesService.selectAll());
 		assertNotNull(mettingRoomService.selectAll());
 		assertNotNull(officefacilitiesService.selectAll());
-		assertNotNull(ofiiceService.selectAll());
 		assertNotNull(reservationService.selectAll());
 		//assertNotNull(branchAndAdminService.selectAll());
 		
