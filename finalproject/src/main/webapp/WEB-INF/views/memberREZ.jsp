@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   <title>MEMBER : RESERVATION</title>
-<%@ include file="../template/memberPageHeader.jspf" %>
+<%@ include file="./template/memberPageHeader.jspf" %>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
 <script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
@@ -346,7 +346,7 @@ $( function() {
 	</div>
 </body>
 <!--body end-->
-<%@ include file="../template/footer.jspf" %>
+<%@ include file="./template/footer.jspf" %>
 </html>
 
 

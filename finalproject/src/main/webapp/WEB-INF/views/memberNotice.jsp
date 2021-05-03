@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<title>MEMBER : BOARD</title>
-<%@ include file="../template/memberPageHeader.jspf" %>
+  <title>MEMBER : NOTICE</title>
+<%@ include file="./template/memberPageHeader.jspf" %>
 <script>
 //게시판 검색기능//
   $(document).ready(function() {
@@ -71,34 +71,24 @@
 						</div>
 					</form>
 				</div>
-				<button id = "writebtn" type="button" class="btn btn-default">글쓰기</button>
 				<div class="col-md-12">
-					<table id = "bbsTable" class="table table-list-search">
+					<table class="table table-list-search">
 						<thead>
 							<tr>
 								<th>번호</th>
 								<th>제목</th>
-								<th>닉네임</th>
-								<th>회사명</th>
+								<th>작성자</th>
+								<th>조회수</th>
 								<th>날짜</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var = "list" items = "${NoticeList }">
-								<tr id = "notice">
-									<td>공지</td>
-									<td>${list.title }</td>
-									<td>admin</td>
-									<td>${list.nickName }</td>
-									<td>${list.date }</td>
-								</tr>
-							</c:forEach>
-							<c:forEach var = "list" items = "${boardList }">
+							<c:forEach var = "list" items = "${noticeList }">
 								<tr>
 									<td>${list.num }</td>
 									<td>${list.title }</td>
-									<td>${list.memName }</td>
-									<td>${list.comName }</td>
+									<td>${list.nickName }</td>
+									<td>${list.count }</td>
 									<td>${list.date }</td>
 								</tr>
 							</c:forEach>
@@ -109,9 +99,8 @@
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
-<%@ include file="../template/footer.jspf" %>
+<%@ include file="./template/footer.jspf" %>
 </html>
-
 
 
 <!--

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  <title>MEMBER : INTRO</title>
-<%@ include file="../template/memberPageHeader.jspf" %>
+  <title>MEMBER : SCHEDULE</title>
+<%@ include file="./template/memberPageHeader.jspf" %>
 <script>
 //게시판 검색기능//
   $(document).ready(function() {
@@ -107,7 +107,7 @@
 	</div><!--centent end-->
 </body>
 <!--body end-->
-<%@ include file="../template/footer.jspf" %>
+<%@ include file="./template/footer.jspf" %>
 </html>
 
 
