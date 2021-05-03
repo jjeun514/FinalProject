@@ -57,35 +57,35 @@ public class AccountController {
 	}
 	*/
 	
+	//로그인
 	@GetMapping("/login")
 	public String login() {
 		return "test/login";
 	}
 	
+	//지울예정
 	@GetMapping("/resister")
 	public String resister() {
 		
 		return "test/resister";
 	}
 	
+	//지울예정
 	@GetMapping("/jungbok")
 	public String jungbok() {
 		
 		return "test/jungbok";
 	}
 	
+	//지울예정
 	@GetMapping("/user")
 	public String user() {
 		
 		return "test/user";
 	}
 	
-	@GetMapping("/denied")
-	public String denied() {
-		
-		return "test/denied";
-	}
 	
+	//지울예정인 예전 회원가입
 	@PostMapping("/resister")
 	public String resister(Account account) {
 		try {
@@ -97,6 +97,7 @@ public class AccountController {
 	}
 	
 	
+	//멤버 회원가입
 	@PostMapping("/joinMember")
 	public String joinMember(Account account,@Param("memName")String memName, String memNickName, @RequestParam(name = "username") String id,int comCode,String dept, String memPhone) {
 		System.out.println(account);
@@ -119,6 +120,7 @@ public class AccountController {
 	}
 	
 	
+	//테스트용(지울예정)
 	@GetMapping("/test/info")
 	public String test(Principal  principal,Model model) {
 		
@@ -141,6 +143,7 @@ public class AccountController {
 		return "test/info";
 	}
 	
+	//계정 확인
 	@RequestMapping(path="/usercheck", method=RequestMethod.POST)
 	@ResponseBody
 	public String usercheck(@RequestBody String username ) {
@@ -160,6 +163,7 @@ public class AccountController {
 		return id;
 	}
 	
+	//닉네임 확인
 	@RequestMapping(path="/nickNameCheck", method=RequestMethod.POST, produces = "application/x-www-form-urlencoded; charset=UTF-8")
 	@ResponseBody
 	public String nickNameCheck(String memNickName ) {
@@ -179,6 +183,7 @@ public class AccountController {
 		return memNickName;
 	}
 	
+	//비밀번호 확인
 	@RequestMapping(path="/checkPw", method=RequestMethod.POST, produces = "application/x-www-form-urlencoded; charset=UTF-8")
 	@ResponseBody
 	public String checkPw(String pw, Principal principal) {
@@ -203,6 +208,7 @@ public class AccountController {
 		return result;
 	}
 	
+	//비밀번호 변경
 	@RequestMapping(path="/updatePw", method=RequestMethod.PUT, produces = "application/x-www-form-urlencoded; charset=UTF-8")
 	@ResponseBody
 	public String updatePw(String newCheckPw, Principal principal) {
@@ -223,7 +229,8 @@ public class AccountController {
 		return send;
 	}
 	
-	@DeleteMapping("/withdraw" )
+	//회원탈퇴
+	@DeleteMapping("/withdraw")
 	public String withdraw(Principal principal, HttpSession session) {
 		//아이디
 		String username = principal.getName();

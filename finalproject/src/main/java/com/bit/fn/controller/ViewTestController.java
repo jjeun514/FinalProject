@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +16,6 @@ import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.service.join.BranchAndAdminService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
 import com.bit.fn.model.service.join.MemberInfoAndCompanyInfoService;
-import com.bit.fn.model.vo.join.BranchAndAdminVo;
 
 @Controller
 public class ViewTestController {
@@ -54,6 +52,7 @@ public class ViewTestController {
 		return "detail";
 	}
 	
+	//마이페이지
 	@RequestMapping("/mypage")
 	public String myPage(Principal  principal,Model model) {
 		//아이디
@@ -94,6 +93,7 @@ public class ViewTestController {
 		return "myPage";
 	}
 	
+	//마이페이지 정보수정
 	@PutMapping("/modifyInfo")
 	public String modifyInfo(Principal  principal, @RequestParam Map<String, String> allParameters) {
 		System.out.println(allParameters.toString());

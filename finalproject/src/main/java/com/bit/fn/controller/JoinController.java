@@ -14,6 +14,7 @@ public class JoinController {
 	@Autowired
 	BranchAndAdminService branchAndAdminService;
 	
+	//삭제예정
 	@RequestMapping("/join")
 	public ModelAndView index() {
 		ModelAndView mav=new ModelAndView();
