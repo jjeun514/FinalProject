@@ -28,6 +28,9 @@
 	//정보 수정 시 종합 검사용
 	var booInfo=false;
 	
+	//멤버 닉네임 중복 검사용
+	var memNickBoo=false;
+	
 	//기존 비밀번호 확인 및 새 비밀번호 사용가능 확인
 	var booExPw=false;
 	var booNewPw=false;
@@ -123,6 +126,9 @@
 		var dept=$(".dept").val();
 		var memPhone=$(".memPhone").val();
 		
+		
+		
+		
 		//어드민 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".adminNickName").keyup(function(data){
 							   lengthCheck("adminNickName",2,10);
@@ -166,6 +172,44 @@
 							   lengthCheck("memNickName",2,10);
 							   unavailableCharacter(data,"memNickName",pattern_spc);
 							   memNickName=$(".memNickName").val();
+						   }).focusout(function(){
+							    memNickName = $('.memNickName').val();
+								console.log(memNickName);
+								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
+									alert("공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요");
+								}else{
+									$.ajax({
+										url: "/nickNameCheck",
+										type : "POST",
+										data: {memNickName},
+										contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+										dataType: "text",
+										success: function(data){
+													console.log("data",data);
+													if(data=="Available"){
+														alert("사용가능한 닉네임입니다.");
+														//닉네임을 바꾸지 못하게 readonly
+														$(".memNickName").prop("readonly","readonly");
+														memNickBoo=true;
+													}else{
+														if(memNickName==$(".memNickName").attr("value")){
+															alert("닉네임 바뀌지않음");
+															memNickBoo==true;
+														}else{
+															alert("사용중인 닉네임입니다.");
+															memNickBoo=false;
+															$(".memNickName").focus();
+														}
+													}
+												 },
+										error: function(error){
+											console.log(error);
+											console.log("ajax 에러");
+										}
+										
+									});
+								}
+							   
 						   });
 		
 		//멤버 계정 부서 2자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
@@ -181,7 +225,6 @@
 							   unavailableCharacter(data,"memPhone",pattern_spc);
 							   memPhone=$(".memPhone").val();
 					   });
-		
 		
 		//수정 버튼 한 번 클릭 여부 확인 기능
 		var oneClick=false;
@@ -220,7 +263,13 @@
 						alert("값 강제 변경은 허용하지 않습니다");
 						return false;
 					}
-					
+					//기존 닉네임을 변경하였을 경우 닉네임 중복검사 여부
+					if(memNickName!=$(".memNickName").attr("value")){
+						if(memNickBoo==false){
+							alert("닉네임 중복을 확인해주세요");
+							return false;
+						}
+					}
 				}
 			}else{
 				return false;
