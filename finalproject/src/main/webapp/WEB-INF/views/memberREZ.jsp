@@ -52,6 +52,7 @@ $(document).ready(function() {
 						location.href = '/reservation';
 					} else { // 결제 창으로 이동
 						location.href = '/reservation/payment?roomNum='+data.room+"&day="+data.day+"&startTime="+data.startT+"&useTime="+data.useT+"&userCount="+data.userCount;
+						// 위 페이지 이동을 function으로 만들고, 성공했을 때 function으로 이동할 수 있게끔 작업
 					}
 				// 예약 신청 실패
 				} else if ( data.resultCode == 1 ) { 
@@ -157,23 +158,27 @@ $( function() {
 				},
 				dataType : "json",
 				success : function(data) {
+					
 					for ( no = 0; no < data.allList.length; no++ ){
+						
 						var list = data.allList[no];
 						
 						if ( list.memNum == 1 ) {
 							if ( list.finishT-list.startT > 1 ) {
-								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
-								$("#"+list.roomNum+"_"+Number(list.startT)+1).style = "background-color:rgba(0,0,0,0.5)"; // 이거 오류
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.5)");
+								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.5)");
 							} else {
-								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.5)");
+							}
+						} else if ( list.memNum != 1 ) {
+							if ( list.finishT-list.startT > 1 ) {
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(187,240,237,1)");
+								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(187,240,237,1)");
+							} else {
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(187,240,237,1)");
 							}
 						} else {
-							if ( list.finishT-list.startT > 1 ) {
-								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(187,240,237,1)";
-								$("#"+list.roomNum+"_"+Number(list.startT)+1).style = "background-color:rgba(187,240,237,1)";
-							} else {
-								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(187,240,237,1)";
-							}
+							$('content *').children().css("background-color", "rgba(0,0,0,0)");
 						}
 					}
 				},
@@ -203,7 +208,7 @@ $( function() {
 						</thead>
 						<tbody>
 							<c:forEach var = "list" items = "${roomList }">
-								<tr>
+								<tr id = "content">
 									<td id = "roomCell">${list.roomNum }</td>
 									<td id ="${list.roomNum }_09"></td>
 									<td id ="${list.roomNum }_10"></td>
