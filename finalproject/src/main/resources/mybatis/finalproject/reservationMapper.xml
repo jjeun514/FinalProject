@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.fn.model.mapper.ReservationMapper">
+    <select id="selectAll" resultType="com.bit.fn.model.vo.ReservationVo">
+    	 SELECT * from reservation
+   	</select>
+   	
+    <select id="selectAllRoomNum" resultType="com.bit.fn.model.vo.ReservationVo">
+    	 select roomNum from meetingRoom group by roomNum order by roomNum
+   	</select>
+   	
+    <select id="countReservation" resultType="com.bit.fn.model.vo.ReservationVo">
+    	 select tot.roomNum, tot.reservationDay, sum(tot.totalReservation) as totalReservation
+    	 from(
+    	 select room.roomNum, date_format(rez.useStartTime, '%Y-%m-%d') as reservationDay,
+    	 case when useStartTime is not null then 1 else 0 end as totalReservation
+    	 from meetingRoom room
+		 left outer join reservation rez on room.roomNum=rez.roomNum
+    	 and date_format(rez.useStartTime, '%Y-%m-%d')=#{today}
+    	 ) tot
+    	 group by tot.roomNum, tot.reservationDay
+   	</select>
+</mapper>

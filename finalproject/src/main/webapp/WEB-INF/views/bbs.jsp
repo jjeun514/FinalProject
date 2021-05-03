@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  
-<%@ include file="./template/header.jspf" %>
+<%@ include file="template/navbar.jspf" %>
 <script>
 //게시판 검색기능//
   $(document).ready(function() {
@@ -15,7 +14,6 @@
         var tableRowsClass = $('.table-list-search tbody tr');
         $('.search-sf').remove();
         tableRowsClass.each( function(i, val) {
-        
             //Lower text for case insensitive
             var rowText = $(val).text().toLowerCase();
             var inputText = $(that).val().toLowerCase();
@@ -35,7 +33,6 @@
             {
                 //hide rows
                 tableRowsClass.eq(i).hide();
-                
             }
             else
             {
@@ -50,83 +47,66 @@
         }
     });
 });  
-//게시판 검색기능//  
-    
 </script>
-<body>
-	<div class="content bbs"><!--content start-->
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3">
-					<form action="#" method="get">
-						<div class="input-group">
-							<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-							<input class="form-control" id="system-search" name="q"
-								placeholder="Search for" required> <span
-								class="input-group-btn">
-								<button type="submit" class="btn btn-default">
-									<i class="glyphicon glyphicon-search"></i>
-								</button>
-							</span>
-						</div>
-					</form>
-				</div>
-				<div class="col-md-9">
-					<table class="table table-list-search">
-						<thead>
-							<tr>
-								<th>번호</th>
-								<th>회사명</th>
-								<th>닉네임</th>
-								<th>제목</th>
-								<th>날짜</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Sample</td>
-								<td>Filter</td>
-								<td>12-11-2011 11:11</td>
-								<td>OK</td>
-								<td>123</td>
-							</tr>
-							<tr>
-								<td>호호</td>
-								<td>It</td>
-								<td>11-20-2013 08:56</td>
-								<td>It</td>
-								<td>Works</td>
-							</tr>
-							<tr>
-								<td>안농</td>
-								<td>It</td>
-								<td>11-20-2013 08:56</td>
-								<td>It</td>
-								<td>Works</td>
-							</tr>
-							<tr>
-								<td>더미더미</td>
-								<td>It</td>
-								<td>11-20-2013 08:56</td>
-								<td>It</td>
-								<td>Works</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div><!--centent end-->
-</body><!--body end-->
+
+<div class="content main bbs">
+ <div class="container">
+  <div class="row">
+   <div class="col-md-3">
+    <form action="#" method="get">
+     <div class="input-group">
+     <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+      <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+      <span class="input-group-btn">
+      <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+      </span>
+     </div>
+    </form>
+   </div>
+   <div class="col-md-9">
+    <table class="table table-list-search">
+     <thead>
+      <tr>
+       <th>번호</th>
+       <th>회사명</th>
+       <th>닉네임</th>
+       <th>제목</th>
+       <th>날짜</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>Sample</td>
+       <td>Filter</td>
+       <td>12-11-2011 11:11</td>
+       <td>OK</td>
+       <td>123</td>
+      </tr>
+      <tr>
+       <td>호호</td>
+       <td>It</td>
+       <td>11-20-2013 08:56</td>
+       <td>It</td>
+       <td>Works</td>
+      </tr>
+      <tr>
+       <td>안농</td>
+       <td>It</td>
+       <td>11-20-2013 08:56</td>
+       <td>It</td>
+       <td>Works</td>
+      </tr>
+      <tr>
+       <td>더미더미</td>
+       <td>It</td>
+       <td>11-20-2013 08:56</td>
+       <td>It</td>
+       <td>Works</td>
+      </tr>
+     </tbody>
+    </table>   
+   </div>
+  </div>
+ </div>
+</div>
 <%@ include file="./template/footer.jspf" %>
-</html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->
