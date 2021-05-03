@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="template/navbar.jspf" %>
+<%@ include file="template/AdminNavbar.jspf" %>
 <div class="content main">
 	<h1> 공간 관리 </h1>
 	<table class="table spaceMgmtTable">
@@ -19,10 +19,10 @@
 		<tbody>
 		<c:forEach items="${spaceInfo}" var="spaceInfo">
 			<c:if test="${spaceInfo.occupancy eq 0}">
-				<tr id="highlight" data-toggle="modal" data-target="#detail">
+				<tr id="highlight" data-toggle="modal" data-target="#detail" data-officenum="${spaceInfo.officeNum}">
 					<td><a href="#">${spaceInfo.branchName}</a></td>
 					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td><a href="#">${spaceInfo.officeNum}</a></td>
+					<td class="officeNum"><a href="#">${spaceInfo.officeNum}</a></td>
 					<td><a href="#">${spaceInfo.acreages}</a></td>
 					<td><a href="#">${spaceInfo.rent}</a></td>
 					<td id="empty"><a href="#">공실</a></td>
@@ -32,10 +32,10 @@
 			</c:if>
 			
 			<c:if test="${spaceInfo.occupancy eq 1}">
-				<tr id="spaceInfo" data-toggle="modal" data-target="#detail">
+				<tr id="spaceInfo" data-toggle="modal" data-target="#detail" data-officenum="${spaceInfo.officeNum}">
 					<td><a href="#">${spaceInfo.branchName}</a></td>
 					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td><a href="#">${spaceInfo.officeNum}</a></td>
+					<td class="officeNum"><a href="#">${spaceInfo.officeNum}</a></td>
 					<td><a href="#">${spaceInfo.acreages}</a></td>
 					<td><a href="#">${spaceInfo.rent}</a></td>
 					<td id="occupied"><a href="#">임대</a></td>
@@ -46,7 +46,57 @@
 		</c:forEach>
 		</tbody>
 	</table>
+	<script>
+	$(document).ready(function(){
+		var branchName, floor, officeNum, acreages, rent, occupancy, max, comName;
+		$('#detail').on('show.bs.modal', function(event) {
+			var officeNum="";
+			officeNum = $(event.relatedTarget).data('officenum');
+			console.log("offceNum: "+officeNum);
 
+			var csrfToken = $("meta[name='_csrf']").attr("content");
+			$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+				if (options['type'].toLowerCase() === "post") {
+					jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+				}
+			});
+			
+			$.ajax({
+				url: "/spaceMgmt",
+				type: "POST",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				data: {
+					officeNum:officeNum
+				},
+				success: function(data){
+					console.log('[ajax성공] spaceDetail: '+data);
+					console.log(typeof data);
+					var arr=data.split(",");
+					var arr2;
+					var arr3;
+					console.log(arr);
+					for (var i = 1; i < arr.length; i++) {
+					    console.log(arr[i]);
+					    arr2=arr[i].split(":");
+					    arr3=arr2[1].replaceAll("\"","");
+					    console.log('split: '+arr3);
+					    if(i=3){
+							var html = $('#branchName').html(arr3);
+							var contents = html.find("#branchName").html();
+					    }else{
+					    	return false;
+					    }
+					}
+				},
+				error: function(request, status, error){
+					console.log("ajax 에러");
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+				}
+			})
+        });
+	});
+	</script>
 <%//상세 Modal %>
 <div class="modal fade" id="detail" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -91,7 +141,7 @@
 					<table class="table spaceTable">
 						<tr>
 							<th>지점</th>
-							<td>here</td>
+							<td id="branchName">여기</td>
 							<th>가격</th>
 							<td>here</td>
 						</tr>
@@ -127,7 +177,7 @@
 			</div>
 		
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">목록</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='spaceMgmt'">목록</button>
 				<button type="button" class="btn btn-primary">수정</button>
 				<button type="button" class="btn btn-danger">삭제</button>
 			</div>
