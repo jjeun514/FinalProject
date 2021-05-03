@@ -240,7 +240,7 @@ public class MemberController {
 			
 		} else { // 조회된 내역이 없다면 신청 로직을 태움
 
-			// 결제 전 history 테이블에 임시 저장
+			// 결제 전 history 테이블에 저장
 			int insertReservaion = service.roomReservationTemp(reservation);
 			
 			// insert 결과에 따른 로직
@@ -357,6 +357,8 @@ public class MemberController {
 		
 		// 결제 요청된 파라미터 받음
 		String useStartTime = payContent.getUseStartTime();
+		int roomNum = payContent.getRoomNum();
+		String reservationDay = payContent.getReservationDay();
 
 		// 쿼리를 위한 파라미터 변환
 		int startT = Integer.parseInt(useStartTime);
@@ -365,34 +367,53 @@ public class MemberController {
 		
 		// 예약 메소드에 데이터 넣을 객체 생성 후 파라미터 받음
 		ReservationVo content = new ReservationVo();
-		content.setRoomNum(payContent.getRoomNum());
+		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);
-		content.setReservationDay(payContent.getReservationDay());
+		content.setReservationDay(reservationDay);
 		content.setMerchant_uid(payContent.getMerchant_uid());
 		content.setAmount(payContent.getAmount());
 		content.setUserCount(payContent.getUserCount());
 		
-		// reservation 테이블에 insert
-		int reservationResult = service.fixReservation(content);
+		// 결제하기 전에 해당 내역으로 예약이 있는지 여부를 최종 조회
+		int checkReservation = service.checkReservaion(roomNum, useStartTime, reservationDay);
 		
-		// insert 결과를 토대로 뷰에 전달할 결과 메시지
-		if ( reservationResult > 0 ) {
-			String resultMessage = "결제 후 예약이 정상적으로 처리되었습니다. 감사합니다.";
-			String resultCode = "0";
+		// 결제하는 도중에 다른 사람이 이미 예약/결제를 모두 마친 케이스
+		// 이렇게 되면 결제도 취소해줘야 함
+		if ( checkReservation > 0 ) {
 			
-			result.put("resultMessage", resultMessage);
-			result.put("resultCode", resultCode);
-			
-			return result;
-		} else {
-			String resultMessage = "결제와 예약이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.";
+			String resultMessage = "결제 후 예약이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.";
 			String resultCode = "1";
 			
 			result.put("resultMessage", resultMessage);
 			result.put("resultCode", resultCode);
 			
 			return result;
+			
+		} else {
+			
+			// reservation 테이블에 insert
+			int reservationResult = service.fixReservation(content);
+			
+			// reservation 테이블에 insert가 정상적으로 처리되었다면
+			if ( reservationResult > 0 ) {
+				String resultMessage = "결제 후 예약이 정상적으로 처리되었습니다. 감사합니다.";
+				String resultCode = "0";
+				
+				result.put("resultMessage", resultMessage);
+				result.put("resultCode", resultCode);
+				
+				return result;
+			} else {
+				String resultMessage = "결제 후 예약이 정상적으로 처리되지 않았습니다. 관리자에게 문의해주세요.";
+				String resultCode = "-1";
+				
+				result.put("resultMessage", resultMessage);
+				result.put("resultCode", resultCode);
+				
+				return result;
+			}
+			
 		}
 		
 	}

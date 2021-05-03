@@ -147,11 +147,6 @@ $( function() {
     	immediateUpdates: true,
     	todayHighlight : true,
     	
-    	/*
-    	엄청난 문제! 스타일 색상이 계속 쌓인다 ...
-    	파라미터는 String 형태로 받아오기 때문에 int 형태의 연산이 안된다.
-    	*/
-    	
     	onSelect : function(dateText, inst) {
 			$.ajax({
 				url : "/reservation/reservationList",
@@ -162,21 +157,20 @@ $( function() {
 				},
 				dataType : "json",
 				success : function(data) {
-		    		$('roomCell *').style = "background-color:rgba(0,0,0,0)";
 					for ( no = 0; no < data.allList.length; no++ ){
 						var list = data.allList[no];
 						
 						if ( list.memNum == 1 ) {
 							if ( list.finishT-list.startT > 1 ) {
 								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
-								$("#"+list.roomNum+"_"+list.startT+1)[0].style = "background-color:rgba(0,0,0,0.5)"; // 이거 오류
+								$("#"+list.roomNum+"_"+Number(list.startT)+1).style = "background-color:rgba(0,0,0,0.5)"; // 이거 오류
 							} else {
 								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(0,0,0,0.5)";
 							}
 						} else {
 							if ( list.finishT-list.startT > 1 ) {
 								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(187,240,237,1)";
-								$("#"+list.roomNum+"_"+list.startT+1)[0].style = "background-color:rgba(187,240,237,1)";
+								$("#"+list.roomNum+"_"+Number(list.startT)+1).style = "background-color:rgba(187,240,237,1)";
 							} else {
 								$("#"+list.roomNum+"_"+list.startT)[0].style = "background-color:rgba(187,240,237,1)";
 							}
