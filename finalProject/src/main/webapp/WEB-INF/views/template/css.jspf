@@ -76,9 +76,6 @@
 		.prevIcon, .nextIcon {
 			height: 400px;
 		}
-		.spaceTable {
-			margin-top: 30px;
-		}
 		.modal-footer {
 			display: inline-block;
 			margin: 0 auto;
@@ -719,5 +716,23 @@
 		}
 		#approval{
 			width: 40px;
+		}
+	/* 공간 관리 */
+		.spaceTable {
+			margin-top: 30px;
+		}
+		.spaceTable th {
+			background-color: lightyellow;
+		}
+		.spaceTable th,.spaceTable td {
+			width: 25%;
+			border: 1px lightgray solid;
+			margin: 0 auto;
+			text-align: center;
+		}
+		.spaceTitle {
+			margin: 0 auto;
+			text-align: center;
+			padding-top: 10px;
 		}
 </style>

@@ -1,6 +1,86 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#detail').on('show.bs.modal', function(event) {
+		var officeNum="";
+		officeNum = $(event.relatedTarget).data('officenum');
+		console.log("offceNum: "+officeNum);
+
+		var csrfToken = $("meta[name='_csrf']").attr("content");
+		$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+			if (options['type'].toLowerCase() === "post") {
+				jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+			}
+		});
+		
+		$.ajax({
+			url: "/spaceDetail",
+			type: "POST",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			dataType: "JSON",
+			data: {
+				officeNum:officeNum
+			},
+			success: function(data){
+				console.log('[ajax성공] data: '+JSON.stringify(data));
+				$.each(data, function(key, value){
+					$('#branchName').html(JSON.stringify(value[0].branchName).replaceAll("\"",""));
+					$('#floor').html(JSON.stringify(value[0].floor).replaceAll("\"",""));
+					$('#officeNum').html(JSON.stringify(value[0].officeNum).replaceAll("\"",""));
+					$('#acreages').html(JSON.stringify(value[0].acreages).replaceAll("\"",""));
+					$('#rent').html(JSON.stringify(value[0].rent).replaceAll("\"",""));
+					$('#max').html(JSON.stringify(value[0].max).replaceAll("\"",""));
+					$('#comName').html(JSON.stringify(value[0].comName).replaceAll("\"",""));
+					
+					if(JSON.stringify(value[0].occupancy)==0){
+						$('#occupancy').html('공실');
+					} else if(JSON.stringify(value[0].occupancy)==1){
+						$('#occupancy').html('임대중');
+					} else{
+						$('#occupancy').html('-');
+					}
+				});
+			},
+			error: function(request, status, error){
+				console.log("ajax 에러");
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+			}
+		})
+		
+		$.ajax({
+			url: "/officeFacilities",
+			type: "POST",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			dataType: "JSON",
+			data: {
+				officeNum:officeNum
+			},
+			success: function(data){
+				console.log('[ajax성공] data: '+JSON.stringify(data));
+				$.each(data, function(key, value){
+					$('#desk').html(JSON.stringify(value[0].desk).replaceAll("\"",""));
+					$('#chair').html(JSON.stringify(value[0].chair).replaceAll("\"",""));
+					$('#modem').html(JSON.stringify(value[0].modem).replaceAll("\"",""));
+					$('#fireExtinguisher').html(JSON.stringify(value[0].fireExtinguisher).replaceAll("\"",""));
+					$('#airConditioner').html(JSON.stringify(value[0].airConditioner).replaceAll("\"",""));
+					$('#radiator').html(JSON.stringify(value[0].radiator).replaceAll("\"",""));
+					$('#descendingLifeLine').html(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
+					$('#powerSocket').html(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
+				});
+			},
+			error: function(request, status, error){
+				console.log("ajax 에러");
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+			}
+		})
+       });
+});
+</script>
+
 <div class="content main">
 	<h1> 공간 관리 </h1>
 	<table class="table spaceMgmtTable">
@@ -46,41 +126,7 @@
 		</c:forEach>
 		</tbody>
 	</table>
-	<script>
-	$(document).ready(function(){
-		var branchName, floor, officeNum, acreages, rent, occupancy, max, comName;
-		$('#detail').on('show.bs.modal', function(event) {
-			var officeNum="";
-			officeNum = $(event.relatedTarget).data('officenum');
-			console.log("offceNum: "+officeNum);
 
-			var csrfToken = $("meta[name='_csrf']").attr("content");
-			$.ajaxPrefilter(function(options, originalOptions, jqXHR){
-				if (options['type'].toLowerCase() === "post") {
-					jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-				}
-			});
-			
-			$.ajax({
-				url: "/spaceMgmt",
-				type: "POST",
-				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-				data: {
-					officeNum:officeNum
-				},
-				success: function(data){
-					console.log('[ajax성공] spaceDetail: '+data);
-					console.log(typeof data);
-				},
-				error: function(request, status, error){
-					console.log("ajax 에러");
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
-				}
-			})
-        });
-	});
-	</script>
 <%//상세 Modal %>
 <div class="modal fade" id="detail" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -121,31 +167,60 @@
 							</div>
 						</div>
 					</div>
-	       
+					
 					<table class="table spaceTable">
+			      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
 						<tr>
 							<th>지점</th>
-							<td id="branchName">여기</td>
+							<td id="branchName">-</td>
 							<th>가격</th>
-							<td>here</td>
+							<td id="rent">-</td>
 						</tr>
 						<tr>
 							<th>층</th>
-							<td>here</td>
+							<td id="floor">-</td>
 							<th>임대현황</th>
-							<td>here</td>
+							<td id="occupancy">-</td>
 						</tr>
 						<tr>
 							<th>호수</th>
-							<td>here</td>
+							<td id="officeNum">-</td>
 							<th>가용인원</th>
-							<td>here</td>
+							<td id="max">-</td>
 						</tr>
 						<tr>
 							<th>평수</th>
-							<td>here</td>
+							<td id="acreages">-</td>
 							<th>현재입주사</th>
-							<td>here</td>
+							<td id="comName">-</td>
+						</tr>
+					</table>
+
+					<table class="table spaceTable">
+						<tr colspan="4"><h3 class="spaceTitle">기본 제공</h3></tr>	       
+						<tr>
+							<th>책상</th>
+							<td id="desk">-</td>
+							<th>의자</th>
+							<td id="chair">-</td>
+						</tr>
+						<tr>
+							<th>공유기</th>
+							<td id="modem">-</td>
+							<th>소화기</th>
+							<td id="fireExtinguisher">-</td>
+						</tr>
+						<tr>
+							<th>냉반기</th>
+							<td id="airConditioner">-</td>
+							<th>난방기</th>
+							<td id="radiator">-</td>
+						</tr>
+						<tr>
+							<th>완강기</th>
+							<td id="descendingLifeLine">-</td>
+							<th>콘센트</th>
+							<td id="powerSocket">-</td>
 						</tr>
 					</table>
 	

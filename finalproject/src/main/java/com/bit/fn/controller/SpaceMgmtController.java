@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -44,37 +45,64 @@ public class SpaceMgmtController {
 		
 		return "spaceMgmt";
 	}
-	
-	@RequestMapping(path="/spaceMgmt", method = RequestMethod.POST)
-	public ResponseEntity spaceMgmtPost(int officeNum, HttpServletResponse resp) throws Exception {
-		System.out.println("[SpaceMgmtController(spaceMgmtPost())]");
+
+	@RequestMapping(path="/spaceDetail", method = RequestMethod.POST)
+	public ResponseEntity spaceDetail(int officeNum, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(spaceDetail())]");
 		resp.setCharacterEncoding("utf-8");
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
 	// 공간 상세 페이지
 			spaceDetail=officeService.officeDetail(officeNum);
-			officeFacilities=officeFacilitiesService.officeFacilities(officeNum);
-			System.out.println("[SpaceMgmtController(spaceMgmtPost())] 특정 공간: "+spaceDetail);
-			System.out.println("[SpaceMgmtController(spaceMgmtPost())] 특정 시설: "+officeFacilities);
+			System.out.println("[SpaceMgmtController(spaceDetail())] 특정 공간: "+spaceDetail);
+			
 			try {
 				JSONObject jobj=new JSONObject();
 				PrintWriter out;
 				jobj.put("spaceDetail", spaceDetail);
-				jobj.put("officeFacilities", officeFacilities);
 				out = resp.getWriter();
 				out.print(jobj.toString());
 				System.out.println("list:"+spaceDetail);
-				System.out.println("list:"+officeFacilities);
 			} catch (IOException e) {
-				System.out.println("[ForgotIdPwController(forgotId())] json 오류");
+				System.out.println("[SpaceMgmtController(spaceDetail())] json 오류");
 				e.printStackTrace();
 			}
 		} catch(NullPointerException e) {
-			System.out.println("[ForgotIdPwController(forgotId())] bad request");
+			System.out.println("[SpaceMgmtController(spaceDetail())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[ForgotIdPwController(forgotId())] null");
+			System.out.println("[SpaceMgmtController(spaceDetail())] null");
+		}
+		return new ResponseEntity(status);
+	}
+	@RequestMapping(path="/officeFacilities", method = RequestMethod.POST)
+	public ResponseEntity officeFacilities(int officeNum, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(officeFacilities())]");
+		resp.setCharacterEncoding("utf-8");
+		HttpStatus status;
+		try {
+			status=HttpStatus.OK;
+			// 공간 상세 페이지
+			officeFacilities=officeFacilitiesService.officeFacilities(officeNum);
+			System.out.println("[SpaceMgmtController(officeFacilities())] 특정 시설: "+officeFacilities);
+			
+			try {
+				JSONObject jobj=new JSONObject();
+				PrintWriter out;
+				jobj.put("officeFacilities", officeFacilities);
+				out = resp.getWriter();
+				out.print(jobj.toString());
+				System.out.println("list:"+officeFacilities);
+			} catch (IOException e) {
+				System.out.println("[SpaceMgmtController(officeFacilities())] json 오류");
+				e.printStackTrace();
+			}
+		} catch(NullPointerException e) {
+			System.out.println("[SpaceMgmtController(officeFacilities())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[SpaceMgmtController(officeFacilities())] null");
 		}
 		return new ResponseEntity(status);
 	}
