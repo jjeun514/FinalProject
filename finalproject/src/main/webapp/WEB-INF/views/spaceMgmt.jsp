@@ -71,22 +71,6 @@
 				success: function(data){
 					console.log('[ajax성공] spaceDetail: '+data);
 					console.log(typeof data);
-					var arr=data.split(",");
-					var arr2;
-					var arr3;
-					console.log(arr);
-					for (var i = 1; i < arr.length; i++) {
-					    console.log(arr[i]);
-					    arr2=arr[i].split(":");
-					    arr3=arr2[1].replaceAll("\"","");
-					    console.log('split: '+arr3);
-					    if(i=3){
-							var html = $('#branchName').html(arr3);
-							var contents = html.find("#branchName").html();
-					    }else{
-					    	return false;
-					    }
-					}
 				},
 				error: function(request, status, error){
 					console.log("ajax 에러");

@@ -2,20 +2,17 @@ package com.bit.fn.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.mapping.ResultMap;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -67,13 +64,6 @@ public class SpaceMgmtController {
 				jobj.put("officeFacilities", officeFacilities);
 				out = resp.getWriter();
 				out.print(jobj.toString());
-				System.out.println("지점: "+spaceDetail.get(0).getBranchName());
-				System.out.println("층: "+spaceDetail.get(0).getFloor());
-				System.out.println("호수: "+spaceDetail.get(0).getOfficeNum());
-				System.out.println("평수: "+spaceDetail.get(0).getAcreages());
-				System.out.println("가격: "+spaceDetail.get(0).getRent());
-				System.out.println("가용인원: "+spaceDetail.get(0).getMax());
-				System.out.println("현재 입주사: "+spaceDetail.get(0).getComName());
 				System.out.println("list:"+spaceDetail);
 				System.out.println("list:"+officeFacilities);
 			} catch (IOException e) {

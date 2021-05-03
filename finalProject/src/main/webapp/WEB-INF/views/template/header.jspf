@@ -28,7 +28,7 @@
 						   관리자: 프로필, 마이페이지, 관리자페이지, 로그아웃
 						     ┗▶ 멤버페이지도 보여야되나?? 그러면 추가
 				*/ %>
-				<td class="topRightMenu" id="loginMenu"><span><a href="/signin">로그인</a></span></td>
+				<td class="topRightMenu" id="loginMenu"><span><a href="/login">로그인</a></span></td>
 				<td class="topRightMenu" id="logoutMenu"><span><a href="#">로그아웃</a></span></td>
 				<td class="topRightMenu" id="signupMenu"><span><a href="/signup">회원가입</a></span></td>
 				<td class="topRightMenu" id="profileMenu"><span><a href="#">프로필</a></span></td>
