@@ -6,19 +6,19 @@
     	 SELECT 
     	 	* 
     	 from 
-    	 	adminaccount
+    	 	adminAccount
    	</select>
    	<select id="selectOne" resultType="com.bit.fn.model.vo.AdminAccountVo">
     	 SELECT 
     	 	* 
     	 from 
-    	 	adminaccount
+    	 	adminAccount
     	 where
     		id=#{value}
    	</select>
    	<update id="updateInfo">
    		UPDATE 
-   			adminaccount 
+   			adminAccount 
    		SET 
    			nickName=#{nickName} 
    		WHERE 
@@ -27,7 +27,7 @@
    	<delete id="deleteOne">
    		DELETE
    		FROM
-   		 adminaccount
+   		 adminAccount
    		WHERE
    			id=#{value}
    	</delete>

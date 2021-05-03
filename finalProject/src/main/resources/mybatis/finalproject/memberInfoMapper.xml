@@ -3,13 +3,13 @@
 
 <mapper namespace="com.bit.fn.model.mapper.MemberInfoMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.MemberInfoVo">
-    	 SELECT * from memberinfo
+    	 SELECT * from memberInfo
    	</select>
    	<select id="selectOne" resultType="com.bit.fn.model.vo.MemberInfoVo">
     	 SELECT 
     	 	* 
     	 from 
-    	 	memberinfo
+    	 	memberInfo
     	 where
     	 id=#{value}
    	</select>
@@ -20,7 +20,7 @@
     	 SELECT 
     	 	count(id)
     	 from 
-    	 	memberinfo
+    	 	memberInfo
     	 where
     	 id=#{value}
    	</select>
@@ -28,14 +28,14 @@
     	 SELECT 
     	 	count(memNickName)
     	 from 
-    	 	memberinfo
+    	 	memberInfo
     	 where
     	 memNickName=#{value}
    	</select>
    	<delete id="deleteOne">
    		DELETE
    		FROM
-   			memberinfo
+   			memberInfo
    		WHERE
    			id=#{value}
    	</delete>

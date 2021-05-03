@@ -3,7 +3,7 @@
 
 <mapper namespace="com.bit.fn.model.mapper.OfficeFacilitiesMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">
-    	 SELECT * from officefacilities
+    	 SELECT * from officeFacilities
    	</select>
 
     <select id="officeFacilities" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">

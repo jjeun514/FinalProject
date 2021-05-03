@@ -24,7 +24,7 @@
     </resultMap>
     
     <resultMap type="com.bit.fn.model.vo.join.MasteraccountAndCompanyInfoVo" id="MasteraccountAndCompanyInfoMap">
-    	<collection property="masteraccount" resultMap="MasterAccountMap"/>
+    	<collection property="masterAccount" resultMap="MasterAccountMap"/>
     	<collection property="companyInfo" resultMap="CompanyInfoMap"/>
     </resultMap>
     
@@ -35,7 +35,7 @@
     	 (SELECT
     	 	 masterNum, id, comCode, signdate, profile 
     	 from
-    	 	masteraccount 
+    	 	masterAccount 
     	 where id=#{id}
     	 ) a
     	 inner join
@@ -43,7 +43,7 @@
    	</select>
    	<update id="updateInfo">
    			UPDATE 
-   				companyInfo b inner join masteraccount a 
+   				companyInfo b inner join masterAccount a 
 				on a.comCode=b.comCode 
 			SET 
 				b.comName=#{comName}, b.ceo=#{ceo}, b.manager=#{manager}, b.comPhone=#{comPhone}  

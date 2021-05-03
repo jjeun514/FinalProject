@@ -3,20 +3,20 @@
 
 <mapper namespace="com.bit.fn.model.mapper.MasterAccountMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.MasterAccountVo">
-    	 SELECT * from masteraccount
+    	 SELECT * from masterAccount
    	</select>
    	<select id="selectOne" resultType="com.bit.fn.model.vo.MasterAccountVo">
     	 SELECT 
     	 	* 
     	 from 
-    	 	masteraccount
+    	 	masterAccount
     	 where
     	 id=#{value}
    	</select>
    	<delete id="deleteOne">
    		DELETE
    		FROM
-   			masteraccount
+   			masterAccount
    		WHERE
    			id=#{value}
    	</delete>
