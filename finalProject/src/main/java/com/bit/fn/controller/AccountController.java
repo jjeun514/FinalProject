@@ -1,5 +1,6 @@
 package com.bit.fn.controller;
 
+import java.net.http.HttpRequest;
 import java.security.Principal;
 
 import javax.servlet.http.HttpSession;
@@ -99,17 +100,18 @@ public class AccountController {
 	
 	//멤버 회원가입
 	@PostMapping("/joinMember")
-	public String joinMember(Account account,@Param("memName")String memName, String memNickName, @RequestParam(name = "username", required = true) String id,int comCode,String dept, String memPhone) {
+	public String joinMember(Account account, String memName, String username, String memNickName, int comCode,String dept, String memPhone) {
+		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■username="+username);
 		System.out.println(account);
 		System.out.println("memName="+memName);
 		System.out.println("memNickName="+memNickName);
-		System.out.println("id="+id);
+		System.out.println("id="+username);
 		System.out.println("comCode="+comCode);
 		System.out.println("dept="+dept);
 		System.out.println("memPhone="+memPhone);
 		
 		try {
-		memberinfoService.insertOne(memName, memNickName, id, comCode, dept, memPhone);
+		memberinfoService.insertOne(memName, memNickName, username, comCode, dept, memPhone);
 		s_accountService.memverSave(account);
 		
 		}catch (Exception e) {

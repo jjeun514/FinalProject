@@ -14,7 +14,7 @@
     	 id=#{value}
    	</select>
    	<insert id="insertOne" parameterType="map">
-   		Insert into memberinfo (memName,memNickName,id,comCode,dept,memPhone,signdate,admission) values(#{memName},#{memNickName},#{id},#{comCode},#{dept},#{memPhone},now(),0)
+   		Insert into memberInfo (memName,memNickName,id,comCode,dept,memPhone,signdate,admission) values(#{memName},#{memNickName},#{id},#{comCode},#{dept},#{memPhone},now(),0)
    	</insert>
    	<select id="idCount" resultType="int">
     	 SELECT 

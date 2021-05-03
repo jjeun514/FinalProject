@@ -3,8 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <title>회원가입</title>
 <%@ include file="template/navbar.jspf" %>
-<meta charset="UTF-8">
-<meta name="_csrf" content="${_csrf.token}"/>
 
 <script type="text/javascript">
 
@@ -292,11 +290,13 @@ $(function(){
 							console.log("data",data);
 							if(data=="Available"){
 								document.getElementById('modalText02').innerHTML='사용가능한 아이디입니다.';
+								$('#username').val(username);
 								$('#primaryModal').modal('show');
 								//인증버튼 활성화
 								$("#authBtn").prop("disabled", false);
 								//인증요청을 하였을 때 아이디를 바꾸지 못하게 readonly
 								$(".username").prop("readonly","readonly");
+								
 							}else{
 								document.getElementById('modalText01').innerHTML='사용중인 아이디입니다.';
 								$('#dangerModal').modal('show');
@@ -408,15 +408,17 @@ $(function(){
 						<h3 class="register-heading">회원 가입</h3>
 							<div class="row register-form">
 								<div class="col-md-11">
+									<form action="/joinMember" method="post" class="joinForm">  
+									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+									<input type="hidden" name="username" id="username" />
 									<div class="form-group">
 										<input type="text" class="form-control memName"  placeholder="이름 *" value="" name="memName" />
 									</div>
 									<%/*emailInput에 이메일을 입력하고, 이메일 인증 버튼을 누르면,
 										 input값을 넘겨서 이메일 전송 시 to로 받아서 그 이메일로 인증번호 발송*/%>
-									<form action="/joinMember" method="post" class="joinForm">  
-									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
+									 
 									<div class="form-group">
-									<!-- name=서버로 전달되는 이름 -->
+									<!-- name=서버로 전달되는 이름 --> 
 										<input type="email" class="form-control username" placeholder="아이디(gmail) *" value="" id="emailInput" name="username"/>
 										<input type="submit" class="btn" id="authBtn" value="인증" data-toggle="modal" data-target="#modal"/>
 									</div>
@@ -424,7 +426,7 @@ $(function(){
 										<span id="msg">처리중입니다. 잠시만 기다려주세요.</span>
 									</div>
                                     <div class="form-group">
-										<input type="text" class="form-control" id="codeInput" placeholder="인증번호(6자리) *" value="" disabled/>
+										<input type="text" class="form-control" id="codeInput" placeholder="인증번호(6자리) *" value="" />
 									</div>
 									<div class="form-group">
 										<input type="password" class="form-control password1" placeholder="비밀번호 *" value="" name="password" />
@@ -448,8 +450,6 @@ $(function(){
 									<div class="form-group">
 										<input type="text" class="form-control memPhone"  placeholder="번호 *" value="" name="memPhone"/>
 									</div>
-									<c:if test="${param.isempty != null }">
-									</c:if>
 									</form> 
 									 <input type="submit" class="btnRegister"  value="회원가입"/>
 									 
