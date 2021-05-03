@@ -3,6 +3,10 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,maven,java
 
 Servers/
+application.properties
+email.properties
+.classpath
+.project
 
 ### Eclipse ###
 .metadata
