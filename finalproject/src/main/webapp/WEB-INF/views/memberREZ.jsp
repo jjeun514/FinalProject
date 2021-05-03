@@ -9,6 +9,10 @@
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
  <link rel="stylesheet" href="/resources/demos/style.css">
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <!-- B2B 프로젝트인 경우 cdn을 사용할 수 없음
+ 왜냐하면 이 외부 링크들에 대한 방화벽을 다 열어줘야 하기 때문 -->
+ 
+ <!-- 동시성 제어도 있지만 그것은 나중에 생각하자 -->
 <script>
 
 $(document).ready(function() {
@@ -18,12 +22,15 @@ $(document).ready(function() {
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
 		$("#REZModal").modal();
 	});
-	 
 	
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZapplyClick').click(function() { 
-		console.log("예약 신청 버튼");
 
+		/*
+		* 비활성화보다는 내가 원하는(내가 필요로하는 / 내가 받아야 하는) 값들이 있는지를 체크한 후에
+		* 그 값들이 정상적으로 들어가있다면 컨트롤러를 탈 수 있게끔 하는 것이 맞음
+		*/
+		
 		var roomNum = $("#roomNum").val();
 		var useStartTime = $("#useStartTime").val();
 		var useFinishTime = $("#useFinishTime").val();
@@ -159,6 +166,8 @@ $( function() {
 				dataType : "json",
 				success : function(data) {
 					
+					$("#content *").css("background-color", "");
+					
 					for ( no = 0; no < data.allList.length; no++ ){
 						
 						var list = data.allList[no];
@@ -177,8 +186,6 @@ $( function() {
 							} else {
 								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(187,240,237,1)");
 							}
-						} else {
-							$('content *').children().css("background-color", "rgba(0,0,0,0)");
 						}
 					}
 				},
