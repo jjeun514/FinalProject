@@ -64,6 +64,11 @@ public class AccountController {
 		return "test/login";
 	}
 	
+	@GetMapping("/signin")
+	public String signin() {
+		return "/signin";
+	}
+	
 	//지울예정
 	@GetMapping("/resister")
 	public String resister() {
