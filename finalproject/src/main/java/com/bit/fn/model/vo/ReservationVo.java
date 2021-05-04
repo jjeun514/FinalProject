@@ -3,155 +3,104 @@ package com.bit.fn.model.vo;
 import java.sql.Date;
 
 public class ReservationVo {
-	
-	private int roomNum, memNum, userCount, amount, rent, totalReservation;
-	private String etc, memName, comName, useStartTime, useFinishTime, reservationDay, merchant_uid;
-	
+	private int roomNum,memNum,userCount,fee, totalReservation;
+	private String etc;
+	private Date reservationDate,useStartDay,useFinishDay;
 	public ReservationVo() {}
-
-	public ReservationVo(int roomNum, int memNum, int userCount, int amount, int rent, int totalReservation, String etc,
-			String memName, String comName, String useStartTime, String useFinishTime, String reservationDay,
-			String merchant_uid) {
+	public ReservationVo(int roomNum, int memNum, int userCount, int fee, String etc, Date reservationDate,
+			Date useStartDay, Date useFinishDay) {
 		super();
 		this.roomNum = roomNum;
 		this.memNum = memNum;
 		this.userCount = userCount;
-		this.amount = amount;
-		this.rent = rent;
+		this.fee = fee;
+		this.etc = etc;
+		this.reservationDate = reservationDate;
+		this.useStartDay = useStartDay;
+		this.useFinishDay = useFinishDay;
+	}
+	
+	public ReservationVo(int roomNum, int memNum, int userCount, int fee, int totalReservation, String etc,
+			Date reservationDate, Date useStartDay, Date useFinishDay) {
+		super();
+		this.roomNum = roomNum;
+		this.memNum = memNum;
+		this.userCount = userCount;
+		this.fee = fee;
 		this.totalReservation = totalReservation;
 		this.etc = etc;
-		this.memName = memName;
-		this.comName = comName;
-		this.useStartTime = useStartTime;
-		this.useFinishTime = useFinishTime;
-		this.reservationDay = reservationDay;
-		this.merchant_uid = merchant_uid;
+		this.reservationDate = reservationDate;
+		this.useStartDay = useStartDay;
+		this.useFinishDay = useFinishDay;
 	}
-
-	public int getRoomNum() {
-		return roomNum;
-	}
-
-	public void setRoomNum(int roomNum) {
-		this.roomNum = roomNum;
-	}
-
-	public int getMemNum() {
-		return memNum;
-	}
-
-	public void setMemNum(int memNum) {
-		this.memNum = memNum;
-	}
-
-	public int getUserCount() {
-		return userCount;
-	}
-
-	public void setUserCount(int userCount) {
-		this.userCount = userCount;
-	}
-
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-	public int getRent() {
-		return rent;
-	}
-
-	public void setRent(int rent) {
-		this.rent = rent;
-	}
-
 	public int getTotalReservation() {
 		return totalReservation;
 	}
-
 	public void setTotalReservation(int totalReservation) {
 		this.totalReservation = totalReservation;
 	}
-
+	public int getRoomNum() {
+		return roomNum;
+	}
+	public void setRoomNum(int roomNum) {
+		this.roomNum = roomNum;
+	}
+	public int getMemNum() {
+		return memNum;
+	}
+	public void setMemNum(int memNum) {
+		this.memNum = memNum;
+	}
+	public int getUserCount() {
+		return userCount;
+	}
+	public void setUserCount(int userCount) {
+		this.userCount = userCount;
+	}
+	public int getFee() {
+		return fee;
+	}
+	public void setFee(int fee) {
+		this.fee = fee;
+	}
 	public String getEtc() {
 		return etc;
 	}
-
 	public void setEtc(String etc) {
 		this.etc = etc;
 	}
-
-	public String getMemName() {
-		return memName;
+	public Date getReservationDate() {
+		return reservationDate;
 	}
-
-	public void setMemName(String memName) {
-		this.memName = memName;
+	public void setReservationDate(Date reservationDate) {
+		this.reservationDate = reservationDate;
 	}
-
-	public String getComName() {
-		return comName;
+	public Date getUseStartDay() {
+		return useStartDay;
 	}
-
-	public void setComName(String comName) {
-		this.comName = comName;
+	public void setUseStartDay(Date useStartDay) {
+		this.useStartDay = useStartDay;
 	}
-
-	public String getUseStartTime() {
-		return useStartTime;
+	public Date getUseFinishDay() {
+		return useFinishDay;
 	}
-
-	public void setUseStartTime(String useStartTime) {
-		this.useStartTime = useStartTime;
+	public void setUseFinishDay(Date useFinishDay) {
+		this.useFinishDay = useFinishDay;
 	}
-
-	public String getUseFinishTime() {
-		return useFinishTime;
-	}
-
-	public void setUseFinishTime(String useFinishTime) {
-		this.useFinishTime = useFinishTime;
-	}
-
-	public String getReservationDay() {
-		return reservationDay;
-	}
-
-	public void setReservationDay(String reservationDay) {
-		this.reservationDay = reservationDay;
-	}
-
-	public String getMerchant_uid() {
-		return merchant_uid;
-	}
-
-	public void setMerchant_uid(String merchant_uid) {
-		this.merchant_uid = merchant_uid;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + amount;
-		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
 		result = prime * result + ((etc == null) ? 0 : etc.hashCode());
-		result = prime * result + ((memName == null) ? 0 : memName.hashCode());
+		result = prime * result + fee;
 		result = prime * result + memNum;
-		result = prime * result + ((merchant_uid == null) ? 0 : merchant_uid.hashCode());
-		result = prime * result + rent;
-		result = prime * result + ((reservationDay == null) ? 0 : reservationDay.hashCode());
+		result = prime * result + ((reservationDate == null) ? 0 : reservationDate.hashCode());
 		result = prime * result + roomNum;
-		result = prime * result + totalReservation;
-		result = prime * result + ((useFinishTime == null) ? 0 : useFinishTime.hashCode());
-		result = prime * result + ((useStartTime == null) ? 0 : useStartTime.hashCode());
+		result = prime * result + ((useFinishDay == null) ? 0 : useFinishDay.hashCode());
+		result = prime * result + ((useStartDay == null) ? 0 : useStartDay.hashCode());
 		result = prime * result + userCount;
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -161,62 +110,41 @@ public class ReservationVo {
 		if (getClass() != obj.getClass())
 			return false;
 		ReservationVo other = (ReservationVo) obj;
-		if (amount != other.amount)
-			return false;
-		if (comName == null) {
-			if (other.comName != null)
-				return false;
-		} else if (!comName.equals(other.comName))
-			return false;
 		if (etc == null) {
 			if (other.etc != null)
 				return false;
 		} else if (!etc.equals(other.etc))
 			return false;
-		if (memName == null) {
-			if (other.memName != null)
-				return false;
-		} else if (!memName.equals(other.memName))
+		if (fee != other.fee)
 			return false;
 		if (memNum != other.memNum)
 			return false;
-		if (merchant_uid == null) {
-			if (other.merchant_uid != null)
+		if (reservationDate == null) {
+			if (other.reservationDate != null)
 				return false;
-		} else if (!merchant_uid.equals(other.merchant_uid))
-			return false;
-		if (rent != other.rent)
-			return false;
-		if (reservationDay == null) {
-			if (other.reservationDay != null)
-				return false;
-		} else if (!reservationDay.equals(other.reservationDay))
+		} else if (!reservationDate.equals(other.reservationDate))
 			return false;
 		if (roomNum != other.roomNum)
 			return false;
-		if (totalReservation != other.totalReservation)
-			return false;
-		if (useFinishTime == null) {
-			if (other.useFinishTime != null)
+		if (useFinishDay == null) {
+			if (other.useFinishDay != null)
 				return false;
-		} else if (!useFinishTime.equals(other.useFinishTime))
+		} else if (!useFinishDay.equals(other.useFinishDay))
 			return false;
-		if (useStartTime == null) {
-			if (other.useStartTime != null)
+		if (useStartDay == null) {
+			if (other.useStartDay != null)
 				return false;
-		} else if (!useStartTime.equals(other.useStartTime))
+		} else if (!useStartDay.equals(other.useStartDay))
 			return false;
 		if (userCount != other.userCount)
 			return false;
 		return true;
 	}
-
 	@Override
 	public String toString() {
-		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", amount="
-				+ amount + ", rent=" + rent + ", totalReservation=" + totalReservation + ", etc=" + etc + ", memName="
-				+ memName + ", comName=" + comName + ", useStartTime=" + useStartTime + ", useFinishTime="
-				+ useFinishTime + ", reservationDay=" + reservationDay + ", merchant_uid=" + merchant_uid + "]";
+		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", fee=" + fee
+				+ ", totalReservation=" + totalReservation + ", etc=" + etc + ", reservationDate=" + reservationDate
+				+ ", useStartDay=" + useStartDay + ", useFinishDay=" + useFinishDay + "]";
 	}
 	
 }

@@ -1,4 +1,3 @@
-  
 package com.bit.fn.controller;
 
 import java.net.http.HttpRequest;
@@ -63,11 +62,6 @@ public class AccountController {
 	@GetMapping("/login")
 	public String login() {
 		return "test/login";
-	}
-	
-	@GetMapping("/signin")
-	public String signin() {
-		return "/signin";
 	}
 	
 	//지울예정
