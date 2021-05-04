@@ -4,26 +4,27 @@ import java.sql.Date;
 
 public class ReservationVo {
 	
-	private int roomNum, memNum, userCount, amount, rent;
+	private int roomNum, memNum, userCount, amount, rent, totalReservation;
 	private String etc, memName, comName, useStartTime, useFinishTime, reservationDay, merchant_uid;
 	
-	public ReservationVo() {
-	}
+	public ReservationVo() {}
 
-	public ReservationVo(int roomNum, int memNum, int userCount, int amount, int rent, String etc, String memName,
-			String comName, String reservationDay, String useStartTime, String useFinishTime, String merchant_uid) {
+	public ReservationVo(int roomNum, int memNum, int userCount, int amount, int rent, int totalReservation, String etc,
+			String memName, String comName, String useStartTime, String useFinishTime, String reservationDay,
+			String merchant_uid) {
 		super();
 		this.roomNum = roomNum;
 		this.memNum = memNum;
 		this.userCount = userCount;
 		this.amount = amount;
 		this.rent = rent;
+		this.totalReservation = totalReservation;
 		this.etc = etc;
 		this.memName = memName;
 		this.comName = comName;
-		this.reservationDay = reservationDay;
 		this.useStartTime = useStartTime;
 		this.useFinishTime = useFinishTime;
+		this.reservationDay = reservationDay;
 		this.merchant_uid = merchant_uid;
 	}
 
@@ -55,8 +56,8 @@ public class ReservationVo {
 		return amount;
 	}
 
-	public void setAmount(int fee) {
-		this.amount = fee;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	public int getRent() {
@@ -65,6 +66,14 @@ public class ReservationVo {
 
 	public void setRent(int rent) {
 		this.rent = rent;
+	}
+
+	public int getTotalReservation() {
+		return totalReservation;
+	}
+
+	public void setTotalReservation(int totalReservation) {
+		this.totalReservation = totalReservation;
 	}
 
 	public String getEtc() {
@@ -91,14 +100,6 @@ public class ReservationVo {
 		this.comName = comName;
 	}
 
-	public String getReservationDay() {
-		return reservationDay;
-	}
-
-	public void setReservationDay(String reservationDay) {
-		this.reservationDay = reservationDay;
-	}
-
 	public String getUseStartTime() {
 		return useStartTime;
 	}
@@ -115,6 +116,14 @@ public class ReservationVo {
 		this.useFinishTime = useFinishTime;
 	}
 
+	public String getReservationDay() {
+		return reservationDay;
+	}
+
+	public void setReservationDay(String reservationDay) {
+		this.reservationDay = reservationDay;
+	}
+
 	public String getMerchant_uid() {
 		return merchant_uid;
 	}
@@ -127,15 +136,16 @@ public class ReservationVo {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + amount;
 		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
 		result = prime * result + ((etc == null) ? 0 : etc.hashCode());
-		result = prime * result + amount;
 		result = prime * result + ((memName == null) ? 0 : memName.hashCode());
 		result = prime * result + memNum;
 		result = prime * result + ((merchant_uid == null) ? 0 : merchant_uid.hashCode());
 		result = prime * result + rent;
 		result = prime * result + ((reservationDay == null) ? 0 : reservationDay.hashCode());
 		result = prime * result + roomNum;
+		result = prime * result + totalReservation;
 		result = prime * result + ((useFinishTime == null) ? 0 : useFinishTime.hashCode());
 		result = prime * result + ((useStartTime == null) ? 0 : useStartTime.hashCode());
 		result = prime * result + userCount;
@@ -151,6 +161,8 @@ public class ReservationVo {
 		if (getClass() != obj.getClass())
 			return false;
 		ReservationVo other = (ReservationVo) obj;
+		if (amount != other.amount)
+			return false;
 		if (comName == null) {
 			if (other.comName != null)
 				return false;
@@ -160,8 +172,6 @@ public class ReservationVo {
 			if (other.etc != null)
 				return false;
 		} else if (!etc.equals(other.etc))
-			return false;
-		if (amount != other.amount)
 			return false;
 		if (memName == null) {
 			if (other.memName != null)
@@ -184,6 +194,8 @@ public class ReservationVo {
 			return false;
 		if (roomNum != other.roomNum)
 			return false;
+		if (totalReservation != other.totalReservation)
+			return false;
 		if (useFinishTime == null) {
 			if (other.useFinishTime != null)
 				return false;
@@ -201,13 +213,10 @@ public class ReservationVo {
 
 	@Override
 	public String toString() {
-		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", amount=" + amount
-				+ ", rent=" + rent + ", etc=" + etc + ", memName=" + memName + ", comName=" + comName
-				+ ", useStartTime=" + useStartTime + ", useFinishTime=" + useFinishTime + ", reservationDay="
-				+ reservationDay + ", merchant_uid=" + merchant_uid + "]";
+		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", amount="
+				+ amount + ", rent=" + rent + ", totalReservation=" + totalReservation + ", etc=" + etc + ", memName="
+				+ memName + ", comName=" + comName + ", useStartTime=" + useStartTime + ", useFinishTime="
+				+ useFinishTime + ", reservationDay=" + reservationDay + ", merchant_uid=" + merchant_uid + "]";
 	}
 	
-	
-
-
 }
