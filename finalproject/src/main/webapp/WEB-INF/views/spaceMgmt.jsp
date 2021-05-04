@@ -62,14 +62,18 @@ $(document).ready(function(){
 			success: function(data){
 				console.log('[ajax성공] data: '+JSON.stringify(data));
 				$.each(data, function(key, value){
-					$('#desk').html(JSON.stringify(value[0].desk).replaceAll("\"",""));
-					$('#chair').html(JSON.stringify(value[0].chair).replaceAll("\"",""));
-					$('#modem').html(JSON.stringify(value[0].modem).replaceAll("\"",""));
-					$('#fireExtinguisher').html(JSON.stringify(value[0].fireExtinguisher).replaceAll("\"",""));
-					$('#airConditioner').html(JSON.stringify(value[0].airConditioner).replaceAll("\"",""));
-					$('#radiator').html(JSON.stringify(value[0].radiator).replaceAll("\"",""));
-					$('#descendingLifeLine').html(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
-					$('#powerSocket').html(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
+					if(JSON.stringify(value)=='[]'){
+						return false;
+					} else {
+						$('#desk').html(JSON.stringify(value[0].desk).replaceAll("\"",""));
+						$('#chair').html(JSON.stringify(value[0].chair).replaceAll("\"",""));
+						$('#modem').html(JSON.stringify(value[0].modem).replaceAll("\"",""));
+						$('#fireExtinguisher').html(JSON.stringify(value[0].fireExtinguisher).replaceAll("\"",""));
+						$('#airConditioner').html(JSON.stringify(value[0].airConditioner).replaceAll("\"",""));
+						$('#radiator').html(JSON.stringify(value[0].radiator).replaceAll("\"",""));
+						$('#descendingLifeLine').html(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
+						$('#powerSocket').html(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
+					}
 				});
 			},
 			error: function(request, status, error){
