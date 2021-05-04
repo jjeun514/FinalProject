@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.fn.model.mapper.MemberMapper">
+    <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
+		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
+		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		left outer join companyInfo com on mem.comCode=com.comCode
+		order by date desc, num
+		limit 7
+   	</select>
+   	
+	<select id="noticeList" resultType="com.bit.fn.model.vo.NoticeVo">
+		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
+		from notice noti left outer join adminAccount adm
+		on noti.adminNum=adm.adminNum
+		order by num desc
+   	</select>
+   	
+   	<select id="selectNoticeList" resultType="com.bit.fn.model.vo.NoticeVo">
+   		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
+   		from notice noti left outer join adminAccount adm
+   		on noti.adminNum=adm.adminNum
+   		where showCheck = 1
+   		limit 3
+   	</select>
+   	
+   	<!-- 여기서 브랜치 코드 컨트롤러에서 전달받아야 함 -->
+   	<select id="meetingRoomList" resultType="com.bit.fn.model.vo.ReservationVo">
+		select roomNum from meetingRoom where branchCode = 1
+   	</select>
+   	
+   	<select id="checkReservaion" resultType="int">
+   		select count(roomNum) as countREZ from reservation
+   		where roomNum = #{roomNum} and
+   		reservationDay = '${reservationDay}' and
+   		useStartTime = '${reservationDay} ${useStartTime}:00:00'
+   	</select>
+   	
+   	<select id="reservationList" resultType="com.bit.fn.model.vo.ReservationVo">
+   		select REZ.roomNum, REZ.memNum, REZ.reservationDay, REZ.useStartTime, REZ.useFinishTime
+   		from reservation REZ left outer join meetingRoom room on REZ.roomNum = room.roomNum
+   		where room.branchCode = ${branchCode} and reservationDay = '${reservationDay}'
+   	</select>
+   	
+   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
+   	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
+   		select roomNum, reservationDay, useStartTime, useFinishTime from reservation
+   		where memNum = 1 and
+   		reservationDay >= date_format(sysdate(), '%Y-%m-%d')
+   	</select>
+   	
+   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
+   	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">
+   		insert into reservationHistory(
+   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, etc
+   		)
+   		values(
+   			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
+   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, sysdate()
+   		)
+   	</insert>
+   	
+   	<insert id="fixReservation" parameterType="com.bit.fn.model.vo.ReservationVo">
+   		insert into reservation(
+   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, fee, merchant_uid, etc
+   		)
+   		values(
+   			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
+   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, #{amount}, #{merchant_uid},'payment test'
+   		)
+   	</insert>
+   	
+   	<delete id="cancleReservation">
+   		delete from reservation
+   		where roomNum = #{roomNum} and
+   		reservationDay = '${reservationDay}' and
+   		useStartTime = '${reservationDay} ${useStartTime}:00:00'
+   	</delete>
+</mapper>

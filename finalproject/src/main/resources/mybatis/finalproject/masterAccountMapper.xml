@@ -13,6 +13,9 @@
     	 where
     	 id=#{value}
    	</select>
+   	<insert id="insertOne" parameterType="map">
+   		Insert into masterAccount (id,comCode,signdate,profile) values(#{id},#{comCode},now(),0)
+   	</insert>
    	<delete id="deleteOne">
    		DELETE
    		FROM

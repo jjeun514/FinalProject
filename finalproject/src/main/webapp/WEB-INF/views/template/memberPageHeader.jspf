@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="./css.jspf" %>
+<%@ taglib prefix="sec"  uri="http://www.springframework.org/security/tags"%>
 </head>
 
 <header class="fixed-top">
@@ -9,10 +10,20 @@
       logo
     </div>
     <div class="col-sm hr">
-     <span class="mr-2"><a href="#">Admin</a></span><!-- 어드민일 경우만 보여야 함 -->
+    <!-- 어드민일 경우만 보여야 함 -->
+     <sec:authorize access="hasRole('ADMIN')">
+     <span class="mr-2"><a href="#">Admin</a></span>
+     </sec:authorize>
      <span class="mr-2"><a href="#">Member</a></span>
-     <span class="mr-2"><a href="#">my page</a></span>
-     <span class="mr-2"><a href="#">logout</a></span>
+     <span class="mr-2"><a href="/mypage">my page</a></span>
+     <!-- 로그인한 경우 -->
+	 <sec:authorize access="isAuthenticated()">
+     <span class="mr-2"><a href="#" onclick="document.getElementById('logout-form').submit();">logout</a></span>
+     <!-- 로그아웃 폼 -->
+		<form id="logout-form" action='logout' method="POST">
+		<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+		</form>
+	</sec:authorize>	
      <span class="mr-2">프로필사진</span>
     </div>
   </div><!--row(r1) end-->
