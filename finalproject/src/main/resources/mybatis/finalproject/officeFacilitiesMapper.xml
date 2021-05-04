@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.fn.model.mapper.OfficeFacilitiesMapper">
+    <select id="selectAll" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">
+    	 SELECT * from officeFacilities
+   	</select>
+
+    <select id="officeFacilities" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">
+    	 select a.officeNum, desk, chair, modem, fireExtinguisher, lan, airConditioner, 
+    	 radiator, descendingLifeLine, powerSocket 
+    	 from officeFacilities a 
+    	 left outer join office b on a.officeNum=b.officeNum where a.officeNum=#{officeNum}
+   	</select>
+</mapper>
