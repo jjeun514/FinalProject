@@ -17,6 +17,15 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
+ <repositories>
+     <repository>
+       <id>jitpack.io</id>
+       <url>https://jitpack.io</url>
+     </repository>
+   </repositories>
+	
+	
 	<dependencies>
 		<!-- boot 스타터 -->
 		<dependency>
@@ -151,6 +160,13 @@
 		    <artifactId>json</artifactId>
 		    <version>20210307</version>
 		</dependency>
+
+            <!-- 결제 기능(아임포트) -->
+         <dependency>
+        <groupId>com.github.iamport</groupId>
+        <artifactId>iamport-rest-client-java</artifactId>
+        <version>0.2.14</version>
+      </dependency>
 		
 		
 	</dependencies>
