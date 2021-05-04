@@ -3,43 +3,40 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <script type="text/javascript">
 $(document).ready(function(){
+	console
 	$('#detail').on('show.bs.modal', function(event) {
-		var officeNum="";
-		officeNum = $(event.relatedTarget).data('officenum');
-		console.log("offceNum: "+officeNum);
+		var officeName="";
+		officeName = $(event.relatedTarget).data('officename');
+		console.log("officeName: "+officeName);
 
-		var csrfToken = $("meta[name='_csrf']").attr("content");
-		$.ajaxPrefilter(function(options, originalOptions, jqXHR){
-			if (options['type'].toLowerCase() === "post") {
-				jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-			}
-		});
-		
 		$.ajax({
 			url: "/spaceDetail",
 			type: "POST",
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			dataType: "JSON",
 			data: {
-				officeNum:officeNum
+				officeName:officeName
 			},
 			success: function(data){
 				console.log('[ajax성공] data: '+JSON.stringify(data));
 				$.each(data, function(key, value){
-					$('#branchName').html(JSON.stringify(value[0].branchName).replaceAll("\"",""));
-					$('#floor').html(JSON.stringify(value[0].floor).replaceAll("\"",""));
-					$('#officeNum').html(JSON.stringify(value[0].officeNum).replaceAll("\"",""));
-					$('#acreages').html(JSON.stringify(value[0].acreages).replaceAll("\"",""));
-					$('#rent').html(JSON.stringify(value[0].rent).replaceAll("\"",""));
-					$('#max').html(JSON.stringify(value[0].max).replaceAll("\"",""));
-					$('#comName').html(JSON.stringify(value[0].comName).replaceAll("\"",""));
-					
-					if(JSON.stringify(value[0].occupancy)==0){
-						$('#occupancy').html('공실');
-					} else if(JSON.stringify(value[0].occupancy)==1){
-						$('#occupancy').html('임대중');
-					} else{
-						$('#occupancy').html('-');
+					try{
+						if(JSON.stringify(value[0].occupancy)==0||JSON.stringify(value[0].occupancy)==null){
+							$('#occupancy').html('공실');
+						} else if(JSON.stringify(value[0].occupancy)==1){
+							$('#occupancy').html('임대중');
+						} else{
+							$('#occupancy').html('-');
+						}
+						$('#branchName').html(JSON.stringify(value[0].branchName).replaceAll("\"",""));
+						$('#floor').html(JSON.stringify(value[0].floor).replaceAll("\"",""));
+						$('#officeName').html(JSON.stringify(value[0].officeName).replaceAll("\"",""));
+						$('#acreages').html(JSON.stringify(value[0].acreages).replaceAll("\"",""));
+						$('#rent').html(JSON.stringify(value[0].rent).replaceAll("\"","").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+						$('#max').html(JSON.stringify(value[0].max).replaceAll("\"",""));
+						$('#comName').html(JSON.stringify(value[0].comName).replaceAll("\"",""));
+					} catch(TypeError){
+						console.log('공간 정보 특정 값 null');
 					}
 				});
 			},
@@ -57,22 +54,27 @@ $(document).ready(function(){
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			dataType: "JSON",
 			data: {
-				officeNum:officeNum
+				officeName:officeName
 			},
 			success: function(data){
 				console.log('[ajax성공] data: '+JSON.stringify(data));
 				$.each(data, function(key, value){
-					if(JSON.stringify(value)=='[]'){
-						return false;
-					} else {
-						$('#desk').html(JSON.stringify(value[0].desk).replaceAll("\"",""));
-						$('#chair').html(JSON.stringify(value[0].chair).replaceAll("\"",""));
-						$('#modem').html(JSON.stringify(value[0].modem).replaceAll("\"",""));
-						$('#fireExtinguisher').html(JSON.stringify(value[0].fireExtinguisher).replaceAll("\"",""));
-						$('#airConditioner').html(JSON.stringify(value[0].airConditioner).replaceAll("\"",""));
-						$('#radiator').html(JSON.stringify(value[0].radiator).replaceAll("\"",""));
-						$('#descendingLifeLine').html(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
-						$('#powerSocket').html(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
+					try{
+						if(JSON.stringify(value)=='[]'){
+							console.log('값이 없음');
+							return false;
+						} else {
+							$('#desk').html(JSON.stringify(value[0].desk).replaceAll("\"",""));
+							$('#chair').html(JSON.stringify(value[0].chair).replaceAll("\"",""));
+							$('#modem').html(JSON.stringify(value[0].modem).replaceAll("\"",""));
+							$('#fireExtinguisher').html(JSON.stringify(value[0].fireExtinguisher).replaceAll("\"",""));
+							$('#airConditioner').html(JSON.stringify(value[0].airConditioner).replaceAll("\"",""));
+							$('#radiator').html(JSON.stringify(value[0].radiator).replaceAll("\"",""));
+							$('#descendingLifeLine').html(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
+							$('#powerSocket').html(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
+						}
+					} catch(TypeError){
+						console.log('공간 시설 특정 값 null');
 					}
 				});
 			},
@@ -84,6 +86,20 @@ $(document).ready(function(){
 			}
 		})
        });
+	
+	$('.modal').on('hidden.bs.modal',function(){
+		console.log('modal 닫힘');
+		$('.valueSetting').html('-');
+	});
+});
+
+$(document).on('click','.submitSpaceBtn',function(){
+	console.log('submit버튼');
+	if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
+		document.getElementById('modalText01').innerHTML='필수 입력값을 입력해주세요.';
+		$('#dangerModal').modal('show');
+		return false;
+	}
 });
 </script>
 
@@ -110,10 +126,10 @@ $(document).ready(function(){
 		<tbody>
 		<c:forEach items="${spaceInfo}" var="spaceInfo">
 			<c:if test="${spaceInfo.occupancy eq 0}">
-				<tr id="highlight" data-toggle="modal" data-target="#detail" data-officenum="${spaceInfo.officeNum}">
+				<tr id="highlight" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}">
 					<td><a href="#">${spaceInfo.branchName}</a></td>
 					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td class="officeNum"><a href="#">${spaceInfo.officeNum}</a></td>
+					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
 					<td><a href="#">${spaceInfo.acreages}</a></td>
 					<td><a href="#">${spaceInfo.rent}</a></td>
 					<td id="empty"><a href="#">공실</a></td>
@@ -123,10 +139,10 @@ $(document).ready(function(){
 			</c:if>
 			
 			<c:if test="${spaceInfo.occupancy eq 1}">
-				<tr id="spaceInfo" data-toggle="modal" data-target="#detail" data-officenum="${spaceInfo.officeNum}">
+				<tr id="spaceInfo" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}">
 					<td><a href="#">${spaceInfo.branchName}</a></td>
 					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td class="officeNum"><a href="#">${spaceInfo.officeNum}</a></td>
+					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
 					<td><a href="#">${spaceInfo.acreages}</a></td>
 					<td><a href="#">${spaceInfo.rent}</a></td>
 					<td id="occupied"><a href="#">임대</a></td>
@@ -183,27 +199,27 @@ $(document).ready(function(){
 			      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
 						<tr>
 							<th>지점</th>
-							<td id="branchName">-</td>
+							<td id="branchName" class="valueSetting">-</td>
 							<th>가격</th>
-							<td id="rent">-</td>
+							<td id="rent" class="valueSetting">-</td>
 						</tr>
 						<tr>
 							<th>층</th>
-							<td id="floor">-</td>
+							<td id="floor" class="valueSetting">-</td>
 							<th>임대현황</th>
-							<td id="occupancy">-</td>
+							<td id="occupancy" class="valueSetting">-</td>
 						</tr>
 						<tr>
 							<th>호수</th>
-							<td id="officeNum">-</td>
+							<td id="officeName" class="valueSetting">-</td>
 							<th>가용인원</th>
-							<td id="max">-</td>
+							<td id="max" class="valueSetting">-</td>
 						</tr>
 						<tr>
 							<th>평수</th>
-							<td id="acreages">-</td>
+							<td id="acreages" class="valueSetting">-</td>
 							<th>현재입주사</th>
-							<td id="comName">-</td>
+							<td id="comName" class="valueSetting">-</td>
 						</tr>
 					</table>
 
@@ -211,27 +227,27 @@ $(document).ready(function(){
 						<tr colspan="4"><h3 class="spaceTitle">기본 제공</h3></tr>	       
 						<tr>
 							<th>책상</th>
-							<td id="desk">-</td>
+							<td id="desk" class="valueSetting">-</td>
 							<th>의자</th>
-							<td id="chair">-</td>
+							<td id="chair" class="valueSetting">-</td>
 						</tr>
 						<tr>
 							<th>공유기</th>
-							<td id="modem">-</td>
+							<td id="modem" class="valueSetting">-</td>
 							<th>소화기</th>
-							<td id="fireExtinguisher">-</td>
+							<td id="fireExtinguisher" class="valueSetting">-</td>
 						</tr>
 						<tr>
 							<th>냉반기</th>
-							<td id="airConditioner">-</td>
+							<td id="airConditioner" class="valueSetting">-</td>
 							<th>난방기</th>
-							<td id="radiator">-</td>
+							<td id="radiator" class="valueSetting">-</td>
 						</tr>
 						<tr>
 							<th>완강기</th>
-							<td id="descendingLifeLine">-</td>
+							<td id="descendingLifeLine" class="valueSetting">-</td>
 							<th>콘센트</th>
-							<td id="powerSocket">-</td>
+							<td id="powerSocket" class="valueSetting">-</td>
 						</tr>
 					</table>
 	
@@ -247,7 +263,7 @@ $(document).ready(function(){
 			</div>
 		
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" onclick="location.href='spaceMgmt'">목록</button>
+				<button type="button" class="btn btn-secondary closeBtn" data-dismiss="modal">목록</button>
 				<button type="button" class="btn btn-primary">수정</button>
 				<button type="button" class="btn btn-danger">삭제</button>
 			</div>
@@ -262,11 +278,15 @@ $(document).ready(function(){
 			<h5 class="modal-title" id="ModalTitle">공간 추가</h5>
 		</div>
 		
+		<form action="/addSpace" method="post">
+		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+		<input type="hidden" name="_method" value="POST"/>
 		<div class="modal-body">
 			<table class="table addSpaceTable">
 	      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
+	      		<tr><font color="red">필수*</font></tr>
 				<tr>
-					<th>지점</th>
+					<th>지점 <font color="red">*</font></th>
 					<td id="branchName">
 						<select type="selectBox" name="branchInput" id="branchInput">
 							<c:forEach items="${branchList }" var="list">
@@ -274,19 +294,19 @@ $(document).ready(function(){
 							</c:forEach>
 						</select>
 					</td>
-					<th>가격</th>
+					<th>가격 <font color="red">*</font></th>
 					<td id="rent"><input name="rentInput" id="rentInput" placeholder="(월 임대료 입력)"></td>
 				</tr>
 				<tr>
-					<th>층</th>
+					<th>층 <font color="red">*</font></th>
 					<td id="floor"><input name="floorInput" id="floorInput" placeholder="(층 입력)"></td>
-					<th>호수</th>
-					<td id="officeNum"><input name="officeNumInput" id="officeNumInput" placeholder="(호수 입력)"></td>
+					<th>호수 <font color="red">*</font></th>
+					<td id="officeName"><input name="officeNameInput" id="officeNameInput" placeholder="(호수 입력)"></td>
 				</tr>
 				<tr>
-					<th>평수</th>
-					<td id="acreages"><input name="acreagesInput" id="acreagesInput" placeholder="평수 입력)"></td>
-					<th>가용인원</th>
+					<th>평수 <font color="red">*</font></th>
+					<td id="acreages"><input name="acreagesInput" id="acreagesInput" placeholder="(평수 입력)"></td>
+					<th>가용인원 <font color="red">*</font></th>
 					<td id="max"><input name="maxInput" id="maxInput" placeholder="(가용인원 입력)"></td>
 				</tr>
 			</table>
@@ -321,9 +341,10 @@ $(document).ready(function(){
 		</div>
 	
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary">확인</button>
+			<button type="submit" class="btn btn-primary submitSpaceBtn">확인</button>
 			<button type="button" class="btn btn-secondary" onclick="location.href='spaceMgmt'">취소</button>
 		</div>
+		</form>
 	</div>
 </div>
 

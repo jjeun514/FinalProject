@@ -18,7 +18,7 @@ public class OfficefacilitiesService {
 		return officeFacilitiesMapper.selectAll();
 	}
 	
-	public List<OfficeFacilitiesVo> officeFacilities(int officeNum){
-		return officeFacilitiesMapper.officeFacilities(officeNum);
+	public List<OfficeFacilitiesVo> officeFacilities(String officeName){
+		return officeFacilitiesMapper.officeFacilities(officeName);
 	}
 }

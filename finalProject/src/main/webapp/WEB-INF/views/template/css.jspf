@@ -702,11 +702,12 @@
 			text-align: center;
 		}
 		#signUpMgmtTable tr td, th, #spaceMgmtTable tr td, th{
-			border: 1px solid black;
+			border: 1px solid #e8e4e7;
 		}
 		#signUpMgmtTable tr th, #spaceMgmtTable tr th{
-			background-color: #dbe7f4;
-			color: darkblue;
+			background-color: #eaedf1;
+			color: black;
+			font-size: 16px;
 		}
 		#text01{
 			margin-top: 10px;

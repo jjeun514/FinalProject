@@ -108,7 +108,7 @@ $(document).ready(function(){
 		<c:forEach items="${priceItems }" var="priceList">
 		    <tr id="priceData">
 				<td><a href="#">${priceList.floor}</a></td>
-				<td><a href="#">${priceList.officeNum}</a></td>
+				<td><a href="#">${priceList.officeName}</a></td>
 				<td><a href="#">${priceList.acreages}평</a></td>
 				<td><a href="#">${priceList.rent}원</a></td>
 				<td><a href="#">${priceList.max}명</a></td>

@@ -14,6 +14,14 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <%@ include file="css.jspf" %>
 </head>
+<script type="text/javascript">
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+	if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
+		jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+	}
+});
+</script>
 <body>
 <header>
 	<%//최상단 header (좌측 로고, 우측 메뉴) %>
