@@ -7,7 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,8 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bit.fn.model.service.BranchService;
 import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.OfficefacilitiesService;
+import com.bit.fn.model.vo.BranchVo;
 import com.bit.fn.model.vo.OfficeFacilitiesVo;
 import com.bit.fn.model.vo.OfficeVo;
 
@@ -34,6 +35,9 @@ public class SpaceMgmtController {
 	List<OfficeVo> spaceDetail;
 	List<OfficeFacilitiesVo> officeFacilities;
 	
+	@Autowired
+	BranchService branchService;
+	List<BranchVo> branchNameList;
 	
 	@RequestMapping("/spaceMgmt")
 	public String spaceMgmtGet(HttpServletRequest req) throws Exception {
@@ -42,6 +46,11 @@ public class SpaceMgmtController {
 		spaceInfo=officeService.spaceInfo();
 		System.out.println("[SpaceMgmtController(spaceMgmtGet())] 공간: "+spaceInfo);
 		req.setAttribute("spaceInfo", spaceInfo);
+
+	// 공간 추가
+		branchNameList=branchService.selectAllBranchName();
+		req.setAttribute("branchList", branchNameList);
+		System.out.println("[SpaceMgmtController(addSpace())] branchList: "+branchNameList);
 		
 		return "spaceMgmt";
 	}
@@ -76,6 +85,7 @@ public class SpaceMgmtController {
 		}
 		return new ResponseEntity(status);
 	}
+	
 	@RequestMapping(path="/officeFacilities", method = RequestMethod.POST)
 	public ResponseEntity officeFacilities(int officeNum, HttpServletResponse resp) throws Exception {
 		System.out.println("[SpaceMgmtController(officeFacilities())]");
@@ -105,5 +115,11 @@ public class SpaceMgmtController {
 			System.out.println("[SpaceMgmtController(officeFacilities())] null");
 		}
 		return new ResponseEntity(status);
+	}
+	
+	@RequestMapping(path="/addSpace", method = RequestMethod.POST)
+	public void addSpace(HttpServletRequest req) {
+		System.out.println("[SpaceMgmtController(addSpace())]");
+		
 	}
 }

@@ -718,13 +718,14 @@
 			width: 40px;
 		}
 	/* 공간 관리 */
-		.spaceTable {
+		.spaceTable, .addSpaceTable {
 			margin-top: 30px;
 		}
-		.spaceTable th {
+		.spaceTable th, .addSpaceTable th {
 			background-color: lightyellow;
 		}
-		.spaceTable th,.spaceTable td {
+		.spaceTable th,.spaceTable td,
+		.addSpaceTable th, .addSpaceTable td {
 			width: 25%;
 			border: 1px lightgray solid;
 			margin: 0 auto;
@@ -734,5 +735,35 @@
 			margin: 0 auto;
 			text-align: center;
 			padding-top: 10px;
+		}
+		#addSpaceBtn {
+			margin: 0 auto;
+			text-align: right;
+			border-top: 0;
+		}
+		.addSpaceBtn {
+			width: 80px;
+		}
+		.spaceMgmtTable {
+			margin-top: -50px;
+		}
+		#addModal {
+			position: absolute;
+			width: 100%;
+			height: 800px;
+			padding: 5% 5% 0 5%;
+		}
+		.addSpaceTable input, .addSpaceTable select {
+			margin: 0 auto;
+			padding: 0;
+			border: 0;
+			border-spacing: 0;
+			text-align: center;
+			text-align-last: center;
+			width: 100%;
+			height: 100%;
+		}
+		.addSpaceTable option {
+			background-color: #f0fbee;
 		}
 </style>

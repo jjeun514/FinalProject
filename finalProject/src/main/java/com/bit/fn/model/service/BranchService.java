@@ -17,4 +17,8 @@ public class BranchService {
 	public List<BranchVo> selectAll(){
 		return branchMapper.selectAll();
 	}
+	
+	public List<BranchVo> selectAllBranchName(){
+		return branchMapper.selectAllBranchName();
+	}
 }

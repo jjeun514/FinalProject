@@ -12,4 +12,6 @@ import com.bit.fn.model.vo.BranchVo;
 @Mapper
 public interface BranchMapper {
 	public List<BranchVo> selectAll();
+
+	public List<BranchVo> selectAllBranchName();
 }
