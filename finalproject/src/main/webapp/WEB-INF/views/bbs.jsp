@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  
-<%@ include file="./template/header.jspf" %>
+<%@ include file="template/navbar.jspf" %>
 <script>
 //게시판 검색기능//
   $(document).ready(function() {
@@ -48,11 +47,9 @@
         }
     });
 });  
-//게시판 검색기능//  
-    
 </script>
-<body>
-<div class="content bbs"><!--content start-->
+
+<div class="content main bbs">
  <div class="container">
   <div class="row">
    <div class="col-md-3">
@@ -111,17 +108,5 @@
    </div>
   </div>
  </div>
-</div><!--centent end-->
-</body><!--body end-->
+</div>
 <%@ include file="./template/footer.jspf" %>
-</html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->

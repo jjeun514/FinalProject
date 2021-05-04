@@ -3,16 +3,16 @@ package com.bit.fn.model.vo;
 import java.sql.*;
 
 public class BoardVo {
-	private int num,count;
-	private String title,writer,content;
+	private int num,writer,count;
+	private String title,content;
 	private Date date;
 	public BoardVo() {}
-	public BoardVo(int num, int count, String title, String writer, String content, Date date) {
+	public BoardVo(int num, int writer, int count, String title, String content, Date date) {
 		super();
 		this.num = num;
+		this.writer = writer;
 		this.count = count;
 		this.title = title;
-		this.writer = writer;
 		this.content = content;
 		this.date = date;
 	}
@@ -21,6 +21,12 @@ public class BoardVo {
 	}
 	public void setNum(int num) {
 		this.num = num;
+	}
+	public int getWriter() {
+		return writer;
+	}
+	public void setWriter(int writer) {
+		this.writer = writer;
 	}
 	public int getCount() {
 		return count;
@@ -33,12 +39,6 @@ public class BoardVo {
 	}
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	public String getWriter() {
-		return writer;
-	}
-	public void setWriter(String writer) {
-		this.writer = writer;
 	}
 	public String getContent() {
 		return content;
@@ -61,7 +61,7 @@ public class BoardVo {
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + num;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
+		result = prime * result + writer;
 		return result;
 	}
 	@Override
@@ -92,16 +92,13 @@ public class BoardVo {
 				return false;
 		} else if (!title.equals(other.title))
 			return false;
-		if (writer == null) {
-			if (other.writer != null)
-				return false;
-		} else if (!writer.equals(other.writer))
+		if (writer != other.writer)
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "BoardVo [num=" + num + ", count=" + count + ", title=" + title + ", writer=" + writer + ", content="
+		return "BoardVo [num=" + num + ", writer=" + writer + ", count=" + count + ", title=" + title + ", content="
 				+ content + ", date=" + date + "]";
 	}
 	

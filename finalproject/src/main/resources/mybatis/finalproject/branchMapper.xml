@@ -5,4 +5,12 @@
     <select id="selectAll" resultType="com.bit.fn.model.vo.BranchVo">
     	 SELECT * from branch
    	</select>
+    
+    <select id="selectAllBranchName" resultType="com.bit.fn.model.vo.BranchVo">
+    	 select branchName from branch
+   	</select>
+
+    <select id="selectBranchCode" resultType="map">
+    	 select branchCode from branch where branchName=#{branchName}
+   	</select>
 </mapper>

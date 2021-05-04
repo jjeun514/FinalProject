@@ -13,4 +13,5 @@ import com.bit.fn.model.vo.MasterAccountVo;
 public interface MasterAccountMapper {
 	public List<MasterAccountVo> selectAll();
 	public MasterAccountVo selectOne(String id);
+	public int deleteOne(String id);
 }

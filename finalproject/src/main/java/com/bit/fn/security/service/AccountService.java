@@ -69,4 +69,6 @@ public class AccountService {
 		//설정한 값으로 MariaDB 값 저장(회원가입)
 		return accountRepository.save(account);
 	}
+	
+	
 }

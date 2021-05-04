@@ -3,27 +3,53 @@ package com.bit.fn.model.vo;
 import java.sql.Date;
 
 public class ReservationVo {
-	private int roomNum,userCount,fee;
-	private String memId,etc;
+	private int roomNum,memNum,userCount,fee, totalReservation;
+	private String etc;
 	private Date reservationDate,useStartDay,useFinishDay;
 	public ReservationVo() {}
-	public ReservationVo(int roomNum, int userCount, int fee, String memId, String etc, Date reservationDate,
+	public ReservationVo(int roomNum, int memNum, int userCount, int fee, String etc, Date reservationDate,
 			Date useStartDay, Date useFinishDay) {
 		super();
 		this.roomNum = roomNum;
+		this.memNum = memNum;
 		this.userCount = userCount;
 		this.fee = fee;
-		this.memId = memId;
 		this.etc = etc;
 		this.reservationDate = reservationDate;
 		this.useStartDay = useStartDay;
 		this.useFinishDay = useFinishDay;
+	}
+	
+	public ReservationVo(int roomNum, int memNum, int userCount, int fee, int totalReservation, String etc,
+			Date reservationDate, Date useStartDay, Date useFinishDay) {
+		super();
+		this.roomNum = roomNum;
+		this.memNum = memNum;
+		this.userCount = userCount;
+		this.fee = fee;
+		this.totalReservation = totalReservation;
+		this.etc = etc;
+		this.reservationDate = reservationDate;
+		this.useStartDay = useStartDay;
+		this.useFinishDay = useFinishDay;
+	}
+	public int getTotalReservation() {
+		return totalReservation;
+	}
+	public void setTotalReservation(int totalReservation) {
+		this.totalReservation = totalReservation;
 	}
 	public int getRoomNum() {
 		return roomNum;
 	}
 	public void setRoomNum(int roomNum) {
 		this.roomNum = roomNum;
+	}
+	public int getMemNum() {
+		return memNum;
+	}
+	public void setMemNum(int memNum) {
+		this.memNum = memNum;
 	}
 	public int getUserCount() {
 		return userCount;
@@ -36,12 +62,6 @@ public class ReservationVo {
 	}
 	public void setFee(int fee) {
 		this.fee = fee;
-	}
-	public String getMemId() {
-		return memId;
-	}
-	public void setMemId(String memId) {
-		this.memId = memId;
 	}
 	public String getEtc() {
 		return etc;
@@ -73,7 +93,7 @@ public class ReservationVo {
 		int result = 1;
 		result = prime * result + ((etc == null) ? 0 : etc.hashCode());
 		result = prime * result + fee;
-		result = prime * result + ((memId == null) ? 0 : memId.hashCode());
+		result = prime * result + memNum;
 		result = prime * result + ((reservationDate == null) ? 0 : reservationDate.hashCode());
 		result = prime * result + roomNum;
 		result = prime * result + ((useFinishDay == null) ? 0 : useFinishDay.hashCode());
@@ -97,10 +117,7 @@ public class ReservationVo {
 			return false;
 		if (fee != other.fee)
 			return false;
-		if (memId == null) {
-			if (other.memId != null)
-				return false;
-		} else if (!memId.equals(other.memId))
+		if (memNum != other.memNum)
 			return false;
 		if (reservationDate == null) {
 			if (other.reservationDate != null)
@@ -125,9 +142,9 @@ public class ReservationVo {
 	}
 	@Override
 	public String toString() {
-		return "reservationVo [roomNum=" + roomNum + ", userCount=" + userCount + ", fee=" + fee + ", memId=" + memId
-				+ ", etc=" + etc + ", reservationDate=" + reservationDate + ", useStartDay=" + useStartDay
-				+ ", useFinishDay=" + useFinishDay + "]";
+		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", fee=" + fee
+				+ ", totalReservation=" + totalReservation + ", etc=" + etc + ", reservationDate=" + reservationDate
+				+ ", useStartDay=" + useStartDay + ", useFinishDay=" + useFinishDay + "]";
 	}
 	
 }
