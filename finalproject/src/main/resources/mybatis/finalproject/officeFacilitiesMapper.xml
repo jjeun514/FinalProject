@@ -7,9 +7,9 @@
    	</select>
 
     <select id="officeFacilities" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">
-    	 select a.officeNum, desk, chair, modem, fireExtinguisher, lan, airConditioner, 
+    	 select officeName, desk, chair, modem, fireExtinguisher, lan, airConditioner, 
     	 radiator, descendingLifeLine, powerSocket 
     	 from officeFacilities a 
-    	 left outer join office b on a.officeNum=b.officeNum where a.officeNum=#{officeNum}
+    	 left outer join office b on a.officeNum=b.officeNum where officeName=#{officeName}
    	</select>
 </mapper>

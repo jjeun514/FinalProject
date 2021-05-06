@@ -144,6 +144,9 @@ public class ViewTestController {
 		return "test";
 	}
 	
-	
+	@RequestMapping("/privacy")
+	public String privacy() {
+		return "privacy";
+	}
 	
 }

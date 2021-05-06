@@ -12,7 +12,7 @@
 				<tr>
 					<th id="branchName">지점</th>
 					<th id="floor">층</th>
-					<th id="officeNum">호수</th>
+					<th id="officeName">호수</th>
 					<th id="acreages">평수</th>
 					<th id="rent">가격</th>
 					<th id="occupancy">임대<br>현황</th>
@@ -23,7 +23,7 @@
 				<tr>
 					<td>${spaceInfo.branchName}</td>
 					<td>${spaceInfo.floor}</td>
-					<td>${spaceInfo.officeNum}</td>
+					<td>${spaceInfo.officeName}</td>
 					<td>${spaceInfo.acreages}</td>
 					<td>${spaceInfo.rent}</td>
 				<c:if test="${spaceInfo.occupancy eq 0}">

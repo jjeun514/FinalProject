@@ -14,6 +14,14 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <%@ include file="css.jspf" %>
 </head>
+<script type="text/javascript">
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+	if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
+		jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+	}
+});
+</script>
 <body>
 <header>
 	<%//최상단 header (좌측 로고, 우측 메뉴) %>
@@ -23,12 +31,6 @@
 		</div>
 		<table id="topRightTable">
 			<tr>
-				<%/*
-					[비회원] 공통: 로그인, 회원가입
-					[회원] 멤버: 프로필, 마이페이지, 멤버페이지, 로그아웃
-						   관리자: 프로필, 마이페이지, 관리자페이지, 로그아웃
-						     ┗▶ 멤버페이지도 보여야되나?? 그러면 추가
-				*/ %>
 				<!-- 비로그인의 경우 -->
 				<sec:authorize access="isAnonymous()">
 				<td class="topRightMenu" id="loginMenu"><span><a href="/signin">로그인</a></span></td>

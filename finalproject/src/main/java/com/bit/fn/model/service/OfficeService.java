@@ -26,7 +26,11 @@ public class OfficeService {
 		return officeMapper.spaceInfo();
 	}
 	
-	public List<OfficeVo> officeDetail(int officeNum){
-		return officeMapper.officeDetail(officeNum);
+	public List<OfficeVo> officeDetail(String officeName){
+		return officeMapper.officeDetail(officeName);
+	}
+	
+	public int addSpaceInfo(int branchCode, int floor, int acreages, int rent, String officeName, int max){
+		return officeMapper.addSpaceInfo(branchCode, floor, acreages, rent, officeName, max);
 	}
 }

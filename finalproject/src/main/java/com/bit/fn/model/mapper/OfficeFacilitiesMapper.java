@@ -13,5 +13,5 @@ import com.bit.fn.model.vo.OfficeFacilitiesVo;
 public interface OfficeFacilitiesMapper {
 	public List<OfficeFacilitiesVo> selectAll();
 
-	public List<OfficeFacilitiesVo> officeFacilities(int officeNum);
+	public List<OfficeFacilitiesVo> officeFacilities(String officeName);
 }
