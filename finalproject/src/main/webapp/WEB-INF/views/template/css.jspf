@@ -76,9 +76,6 @@
 		.prevIcon, .nextIcon {
 			height: 400px;
 		}
-		.spaceTable {
-			margin-top: 30px;
-		}
 		.modal-footer {
 			display: inline-block;
 			margin: 0 auto;
@@ -705,11 +702,12 @@
 			text-align: center;
 		}
 		#signUpMgmtTable tr td, th, #spaceMgmtTable tr td, th{
-			border: 1px solid black;
+			border: 1px solid #e8e4e7;
 		}
 		#signUpMgmtTable tr th, #spaceMgmtTable tr th{
-			background-color: #dbe7f4;
-			color: darkblue;
+			background-color: #eaedf1;
+			color: black;
+			font-size: 16px;
 		}
 		#text01{
 			margin-top: 10px;
@@ -719,5 +717,54 @@
 		}
 		#approval{
 			width: 40px;
+		}
+	/* 공간 관리 */
+		.spaceTable, .addSpaceTable {
+			margin-top: 30px;
+		}
+		.spaceTable th, .addSpaceTable th {
+			background-color: lightyellow;
+		}
+		.spaceTable th,.spaceTable td,
+		.addSpaceTable th, .addSpaceTable td {
+			width: 25%;
+			border: 1px lightgray solid;
+			margin: 0 auto;
+			text-align: center;
+		}
+		.spaceTitle {
+			margin: 0 auto;
+			text-align: center;
+			padding-top: 10px;
+		}
+		#addSpaceBtn {
+			margin: 0 auto;
+			text-align: right;
+			border-top: 0;
+		}
+		.addSpaceBtn {
+			width: 80px;
+		}
+		.spaceMgmtTable {
+			margin-top: -50px;
+		}
+		#addModal {
+			position: absolute;
+			width: 100%;
+			height: 800px;
+			padding: 5% 5% 0 5%;
+		}
+		.addSpaceTable input, .addSpaceTable select {
+			margin: 0 auto;
+			padding: 0;
+			border: 0;
+			border-spacing: 0;
+			text-align: center;
+			text-align-last: center;
+			width: 100%;
+			height: 100%;
+		}
+		.addSpaceTable option {
+			background-color: #f0fbee;
 		}
 </style>
