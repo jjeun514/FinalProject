@@ -82,7 +82,8 @@ public class ViewTestController {
 			masteraccountAndCompanyInfoService.masterOne(id).getMasteraccount().getId();
 			model.addAttribute("master",masteraccountAndCompanyInfoService.masterOne(id));
 			int comCode=masteraccountAndCompanyInfoService.masterOne(id).getMasteraccount().getComCode();
-			
+			model.addAttribute("comMemberList",memberinfoService.comMemberList(comCode));
+			System.out.println(memberinfoService.comMemberList(comCode));
 		}else if(member != -1) {
 			System.out.println("접속하신 계정은 멤버입니다.");
 			System.out.println(memberInfoAndCompanyInfoService.memberOne(id).getMemberInfo().getMemName());

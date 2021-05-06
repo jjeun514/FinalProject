@@ -26,7 +26,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<h5 class="modal-title" id="modalTitle">알림</h5>
-			<div class="modal-body" id="modalText01">아이디와 패스워드가 불일치합니다.</div>
+			<div class="modal-body" id="modalText01">아이디와 패스워드가 불일치히거나 로그인 권한이 없습니다.</div>
 			<button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
 		</div>
 	</div>

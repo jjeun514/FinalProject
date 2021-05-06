@@ -479,8 +479,12 @@
 	
 	
 	//회원탈퇴 기능 end
-		
-		
+	
+	//멤버 로그인 권한 부여 기능 start
+		$(".memberAdmission").click(function(data){
+			console.log(data);
+			
+		})
 		
 	});
 
@@ -675,8 +679,8 @@
       <sec:authorize access="hasRole('MASTER')">
       <div class="tab-pane fade" id="v-pills-settings2" role="tabpanel" aria-labelledby="v-pills-settings-tab">
         <div>
-        	<table>
-        		<thead>
+        	<table class="table">
+        		<thead class="thead-light">
         			<tr>
 	        			<th>이름</th>
 	        			<th>ID</th>
@@ -684,19 +688,30 @@
 	        			<th>부서</th>
 	        			<th>전화번호</th>
 	        			<th>가입일자</th>
+	        			<th>권한여부</th>
         			</tr>
         		</thead>
         		<tbody>
-        			<tr>
-        				<c:forEach items="${memberList }" var="memberList">
-        				<td>${memberList.memName }</td>
-        				<td>${memberList.id }</td>
-        				<td>${memberList.memNickName }</td>
-        				<td>${memberList.dept }</td>
-        				<td>${memberList.memPhone }</td>
-        				<td>${memberList.signdate }</td>
+        				<c:forEach items="${comMemberList }" var="memberList">
+        				<tr>
+	        				<td>${memberList.memName }</td>
+	        				<td>${memberList.id }</td>
+	        				<td>${memberList.memNickName }</td>
+	        				<td>${memberList.dept }</td>
+	        				<td>${memberList.memPhone }</td>
+	        				<td>${memberList.signdate }</td>
+	        				<td>
+	        				<a href="#" class="memberAdmission">
+	        				<c:if test="${memberList.admission == 1}">
+	        					허용
+	        				</c:if>
+	        				<c:if test="${memberList.admission != 1}">
+	        					비허용
+	        				</c:if>
+	        				</a>
+	        				</td>
+        				</tr>
         				</c:forEach>
-        			</tr>
         		</tbody>
         	</table>
         </div>

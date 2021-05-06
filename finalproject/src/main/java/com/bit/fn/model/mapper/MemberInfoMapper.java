@@ -24,4 +24,5 @@ public interface MemberInfoMapper {
 	public List<MemberInfoVo> admissionMgmt();
 	public List<MemberInfoVo> pending();
 	public List<MemberInfoVo> approved();
+	public List<MemberInfoVo> comMemberList(@Param("comCode") int comCode);
 }
