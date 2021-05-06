@@ -3,6 +3,13 @@
 
 <mapper namespace="com.bit.fn.model.mapper.OfficeFacilitiesMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">
-    	 SELECT * from officefacilities
+    	 SELECT * from officeFacilities
+   	</select>
+
+    <select id="officeFacilities" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">
+    	 select a.officeNum, desk, chair, modem, fireExtinguisher, lan, airConditioner, 
+    	 radiator, descendingLifeLine, powerSocket 
+    	 from officeFacilities a 
+    	 left outer join office b on a.officeNum=b.officeNum where a.officeNum=#{officeNum}
    	</select>
 </mapper>

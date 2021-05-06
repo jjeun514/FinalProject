@@ -17,45 +17,55 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
+ <repositories>
+     <repository>
+       <id>jitpack.io</id>
+       <url>https://jitpack.io</url>
+     </repository>
+   </repositories>
+	
+	
 	<dependencies>
+		<!-- boot 스타터 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		
+		<!-- maria DB -->
 		<dependency>
-		  <groupId>javax.servlet</groupId>
-		  <artifactId>jstl</artifactId>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<scope>runtime</scope>
 		</dependency>
+		
+		<!-- Tomcat -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 		  <groupId>org.apache.tomcat.embed</groupId>
 		  <artifactId>tomcat-embed-jasper</artifactId>
 		  <scope>provided</scope>
 		</dependency>
+		
+		<!-- jstl -->
+		<dependency>
+		  <groupId>javax.servlet</groupId>
+		  <artifactId>jstl</artifactId>
+		</dependency>
+		
+		
+		<!-- mybatis -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
@@ -96,6 +106,7 @@
 		    <version>4.6.0-1</version>
 		</dependency>
 		
+		<!-- devtools -->
 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-devtools</artifactId>
@@ -103,20 +114,60 @@
 	    
 	    <!-- 시큐리티  -->
 	    <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+	    <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	    <dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
 		<dependency>
+		
 		<!-- 롬복 -->
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
 		<!-- jpa -->
 		<dependency> 
 			<groupId>org.springframework.boot</groupId> 
 			<artifactId>spring-boot-starter-data-jpa</artifactId> 
 		</dependency>
+		
+		<!-- 잭슨 라이브러리 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		
+		<!-- json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20210307</version>
+		</dependency>
+
+            <!-- 결제 기능(아임포트) -->
+         <dependency>
+        <groupId>com.github.iamport</groupId>
+        <artifactId>iamport-rest-client-java</artifactId>
+        <version>0.2.14</version>
+      </dependency>
+		
 		
 	</dependencies>
 

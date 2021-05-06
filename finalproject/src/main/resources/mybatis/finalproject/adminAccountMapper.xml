@@ -6,16 +6,31 @@
     	 SELECT 
     	 	* 
     	 from 
-    	 	adminaccount
+    	 	adminAccount
    	</select>
    	<select id="selectOne" resultType="com.bit.fn.model.vo.AdminAccountVo">
     	 SELECT 
     	 	* 
     	 from 
-    	 	adminaccount
+    	 	adminAccount
     	 where
-    	 id=#{value}
+    		id=#{value}
    	</select>
+   	<update id="updateInfo">
+   		UPDATE 
+   			adminAccount 
+   		SET 
+   			nickName=#{nickName} 
+   		WHERE 
+   			id=#{id}
+   	</update>
+   	<delete id="deleteOne">
+   		DELETE
+   		FROM
+   		 adminAccount
+   		WHERE
+   			id=#{value}
+   	</delete>
    	
 </mapper>
 

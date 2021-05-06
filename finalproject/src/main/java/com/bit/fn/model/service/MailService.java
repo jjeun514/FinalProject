@@ -31,7 +31,7 @@ public class MailService {
 	
 	@Autowired
 	EmailBean emailBean;
-
+	
 	static String msg;
 	public String code="";
 	
@@ -133,4 +133,66 @@ public class MailService {
 		System.out.println("[MailService] codeGenerator() - code: "+code.toString());
 		return code.toString();
 	}
+	
+	// 입주 상담 신청서
+	public void sendApplication(String to, String name, String company, String phone, String email, String crew, String budget, String msg) throws MessagingException {
+    	System.out.println("[MailService(sendApplication())]");
+    	
+    	// properties 설정
+	    Properties props = new Properties();  
+	    props.setProperty("mail.transport.protocol", emailBean.getProtocol());
+	    props.setProperty("mail.host", emailBean.getHost());
+	    
+	    props.put("mail.smtp.auth", emailBean.getAuth());  
+	    props.put("mail.smtp.port", emailBean.getPort());  
+	    props.put("mail.smtp.host", emailBean.getHost());
+	    
+        props.put("mail.smtp.ssl.enable", emailBean.getSslEnable());
+        props.put("mail.smtp.ssl.trust", emailBean.getSslTrust());
+        
+	    props.put("mail.smtp.socketFactory.port", emailBean.getSocketFactoryPort());  
+	    props.put("mail.smtp.socketFactory.class", emailBean.getSocketFactory());  
+	    props.put("mail.smtp.socketFactory.fallback", emailBean.getFallback());
+	    
+	    props.put("mail.debug", emailBean.getDebug());
+	    
+	 // 메일 세션
+	    Session session=Session.getInstance(props, new javax.mail.Authenticator() {
+		       protected PasswordAuthentication getPasswordAuthentication() {  
+		       return new PasswordAuthentication(emailBean.getFrom(), emailBean.getPass());  
+		   }  
+	    });
+	    
+	    Transport transport = session.getTransport();  
+	    Message mimeMessage = new MimeMessage(session);
+	    mimeMessage.setFrom(new InternetAddress(emailBean.getFrom()));
+	    mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+	    mimeMessage.setSubject("[9'o clock] 입주 상담 신청서가 도착했습니다.");
+
+	    // 메일 본문
+	    msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
+	    msg+="<tbody>";
+	    msg+="<tr style='background-color:#00893f;text-align:center'>";
+	    msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
+	    msg+="<font size=6><strong>9'o Clock 입주 상담 신청서</strong></font>";
+	    msg+="<p style='padding-top:30px'>"
+	    		+ "<b style='color:darkblue'>신청자:</b>"+name
+	    		+ "<br><b style='color:darkblue'>회사명: </b>"+company
+	    		+ "<br><b style='color:darkblue'>연락처: </b>"+phone
+	    		+ "<br><b style='color:darkblue'>이메일: </b>"+email
+	    		+ "<br><b style='color:darkblue'>예정 입주 인원: </b>"+crew
+	    		+ "<br><b style='color:darkblue'>희망 금액대: </b>"+budget
+	    		+ "<br><b style='color:darkblue'>추가 메세지: </b>"+msg+"</p>";
+	    msg+="</td>";
+	    msg+="</tr>";
+	    msg+="</tbody>";
+	    msg+="</table>";
+	    System.out.println("[MailService(sendApplication())] msg: "+msg);
+	    mimeMessage.setContent(msg, "text/html;charset=utf-8");
+	    
+	    // 메일 발송
+	    transport.connect();  
+	    Transport.send(mimeMessage);
+	    transport.close();
+    }
 }

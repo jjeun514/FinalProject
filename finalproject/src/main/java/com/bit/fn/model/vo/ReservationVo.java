@@ -1,86 +1,154 @@
 package com.bit.fn.model.vo;
 
-import java.sql.Date;
-
 public class ReservationVo {
-	private int roomNum,userCount,fee;
-	private String memId,etc;
-	private Date reservationDate,useStartDay,useFinishDay;
+	private int roomNum,memNum,userCount, amount, totalReservation, rent;
+	private String etc, memName, comName, useStartTime, useFinishTime, reservationDay, merchant_uid;
+	
 	public ReservationVo() {}
-	public ReservationVo(int roomNum, int userCount, int fee, String memId, String etc, Date reservationDate,
-			Date useStartDay, Date useFinishDay) {
+
+	public ReservationVo(int roomNum, int memNum, int userCount, int amount, int totalReservation, int rent, String etc,
+			String memName, String comName, String useStartTime, String useFinishTime, String reservationDay,
+			String merchant_uid) {
 		super();
 		this.roomNum = roomNum;
+		this.memNum = memNum;
 		this.userCount = userCount;
-		this.fee = fee;
-		this.memId = memId;
+		this.amount = amount;
+		this.totalReservation = totalReservation;
+		this.rent = rent;
 		this.etc = etc;
-		this.reservationDate = reservationDate;
-		this.useStartDay = useStartDay;
-		this.useFinishDay = useFinishDay;
+		this.memName = memName;
+		this.comName = comName;
+		this.useStartTime = useStartTime;
+		this.useFinishTime = useFinishTime;
+		this.reservationDay = reservationDay;
+		this.merchant_uid = merchant_uid;
 	}
+
 	public int getRoomNum() {
 		return roomNum;
 	}
+
 	public void setRoomNum(int roomNum) {
 		this.roomNum = roomNum;
 	}
+
+	public int getMemNum() {
+		return memNum;
+	}
+
+	public void setMemNum(int memNum) {
+		this.memNum = memNum;
+	}
+
 	public int getUserCount() {
 		return userCount;
 	}
+
 	public void setUserCount(int userCount) {
 		this.userCount = userCount;
 	}
-	public int getFee() {
-		return fee;
+
+	public int getAmount() {
+		return amount;
 	}
-	public void setFee(int fee) {
-		this.fee = fee;
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
-	public String getMemId() {
-		return memId;
+
+	public int getTotalReservation() {
+		return totalReservation;
 	}
-	public void setMemId(String memId) {
-		this.memId = memId;
+
+	public void setTotalReservation(int totalReservation) {
+		this.totalReservation = totalReservation;
 	}
+
+	public int getRent() {
+		return rent;
+	}
+
+	public void setRent(int rent) {
+		this.rent = rent;
+	}
+
 	public String getEtc() {
 		return etc;
 	}
+
 	public void setEtc(String etc) {
 		this.etc = etc;
 	}
-	public Date getReservationDate() {
-		return reservationDate;
+
+	public String getMemName() {
+		return memName;
 	}
-	public void setReservationDate(Date reservationDate) {
-		this.reservationDate = reservationDate;
+
+	public void setMemName(String memName) {
+		this.memName = memName;
 	}
-	public Date getUseStartDay() {
-		return useStartDay;
+
+	public String getComName() {
+		return comName;
 	}
-	public void setUseStartDay(Date useStartDay) {
-		this.useStartDay = useStartDay;
+
+	public void setComName(String comName) {
+		this.comName = comName;
 	}
-	public Date getUseFinishDay() {
-		return useFinishDay;
+
+	public String getUseStartTime() {
+		return useStartTime;
 	}
-	public void setUseFinishDay(Date useFinishDay) {
-		this.useFinishDay = useFinishDay;
+
+	public void setUseStartTime(String useStartTime) {
+		this.useStartTime = useStartTime;
 	}
+
+	public String getUseFinishTime() {
+		return useFinishTime;
+	}
+
+	public void setUseFinishTime(String useFinishTime) {
+		this.useFinishTime = useFinishTime;
+	}
+
+	public String getReservationDay() {
+		return reservationDay;
+	}
+
+	public void setReservationDay(String reservationDay) {
+		this.reservationDay = reservationDay;
+	}
+
+	public String getMerchant_uid() {
+		return merchant_uid;
+	}
+
+	public void setMerchant_uid(String merchant_uid) {
+		this.merchant_uid = merchant_uid;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + amount;
+		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
 		result = prime * result + ((etc == null) ? 0 : etc.hashCode());
-		result = prime * result + fee;
-		result = prime * result + ((memId == null) ? 0 : memId.hashCode());
-		result = prime * result + ((reservationDate == null) ? 0 : reservationDate.hashCode());
+		result = prime * result + ((memName == null) ? 0 : memName.hashCode());
+		result = prime * result + memNum;
+		result = prime * result + ((merchant_uid == null) ? 0 : merchant_uid.hashCode());
+		result = prime * result + rent;
+		result = prime * result + ((reservationDay == null) ? 0 : reservationDay.hashCode());
 		result = prime * result + roomNum;
-		result = prime * result + ((useFinishDay == null) ? 0 : useFinishDay.hashCode());
-		result = prime * result + ((useStartDay == null) ? 0 : useStartDay.hashCode());
+		result = prime * result + totalReservation;
+		result = prime * result + ((useFinishTime == null) ? 0 : useFinishTime.hashCode());
+		result = prime * result + ((useStartTime == null) ? 0 : useStartTime.hashCode());
 		result = prime * result + userCount;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,44 +158,62 @@ public class ReservationVo {
 		if (getClass() != obj.getClass())
 			return false;
 		ReservationVo other = (ReservationVo) obj;
+		if (amount != other.amount)
+			return false;
+		if (comName == null) {
+			if (other.comName != null)
+				return false;
+		} else if (!comName.equals(other.comName))
+			return false;
 		if (etc == null) {
 			if (other.etc != null)
 				return false;
 		} else if (!etc.equals(other.etc))
 			return false;
-		if (fee != other.fee)
-			return false;
-		if (memId == null) {
-			if (other.memId != null)
+		if (memName == null) {
+			if (other.memName != null)
 				return false;
-		} else if (!memId.equals(other.memId))
+		} else if (!memName.equals(other.memName))
 			return false;
-		if (reservationDate == null) {
-			if (other.reservationDate != null)
+		if (memNum != other.memNum)
+			return false;
+		if (merchant_uid == null) {
+			if (other.merchant_uid != null)
 				return false;
-		} else if (!reservationDate.equals(other.reservationDate))
+		} else if (!merchant_uid.equals(other.merchant_uid))
+			return false;
+		if (rent != other.rent)
+			return false;
+		if (reservationDay == null) {
+			if (other.reservationDay != null)
+				return false;
+		} else if (!reservationDay.equals(other.reservationDay))
 			return false;
 		if (roomNum != other.roomNum)
 			return false;
-		if (useFinishDay == null) {
-			if (other.useFinishDay != null)
-				return false;
-		} else if (!useFinishDay.equals(other.useFinishDay))
+		if (totalReservation != other.totalReservation)
 			return false;
-		if (useStartDay == null) {
-			if (other.useStartDay != null)
+		if (useFinishTime == null) {
+			if (other.useFinishTime != null)
 				return false;
-		} else if (!useStartDay.equals(other.useStartDay))
+		} else if (!useFinishTime.equals(other.useFinishTime))
+			return false;
+		if (useStartTime == null) {
+			if (other.useStartTime != null)
+				return false;
+		} else if (!useStartTime.equals(other.useStartTime))
 			return false;
 		if (userCount != other.userCount)
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
-		return "reservationVo [roomNum=" + roomNum + ", userCount=" + userCount + ", fee=" + fee + ", memId=" + memId
-				+ ", etc=" + etc + ", reservationDate=" + reservationDate + ", useStartDay=" + useStartDay
-				+ ", useFinishDay=" + useFinishDay + "]";
+		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", amount="
+				+ amount + ", totalReservation=" + totalReservation + ", rent=" + rent + ", etc=" + etc + ", memName="
+				+ memName + ", comName=" + comName + ", useStartTime=" + useStartTime + ", useFinishTime="
+				+ useFinishTime + ", reservationDay=" + reservationDay + ", merchant_uid=" + merchant_uid + "]";
 	}
-	
+
 }

@@ -3,14 +3,24 @@
 
 <mapper namespace="com.bit.fn.model.mapper.MasterAccountMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.MasterAccountVo">
-    	 SELECT * from masteraccount
+    	 SELECT * from masterAccount
    	</select>
    	<select id="selectOne" resultType="com.bit.fn.model.vo.MasterAccountVo">
     	 SELECT 
     	 	* 
     	 from 
-    	 	masteraccount
+    	 	masterAccount
     	 where
     	 id=#{value}
    	</select>
+   	<insert id="insertOne" parameterType="map">
+   		Insert into masterAccount (id,comCode,signdate,profile) values(#{id},#{comCode},now(),0)
+   	</insert>
+   	<delete id="deleteOne">
+   		DELETE
+   		FROM
+   			masterAccount
+   		WHERE
+   			id=#{value}
+   	</delete>
 </mapper>

@@ -15,11 +15,10 @@ import com.bit.fn.model.service.BoardService;
 import com.bit.fn.model.service.BranchService;
 import com.bit.fn.model.service.CommentService;
 import com.bit.fn.model.service.CompanyinfoService;
-import com.bit.fn.model.service.MemberAccountService;
+import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.service.MettingRoomFacilitiesService;
 import com.bit.fn.model.service.MettingRoomService;
 import com.bit.fn.model.service.OfficefacilitiesService;
-import com.bit.fn.model.service.OfiiceService;
 import com.bit.fn.model.service.ReservationService;
 import com.bit.fn.model.service.join.BranchAndAdminService;
 
@@ -46,7 +45,7 @@ class FinalprojectApplicationTests {
 	MasterAccountMapper masterAccountMapper;
 	
 	@Autowired
-	MemberAccountService memberAccountService;
+	MemberinfoService memberinfoService;
 	
 	@Autowired
 	MettingRoomFacilitiesService mettingRoomFacilitiesService;
@@ -56,9 +55,6 @@ class FinalprojectApplicationTests {
 	
 	@Autowired
 	OfficefacilitiesService officefacilitiesService;
-	
-	@Autowired
-	OfiiceService ofiiceService; 
 	
 	@Autowired
 	ReservationService reservationService;
@@ -75,11 +71,10 @@ class FinalprojectApplicationTests {
 		assertNotNull(commentService);
 		assertNotNull(companyinfoService);
 		assertNotNull(masterAccountMapper);
-		assertNotNull(memberAccountService);
+		assertNotNull(memberinfoService);
 		assertNotNull(mettingRoomFacilitiesService);
 		assertNotNull(mettingRoomService);
 		assertNotNull(officefacilitiesService);
-		assertNotNull(ofiiceService);
 		assertNotNull(reservationService);
 		assertNotNull(branchAndAdminService);
 	}
@@ -93,16 +88,15 @@ class FinalprojectApplicationTests {
 		assertNotNull(commentService.selectAll());
 		assertNotNull(companyinfoService.selectAll());
 		assertNotNull(masterAccountMapper.selectAll());
-		assertNotNull(memberAccountService.selectAll());
+		assertNotNull(memberinfoService.selectAll());
 		assertNotNull(mettingRoomFacilitiesService.selectAll());
 		assertNotNull(mettingRoomService.selectAll());
 		assertNotNull(officefacilitiesService.selectAll());
-		assertNotNull(ofiiceService.selectAll());
 		assertNotNull(reservationService.selectAll());
-		assertNotNull(branchAndAdminService.selectAll());
+		//assertNotNull(branchAndAdminService.selectAll());
 		
 		System.out.println(reservationService.selectAll());
-		System.out.println(branchAndAdminService.selectAll());
+		//System.out.println(branchAndAdminService.selectAll());
 	}
 
 }

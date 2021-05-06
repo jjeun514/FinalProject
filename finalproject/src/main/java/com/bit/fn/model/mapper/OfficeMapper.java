@@ -12,4 +12,7 @@ import com.bit.fn.model.vo.OfficeVo;
 @Mapper
 public interface OfficeMapper {
 	public List<OfficeVo> selectAll();
+	public List<OfficeVo> selectPriceInfo();
+	public List<OfficeVo> spaceInfo();
+	public List<OfficeVo> officeDetail(int officeNum);
 }
