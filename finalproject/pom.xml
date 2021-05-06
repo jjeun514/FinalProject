@@ -106,6 +106,13 @@
 		    <version>4.6.0-1</version>
 		</dependency>
 		
+		<!-- MyBatis sql pretty -->
+		<dependency>
+			<groupId>org.bgee.log4jdbc-log4j2</groupId>
+			<artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+			<version>1.16</version>
+		</dependency>
+		
 		<!-- devtools -->
 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>

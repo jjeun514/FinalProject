@@ -6,18 +6,24 @@
     	 SELECT * from office
    	</select>
     <select id="selectPriceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
-    	 select officeNum, floor, acreages, rent, max, photo, occupancy from office order by floor
+    	 select officeName, floor, acreages, rent, max, photo, occupancy from office order by floor
    	</select>
     <select id="spaceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
-    	 select branchName, floor, a.officeNum, acreages, rent, occupancy, comName, max from office a 
+    	 select branchName, floor, officeName, acreages, rent, occupancy, comName, max from office a 
     	 left outer join companyInfo b on a.officeNum=b.officeNum 
     	 left outer join branch c on a.branchCode=c.branchCode
    	</select>
    	
    	<select id="officeDetail" resultType="com.bit.fn.model.vo.OfficeVo">
-   		select branchName, floor, a.officeNum, acreages, rent, occupancy, max, comName 
+   		select branchName, floor, officeName, acreages, rent, occupancy, max, comName 
    		from office a 
    		left outer join branch b on a.branchCode=b.branchCode 
-   		left outer join companyInfo c on a.officeNum=c.officeNum where a.officeNum=#{officeNum}
+   		left outer join companyInfo c on a.officeNum=c.officeNum where a.officeName=#{officeName}
    	</select>
+   	
+   	<!-- 공간 추가 -->
+   	<insert id="addSpaceInfo" parameterType="map">
+   		insert into office (branchCode, floor, acreages, rent, officeName, max) 
+   		values (#{branchCode}, #{floor}, #{acreages}, #{rent}, #{officeName}, #{max})
+   	</insert>
 </mapper>

@@ -77,4 +77,19 @@
    		reservationDay = '${reservationDay}' and
    		useStartTime = '${reservationDay} ${useStartTime}:00:00'
    	</delete>
+   	
+   	<select id="selectId" resultType="com.bit.fn.model.vo.MemberInfoVo" parameterType="map">
+   		select id from memberInfo where memName=#{name} and memPhone=#{phone}
+   	</select>
+   	
+   	<!-- 관리자페이지(신청서 관리) -->
+   	<select id="pending" resultType="com.bit.fn.model.vo.MemberInfoVo">
+   		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
+   		right outer join companyInfo b on a.comCode=b.comCode where admission=0 order by signdate
+   	</select>
+   	
+   	<select id="approved" resultType="com.bit.fn.model.vo.MemberInfoVo">
+   		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
+   		right outer join companyInfo b on a.comCode=b.comCode where admission=1 order by signdate
+   	</select>
 </mapper>
