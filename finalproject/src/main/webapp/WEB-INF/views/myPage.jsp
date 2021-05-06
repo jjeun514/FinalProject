@@ -584,23 +584,23 @@
 	               
 	            <sec:authorize access="hasRole('MEMBER')">
 	             <div>
-	             이름 
+	              <label for="memName">이름</label>
 	           	  <input type="text" name="memName" value="${member.memberInfo.memName }" readonly="readonly"/>
 	           	 </div>
 	           	 <div>
-	           	 닉네임 
+	           	  <label for="memNickName">닉네임</label>
 	           	  <input type="text" name="memNickName" value="${member.memberInfo.memNickName }" class="updateInfoInput memNickName" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	 부서 
-	          	  <input type="text" name="dept" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
+	          	  <label for="memNickName">부서</label>
+	          	  <input type="text" name="memNickName" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	 전화번호 
+	          	  <label for="memPhone">전화번호</label>
 	          	  <input type="text" name="memPhone" value="${member.memberInfo.memPhone }" class="updateInfoInput memPhone" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	 가입일자 
+	          	  <label for="signdate">가입일자</label>
 	          	  <input type="text" name="signdate" value="${member.memberInfo.signdate }" readonly="readonly"/>
 	          	 </div>
 	          	 
@@ -650,16 +650,16 @@
       </div>
       <div class="tab-pane fade updatePw" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
 	       <div>
-	        	기존 비밀번호
-	        	<input type="password" class="existingPw" />
+        	<label for="existingPw">기존 비밀번호</label>
+        	<input type="password" class="existingPw" />
 	       </div>
 	       <div>
-	       		새 비밀번호
-	        	<input type="password" class="newPw" />
+       		<label for="newPw">새 비밀번호</label>
+        	<input type="password" class="newPw" />
 	       </div> 	
 	       <div>
-	       		새 비밀번호 확인
-	        	<input type="password" class="newCheckPw" />
+       		<label for="newCheckPw">새 비밀번호 확인</label>
+        	<input type="password" class="newCheckPw" />
 	       </div> 	
 	       <div>
 	       	<button type="button" class="updatePwBtn">변경하기</button>
@@ -674,7 +674,32 @@
       </div>
       <sec:authorize access="hasRole('MASTER')">
       <div class="tab-pane fade" id="v-pills-settings2" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        멤버관리란
+        <div>
+        	<table>
+        		<thead>
+        			<tr>
+	        			<th>이름</th>
+	        			<th>ID</th>
+	        			<th>닉네임</th>
+	        			<th>부서</th>
+	        			<th>전화번호</th>
+	        			<th>가입일자</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<tr>
+        				<c:forEach items="${memberList }" var="memberList">
+        				<td>${memberList.memName }</td>
+        				<td>${memberList.id }</td>
+        				<td>${memberList.memNickName }</td>
+        				<td>${memberList.dept }</td>
+        				<td>${memberList.memPhone }</td>
+        				<td>${memberList.signdate }</td>
+        				</c:forEach>
+        			</tr>
+        		</tbody>
+        	</table>
+        </div>
       </div>
       </sec:authorize>
       <div class="tab-pane fade" id="v-pills-settings3" role="tabpanel" aria-labelledby="v-pills-settings-tab">
