@@ -4,23 +4,23 @@ import com.bit.fn.model.vo.CompanyInfoVo;
 import com.bit.fn.model.vo.MasterAccountVo;
 
 public class MasteraccountAndCompanyInfoVo {
-	private MasterAccountVo masteraccount;
+	private MasterAccountVo masterAccount;
 	private CompanyInfoVo companyInfo;
 	
 	public MasteraccountAndCompanyInfoVo() {}
 
 	public MasteraccountAndCompanyInfoVo(MasterAccountVo masteraccount, CompanyInfoVo companyInfo) {
 		super();
-		this.masteraccount = masteraccount;
+		this.masterAccount = masteraccount;
 		this.companyInfo = companyInfo;
 	}
 
 	public MasterAccountVo getMasteraccount() {
-		return masteraccount;
+		return masterAccount;
 	}
 
 	public void setMasteraccount(MasterAccountVo masteraccount) {
-		this.masteraccount = masteraccount;
+		this.masterAccount = masteraccount;
 	}
 
 	public CompanyInfoVo getCompanyInfo() {
@@ -36,7 +36,7 @@ public class MasteraccountAndCompanyInfoVo {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((companyInfo == null) ? 0 : companyInfo.hashCode());
-		result = prime * result + ((masteraccount == null) ? 0 : masteraccount.hashCode());
+		result = prime * result + ((masterAccount == null) ? 0 : masterAccount.hashCode());
 		return result;
 	}
 
@@ -54,17 +54,17 @@ public class MasteraccountAndCompanyInfoVo {
 				return false;
 		} else if (!companyInfo.equals(other.companyInfo))
 			return false;
-		if (masteraccount == null) {
-			if (other.masteraccount != null)
+		if (masterAccount == null) {
+			if (other.masterAccount != null)
 				return false;
-		} else if (!masteraccount.equals(other.masteraccount))
+		} else if (!masterAccount.equals(other.masterAccount))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "MasteraccountAndCompanyInfoVo [masteraccount=" + masteraccount + ", companyInfo=" + companyInfo + "]";
+		return "MasteraccountAndCompanyInfoVo [masteraccount=" + masterAccount + ", companyInfo=" + companyInfo + "]";
 	}
 	
 }
