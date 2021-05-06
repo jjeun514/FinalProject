@@ -16,6 +16,13 @@
  <!-- 동시성 제어도 있지만 그것은 나중에 생각하자 -->
 <script>
 
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+   if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
+      jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+   }
+});
+
 $(document).ready(function() {
 	
 	 // 사용 예약 버튼을 눌렀을 때 발생하는 이벤트
@@ -198,6 +205,10 @@ $( function() {
   } );
 
 </script>
+
+<script type="text/javascript">
+
+</script>
 <body>
 	<div class = "content bbs">
 		<div class = "container">
@@ -253,6 +264,7 @@ $( function() {
 							      <div class="modal-body">
 
 							        	<form id = "REZApply" class="form-horizontal">
+							        	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 							        	
 							        	  <div class="form-group">
 							        		<label id = "day" class="col-sm-12 control-label"></label>
@@ -301,7 +313,6 @@ $( function() {
 												</select>
 											</div>
 										  </div>
-										  
 										</form>
 							        
 							      </div>

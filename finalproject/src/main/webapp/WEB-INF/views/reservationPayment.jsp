@@ -1,22 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <title>RESERVATION : PAYMENT</title>
-<%@ include file="./template/memberPageHeader.jspf" %>
+<%@ include file="template/memberNavBar.jspf" %>
+<%@ include file="template/cssForMember.jspf" %>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
 
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+   if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
+      jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+   }
+});
 
 // 가맹점 코드
 IMP.init('imp14656270');
 	
 $(document).ready(function() {
-	
-	var check = document.getElementById('applyPay');
-	
-	if ($('#checkPay').is(":checked")==true){
-		$('#applyPay').prop('disabled', false);
-	}; // 왜 안되냐?
 	
 	$('#applyPay').click(function() { // 결제 버튼 눌렀을 때 실행되는 결제 기능 함수
 	
@@ -91,6 +92,7 @@ $(document).ready(function() {
 			<div class="row">
 				<div class="col-md-3">
 					<form action="#" method="get">
+					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 						<div class="input-group">
 						
 						
@@ -131,7 +133,7 @@ $(document).ready(function() {
 					<input id = "checkPay" type = "checkbox">
 					<label>결제하시겠습니까?</label>
 					<div>
-						<button id = "applyPay" type="button" class="btn btn-default" disabled = "disabled">결제하기</button>
+						<button id = "applyPay" type="button" class="btn btn-default">결제하기</button>
 					</div>
 				</div>
 			</div>
