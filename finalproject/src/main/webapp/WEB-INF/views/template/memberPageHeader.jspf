@@ -1,0 +1,57 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./css.jspf" %>
+<%@ taglib prefix="sec"  uri="http://www.springframework.org/security/tags"%>
+</head>
+
+<header class="fixed-top">
+  <div class="row r1 my-3">
+    <div class="col-sm">
+      logo
+    </div>
+    <div class="col-sm hr">
+    <!-- 어드민일 경우만 보여야 함 -->
+     <sec:authorize access="hasRole('ADMIN')">
+     <span class="mr-2"><a href="#">Admin</a></span>
+     </sec:authorize>
+     <span class="mr-2"><a href="#">Member</a></span>
+     <span class="mr-2"><a href="/mypage">my page</a></span>
+     <!-- 로그인한 경우 -->
+	 <sec:authorize access="isAuthenticated()">
+     <span class="mr-2"><a href="#" onclick="document.getElementById('logout-form').submit();">logout</a></span>
+     <!-- 로그아웃 폼 -->
+		<form id="logout-form" action='logout' method="POST">
+		<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+		</form>
+	</sec:authorize>	
+     <span class="mr-2">프로필사진</span>
+    </div>
+  </div><!--row(r1) end-->
+  
+  <div class="row r2">
+   <div class="col">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center my-2 " id="navbarNavDropdown">
+        <ul class="navbar-nav ">
+          <li class="nav-item mr-5">
+            <a class="nav-link" href="/board">BBS<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item mr-5">
+            <a class="nav-link" href="/notice">NOTICE</a>
+          </li>
+          <li class="nav-item mr-5">
+            <a class="nav-link" href="/reservation">RESERVATION</a>
+          </li>
+          <li class="nav-item dropdown ">
+            <a class="nav-link" href="/schedule">SCHEDULE</a>
+          </li>
+        </ul>
+      </div>
+    </nav><!--nav end-->
+   </div><!--col end-->
+  </div><!--row(r2) end-->
+</header><!--header end-->
