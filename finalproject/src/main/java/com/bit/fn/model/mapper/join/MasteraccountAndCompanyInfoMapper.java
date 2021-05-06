@@ -1,6 +1,8 @@
 package com.bit.fn.model.mapper.join;
 
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +21,6 @@ public interface MasteraccountAndCompanyInfoMapper {
 						  @Param("comPhone") String comPhone, 
 						  @Param("id") String id
 						 );
+	
+	public List<MasteraccountAndCompanyInfoVo> selectAllMasterAccounts();
 }
