@@ -776,19 +776,23 @@
 		}
 		.officeInfoTitle {
 			text-align: center;
+			margin: 20px;
 		}
 		
-		.contractDate, .selectBranch {
-			width: 100px;
+		.contractDate, .selectBranch, .MoveInDate, .MoveOutDate, .officeRented {
+			width: 120px;
 			border: 0;
 			background-color: transparent;
 			color: black;
 		}
-		.contractDateInput, .branchSelected {
+		.contractDateInput, .branchSelected, .MoveInDateInput, .MoveOutDateInput, .officeSelected {
 			position: absolute;
 			top: 0px;
-			left: 100px;
+			left: 110px;
 			width: 160px;
 			text-align: center;
+		}
+		.addMasterBtn {
+			width: 100px;
 		}
 </style>

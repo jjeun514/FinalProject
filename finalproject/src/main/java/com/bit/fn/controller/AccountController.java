@@ -274,9 +274,4 @@ public class AccountController {
 		return "redirect:/index";
 	}
 	
-	
-	
-	
-	
-	
 }

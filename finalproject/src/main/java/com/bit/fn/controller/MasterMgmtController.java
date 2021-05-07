@@ -1,30 +1,24 @@
 package com.bit.fn.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.fn.model.service.BranchService;
+import com.bit.fn.model.service.MailService;
+import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.OfficeService;
-import com.bit.fn.model.service.OfficefacilitiesService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
-import com.bit.fn.model.vo.BranchVo;
-import com.bit.fn.model.vo.OfficeFacilitiesVo;
-import com.bit.fn.model.vo.OfficeVo;
 import com.bit.fn.model.vo.join.MasteraccountAndCompanyInfoVo;
+import com.bit.fn.security.model.Account;
+import com.bit.fn.security.service.AccountService;
 
 @Controller
 @ComponentScan
@@ -33,6 +27,22 @@ public class MasterMgmtController {
 	MasteraccountAndCompanyInfoService masterAndComService;
 	List<MasteraccountAndCompanyInfoVo> mastAccountList;
 	
+	@Autowired
+	OfficeService officeService;
+	@Autowired
+	BranchService branchService;
+	@Autowired
+	MasterAccountService masterAccountService;
+	@Autowired
+	AccountService s_accountService;
+	@Autowired
+	MailService mailService;
+	
+	@Autowired
+	AccountController accountController;
+	
+	private String tempPassword;
+	
 	@RequestMapping("/masterMgmt")
 	public String masterMgmtGet(HttpServletRequest req) throws Exception {
 		System.out.println("[MasterMgmtController(masterMgmtGet())]");
@@ -40,6 +50,41 @@ public class MasterMgmtController {
 		req.setAttribute("masterList",masterAndComService.selectAllMasterAccounts());
 		
 		return "masterMgmt";
+	}
+	
+	// 마스터 계정 추가
+	@RequestMapping("/addMasterAccount")
+	public String addMasterAccountGet(Model model) {
+		System.out.println("[MasterMgmtController(addMasterAccountGet())]");
+		model.addAttribute("officeInfoList", officeService.selectAll());
+		model.addAttribute("branchList", branchService.selectAllBranchName());
+		return "addMasterAccount";
+	}
+	
+	// 마스터 계정 추가
+	@PostMapping("/addMasterAccount")
+	public String addMasterAccount(Account account, String id,
+			int comCode, String comName, String ceo, String manager, String comPhone,
+			String contractDateInput, String MoveInDateInput, String MoveOutDateInput) {
+		System.out.println("[MasterMgmtController(addMasterAccountPost())]");
+		System.out.println("[MasterMgmtController(addMasterAccountPost())]\n"
+				+ " account: "+account+"\n id: "+id+"\n"
+				+ " comCode: "+comCode+"\n comName: "+comName+"\n ceo: "+ceo+"\n manager: "+manager+"\n comPhone: "+comPhone+"\n"
+				+ " contractDateInput: "+contractDateInput+"\n MoveInDateInput: "+MoveInDateInput+"\n MoveOutDateInput: "+MoveOutDateInput);
+		try {
+			tempPassword=mailService.codeGenerator();
+			System.out.println("임시비번:"+tempPassword);
+			String pw=accountController.checkPw(tempPassword, null);
+			System.out.println("pw:"+pw);
+			
+			masterAccountService.insertOne(id, comCode);
+			s_accountService.masterSave(account);
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/jungbok";
+		}
+		return "redirect:/masterMgmt";
 	}
 
 //	@RequestMapping(path="/spaceDetail", method = RequestMethod.POST)
