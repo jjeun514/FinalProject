@@ -9,7 +9,7 @@
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
 	<div class="input-group">
 		<span class="input-group-text" id="id">ID</span>
-		<input type="email" id="username" name="username" class="form-control" placeholder="username" required autofocus>
+		<input type="text" id="username" name="username" class="form-control" placeholder="username" required autofocus>
 	</div>
 	<div class="input-group">
 		<span class="input-group-text" id="id">Password</span>

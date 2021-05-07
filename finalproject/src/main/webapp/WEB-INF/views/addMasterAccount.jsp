@@ -19,30 +19,36 @@ $(function(){
 	// 아이디 중복 검사
 	$(".userCheck").click(function(){
 		username=$(".username").val().replace(/\s/gi,"");
-		console.log(username);
+		console.log('username: '+username);
 		if(username==""){
 			document.getElementById('modalText01').innerHTML='아이디를 입력해주세요.';
 			$('#dangerModal').modal('show');
+		} else if((pattern_kor.test(username))){
+			document.getElementById('modalText01').innerHTML='한글은 허용하지 않습니다.';
+			$('#dangerModal').modal('show');
+	    	return false;
 		} else{
+			console.log('ajax이전 username: '+username);
 			$.ajax({
-				url: "/usercheck",
+				url: "/masterIdCheck",
 				type : "POST",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data: {username},
-				contentType : "application/json; charset=utf-8",
 				success: function(data){
+					console.log('ajax이후 username: '+username);
 					console.log("data: "+data);
-					if(data=="Available"){
+					if(data=="notallowed"){
+						document.getElementById('modalText01').innerHTML='사용중인 아이디입니다.';
+						$('#dangerModal').modal('show');
+						check=-1;
+					}else{
 						document.getElementById('modalText02').innerHTML='사용가능한 아이디입니다.';
-						$('#idInput').val(username);
+						$('#username').val(username);
 						$('#primaryModal').modal('show');
 						// 중복확인 후 아이디 변경 불가
 						$(".username").attr("disabled", true);
 						$("#checkBtn").attr("disabled", true);
 						check=1;
-					}else{
-						document.getElementById('modalText01').innerHTML='사용중인 아이디입니다.';
-						$('#dangerModal').modal('show');
-						check=-1;
 					}
 				 },
 				error: function(error){
@@ -50,7 +56,6 @@ $(function(){
 					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
-				
 			});
 		}
 	});
@@ -81,6 +86,11 @@ $(function(){
 				$('#dangerModal').modal('show');
 				return false;
 			} else{
+				document.getElementById('modalText01').innerHTML='처리중입니다. 잠시만 기다려주세요.';
+				$('.closeDangerModal').hide();
+				$(document.body).css('pointer-events', 'none');
+				$('#dangerModal').css('color','red');
+				$('#dangerModal').modal('show');
 				return true;
 			}
 		}
@@ -135,7 +145,7 @@ $(function(){
 								<div class="col-md-12">
 									<div class="form-group">
 										<input type="text" class="form-control username" placeholder="아이디 *" id="usernameInput" name="username"/>
-										<input type="hidden" class="form-control id" id="idInput" name="id"/>
+										<input type="hidden" name="username" id="username" />
 										<input type="button" class="btn btn-primary userCheck" id="checkBtn" value="중복확인"/>
 									</div>
 								</div>
@@ -209,7 +219,7 @@ $(function(){
 			<div class="modal-content">
 				<h5 class="modal-title" id="modalTitle">알림</h5>
 				<div class="modal-body" id="modalText01"></div>
-				<button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+				<button type="button" class="btn btn-danger btn-block closeDangerModal" data-dismiss="modal" id="closeBtn">확인</button>
 			</div>
 		</div>
 	</div>

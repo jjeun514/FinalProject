@@ -26,4 +26,8 @@
    		insert into office (branchCode, floor, acreages, rent, officeName, max) 
    		values (#{branchCode}, #{floor}, #{acreages}, #{rent}, #{officeName}, #{max})
    	</insert>
+   	
+   	<select id="selectOfficeNum" resultType="int">
+   		select officeNum from office where officeName=#{officeName}
+   	</select>
 </mapper>

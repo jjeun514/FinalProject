@@ -34,7 +34,6 @@
 		    
 	/* 마이페이지 */
 		.mypage{
-			height:1000px;
 			position: relative;
 		}
 		#v-pills-home-tab{

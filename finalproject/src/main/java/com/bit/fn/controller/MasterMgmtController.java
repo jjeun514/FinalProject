@@ -9,10 +9,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.fn.model.mapper.AccountMapper;
 import com.bit.fn.model.service.BranchService;
-import com.bit.fn.model.service.MailService;
+import com.bit.fn.model.service.CompanyinfoService;
 import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
@@ -26,22 +30,23 @@ public class MasterMgmtController {
 	@Autowired
 	MasteraccountAndCompanyInfoService masterAndComService;
 	List<MasteraccountAndCompanyInfoVo> mastAccountList;
+	private String id;
+	
+	@Autowired
+	CompanyinfoService companyInfoService;
 	
 	@Autowired
 	OfficeService officeService;
+	private int officeNum;
+	
 	@Autowired
 	BranchService branchService;
 	@Autowired
 	MasterAccountService masterAccountService;
 	@Autowired
+	AccountMapper accountMapper;
+	@Autowired
 	AccountService s_accountService;
-	@Autowired
-	MailService mailService;
-	
-	@Autowired
-	AccountController accountController;
-	
-	private String tempPassword;
 	
 	@RequestMapping("/masterMgmt")
 	public String masterMgmtGet(HttpServletRequest req) throws Exception {
@@ -52,7 +57,7 @@ public class MasterMgmtController {
 		return "masterMgmt";
 	}
 	
-	// 마스터 계정 추가
+	// 마스터 계정 추가(get)
 	@RequestMapping("/addMasterAccount")
 	public String addMasterAccountGet(Model model) {
 		System.out.println("[MasterMgmtController(addMasterAccountGet())]");
@@ -61,25 +66,48 @@ public class MasterMgmtController {
 		return "addMasterAccount";
 	}
 	
-	// 마스터 계정 추가
+	// 마스터 계정 아이디 중복 체크
+	@RequestMapping(path="/masterIdCheck", method=RequestMethod.POST)
+	@ResponseBody
+	public String masterIdCheck(@RequestBody String username) {
+		System.out.println("[MasterMgmtController(masterIdCheck())]");
+		System.out.println("[MasterMgmtController(masterIdCheck())] username: "+username);
+		String id=username.replace("%40", "@").split("username=")[1];
+		System.out.println("[MasterMgmtController(masterIdCheck())] id: "+id);
+		int count=accountMapper.idCount(id);
+		System.out.println("[MasterMgmtController(masterIdCheck())] count: "+count);
+		   
+		if(count != 0) {
+			System.out.println("[MasterMgmtController(masterIdCheck())] 아이디 중복");
+			 id="notallowed";
+			 System.out.println("[MasterMgmtController(masterIdCheck())] id: "+id);
+		}else {
+			System.out.println("[MasterMgmtController(masterIdCheck())] 아이디 사용 가능");
+			System.out.println("[MasterMgmtController(masterIdCheck())] id: "+id);
+		}
+		return id;
+	}
+	
+	// 마스터 계정 추가(post)
 	@PostMapping("/addMasterAccount")
-	public String addMasterAccount(Account account, String id,
+	public String addMasterAccount(Account account, String username,
 			int comCode, String comName, String ceo, String manager, String comPhone,
+			String branchSelected, String officeSelected,
 			String contractDateInput, String MoveInDateInput, String MoveOutDateInput) {
 		System.out.println("[MasterMgmtController(addMasterAccountPost())]");
 		System.out.println("[MasterMgmtController(addMasterAccountPost())]\n"
-				+ " account: "+account+"\n id: "+id+"\n"
+				+ " account: "+account+"\n id: "+username+"\n"
 				+ " comCode: "+comCode+"\n comName: "+comName+"\n ceo: "+ceo+"\n manager: "+manager+"\n comPhone: "+comPhone+"\n"
 				+ " contractDateInput: "+contractDateInput+"\n MoveInDateInput: "+MoveInDateInput+"\n MoveOutDateInput: "+MoveOutDateInput);
 		try {
-			tempPassword=mailService.codeGenerator();
-			System.out.println("임시비번:"+tempPassword);
-			String pw=accountController.checkPw(tempPassword, null);
-			System.out.println("pw:"+pw);
-			
+			// companyInfo 추가
+			officeNum=officeService.selectOfficeNum(officeSelected);
+			System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
+			companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput);
+			// 마스터 계정 추가
+			id=username;
 			masterAccountService.insertOne(id, comCode);
 			s_accountService.masterSave(account);
-		
 		}catch (Exception e) {
 			e.printStackTrace();
 			return "redirect:/jungbok";

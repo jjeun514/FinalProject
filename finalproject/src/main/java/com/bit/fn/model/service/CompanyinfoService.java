@@ -17,4 +17,6 @@ public class CompanyinfoService {
 	public List<CompanyInfoVo> selectAll(){
 		return companyInfoMapper.selectAll();
 	}
+	
+	public void addNewCompany(int comCode, int officeNum, String comName, String ceo, String manager, String comPhone, String contractDateInput, String moveInDateInput, String moveOutDateInput) {};
 }

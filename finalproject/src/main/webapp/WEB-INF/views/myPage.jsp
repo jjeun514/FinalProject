@@ -1,9 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="./template/header.jspf" %>
+<%//1. danger Modal%>
+<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<h5 class="modal-title" id="modalTitle">알림</h5>
+			<div class="modal-body" id="modalText01"></div>
+			<button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+		</div>
+	</div>
+</div>
 
-<meta name="_csrf" content="${_csrf.token}"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<%//2. primary Modal%>
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<h5 class="modal-title" id="modalTitle">알림</h5>
+			<div class="modal-body" id="modalText02"></div>
+			<button type="button" class="btn btn-primary btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+		</div>
+	</div>
+</div>
+<%@ include file="template/header.jspf" %>
 <style type="text/css">
 	.incorrectPw :{
 		color:"red";
@@ -11,19 +29,8 @@
 	.correctPw:{
 		color:"green";
 	}
-	
-
 </style>
-
 <script type="text/javascript">
-	//csrf 토큰 타입별 전송 기능
-	var csrfToken = $("meta[name='_csrf']").attr("content");
-	$.ajaxPrefilter(function(options, originalOptions, jqXHR){
-		if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
-			jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-		}
-	});
-	
 	//정보 수정 시 종합 검사용
 	var booInfo=false;
 	
@@ -109,9 +116,6 @@
 		}
 	}
 	
-	
-	
-	
 	$(function(){
 		
 	//회원정보 수정 
@@ -124,9 +128,6 @@
 		var memNickName=$(".memNickName").val();
 		var dept=$(".dept").val();
 		var memPhone=$(".memPhone").val();
-		
-		
-		
 		
 		//어드민 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".adminNickName").keyup(function(data){
@@ -234,7 +235,8 @@
 			if(oneClick){
 				//조건 1. 정보 값 체크한 결과 여부 확인
 				if(booInfo==false){
-					alert("수정할 내용을 확인하세요");
+					document.getElementById('modalText01').innerHTML='수정할 내용을 확인해주세요.';
+					$('#dangerModal').modal('show');
 					return false;
 				//조건 2. 입력하면서 저장한 값들과 현재 값이 다른 지 확인(값 강제 변경 여부)
 					//2-1 어드민인 경우
@@ -483,12 +485,9 @@
 		
 		
 	});
-
-
 </script>
 
-<body>
-<div class="content mypage"><!--content start-->
+<div class="content mypage">
  <div class="row vartical-menu">
   <div class="left left-nav">
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -696,24 +695,8 @@
        		</form>
        	</div>
       </div>
-      
     </div>
   </div>
-</div>   
 </div>
-<!--centent end-->
-
-</body><!--body end-->
-<!--body end-->
-<%@ include file="./template/footer.jspf" %>
-</html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->
+</div>
+<%@ include file="template/footer.jspf" %>

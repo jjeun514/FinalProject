@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.bit.fn.bean.EmailBean;
+import com.bit.fn.security.model.Account;
 @Service
 @Component
 @PropertySource("email.properties")
@@ -196,4 +197,67 @@ public class MailService {
 	    Transport.send(mimeMessage);
 	    transport.close();
     }
+	
+	// 마스터 계정 임시 비밀번호
+	public String sendTmpPassword(Account account) throws MessagingException {
+		System.out.println("[MailService(sendTmpPassword())]");
+		String to=emailBean.email;
+		String tempPassword=codeGenerator();
+		System.out.println("[MailService(sendTmpPassword())] 임시 비밀번호: "+tempPassword);
+		
+		// properties 설정
+		Properties props = new Properties();
+		props.setProperty("mail.transport.protocol", emailBean.getProtocol());
+		props.setProperty("mail.host", emailBean.getHost());
+		
+		props.put("mail.smtp.auth", emailBean.getAuth());  
+		props.put("mail.smtp.port", emailBean.getPort());  
+		props.put("mail.smtp.host", emailBean.getHost());
+		
+		props.put("mail.smtp.ssl.enable", emailBean.getSslEnable());
+		props.put("mail.smtp.ssl.trust", emailBean.getSslTrust());
+		
+		props.put("mail.smtp.socketFactory.port", emailBean.getSocketFactoryPort());  
+		props.put("mail.smtp.socketFactory.class", emailBean.getSocketFactory());  
+		props.put("mail.smtp.socketFactory.fallback", emailBean.getFallback());
+		
+		props.put("mail.debug", emailBean.getDebug());
+		
+		// 메일 세션
+		Session session=Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {  
+				return new PasswordAuthentication(emailBean.getFrom(), emailBean.getPass());  
+			}  
+		});
+		
+		Transport transport = session.getTransport();  
+		Message mimeMessage = new MimeMessage(session);
+		mimeMessage.setFrom(new InternetAddress(emailBean.getFrom()));
+		mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+		mimeMessage.setSubject("[9'o clock] 마스터계정 임시비밀번호 발급");
+		
+		// 메일 본문
+		msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
+		msg+="<tbody>";
+		msg+="<tr style='background-color: rgb(146,239,181);text-align:center'>";
+		msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
+		msg+="<font size=6><strong>9'o Clock  마스터계정 임시비밀번호</strong></font>";
+		msg+="<table style='padding-top:30px'>";
+		msg+="<tr><td style='background-color:black; color:white;'><b>아이디:</b></td><td>"+account.getUsername()+"</td></tr>"
+				+"<tr><td style='background-color:black; color:white;'><b>임시 비밀번호: </b></td><td>"+tempPassword+"</td></tr>"
+				+"</table>";
+		msg+="</td>";
+		msg+="</tr>";
+		msg+="</tbody>";
+		msg+="</table>";
+		System.out.println("[MailService(sendApplication())] msg: "+msg);
+		mimeMessage.setContent(msg, "text/html;charset=utf-8");
+		
+		// 메일 발송
+		transport.connect();  
+		Transport.send(mimeMessage);
+		transport.close();
+		
+		return tempPassword;
+	}
 }

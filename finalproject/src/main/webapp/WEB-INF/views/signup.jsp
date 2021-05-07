@@ -4,14 +4,6 @@
 <%@ include file="template/navbar.jspf" %>
 
 <script type="text/javascript">
-
-var csrfToken = $("meta[name='_csrf']").attr("content");
-$.ajaxPrefilter(function(options, originalOptions, jqXHR){
-	if (options['type'].toLowerCase() === "post") {
-		jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-	}
-});
-
 var pattern_num = /[0-9]/;	// 숫자 
 
 var pattern_eng = /[a-zA-Z]/;	// 문자 
@@ -287,7 +279,8 @@ $(function(){
 						 },
 				error: function(error){
 					console.log("ajax 에러");
-					$('#error').modal('show');
+					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+					$('#dangerModal').modal('show');
 					$('#emailInput').attr('disabled', false);
 					$('#authBtn').attr('disabled', false);
 				}
@@ -443,7 +436,7 @@ $(function(){
 							</div>
 					</div>
 				</div>
-						<%//1. danger Modal%>
+			<%//1. danger Modal%>
 			<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
