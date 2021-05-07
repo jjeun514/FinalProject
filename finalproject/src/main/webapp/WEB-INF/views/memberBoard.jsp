@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <title>MEMBER : BOARD</title>
-<%@ include file="./template/memberPageHeader.jspf" %>
+<%@ include file="template/memberNavBar.jspf" %>
+<%@ include file="template/cssForMember.jspf" %>
 <script>
 //게시판 검색기능//
   $(document).ready(function() {
@@ -71,9 +72,10 @@
 						</div>
 					</form>
 				</div>
+				
 				<button id = "writebtn" type="button" class="btn btn-default">글쓰기</button>
 				<div class="col-md-12">
-					<table id = "bbsTable" class="table table-list-search">
+					<table id = "bbsTable" class="table table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>번호</th>

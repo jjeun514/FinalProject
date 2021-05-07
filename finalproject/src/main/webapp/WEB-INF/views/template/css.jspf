@@ -321,7 +321,7 @@
 			text-align: center;
 			width: 100%;
 		}
-		.priceInfo, .spaceMgmtTable{
+		.priceInfo, .spaceMgmtTable, .companyMgmtTable, .masterMgmtTable{
 			margin: 0 auto;
 			text-align: center;
 			width: 80%;
@@ -737,15 +737,15 @@
 			text-align: center;
 			padding-top: 10px;
 		}
-		#addSpaceBtn {
+		#addSpaceBtn, #addMasterBtn {
 			margin: 0 auto;
 			text-align: right;
 			border-top: 0;
 		}
-		.addSpaceBtn {
+		.addSpaceBtn, .addMasterBtn {
 			width: 80px;
 		}
-		.spaceMgmtTable {
+		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable {
 			margin-top: -50px;
 		}
 		#addModal {
