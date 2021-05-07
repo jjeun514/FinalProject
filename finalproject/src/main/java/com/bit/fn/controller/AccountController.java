@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.fn.model.mapper.join.AccountAndMemberInfoMapper;
 import com.bit.fn.model.service.AccountRoleService;
 import com.bit.fn.model.service.AdminAccountService;
 import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.MemberinfoService;
+import com.bit.fn.model.service.join.AccountAndMemberInfoService;
 import com.bit.fn.security.model.Account;
 import com.bit.fn.security.service.AccountService;
 
@@ -48,6 +50,9 @@ public class AccountController {
 	
 	@Autowired
 	AccountRoleService accountRoleService;
+	
+	@Autowired
+	AccountAndMemberInfoService accountAndMemberInfoService;
 	
 	/*
 	@RequestMapping("/index")
@@ -275,7 +280,33 @@ public class AccountController {
 	}
 	
 	
-	
+	//비밀번호 변경
+		@RequestMapping(path="/updateMemberAdmission", method=RequestMethod.PUT, produces = "application/x-www-form-urlencoded; charset=UTF-8")
+		@ResponseBody
+		public String updateMemberAdmission(String currAdmission, String memberId) {
+			System.out.println(currAdmission);
+			int isupdate=-1;
+			//허용->비허용
+			if("허용".equals(currAdmission)) {
+				System.out.println(currAdmission+ "비허용으로 바꿀거임");
+				isupdate = accountAndMemberInfoService.updateMemberAdmission(0, 0, memberId);
+				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+				System.out.println(memberinfoService.selectOne(memberId));
+			//비허용->허용
+			}else {
+				System.out.println(currAdmission);
+				isupdate = accountAndMemberInfoService.updateMemberAdmission(1, 1, memberId);
+				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+				System.out.println(memberinfoService.selectOne(memberId));
+			}
+			
+			System.out.println(isupdate);
+			if(isupdate==2) {
+				return "updated";
+			}
+			
+			return "false";
+		}
 	
 	
 	
