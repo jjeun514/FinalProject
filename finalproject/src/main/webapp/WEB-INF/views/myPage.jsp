@@ -10,7 +10,6 @@
 		</div>
 	</div>
 </div>
-
 <%//2. primary Modal%>
 <div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -29,7 +28,9 @@
 	.correctPw:{
 		color:"green";
 	}
+	
 </style>
+
 <script type="text/javascript">
 	//정보 수정 시 종합 검사용
 	var booInfo=false;
@@ -63,9 +64,7 @@
 	
 	
 	var pattern_num = /[0-9]/;	// 숫자 
-
 	var pattern_eng = /[a-zA-Z]/;	// 문자 
-
 	var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
 	
 	
@@ -116,6 +115,9 @@
 		}
 	}
 	
+	
+	
+	
 	$(function(){
 		
 	//회원정보 수정 
@@ -128,6 +130,9 @@
 		var memNickName=$(".memNickName").val();
 		var dept=$(".dept").val();
 		var memPhone=$(".memPhone").val();
+		
+		
+		
 		
 		//어드민 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".adminNickName").keyup(function(data){
@@ -176,7 +181,8 @@
 							    memNickName = $('.memNickName').val();
 								console.log(memNickName);
 								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
-									alert("공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요");
+									document.getElementById('modalText01').innerHTML="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
+									$('#dangerModal').modal('show');
 								}else{
 									$.ajax({
 										url: "/nickNameCheck",
@@ -187,7 +193,8 @@
 										success: function(data){
 													console.log("data",data);
 													if(data=="Available"){
-														alert("사용가능한 닉네임입니다.");
+														document.getElementById('modalText02').innerHTML='사용가능한 닉네임입니다.';
+														$('#primaryModal').modal('show');
 														//닉네임을 바꾸지 못하게 readonly
 														$(".memNickName").prop("readonly","readonly");
 														memNickBoo=true;
@@ -235,8 +242,7 @@
 			if(oneClick){
 				//조건 1. 정보 값 체크한 결과 여부 확인
 				if(booInfo==false){
-					document.getElementById('modalText01').innerHTML='수정할 내용을 확인해주세요.';
-					$('#dangerModal').modal('show');
+					alert("수정할 내용을 확인하세요");
 					return false;
 				//조건 2. 입력하면서 저장한 값들과 현재 값이 다른 지 확인(값 강제 변경 여부)
 					//2-1 어드민인 경우
@@ -481,13 +487,47 @@
 	
 	
 	//회원탈퇴 기능 end
-		
-		
+	
+	//멤버 로그인 권한 부여 기능 start
+		$(".memberAdmission").click(function(){
+			//console.log(this.innerText);
+			//console.log($(this));
+			//console.log($(this).parent().parent().find(".memeberListId").text());
+			//현재 권한 허용, 비허용 여부
+			var currAdmission = this.innerText;
+			var curr=this;
+			//선택한 멤버의 아이디
+			var memberId = $(this).parent().parent().find(".memeberListId").text();
+			
+			$.ajax({
+				url: "/updateMemberAdmission",
+				type : "PUT",
+				data : {currAdmission,memberId},
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				dataType: "text",
+				success: function(data){
+							if(data=="updated"){
+								console.log("업데이트 성공");
+								if(currAdmission=="허용"){
+									console.log(curr.innerText="비허용");
+								}else{
+									console.log(curr.innerText="허용");
+								}
+							}else{
+								alert("업데이트 실패");
+							}
+						},
+				error:function(request,status,error){
+					 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					 console.log(error);
+					 }
+			});
+		})
 		
 	});
 </script>
 
-<div class="content mypage">
+<div class="content mypage"><!--content start-->
  <div class="row vartical-menu">
   <div class="left left-nav">
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -583,23 +623,23 @@
 	               
 	            <sec:authorize access="hasRole('MEMBER')">
 	             <div>
-	             이름 
+	              <label for="memName">이름</label>
 	           	  <input type="text" name="memName" value="${member.memberInfo.memName }" readonly="readonly"/>
 	           	 </div>
 	           	 <div>
-	           	 닉네임 
+	           	  <label for="memNickName">닉네임</label>
 	           	  <input type="text" name="memNickName" value="${member.memberInfo.memNickName }" class="updateInfoInput memNickName" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	 부서 
-	          	  <input type="text" name="dept" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
+	          	  <label for="memNickName">부서</label>
+	          	  <input type="text" name="memNickName" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	 전화번호 
+	          	  <label for="memPhone">전화번호</label>
 	          	  <input type="text" name="memPhone" value="${member.memberInfo.memPhone }" class="updateInfoInput memPhone" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	 가입일자 
+	          	  <label for="signdate">가입일자</label>
 	          	  <input type="text" name="signdate" value="${member.memberInfo.signdate }" readonly="readonly"/>
 	          	 </div>
 	          	 
@@ -649,31 +689,67 @@
       </div>
       <div class="tab-pane fade updatePw" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
 	       <div>
-	        	기존 비밀번호
-	        	<input type="password" class="existingPw" />
+        	<label for="existingPw">기존 비밀번호</label>
+        	<input type="password" class="existingPw" />
 	       </div>
 	       <div>
-	       		새 비밀번호
-	        	<input type="password" class="newPw" />
+       		<label for="newPw">새 비밀번호</label>
+        	<input type="password" class="newPw" />
 	       </div> 	
 	       <div>
-	       		새 비밀번호 확인
-	        	<input type="password" class="newCheckPw" />
+       		<label for="newCheckPw">새 비밀번호 확인</label>
+        	<input type="password" class="newCheckPw" />
 	       </div> 	
 	       <div>
 	       	<button type="button" class="updatePwBtn">변경하기</button>
 	       </div>
        </div>
       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-        잘있어요
+        내용
       </div>
       
       <div class="tab-pane fade" id="v-pills-settings1" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        저는 이만 갑니다
+        내용
       </div>
       <sec:authorize access="hasRole('MASTER')">
       <div class="tab-pane fade" id="v-pills-settings2" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        멤버관리란
+        <div>
+        	<table class="table">
+        		<thead class="thead-light">
+        			<tr>
+	        			<th>이름</th>
+	        			<th>ID</th>
+	        			<th>닉네임</th>
+	        			<th>부서</th>
+	        			<th>전화번호</th>
+	        			<th>가입일자</th>
+	        			<th>권한여부</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        				<c:forEach items="${comMemberList }" var="memberList">
+        				<tr>
+	        				<td>${memberList.memName }</td>
+	        				<td class="memeberListId">${memberList.id }</td>
+	        				<td>${memberList.memNickName }</td>
+	        				<td>${memberList.dept }</td>
+	        				<td>${memberList.memPhone }</td>
+	        				<td>${memberList.signdate }</td>
+	        				<td>
+	        				<a href="#" class="memberAdmission">
+	        				<c:if test="${memberList.admission == 1}">
+	        					허용
+	        				</c:if>
+	        				<c:if test="${memberList.admission != 1}">
+	        					비허용
+	        				</c:if>
+	        				</a>
+	        				</td>
+        				</tr>
+        				</c:forEach>
+        		</tbody>
+        	</table>
+        </div>
       </div>
       </sec:authorize>
       <div class="tab-pane fade" id="v-pills-settings3" role="tabpanel" aria-labelledby="v-pills-settings-tab">
