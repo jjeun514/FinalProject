@@ -175,7 +175,8 @@
 							    memNickName = $('.memNickName').val();
 								console.log(memNickName);
 								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
-									alert("공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요");
+									document.getElementById('modalText01').innerHTML="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
+									$('#dangerModal').modal('show');
 								}else{
 									$.ajax({
 										url: "/nickNameCheck",
@@ -186,7 +187,8 @@
 										success: function(data){
 													console.log("data",data);
 													if(data=="Available"){
-														alert("사용가능한 닉네임입니다.");
+														document.getElementById('modalText02').innerHTML='사용가능한 닉네임입니다.';
+														$('#primaryModal').modal('show');
 														//닉네임을 바꾸지 못하게 readonly
 														$(".memNickName").prop("readonly","readonly");
 														memNickBoo=true;
@@ -481,9 +483,39 @@
 	//회원탈퇴 기능 end
 	
 	//멤버 로그인 권한 부여 기능 start
-		$(".memberAdmission").click(function(data){
-			console.log(data);
+		$(".memberAdmission").click(function(){
+			//console.log(this.innerText);
+			//console.log($(this));
+			//console.log($(this).parent().parent().find(".memeberListId").text());
+			//현재 권한 허용, 비허용 여부
+			var currAdmission = this.innerText;
+			var curr=this;
+			//선택한 멤버의 아이디
+			var memberId = $(this).parent().parent().find(".memeberListId").text();
 			
+			$.ajax({
+				url: "/updateMemberAdmission",
+				type : "PUT",
+				data : {currAdmission,memberId},
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				dataType: "text",
+				success: function(data){
+							if(data=="updated"){
+								console.log("업데이트 성공");
+								if(currAdmission=="허용"){
+									console.log(curr.innerText="비허용");
+								}else{
+									console.log(curr.innerText="허용");
+								}
+							}else{
+								alert("업데이트 실패");
+							}
+						},
+				error:function(request,status,error){
+					 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					 console.log(error);
+					 }
+			});
 		})
 		
 	});
@@ -492,6 +524,26 @@
 </script>
 
 <body>
+<%//1. danger Modal%>
+<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<h5 class="modal-title" id="modalTitle">알림</h5>
+			<div class="modal-body" id="modalText01"></div>
+			<button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+		</div>
+	</div>
+</div>
+<%//2. primary Modal%>
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<h5 class="modal-title" id="modalTitle">알림</h5>
+			<div class="modal-body" id="modalText02"></div>
+			<button type="button" class="btn btn-primary btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+		</div>
+	</div>
+</div>
 <div class="content mypage"><!--content start-->
  <div class="row vartical-menu">
   <div class="left left-nav">
@@ -695,7 +747,7 @@
         				<c:forEach items="${comMemberList }" var="memberList">
         				<tr>
 	        				<td>${memberList.memName }</td>
-	        				<td>${memberList.id }</td>
+	        				<td class="memeberListId">${memberList.id }</td>
 	        				<td>${memberList.memNickName }</td>
 	        				<td>${memberList.dept }</td>
 	        				<td>${memberList.memPhone }</td>
@@ -742,9 +794,6 @@
 </div>   
 </div>
 <!--centent end-->
-
-</body><!--body end-->
-<!--body end-->
 <%@ include file="./template/footer.jspf" %>
 </html>
 

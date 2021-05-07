@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <title>회원가입</title>
 <%@ include file="template/navbar.jspf" %>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
 var csrfToken = $("meta[name='_csrf']").attr("content");

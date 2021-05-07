@@ -38,7 +38,7 @@ public class MasterController {
 	
 	//멤버 회원가입
 		@PostMapping("/joinMaster")
-		public String joinMember(Account account, String username, int comCode) {
+		public String joinMaster(Account account, String username, int comCode) {
 			System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■username="+username);
 			System.out.println(account);
 			System.out.println("id="+username);
