@@ -1,0 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%/* 관리자 페이지 navbar */%>
+<%@ include file="header.jspf" %>
+<nav class="navbar-expand-lg navbar-dark bg-dark">
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item"><a class="nav-link" href="/board">board   | <span class="sr-only"></span></a></li>
+			<li class="nav-item"><a class="nav-link" href="/notice">notice   | </a></li>
+			<li class="nav-item"><a class="nav-link" href="/reservation">reservation</a></li>
+		</ul>
+	</div>
+</nav>
+</header>

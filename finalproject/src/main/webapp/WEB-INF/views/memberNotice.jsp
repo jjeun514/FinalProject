@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   <title>MEMBER : NOTICE</title>
-<%@ include file="./template/memberPageHeader.jspf" %>
+<%@ include file="template/memberNavBar.jspf" %>
+<%@ include file="template/cssForMember.jspf" %>
 <script>
 //게시판 검색기능//
   $(document).ready(function() {
@@ -72,7 +73,7 @@
 					</form>
 				</div>
 				<div class="col-md-12">
-					<table class="table table-list-search">
+					<table id = "noticeTable" class="table table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>번호</th>

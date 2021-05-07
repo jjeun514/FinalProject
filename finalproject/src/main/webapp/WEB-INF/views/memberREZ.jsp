@@ -1,19 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   <title>MEMBER : RESERVATION</title>
-<%@ include file="./template/memberPageHeader.jspf" %>
+<%@ include file="template/memberNavBar.jspf" %>
+<%@ include file="template/cssForMember.jspf" %>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
 <script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
- <link rel="stylesheet" href="/resources/demos/style.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
  <!-- B2B 프로젝트인 경우 cdn을 사용할 수 없음
  왜냐하면 이 외부 링크들에 대한 방화벽을 다 열어줘야 하기 때문 -->
  
  <!-- 동시성 제어도 있지만 그것은 나중에 생각하자 -->
 <script>
+
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+   if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
+      jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+   }
+});
 
 $(document).ready(function() {
 	
@@ -51,6 +59,7 @@ $(document).ready(function() {
 			url : "/reservation/applySubmit",
 			type : "POST",
 			data : applyContent,
+			dataType : "json",
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			success : function(data) {
 				// 예약 신청 완료 
@@ -196,6 +205,10 @@ $( function() {
   } );
 
 </script>
+
+<script type="text/javascript">
+
+</script>
 <body>
 	<div class = "content bbs">
 		<div class = "container">
@@ -251,6 +264,7 @@ $( function() {
 							      <div class="modal-body">
 
 							        	<form id = "REZApply" class="form-horizontal">
+							        	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 							        	
 							        	  <div class="form-group">
 							        		<label id = "day" class="col-sm-12 control-label"></label>
@@ -299,7 +313,6 @@ $( function() {
 												</select>
 											</div>
 										  </div>
-										  
 										</form>
 							        
 							      </div>
