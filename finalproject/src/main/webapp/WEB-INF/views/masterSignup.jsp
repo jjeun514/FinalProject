@@ -1,23 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<title>회원가입</title>
-<%@ include file="template/navbar.jspf" %>
+<title>마스터계정추가</title>
+<%@ include file="template/AdminNavbar.jspf" %>
 
 <script type="text/javascript">
-
-var csrfToken = $("meta[name='_csrf']").attr("content");
-$.ajaxPrefilter(function(options, originalOptions, jqXHR){
-	if (options['type'].toLowerCase() === "post") {
-		jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-	}
-});
-
 var pattern_num = /[0-9]/;	// 숫자 
-
 var pattern_eng = /[a-zA-Z]/;	// 문자 
-
 var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
-
 var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글체크
 
 //아이디 중복검사 여부
@@ -30,17 +19,10 @@ $(function(){
 	//아이디(이메일) 중복 검사 하기 전 이메일 인증번호 전송버튼 및 인증확인 버튼 닉네임 중복검사 버튼 비활성화
 	$(".btncheck").prop('disabled',"true");
 	
-	
 	//비동기 통신 (아이디 중복검사)
 	$(".userCheck").click(function(){
 		username = $(".username").val().replace(/\s/gi,"");
 		console.log(username);
-		/* 이메일 여부 확인 보류
-		if(username==""||!(username.endsWith("@gmail.com"))){
-			document.getElementById('modalText01').innerHTML='공백 및 지메일 아이디를 확인해주세요';
-			$('#dangerModal').modal('show');
-		}else{
-		*/
 			$.ajax({
 				url: "/usercheck",
 				type : "POST",
@@ -67,12 +49,9 @@ $(function(){
 				}
 				
 			});
-		/*	
-		}
-		*/
 	});
 	
-	//패스워드 16자 제한
+	// 패스워드 16자 제한
 	$(".password1").keyup(function(){
 		if($('.password1').val().length>16){
 			$('.password1').val($('.password1').val().substring(0,16));
@@ -130,72 +109,137 @@ $(function(){
 			<div class="col-md-3 register-left">
 				<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
 				<h3>9'o Clock</h3>
-				<p>입주를 환영합니다.</p>
+				<p>입주 계약이 완료된 회사의 마스터 계정을 추가해주세요.</p>
 			</div>
 			
 			<div class="col-md-9 register-right">
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-						<h3 class="register-heading">마스터 전용 회원 가입</h3>
+						<h3 class="register-heading">마스터 계정 추가</h3>
+						<form action="/joinMaster" method="post" class="joinForm">
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 							<div class="row register-form">
-								<div class="col-md-11">
-									<form action="/joinMaster" method="post" class="joinForm">  
-									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+								<div class="col-md-3">
 									<div class="form-group">
-									<!-- name=서버로 전달되는 이름 --> 
-										<input type="email" class="form-control username" placeholder="아이디(gmail) *" value="" id="emailInput" name="username"/>
+										<input type="text" class="form-control comCode" placeholder="회사코드 *" value="" id="comCodeInput" name="comCode"/>
 									</div>
+								</div>
+								<div class="col-md-5">
+									<div class="form-group">
+										<input type="text" class="form-control comName" placeholder="회사명 *" value="" id="comNameInput" name="comName"/>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<input type="text" class="form-control ceo" placeholder="대표 *" value="" id="ceoInput" name="ceo"/>
+									</div>
+								</div>
+								
+								<div class="col-md-6">
+									<div class="form-group">
+										<input type="text" class="form-control manager" placeholder="담당자 *" value="" id="managerInput" name="manager"/>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<input type="number" class="form-control comPhone" placeholder="회사연락처 *" value="" id="comPhoneInput" name="comPhone"/>
+									</div>
+								</div>
+								
+								<div class="col-md-12">
+									<div class="form-group">
+										<input type="email" class="form-control username" placeholder="아이디 *" value="" id="emailInput" name="username"/>
+										<input type="button" class="btn btn-primary userCheck" id="checkBtn" value="중복확인"/>
+									</div>
+								</div>
+								<div class="col-md-6">
 									<div class="form-group">
 										<input type="password" class="form-control password1" placeholder="비밀번호 *" value="" name="password" />
 									</div>
+								</div>
+								<div class="col-md-6">
 									<div class="form-group" id="emailPart">
 										<input type="password" class="form-control password2"  placeholder="비밀번호 확인 *" value="" />
 									</div>
-									<div class="form-group">
-									<select name="comCode">      
-										<c:forEach items="${company }" var="bean">
-								        	<option value="${bean.comCode }" >${bean.comName }</option>
-								        </c:forEach>
-									</select>
-									</div>
-									</form> 
-									 <input type="submit" class="btnRegister"  value="회원가입"/>
-									 
-									 <input type="submit" class="userCheck"  value="아이디중복검증"/>
-									 
 								</div>
 								
-							<div class="col-md-1">
-								<div class="form-group"><input class="tmp form-control"/></div>
-								<div class="form-group">
-									<!-- Modal (Button trigger) -->
-									
+								<div class="col-md-12">
+									<div class="form-group">
+										<h3 class="officeInfoTitle">입주 정보 추가</h3>
 									</div>
 								</div>
+								
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="form-control contractDate">계약일: </label>
+										<input type="date" class="form-control contractDateInput" name="contractDateInput" value=""/>
+									</div>
+								</div>
+								
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="form-control selectBranch">지점: </label>
+										<select class="form-control branchSelected" name="branchName">      
+								        	<option selected >지점선택</option>
+											<c:forEach items="${branchList }" var="list">
+									        	<option value="${list.branchName }" >${list.branchName }</option>
+									        </c:forEach>
+										</select>
+									</div>
+								</div>
+									
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><strong>입주일:</strong></label>
+										<input type="date" id="rentStartDate"/>
+									</div>
+								</div>
+								
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><strong>입주공간:</strong></label>
+										<select name="officeName">
+											<option selected >공간선택</option>
+											<c:forEach items="${officeInfoList }" var="list">
+									        	<option value="${list.officeName }" >${list.officeName }</option>
+									        </c:forEach>
+										</select>
+									</div>
+									
+									<div class="form-group">
+										<label><strong>퇴소일:</strong></label>
+										<input type="date" id="rentEndDate"/>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<input type="submit" class="btnRegister"  value="회원가입"/>
+								</div>
 							</div>
+						</form>
 					</div>
 				</div>
 			</div>
-						<%//1. danger Modal%>
-			<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<h5 class="modal-title" id="modalTitle">알림</h5>
-						<div class="modal-body" id="modalText01"></div>
-						<button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
-					</div>
-				</div>
+		</div>
+	</div>
+
+	<%//1. danger Modal%>
+	<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<h5 class="modal-title" id="modalTitle">알림</h5>
+				<div class="modal-body" id="modalText01"></div>
+				<button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
 			</div>
-			
-			<%//2. primary Modal%>
-			<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<h5 class="modal-title" id="modalTitle">알림</h5>
-						<div class="modal-body" id="modalText02"></div>
-						<button type="button" class="btn btn-primary btn-block" data-dismiss="modal" id="closeBtn">확인</button>
-					</div>
-				</div>
+		</div>
+	</div>
+	
+	<%//2. primary Modal%>
+	<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<h5 class="modal-title" id="modalTitle">알림</h5>
+				<div class="modal-body" id="modalText02"></div>
+				<button type="button" class="btn btn-primary btn-block" data-dismiss="modal" id="closeBtn">확인</button>
 			</div>
 		</div>
 	</div>

@@ -135,7 +135,7 @@ public class MailService {
 	}
 	
 	// 입주 상담 신청서
-	public void sendApplication(String to, String name, String company, String phone, String email, String crew, String budget, String msg) throws MessagingException {
+	public void sendApplication(String to, String name, String company, String phone, String email, String crew, String budget, String message) throws MessagingException {
     	System.out.println("[MailService(sendApplication())]");
     	
     	// properties 설정
@@ -172,17 +172,18 @@ public class MailService {
 	    // 메일 본문
 	    msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
 	    msg+="<tbody>";
-	    msg+="<tr style='background-color:#00893f;text-align:center'>";
+	    msg+="<tr style='background-color: lightgray;text-align:center'>";
 	    msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
 	    msg+="<font size=6><strong>9'o Clock 입주 상담 신청서</strong></font>";
-	    msg+="<p style='padding-top:30px'>"
-	    		+ "<b style='color:darkblue'>신청자:</b>"+name
-	    		+ "<br><b style='color:darkblue'>회사명: </b>"+company
-	    		+ "<br><b style='color:darkblue'>연락처: </b>"+phone
-	    		+ "<br><b style='color:darkblue'>이메일: </b>"+email
-	    		+ "<br><b style='color:darkblue'>예정 입주 인원: </b>"+crew
-	    		+ "<br><b style='color:darkblue'>희망 금액대: </b>"+budget
-	    		+ "<br><b style='color:darkblue'>추가 메세지: </b>"+msg+"</p>";
+	    msg+="<table style='padding-top:30px'>";
+	    msg+="<tr><td style='background-color:black; color:white;'><b>신청자:</b></td><td>"+name+"</td></tr>"
+	    	+"<tr><td style='background-color:black; color:white;'><b>회사명: </b></td><td>"+company+"</td></tr>"
+	    	+"<tr><td style='background-color:black; color:white;'><b>연락처: </b></td><td>"+phone+"</td></tr>"
+	    	+"<tr><td style='background-color:black; color:white;'><b>이메일: </b></td><td>"+email+"</td></tr>"
+	    	+"<tr><td style='background-color:black; color:white;'><b>예정 입주 인원: </b></td><td>"+crew+"명</td></tr>"
+	    	+"<tr><td style='background-color:black; color:white;'><b>희망 금액대: </b></td><td>"+budget+"</td></tr>"
+	    	+"<tr><td style='background-color:black; color:white;'><b>추가 메세지: </b></td><td>"+message+"</td></tr>"
+	    	+"</table>";
 	    msg+="</td>";
 	    msg+="</tr>";
 	    msg+="</tbody>";

@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.bit.fn.model.service.BranchService;
 import com.bit.fn.model.service.CompanyinfoService;
 import com.bit.fn.model.service.MasterAccountService;
+import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
 import com.bit.fn.security.model.Account;
 import com.bit.fn.security.service.AccountService;
@@ -18,6 +20,12 @@ import com.bit.fn.security.service.AccountService;
 public class MasterController {
 	@Autowired
 	CompanyinfoService companyinfoService;
+	
+	@Autowired
+	OfficeService officeService;
+	
+	@Autowired
+	BranchService branchService;
 	
 	@Autowired
 	AccountService s_accountService;
@@ -32,7 +40,8 @@ public class MasterController {
 	//마스터 회원가입
 	@RequestMapping("masterSignup")
 	public String masterSignup(Model model) {
-		model.addAttribute("company",companyinfoService.selectAll());
+		model.addAttribute("officeInfoList",officeService.selectAll());
+		model.addAttribute("branchList",branchService.selectAllBranchName());
 		return "/masterSignup";
 	}
 	
