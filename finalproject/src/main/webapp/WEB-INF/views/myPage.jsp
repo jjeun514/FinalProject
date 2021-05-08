@@ -659,8 +659,8 @@
 	           	  <input type="text" name="memNickName" value="${member.memberInfo.memNickName }" class="updateInfoInput memNickName" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	  <label for="memNickName">부서</label>
-	          	  <input type="text" name="memNickName" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
+	          	  <label for="dept">부서</label>
+	          	  <input type="text" name="dept" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
 	          	  <label for="memPhone">전화번호</label>
