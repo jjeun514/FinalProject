@@ -280,7 +280,7 @@ public class AccountController {
 	}
 	
 	
-	//비밀번호 변경
+	//권한 변경
 		@RequestMapping(path="/updateMemberAdmission", method=RequestMethod.PUT, produces = "application/x-www-form-urlencoded; charset=UTF-8")
 		@ResponseBody
 		public String updateMemberAdmission(String currAdmission, String memberId) {
