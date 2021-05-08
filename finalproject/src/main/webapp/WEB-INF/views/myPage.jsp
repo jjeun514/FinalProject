@@ -1,9 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%//1. danger Modal%>
+<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <h5 class="modal-title" id="modalTitle">알림</h5>
+         <div class="modal-body" id="modalText01"></div>
+         <button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+      </div>
+   </div>
+</div>
+
+<%//2. primary Modal%>
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <h5 class="modal-title" id="modalTitle">알림</h5>
+         <div class="modal-body" id="modalText02"></div>
+         <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+      </div>
+   </div>
+</div>
 <%@ include file="./template/header.jspf" %>
 
 <meta name="_csrf" content="${_csrf.token}"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	.incorrectPw :{
 		color:"red";
@@ -194,10 +214,10 @@
 														memNickBoo=true;
 													}else{
 														if(memNickName==$(".memNickName").attr("value")){
-															alert("닉네임 바뀌지않음");
 															memNickBoo==true;
 														}else{
-															alert("사용중인 닉네임입니다.");
+															document.getElementById('modalText01').innerHTML='사용중인 닉네임입니다.';
+															$('#dangerModal').modal('show');
 															memNickBoo=false;
 															$(".memNickName").focus();
 														}
@@ -242,7 +262,8 @@
 					//2-1 어드민인 경우
 				}else if(adminNickName!= undefined){
 						if(adminNickName != $(".adminNickName").val()){
-							alert("값 강제 변경은 허용하지 않습니다");
+							document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+							$('#dangerModal').modal('show');
 							return false;
 						}
 					//2-2 마스터인 경우
@@ -252,7 +273,8 @@
 					   manager != $(".manager").val() || 
 					   comPhone != $(".comPhone").val() 
 						){
-						alert("값 강제 변경은 허용하지 않습니다");
+						document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+						$('#dangerModal').modal('show');
 						return false;
 					}
 					//2-3 멤버인 경우
@@ -261,13 +283,15 @@
 					   dept != $(".dept").val() || 
 					   memPhone != $(".memPhone").val() 
 						){
-						alert("값 강제 변경은 허용하지 않습니다");
+						document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+						$('#dangerModal').modal('show');
 						return false;
 					}
 					//기존 닉네임을 변경하였을 경우 닉네임 중복검사 여부
 					if(memNickName!=$(".memNickName").attr("value")){
 						if(memNickBoo==false){
-							alert("닉네임 중복을 확인해주세요");
+							document.getElementById('modalText01').innerHTML='닉네임 중복을 확인해주세요.';
+							$('#dangerModal').modal('show');
 							return false;
 						}
 					}
@@ -383,18 +407,21 @@
 		$(".updatePwBtn").click(function(){
 			//1.기존 비밀번호 기능과 새 비밀번호 기능 활성화 여부 확인
 			if(booExPw==false || booNewPw==false){
-				alert("기존 비밀번호 확인 및 변경할 비밀번호를 확인하세요");
+				document.getElementById('modalText01').innerHTML='기존 비밀번호 확인 및 변경할 비밀번호를 확인하세요.';
+				$('#dangerModal').modal('show');
 				return false;
 			//2.비밀번호 강제 값 변경 여부 확인
 			}else if(existingPw!=$('.existingPw').val() || 
 					 newPw!=$('.newPw').val() ||
 					 newCheckPw!=$('.newCheckPw').val()
 					){
-				alert("비밀번호 강제 변경은 금지입니다");
+				document.getElementById('modalText01').innerHTML='비밀번호 강제 변경은 금지입니다.';
+				$('#dangerModal').modal('show');
 				return false;
 			//3. 기존 비밀번호와 새 비밀번호의 값이 같은 같은지 확인	
 			}else if(existingPw==newCheckPw){
-				alert("기존 비밀번호와 새 비밀번호가 일치합니다");
+				document.getElementById('modalText01').innerHTML='기존 비밀번호와 새 비밀번호가 일치합니다.';
+				$('#dangerModal').modal('show');
 				return false;
 			//4. 위 조건을 모두 충족할 경우 비밀번호 변경
 			}else{
@@ -408,7 +435,8 @@
 								if(data=="success"){
 									location.reload();
 								}else{
-									alert("변경 오류");
+									document.getElementById('modalText01').innerHTML='변경 오류.';
+									$('#dangerModal').modal('show');
 								}
 							},
 					error:function(request,status,error){
@@ -466,13 +494,16 @@
 		
 		$(".withdrawBtn").click(function(){
 			if(booWPw==false){
-				alert("비밀번호를 확인해주세요");
+				document.getElementById('modalText01').innerHTML='비밀번호를 확인해주세요.';
+				$('#dangerModal').modal('show');
 				return false;
 			}else if(withdrawalPw!=$(".withdrawalPw").val()){
-				alert("강제변경된 비밀번호는 허용하지 않습니다");
+				document.getElementById('modalText01').innerHTML='강제변경된 비밀번호는 허용하지 않습니다.';
+				$('#dangerModal').modal('show');
 				return false;
 			}else if($(".acceptCb").is(":checked")==false){
-				alert("필수 동의란을 체크해주세요");
+				document.getElementById('modalText01').innerHTML='필수 동의란을 체크해주세요.';
+				$('#dangerModal').modal('show');
 				return false;
 			}else{
 				return true;
@@ -508,7 +539,7 @@
 									console.log(curr.innerText="허용");
 								}
 							}else{
-								alert("업데이트 실패");
+								console.log("업데이트 실패");
 							}
 						},
 				error:function(request,status,error){
@@ -524,26 +555,7 @@
 </script>
 
 <body>
-<%//1. danger Modal%>
-<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<h5 class="modal-title" id="modalTitle">알림</h5>
-			<div class="modal-body" id="modalText01"></div>
-			<button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
-		</div>
-	</div>
-</div>
-<%//2. primary Modal%>
-<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<h5 class="modal-title" id="modalTitle">알림</h5>
-			<div class="modal-body" id="modalText02"></div>
-			<button type="button" class="btn btn-primary btn-block" data-dismiss="modal" id="closeBtn">확인</button>
-		</div>
-	</div>
-</div>
+
 <div class="content mypage"><!--content start-->
  <div class="row vartical-menu">
   <div class="left left-nav">
@@ -573,7 +585,6 @@
                      ${user_id }
                 </sec:authorize> 
             </div>
-             
           	<form method="post" action="modifyInfo">
           		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
           		<input type="hidden" name="_method" value="PUT"/>
@@ -648,8 +659,8 @@
 	           	  <input type="text" name="memNickName" value="${member.memberInfo.memNickName }" class="updateInfoInput memNickName" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	  <label for="memNickName">부서</label>
-	          	  <input type="text" name="memNickName" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
+	          	  <label for="dept">부서</label>
+	          	  <input type="text" name="dept" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
 	          	  <label for="memPhone">전화번호</label>
@@ -795,10 +806,6 @@
 </div>
 <!--centent end-->
 <%@ include file="./template/footer.jspf" %>
-</html>
-
-
-
 <!--
 justify-content-center= 가운데 정렬
 my-2= 높이주기

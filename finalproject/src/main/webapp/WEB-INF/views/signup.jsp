@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <title>회원가입</title>
 <%@ include file="template/navbar.jspf" %>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script type="text/javascript">
 
 var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -58,23 +58,7 @@ $(document).on('click','#authBtn',function() {
 				$('#codeInput').show();
 				document.getElementById('modalText02').innerHTML='인증번호가 전송되었습니다.';
 				$('#primaryModal').modal('show');
-				/*
-					1. 생각해 볼 부분
-						emailInput을 전달해서, 이메일을 발송하는 로직이 수행되는 시간이
-						생각보다 길어서 사용자 입장에서 인증 버튼을 누르고 기다려야함
-				
-					2. 나중에 추가 구현할 부분
-						인증 버튼을 disabled 시키고, 5분 타이머 작동
-						5분 후에 다시 인증 버튼 보낼 수 있음
-						타이머가 끝나면 인증 번호도 invalid 상태로 바꿔야함
-				*/
 				document.getElementById('codeInput').disabled=false;
-				/*
-					인증번호 일치 여부
-					1. 일치 여부를 input박스 하단에 표기 등
-					2. 회원가입 버튼을 눌렀을 때 검증
-				*/
-				
 				
 				//요청 후 회원가입 시 값 체크를 위해 아이디 값 저장.
 			 	var user=$(".username").val();
@@ -417,7 +401,6 @@ $(function(){
 										 input값을 넘겨서 이메일 전송 시 to로 받아서 그 이메일로 인증번호 발송*/%>
 									 
 									<div class="form-group">
-									<!-- name=서버로 전달되는 이름 --> 
 										<input type="email" class="form-control username" placeholder="아이디(gmail) *" value="" id="emailInput" name="username"/>
 										<input type="submit" class="btn" id="authBtn" value="인증" data-toggle="modal" data-target="#modal"/>
 									</div>
@@ -457,18 +440,9 @@ $(function(){
 									 <input type="submit" class="nickNameCheck"  value="닉네임중복검증"/>
 									 
 								</div>
-								
-							<div class="col-md-1">
-								<div class="form-group"><input class="tmp form-control"/></div>
-								<div class="form-group">
-									<!-- Modal (Button trigger) -->
-									
-									</div>
-								</div>
 							</div>
 					</div>
 				</div>
-			</div>
 						<%//1. danger Modal%>
 			<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
 				<div class="modal-dialog" role="document">
