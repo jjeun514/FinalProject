@@ -16,4 +16,5 @@ public interface OfficeMapper {
 	public List<OfficeVo> spaceInfo();
 	public List<OfficeVo> officeDetail(String officeName);
 	public int addSpaceInfo(int branchCode, int floor, int acreages, int rent, String officeName, int max);
+	public int selectOfficeNum(String officeName);
 }

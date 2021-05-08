@@ -1,9 +1,13 @@
 package com.bit.fn.security.service;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.bit.fn.model.mapper.AccountMapper;
+import com.bit.fn.model.service.MailService;
 import com.bit.fn.security.model.Account;
 import com.bit.fn.security.model.Role;
 import com.bit.fn.security.repository.AccountRepository;
@@ -15,6 +19,10 @@ public class AccountService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	MailService mailService;
+	private String tempPassword;
 	
 	//어드민 회원가입
 	public Account adminSave(Account account) {
@@ -36,8 +44,14 @@ public class AccountService {
 	
 	//마스터 회원가입
 	public Account masterSave(Account account) {
+		try {
+			tempPassword=mailService.sendTmpPassword(account);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
 		//패스워드 단방향 암호화 설정
-		String encodedPassword = passwordEncoder.encode(account.getPassword());
+		String encodedPassword = passwordEncoder.encode(tempPassword);
 		account.setPassword(encodedPassword);
 		
 		//enabled 사용가능 컬럼 1 반영i
@@ -69,5 +83,4 @@ public class AccountService {
 		//설정한 값으로 MariaDB 값 저장(회원가입)
 		return accountRepository.save(account);
 	}
-	
 }

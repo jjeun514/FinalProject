@@ -5,4 +5,9 @@
     <select id="selectAll" resultType="com.bit.fn.model.vo.CompanyInfoVo">
     	 SELECT * from companyInfo
    	</select>
+   	
+   	<insert id="addNewCompany" parameterType="map">
+   		insert into companyInfo (comCode, officeNum, comName, ceo, manager, comPhone, contractDate, rentStartDate, rentFinishDate)
+   		values (#{comCode}, #{officeNum}, #{comName}, #{ceo}, #{manager}, #{comPhone}, #{contractDateInput}, #{moveInDateInput}, #{moveOutDateInput})
+   	</insert>
 </mapper>

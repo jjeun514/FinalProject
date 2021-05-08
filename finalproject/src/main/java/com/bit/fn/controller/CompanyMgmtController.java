@@ -1,28 +1,17 @@
 package com.bit.fn.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.fn.model.service.BranchService;
-import com.bit.fn.model.service.OfficeService;
-import com.bit.fn.model.service.OfficefacilitiesService;
 import com.bit.fn.model.vo.BranchVo;
-import com.bit.fn.model.vo.OfficeFacilitiesVo;
-import com.bit.fn.model.vo.OfficeVo;
 
 @Controller
 @ComponentScan
@@ -32,7 +21,6 @@ public class CompanyMgmtController {
 	List<BranchVo> branchNameList;
 	List<Map<String, Object>> branchCodeList;
 	int branchCode;
-	
 	
 	@RequestMapping("/companyMgmt")
 	public String companyMgmtGet(HttpServletRequest req) throws Exception {

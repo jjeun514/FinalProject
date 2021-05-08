@@ -30,6 +30,10 @@ public class OfficeService {
 		return officeMapper.officeDetail(officeName);
 	}
 	
+	public int selectOfficeNum(String officeName){
+		return officeMapper.selectOfficeNum(officeName);
+	}
+	
 	public int addSpaceInfo(int branchCode, int floor, int acreages, int rent, String officeName, int max){
 		return officeMapper.addSpaceInfo(branchCode, floor, acreages, rent, officeName, max);
 	}

@@ -5,22 +5,20 @@
     <select id="selectAll" resultType="com.bit.fn.model.vo.MasterAccountVo">
     	 SELECT * from masterAccount
    	</select>
+   	
    	<select id="selectOne" resultType="com.bit.fn.model.vo.MasterAccountVo">
-    	 SELECT 
-    	 	* 
-    	 from 
-    	 	masterAccount
-    	 where
-    	 id=#{value}
+    	 select * from masterAccount where id=#{value}
    	</select>
+   	
+	<select id="idCount" resultType="int">
+		select count(id) from masterAccount where id=#{value}
+   	</select>
+   	
    	<insert id="insertOne" parameterType="map">
    		Insert into masterAccount (id,comCode,signdate,profile) values(#{id},#{comCode},now(),0)
    	</insert>
+   	
    	<delete id="deleteOne">
-   		DELETE
-   		FROM
-   			masterAccount
-   		WHERE
-   			id=#{value}
+   		delete from masterAccount where id=#{value}
    	</delete>
 </mapper>
