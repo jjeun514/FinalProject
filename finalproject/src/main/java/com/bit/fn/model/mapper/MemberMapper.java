@@ -23,11 +23,20 @@ public interface MemberMapper {
 	// 멤버 페이지 게시글 카운팅
 	public int countBoardList();
 	
+	// 멤버 페이지 게시글 디테일
+	public BoardVo selectOneContent(int num);
+	
 	// 멤버 페이지 공지사항 리스트
-	public List<NoticeVo> noticeList();
+	public List<NoticeVo> noticeList(PaginationVo pagination);
 	
 	// 멤버 페이지 게시판 내 공지사항 리스트
 	public List<NoticeVo> selectNoticeList();
+	
+	// 멤버 페이지 공지사항 디테일
+	public NoticeVo selectOneNotice(int num);
+	
+	// 멤버 페이지 공지게시글 카운팅
+	public int countNoticeList();
 
 	// 회의실 리스트
 	public List<ReservationVo> meetingRoomList();
@@ -40,6 +49,9 @@ public interface MemberMapper {
 	
 	// 회의실 예약 신청(reservationHistory 테이블)
 	public int roomReservationTemp(ReservationVo reservaion);
+	
+	// 회의실 예약 금액 조회
+	public int meetingRoomRent(int roomNum);
 	
 	// 나의 예약 현황 조회
 	public List<ReservationVo> myReservationList();

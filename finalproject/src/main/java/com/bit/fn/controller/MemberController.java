@@ -65,6 +65,7 @@ public class MemberController {
 		int listCount = service.countBoardList();
         PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
         pagination.setTotalRecordCount(listCount);
+        pagination.calculation();
 		
 		// 게시판에 보여줄 게시글 불러오기
 		List<PaginationVo> boardList = service.memberBoardPaginationList(pagination);
@@ -83,10 +84,12 @@ public class MemberController {
 	
 	
 	// 멤버 파트 게시판 디테일
-	@RequestMapping("/board/detail/{}")
-	public String detail(Model model) {
+	@RequestMapping(value = "/board/detail", method = RequestMethod.GET)
+	public String boardDetail(Model model, @RequestParam(value = "selectNum") int selectNum) {
 		
+		BoardVo detail = service.selectOneContent(selectNum);
 		
+		model.addAttribute("detail", detail);
 		
 		return "memberBoardDetail";
 	}
@@ -95,15 +98,39 @@ public class MemberController {
 	
 	// 멤버 파트 공지 게시판 인트로 페이지
 	@RequestMapping("/notice")
-	public String notice(Model model) {
+	public String notice(Model model, HttpServletRequest request,
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+            @RequestParam(value = "countPerPage", required = false, defaultValue = "10") int countPerPage,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+		
+		int listCount = service.countNoticeList();
+        PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
+        pagination.setTotalRecordCount(listCount);
+        pagination.calculation();
 		
 		// 게시판에 보여줄 공지 게시글 불러오기
-		List<NoticeVo> noticeList = service.noticeList();
+		List<NoticeVo> noticeList = service.noticeList(pagination);
+		
+		// 페이징 값 보내기
+		model.addAttribute("pagination", pagination);
 		
 		// 모델 객체에 리스트 담아서 뷰로 전달
 		model.addAttribute("noticeList", noticeList);
 		
 		return "memberNotice";
+	}
+	
+	
+	
+	// 멤버 파트 공지게시판 디테일
+	@RequestMapping(value = "/notice/detail", method = RequestMethod.GET)
+	public String noticeDetail(Model model, @RequestParam(value = "selectNum") int selectNum) {
+		
+		NoticeVo detail = service.selectOneNotice(selectNum);
+		
+		model.addAttribute("detail", detail);
+		
+		return "memberNoticeDetail";
 	}
 	
 	
@@ -267,6 +294,9 @@ public class MemberController {
 			// 결제 전 history 테이블에 저장
 			int insertReservaion = service.roomReservationTemp(reservation);
 			
+			// 가격 정보 조회
+			int amount = service.meetingRoomRent(roomNum); 
+			
 			// insert 결과에 따른 로직
 			if ( insertReservaion > 0 ) { // 신청이 정상적으로 수행되었을 때
 				String resultMessage = "예약 신청이 완료되었습니다. 결제창으로 이동하시겠습니까?";
@@ -274,11 +304,12 @@ public class MemberController {
 				
 				result.put("resultMessage", resultMessage);
 				result.put("resultCode", resultCode);
-				result.put("room", roomNum);
-				result.put("day", reservationDay);
-				result.put("startT", useStartTime);
-				result.put("useT", useTime);
+				result.put("roomNum", roomNum);
+				result.put("reservationDay", reservationDay);
+				result.put("useStartTime", useStartTime);
+				result.put("useFinishTime", useTime);
 				result.put("userCount", userCount);
+				result.put("amount", amount);
 				
 				return result;
 				
@@ -353,21 +384,23 @@ public class MemberController {
 	
 	
 	// 결제 페이지
-	@RequestMapping(value = "/reservation/payment")
-	public String payment(Model model, @RequestParam Map<String, String> allParameters) {
+	@RequestMapping(value = "/reservation/payment", method = RequestMethod.POST)
+	public String payment(Model model, ReservationVo applyContent) {
 		
-		int roomNum = Integer.parseInt(allParameters.get("roomNum"));
-		String reservationDay = allParameters.get("day");
-		String useStartTime = allParameters.get("startTime");
-		String useFinishTime = allParameters.get("useTime");
+		int roomNum = applyContent.getRoomNum();
+		String reservationDay = applyContent.getReservationDay();
+		String useStartTime = applyContent.getUseStartTime();
+		String useFinishTime = applyContent.getUseFinishTime();
+		int amount = applyContent.getAmount();
 		
 		ReservationVo content = new ReservationVo();
 		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);
 		content.setReservationDay(reservationDay);
+		content.setAmount(amount);
 		
-		model.addAttribute("content", content);
+		model.addAttribute("content", applyContent);
 		
 		return "reservationPayment";
 	}

@@ -91,6 +91,7 @@
 				            </select>
 				        </div>
 				    </div>
+				    
 				<div class="col-md-12">
 					<table id = "bbsTable" class="table table-bordered table-hover">
 						<thead>
@@ -114,11 +115,11 @@
 							</c:forEach>
 							<c:forEach var = "list" items = "${boardList }">
 								<tr>
-									<td><a href = "/board/detail/${list.num }">${list.num }</a></td>
-									<td><a href = "/board/detail/${list.num }">${list.title }</a></td>
-									<td><a href = "/board/detail/${list.num }">${list.memName }</a></td>
-									<td><a href = "/board/detail/${list.num }">${list.comName }</a></td>
-									<td><a href = "/board/detail/${list.num }">${list.date }</a></td>
+									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.num }</a></td>
+									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.title }</a></td>
+									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.memName }</a></td>
+									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.comName }</a></td>
+									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.date }</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -137,7 +138,7 @@
 				            <c:forEach begin="${pagination.firstPageNum}"
 				                end="${pagination.lastPageNum}" var="idx">
 				                <a
-				                    style="color:<c:out value="${pagination.currentPage == idx ? '#cc0000; font-weight:700; margin-bottom: 2px;' : ''}"/> "
+				                    style="color:<c:out value="${pagination.currentPage == idx ? '#000000; font-weight:700; margin-bottom: 2px;' : ''}"/> "
 				                    href="javascript:void(0);"
 				                    onclick="movePage(${idx},${pagination.countPerPage},${pagination.pageSize});"><c:out
 				                        value="${idx}" /></a>

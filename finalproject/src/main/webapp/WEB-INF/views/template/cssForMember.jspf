@@ -54,6 +54,12 @@
   		position: relative;
 		left: 46.5%;
   	}
+  	
+  	#backbtn, #modifybtn, #deletebtn{ /*디테일 하단 버튼*/
+  		position: relative;
+		left: 75%;
+		border: 1px solid white;
+  	}
 
 }
 
@@ -113,6 +119,13 @@
   	.paginate{ /*페이지 넘버링 전체 div*/
   		position: relative;
 		left: 45%;
+  	}
+  	
+  	  	
+  	#backbtn, #modifybtn, #deletebtn{ /*디테일 하단 버튼*/
+  		position: relative;
+		left: 60%;
+		border: 1px solid white;
   	}
 
 	
@@ -274,6 +287,7 @@
 	#bbsTable{ /*멤버 페이지 게시판 테이블 전체*/
 		text-align: center;
 		font-size: 12px;
+		color : black;
 	}
 	
 	.input-group{
@@ -284,18 +298,35 @@
   	.direction{ /*페이징 넘버링 CSS*/
   		border: 1px solid white;
   		border-radius :4px;
-  		background-color : rgba(0,0,0,0.2);
   		margin : 1px;
   		width: 10px;
   		text-align: center;
+  		color : black;
+  	}
+  	
+  	#textField{ /*게시판 디테일 내용*/
+  		text-align: left;
+  	}
+  	
+  	#backbtn{ /*뒤로 가기 버튼*/
+  		background-color : rgb(153,204,255);
+  	}
+  	
+  	#modifybtn{ /*수정 버튼*/
+  		background-color : rgb(204,204,204);
+  	}
+  	
+  	#deletebtn{ /*삭제 버튼*/
+  		background-color : rgb(255,153,153);
   	}
 
 /*게시판*/
 
 /*공지게시판*/
 
-	#noticeTable{
+	#noticeTable{ /*공지게시판 테이블 전체 몸통*/
 		text-align: center;
+		font-size: 12px;
 	}
 
 /*공지게시판*/
@@ -329,7 +360,11 @@
     	border-color: gray;
     }
     
-
+    #applyPay{ /*결제 페이지에서 결제하기 버튼*/
+    	border: 1px solid black;
+    	position: relative;
+    	left: 43%;
+    }
 
 /*회의실*/
 	

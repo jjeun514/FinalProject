@@ -10,10 +10,6 @@
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
- <!-- B2B 프로젝트인 경우 cdn을 사용할 수 없음
- 왜냐하면 이 외부 링크들에 대한 방화벽을 다 열어줘야 하기 때문 -->
- 
- <!-- 동시성 제어도 있지만 그것은 나중에 생각하자 -->
 <script>
 
 var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -89,8 +85,7 @@ $(document).ready(function() {
 					if ( !confirm(data.resultMessage) ){ // 예약신청을 하고 취소를 누르면 다시 예약 페이지로 이동
 						location.href = '/reservation';
 					} else { // 결제 창으로 이동
-						location.href = '/reservation/payment?roomNum='+data.room+"&day="+data.day+"&startTime="+data.startT+"&useTime="+data.useT+"&userCount="+data.userCount;
-						// 위 페이지 이동을 function으로 만들고, 성공했을 때 function으로 이동할 수 있게끔 작업
+						paymentApplyFunction(data);
 					}
 				// 예약 신청 실패
 				} else if ( data.resultCode == 1 ) { 
@@ -178,6 +173,62 @@ function myREZ() {
 	});
 }
 
+// 결제 정보 POST 방식으로 보내는 함수
+function paymentApplyFunction2(data) {
+	
+	var formdata = new FormData();
+	
+	formdata.append("roomNum", data.room);
+	formdata.append("day", data.day);
+	formdata.append("useStartTime", data.startT);
+	formdata.append("useFinishTime", data.useT);
+	formdata.append("userCount", data.userCount);
+	formdata.append("amount", data.amount);
+	
+	/*
+	formData는 
+	*/
+	for (let key of formdata.keys()) { console.log(key); }
+	for (let value of formdata.values()) { console.log(value); }
+	
+	$.ajax({
+		url : "/reservation/payment",
+		type : "POST",
+		dataType : "json",
+		processData : false,
+		data : JSON.stringify(formdata),
+		success : function(data) {
+			alert("펑션으로 호출 성공");
+		}
+	});
+}
+
+// 결제 정보 POST 방식으로 보내는 함수
+function paymentApplyFunction(data) {
+	
+	var form = document.createElement('form');
+	data["_csrf"] = $("meta[name='_csrf']").attr("content");
+	
+	for(var key in data) {
+		form.appendChild(createInputEle({"key":key,"value":data[key]}));
+	}
+	
+	form.setAttribute('method', 'post');
+	form.setAttribute('action', '/reservation/payment');
+	form.setAttribute('method', 'post');
+	document.body.appendChild(form);
+	form.submit();
+}
+
+function createInputEle(data) {
+	var inputObj = document.createElement('input');
+	inputObj.setAttribute('type', 'hidden');
+	inputObj.setAttribute('name', data.key);
+	inputObj.setAttribute('value', data.value);
+	
+	return inputObj;
+}
+
 // 달력 불러오는 함수
 $( function() {
 	
@@ -185,9 +236,11 @@ $( function() {
 	
     $( "#reservationDay" ).datepicker({
     	dateFormat : 'yy-mm-dd',
-    	daysOfWeekDisabled : [0,6], // 이거 왜 안 먹지..?
     	immediateUpdates: true,
     	todayHighlight : true,
+    	minDate : 0,
+    	firstDay : 1,
+    	beforeShowDay: noWeekend,
     	
     	onSelect : function(dateText, inst) {
 			$.ajax({
@@ -228,6 +281,11 @@ $( function() {
 		}
     })
   } );
+  
+// 데이트피커 주말 비활성화
+function noWeekend(date) { 
+	  return [date.getDay() != 0 && date.getDay() != 6]; 
+}  
 
 </script>
 
@@ -310,7 +368,7 @@ $( function() {
 											    <select id = "useStartTime" class="form-control">
 											    	<option>선택해주세요</option>
 												    <c:forEach var = "t" begin = "09" end = "22">
-													  <option value = "${t }">${t }시</option>
+													  		<option value = "${t }">${t }시</option>
 													</c:forEach>
 												</select>
 											</div>

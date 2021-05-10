@@ -23,12 +23,8 @@
 								<th>${detail.num }</th>
 							</tr>
 							<tr>
-								<th>이름</th>
-								<th>${detail.memName }</th>
-							</tr>
-							<tr>
-								<th>회사명</th>
-								<th>${detail.comName }</th>
+								<th>지점명</th>
+								<th>${detail.nickName }</th>
 							</tr>
 							<tr>
 								<th>날짜</th>
@@ -45,6 +41,7 @@
 					
 					<div id = "detailbtn">
 						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>
+						<!-- 어드민이 아닐경우 아래 버튼 히든 상태로 만들어야 함 -->
 						<button id = "modifybtn" type="button" class="btn btn-default">수정</button>
 						<button id = "deletebtn" type="button" class="btn btn-default">삭제</button>
 					</div>
