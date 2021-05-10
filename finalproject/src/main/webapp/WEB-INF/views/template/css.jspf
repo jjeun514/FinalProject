@@ -818,7 +818,9 @@
 			width: 100px;
 			font-weight: bold;
 	    }
-	    
+	    #signInBtn{
+	   		width: 350px;
+	    }
 	    /* 마이페이지 */
 	    
 	    
