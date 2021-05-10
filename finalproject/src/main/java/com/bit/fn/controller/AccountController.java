@@ -241,6 +241,26 @@ public class AccountController {
 		return send;
 	}
 	
+	//비밀번호 찾기 후 비밀번호 변경
+		@RequestMapping(path="/forgotUpdatePw", method=RequestMethod.PUT, produces = "application/x-www-form-urlencoded; charset=UTF-8")
+		@ResponseBody
+		public String updatePw(String newPwConfirm, String hiddenInputId) {
+			
+			System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■유저네임= "+hiddenInputId);
+			
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			
+			newPwConfirm=encoder.encode(newPwConfirm);
+			
+			int result=u_accountService.updatePw(newPwConfirm, hiddenInputId);
+			System.out.println("결과값="+result);
+			String send="failure";
+			if(result == 1) {
+				send="success";
+			}
+			return send;
+		}
+	
 	//회원탈퇴
 	@DeleteMapping("/withdraw")
 	public String withdraw(Principal principal, HttpSession session) {
