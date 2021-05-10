@@ -40,6 +40,20 @@
     	position: relative;
     	left: 41%;
     }
+    
+   	#writebtn{ /*멤버 페이지 게시판 글쓰기 버튼*/
+		border: 1px solid;
+    	position: relative;
+		left: 65.5%;
+		margin : 10px;
+		height : 40px;
+		padding: 5px;
+	}
+	
+	.paginate{ /*페이지 넘버링 전체 div*/
+  		position: relative;
+		left: 46.5%;
+  	}
 
 }
 
@@ -86,7 +100,21 @@
     	position: relative;
     	left: 42%;
     }
+    
+    #writebtn{ /*멤버 페이지 게시판 글쓰기 버튼*/
+		border: 1px solid;
+    	position: relative;
+		left: 60%;
+		margin : 10px;
+		height : 40px;
+		padding: 5px;
+	}
   
+  	.paginate{ /*페이지 넘버링 전체 div*/
+  		position: relative;
+		left: 45%;
+  	}
+
 	
 }
 
@@ -224,14 +252,14 @@
 /*바디 영역*/  
     
 /*게시판*/
-	/*게시판 페이지 전체*/
-    .bbs{ 
+	
+    .bbs{ /*게시판 페이지 전체*/
         position: relative;
         top:120px;
         height:30px;
     }
-    /*게시판 몸통*/
-    .bbs>.container>.row{
+    
+    .bbs>.container>.row{ /*게시판 몸통*/
         border:0px solid;
         border-color: rgba(0,0,0,0.5);
         box-sizing: border-box;
@@ -243,22 +271,24 @@
 		font-weight: bold;
 	}
 	
-	#bbsTable{
+	#bbsTable{ /*멤버 페이지 게시판 테이블 전체*/
 		text-align: center;
-	}
-	
-	#writebtn{
-		border: 1px solid;
-    	position: relative;
-		left: 60%;
-		margin : 10px;
-		height : 40px;
-		padding: 5px;
+		font-size: 12px;
 	}
 	
 	.input-group{
 		margin : 10px;
 	}
+	
+	  	
+  	.direction{ /*페이징 넘버링 CSS*/
+  		border: 1px solid white;
+  		border-radius :4px;
+  		background-color : rgba(0,0,0,0.2);
+  		margin : 1px;
+  		width: 10px;
+  		text-align: center;
+  	}
 
 /*게시판*/
 

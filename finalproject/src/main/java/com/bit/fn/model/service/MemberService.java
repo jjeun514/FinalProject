@@ -21,8 +21,8 @@ public class MemberService {
 		return memberMapper.memberBoardList();
 	}
 	
-	public List<PaginationVo> memberBoardList2(PaginationVo pagination){
-		return memberMapper.memberBoardList2(pagination);
+	public List<PaginationVo> memberBoardPaginationList(PaginationVo pagination){
+		return memberMapper.memberBoardPaginationList(pagination);
 	}
 	
 	public int countBoardList() {

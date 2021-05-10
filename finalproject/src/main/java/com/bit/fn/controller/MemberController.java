@@ -59,15 +59,15 @@ public class MemberController {
 	@RequestMapping("/board")
 	public String bbs(Model model, HttpServletRequest request,
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
-            @RequestParam(value = "countPerPage", required = false, defaultValue = "10") int cntPerPage,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+            @RequestParam(value = "countPerPage", required = false, defaultValue = "10") int countPerPage,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize) {
 		
 		int listCount = service.countBoardList();
-        PaginationVo pagination = new PaginationVo(currentPage, cntPerPage, pageSize);
+        PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
         pagination.setTotalRecordCount(listCount);
 		
 		// 게시판에 보여줄 게시글 불러오기
-		List<BoardVo> boardList = service.memberBoardList();
+		List<PaginationVo> boardList = service.memberBoardPaginationList(pagination);
 		List<NoticeVo> selectNotice = service.selectNoticeList();
 		
 		// 페이징 값 보내기
@@ -78,6 +78,17 @@ public class MemberController {
 		model.addAttribute("NoticeList", selectNotice);
 		
 		return "memberBoard";
+	}
+	
+	
+	
+	// 멤버 파트 게시판 디테일
+	@RequestMapping("/board/detail/{}")
+	public String detail(Model model) {
+		
+		
+		
+		return "memberBoardDetail";
 	}
 	
 	

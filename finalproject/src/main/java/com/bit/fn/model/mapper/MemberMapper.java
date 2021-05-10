@@ -18,7 +18,7 @@ public interface MemberMapper {
 	public List<BoardVo> memberBoardList();
 	
 	// 멤버 페이지 페이징
-	public List<PaginationVo> memberBoardList2(PaginationVo pagination);
+	public List<PaginationVo> memberBoardPaginationList(PaginationVo pagination);
 	
 	// 멤버 페이지 게시글 카운팅
 	public int countBoardList();

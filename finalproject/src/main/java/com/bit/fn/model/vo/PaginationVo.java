@@ -35,9 +35,9 @@ public class PaginationVo {
         if (countPerPage != 10 && countPerPage != 20 && countPerPage != 30) {
         	countPerPage = 10;
         }
-        // 하단 페이지 갯수 10개로 제한
-        if (pageSize != 10) {
-            pageSize = 10;
+        // 하단 페이지 갯수 7개로 제한
+        if (pageSize != 7) {
+            pageSize = 7;
         }
     	this.currentPage = currentPage;
     	this.countPerPage = countPerPage;

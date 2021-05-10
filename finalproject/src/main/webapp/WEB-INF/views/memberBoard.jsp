@@ -81,7 +81,7 @@
 				        <div class="bottom-left">
 				            <select id="cntSelectBox" name="cntSelectBox"
 				                onchange="changeSelectBox(${pagination.currentPage},${pagination.countPerPage},${pagination.pageSize});"
-				                class="form-control" style="width: 100px;">
+				                class="form-control" style="width: 100px;" hidden = "hidden">
 				                <option value="10"
 				                    <c:if test="${pagination.countPerPage == '10'}">selected</c:if>>10개씩</option>
 				                <option value="20"
@@ -114,11 +114,11 @@
 							</c:forEach>
 							<c:forEach var = "list" items = "${boardList }">
 								<tr>
-									<td>${list.num }</td>
-									<td>${list.title }</td>
-									<td>${list.memName }</td>
-									<td>${list.comName }</td>
-									<td>${list.date }</td>
+									<td><a href = "/board/detail/${list.num }">${list.num }</a></td>
+									<td><a href = "/board/detail/${list.num }">${list.title }</a></td>
+									<td><a href = "/board/detail/${list.num }">${list.memName }</a></td>
+									<td><a href = "/board/detail/${list.num }">${list.comName }</a></td>
+									<td><a href = "/board/detail/${list.num }">${list.date }</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -126,10 +126,11 @@
 					
 					  <!--paginate -->
 				    <div class="paginate">
-				        <div class="paging">
+				        <div class="paginaion">
 				            <a class="direction prev" href="javascript:void(0);"
 				                onclick="movePage(1,${pagination.countPerPage},${pagination.pageSize});">
-				                &lt;&lt; </a> <a class="direction prev" href="javascript:void(0);"
+				                &lt;&lt; </a> 
+				            <a class="direction prev" href="javascript:void(0);"
 				                onclick="movePage(${pagination.currentPage}<c:if test="${pagination.hasPreviousPage == true}">-1</c:if>,${pagination.countPerPage},${pagination.pageSize});">
 				                &lt; </a>
 				 
@@ -141,9 +142,11 @@
 				                    onclick="movePage(${idx},${pagination.countPerPage},${pagination.pageSize});"><c:out
 				                        value="${idx}" /></a>
 				            </c:forEach>
+				            
 				            <a class="direction next" href="javascript:void(0);"
 				                onclick="movePage(${pagination.currentPage}<c:if test="${pagination.hasNextPage == true}">+1</c:if>,${pagination.countPerPage},${pagination.pageSize});">
-				                &gt; </a> <a class="direction next" href="javascript:void(0);"
+				                &gt; </a> 
+				            <a class="direction next" href="javascript:void(0);"
 				                onclick="movePage(${pagination.totalRecordCount},${pagination.countPerPage},${pagination.pageSize});">
 				                &gt;&gt; </a>
 				        </div>
