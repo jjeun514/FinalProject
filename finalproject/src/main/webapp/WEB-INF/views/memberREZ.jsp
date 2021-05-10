@@ -27,6 +27,13 @@ $(document).ready(function() {
 	
 	 // 사용 예약 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZbtn').click(function() {
+		
+		// 날짜를 선택하지 않았을 경우
+		if ( $('#reservationDay').val() == "" ) {
+			document.getElementById('showAlertForChoice').innerHTML="<b><font color='red'>날짜를 선택해주세요</font><b>";
+			return false;
+		}
+		
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
 		$("#REZModal").modal();
 	});
@@ -34,16 +41,31 @@ $(document).ready(function() {
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZapplyClick').click(function() { 
 
-		/*
-		* 비활성화보다는 내가 원하는(내가 필요로하는 / 내가 받아야 하는) 값들이 있는지를 체크한 후에
-		* 그 값들이 정상적으로 들어가있다면 컨트롤러를 탈 수 있게끔 하는 것이 맞음
-		*/
-		
 		var roomNum = $("#roomNum").val();
 		var useStartTime = $("#useStartTime").val();
 		var useFinishTime = $("#useFinishTime").val();
 		var userCount = $("#userCount").val();
 		var reservationDay = $('#reservationDay').val();
+		
+//		if ( $("#roomNum").text() == "" ) {
+//			alert("회의실을 선택해주세요");
+//			return false;
+//		}
+//		
+//		if ( $("#useStartTime").text() == "" ) {
+//			alert("시작 시간을 선택해주세요");
+//			return false;
+//		}
+//		
+//		if ( $("#useStartTime").text() == "" ) {
+//			alert("사용 시간을 선택해주세요");
+//			return false;
+//		}
+//		
+//		if ( $("#userCount").text() == "" ) {
+//			alert("인원을 선택해주세요");
+//			return false;
+//		}
 		
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
 		// 여기서 예약자 전달해줘야 함
@@ -106,6 +128,9 @@ $(document).ready(function() {
 					alert(data.resultMessage);
 				// 예약 취소 실패
 				} else if ( data.resultCode == 0 ) { 
+					alert(data.resultMessage);
+				// 취소하고자 하는 예약 내역이 없음
+				} else if ( data.resultCode == -1 ) {
 					alert(data.resultMessage);
 				}
 			},
@@ -183,17 +208,17 @@ $( function() {
 						
 						if ( list.memNum == 1 ) {
 							if ( list.finishT-list.startT > 1 ) {
-								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.5)");
-								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.5)");
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.6)");
+								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 							} else {
-								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.5)");
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 							}
 						} else if ( list.memNum != 1 ) {
 							if ( list.finishT-list.startT > 1 ) {
-								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(187,240,237,1)");
-								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(187,240,237,1)");
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.2)");
+								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.2)");
 							} else {
-								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(187,240,237,1)");
+								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.2)");
 							}
 						}
 					}
@@ -217,6 +242,7 @@ $( function() {
 				<input type = "text" id="reservationDay" class="form-control" value="">
 			</div>
 				<div class = "col-md-12">
+				<div id = "showAlertForChoice"></div>
 					<table id = "reservationListTable" class = "table table-bordered">
 						<thead>
 							<tr>

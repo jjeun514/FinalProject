@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bit.fn.model.service.MemberService;
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
+import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -56,11 +57,22 @@ public class MemberController {
 	
 	// 멤버 파트 게시판 인트로 페이지
 	@RequestMapping("/board")
-	public String bbs(Model model) {
+	public String bbs(Model model, HttpServletRequest request,
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+            @RequestParam(value = "countPerPage", required = false, defaultValue = "10") int cntPerPage,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+		
+		int listCount = service.countBoardList();
+        PaginationVo pagination = new PaginationVo(currentPage, cntPerPage, pageSize);
+        pagination.setTotalRecordCount(listCount);
 		
 		// 게시판에 보여줄 게시글 불러오기
 		List<BoardVo> boardList = service.memberBoardList();
 		List<NoticeVo> selectNotice = service.selectNoticeList();
+		
+		// 페이징 값 보내기
+		model.addAttribute("pagination", pagination);
+		
 		// 모델 객체에 리스트 담아서 뷰로 전달
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("NoticeList", selectNotice);
@@ -76,6 +88,7 @@ public class MemberController {
 		
 		// 게시판에 보여줄 공지 게시글 불러오기
 		List<NoticeVo> noticeList = service.noticeList();
+		
 		// 모델 객체에 리스트 담아서 뷰로 전달
 		model.addAttribute("noticeList", noticeList);
 		
@@ -289,21 +302,34 @@ public class MemberController {
 		String reservationDay = cancle[1];
 		String useStartTime = cancle[2];
 		
-		// 취소 쿼리 메소드 실행
-		int cancleResult = service.cancleReservation(roomNum, useStartTime, reservationDay);
+		// 취소하기 전에 해당 내역으로 예약이 있는지 여부를 조회
+		int checkReservation = service.checkReservaion(roomNum, useStartTime, reservationDay);
 		
-		// 취소 쿼리 메소드의 결과에 따른 로직
-		if ( cancleResult == 1 ) { // 취소가 정상적으로 실행
-			String resultMessage = "예약이 정상적으로 취소되었습니다.";
-			String resultCode = "1";
+		if ( checkReservation > 0 ) {
+			// 취소 쿼리 메소드 실행
+			int cancleResult = service.cancleReservation(roomNum, useStartTime, reservationDay);
 			
-			result.put("resultMessage", resultMessage);
-			result.put("resultCode", resultCode);
-			
-			return result;
-		} else { // 취소가 정상적으로 실행되지 않았을 때
-			String resultMessage = "예약이 정상적으로 취소되지 않았습니다. 다시 시도해주세요.";
-			String resultCode = "0";
+			// 취소 쿼리 메소드의 결과에 따른 로직
+			if ( cancleResult == 1 ) { // 취소가 정상적으로 실행
+				String resultMessage = "예약이 정상적으로 취소되었습니다.";
+				String resultCode = "1";
+				
+				result.put("resultMessage", resultMessage);
+				result.put("resultCode", resultCode);
+				
+				return result;
+			} else { // 취소가 정상적으로 실행되지 않았을 때
+				String resultMessage = "예약이 정상적으로 취소되지 않았습니다. 다시 시도해주세요.";
+				String resultCode = "0";
+				
+				result.put("resultMessage", resultMessage);
+				result.put("resultCode", resultCode);
+				
+				return result;
+			}
+		} else {
+			String resultMessage = "취소하실 회의실 예약 내역이 존재하지 않습니다. 다시 확인해주세요.";
+			String resultCode = "-1";
 			
 			result.put("resultMessage", resultMessage);
 			result.put("resultCode", resultCode);

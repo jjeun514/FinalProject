@@ -10,6 +10,18 @@
 		limit 7
    	</select>
    	
+   	<select id="memberBoardList2" resultType="com.bit.fn.model.vo.BoardVo">
+		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
+		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		left outer join companyInfo com on mem.comCode=com.comCode
+		order by date desc, num
+		limit #{firstRecordIndex},7
+   	</select>
+   	
+   	<select id="countBoardList" resultType="int">
+   		select count(*) from board
+   	</select>
+   	
 	<select id="noticeList" resultType="com.bit.fn.model.vo.NoticeVo">
 		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
 		from notice noti left outer join adminAccount adm

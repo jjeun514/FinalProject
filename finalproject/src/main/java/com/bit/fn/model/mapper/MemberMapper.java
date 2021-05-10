@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
+import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;
 
 @Repository
@@ -15,6 +16,12 @@ public interface MemberMapper {
 	
 	// 멤버 페이지 게시판 리스트
 	public List<BoardVo> memberBoardList();
+	
+	// 멤버 페이지 페이징
+	public List<PaginationVo> memberBoardList2(PaginationVo pagination);
+	
+	// 멤버 페이지 게시글 카운팅
+	public int countBoardList();
 	
 	// 멤버 페이지 공지사항 리스트
 	public List<NoticeVo> noticeList();

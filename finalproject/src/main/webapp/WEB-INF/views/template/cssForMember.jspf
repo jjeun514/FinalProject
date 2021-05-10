@@ -25,8 +25,21 @@
     
 /* 데스크탑에서 사용될 스타일을 여기에 작성합니다. */ 
 @media screen and (min-width: 993.5px) {
-   
 
+    #reservationDay{
+    	margin: 30px auto;
+    	text-align: center;
+    	width: 150px;
+    	height : 30px;
+    	position: relative;
+    	left: 290%;
+    }
+    
+    #showAlertForChoice{
+		margin : 10px;
+    	position: relative;
+    	left: 41%;
+    }
 
 }
 
@@ -59,9 +72,22 @@
 		margin:25px 25px 25px 46px;
 	}
 
-
+    #reservationDay{
+    	margin: 30px auto;
+    	text-align: center;
+    	width: 150px;
+    	height : 30px;
+    	position: relative;
+    	left: 180%;
+    }
+    
+    #showAlertForChoice{
+		margin : 10px;
+    	position: relative;
+    	left: 42%;
+    }
   
-
+	
 }
 
 
@@ -273,14 +299,8 @@
     	border-color: gray;
     }
     
-    #reservationDay{
-    	margin: 5px auto;
-    	text-align: center;
-    	width: 150px;
-    	height : 30px;
-    	position: relative;
-    	left: 150%;
-    }
+
+
 /*회의실*/
 	
 

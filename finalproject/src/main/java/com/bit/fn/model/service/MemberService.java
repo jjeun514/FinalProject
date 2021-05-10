@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.bit.fn.model.mapper.MemberMapper;
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
+import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;
-
 
 @Service
 public class MemberService {
@@ -19,6 +19,14 @@ public class MemberService {
 	
 	public List<BoardVo> memberBoardList(){
 		return memberMapper.memberBoardList();
+	}
+	
+	public List<PaginationVo> memberBoardList2(PaginationVo pagination){
+		return memberMapper.memberBoardList2(pagination);
+	}
+	
+	public int countBoardList() {
+		return memberMapper.countBoardList();
 	}
 	
 	public List<NoticeVo> noticeList(){
