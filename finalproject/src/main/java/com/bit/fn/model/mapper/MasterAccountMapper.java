@@ -14,6 +14,7 @@ import com.bit.fn.model.vo.MasterAccountVo;
 public interface MasterAccountMapper {
 	public List<MasterAccountVo> selectAll();
 	public MasterAccountVo selectOne(String id);	
-	public int insertOne(@Param("id") String id, @Param("comCode") int comCode);
+	public int insertOne(String id, int comCode);
 	public int deleteOne(String id);
+	public int idCount(String id);
 }

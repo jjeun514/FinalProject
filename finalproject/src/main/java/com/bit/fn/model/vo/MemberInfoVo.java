@@ -2,15 +2,16 @@ package com.bit.fn.model.vo;
 
 public class MemberInfoVo {
 	private int memNum,comCode,admission;
-	private String memName,memNickName,id,dept,memPhone,signdate;
+	private String comName, memName,memNickName,id,dept,memPhone,signdate;
 	public MemberInfoVo() {}
-	public MemberInfoVo(int memNum, int comCode, int admission, String memName, String memNickName, String id,
+	public MemberInfoVo(int memNum, int comCode, int admission, String comName,String memName, String memNickName, String id,
 			String dept, String memPhone, String signdate) {
 		super();
 		this.memNum = memNum;
 		this.comCode = comCode;
 		this.admission = admission;
 		this.memName = memName;
+		this.comName = comName;
 		this.memNickName = memNickName;
 		this.id = id;
 		this.dept = dept;
@@ -34,6 +35,13 @@ public class MemberInfoVo {
 	}
 	public void setAdmission(int admission) {
 		this.admission = admission;
+	}
+	
+	public String getComName() {
+		return comName;
+	}
+	public void setComName(String comName) {
+		this.comName = comName;
 	}
 	public String getMemName() {
 		return memName;
@@ -77,6 +85,7 @@ public class MemberInfoVo {
 		int result = 1;
 		result = prime * result + admission;
 		result = prime * result + comCode;
+		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
 		result = prime * result + ((dept == null) ? 0 : dept.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((memName == null) ? 0 : memName.hashCode());
@@ -98,6 +107,11 @@ public class MemberInfoVo {
 		if (admission != other.admission)
 			return false;
 		if (comCode != other.comCode)
+			return false;
+		if (comName == null) {
+			if (other.comName != null)
+				return false;
+		} else if (!comName.equals(other.comName))
 			return false;
 		if (dept == null) {
 			if (other.dept != null)
@@ -135,9 +149,8 @@ public class MemberInfoVo {
 	}
 	@Override
 	public String toString() {
-		return "MemberInfoVo [memNum=" + memNum + ", comCode=" + comCode + ", admission=" + admission + ", memName="
-				+ memName + ", memNickName=" + memNickName + ", id=" + id + ", dept=" + dept + ", memPhone=" + memPhone
-				+ ", signdate=" + signdate + "]";
+		return "MemberInfoVo [memNum=" + memNum + ", comCode=" + comCode + ", admission=" + admission + ", comName="
+				+ comName + ", memName=" + memName + ", memNickName=" + memNickName + ", id=" + id + ", dept=" + dept
+				+ ", memPhone=" + memPhone + ", signdate=" + signdate + "]";
 	}
-	
 }

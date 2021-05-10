@@ -11,7 +11,7 @@
 		<thead class="thead-light">
 			<tr>
 				<td colspan="8" id="addMasterBtn">
-					<button type="button" class="btn btn-primary addMasterBtn" data-toggle="modal" data-target="#addModal">추가</button>
+					<button type="button" class="btn btn-primary addMasterBtn" onclick="location.href='addMasterAccount'">추가</button>
 				</td>
 			</tr>
 		    <tr>
