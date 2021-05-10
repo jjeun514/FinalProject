@@ -804,4 +804,22 @@
 		.addMasterBtn {
 			width: 100px;
 		}
+		/* 로그인 페이지 */
+		 #loginIdPw{
+			margin: auto;
+			width: 350px;
+		}
+		#loginTitle{
+			margin-top: 50px;
+			font-weight: bold;
+			text-align: center;
+		}
+		.signinId,.signinPw{
+			width: 100px;
+			font-weight: bold;
+	    }
+	    
+	    /* 마이페이지 */
+	    
+	    
 </style>
