@@ -17,7 +17,7 @@
 		<input type="password" id="password" name="password" class="form-control" placeholder="password" required>
 	</div>
 	<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-	 <button class="btn btn-primary" type="submit">Sign in</button>
+	 <button class="btn btn-primary" type="submit" id="signInBtn">Sign in</button>
 	 </div>
 </form>
 <p><a href="forgotIdPw">아이디/비밀번호 찾기</a></p>
