@@ -3,16 +3,17 @@
 <title>로그인</title>
 <%@ include file="template/navbar.jspf" %>
 <div class="content main">
-<h1>로그인 페이지 입니다.</h1>
+<div class="content" id="loginIdPw">
+<h2 id="loginTitle">Sign in</h2>
 <form class="formContents" method="post">
 	<!-- csrf -->
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
 	<div class="input-group">
-		<span class="input-group-text" id="id">ID</span>
+		<span class="input-group-text signinId" id="id">ID</span>
 		<input type="text" id="username" name="username" class="form-control" placeholder="username" required autofocus>
 	</div>
 	<div class="input-group">
-		<span class="input-group-text" id="id">Password</span>
+		<span class="input-group-text signinPw" id="id">Password</span>
 		<input type="password" id="password" name="password" class="form-control" placeholder="password" required>
 	</div>
 	<div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -20,6 +21,7 @@
 	 </div>
 </form>
 <p><a href="forgotIdPw">아이디/비밀번호 찾기</a></p>
+</div>
 </div>
 <c:if test="${param.error != null}">
 <div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
