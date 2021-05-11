@@ -393,6 +393,8 @@ public class MemberController {
 		String useFinishTime = applyContent.getUseFinishTime();
 		int amount = applyContent.getAmount();
 		
+		if ( useFinishTime.equals("2") ) { amount = amount * 2; }
+		
 		ReservationVo content = new ReservationVo();
 		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
@@ -400,7 +402,7 @@ public class MemberController {
 		content.setReservationDay(reservationDay);
 		content.setAmount(amount);
 		
-		model.addAttribute("content", applyContent);
+		model.addAttribute("content", content);
 		
 		return "reservationPayment";
 	}
@@ -490,7 +492,7 @@ public class MemberController {
 	
 	
 	
-	// 멤버 파트 내 스케쥴 관리 인트로 페이지 ... 구현할 수 있을까?
+	// 멤버 파트 내 스케쥴 관리 인트로 페이지
 	@RequestMapping("/schedule")
 	public String schedule() {
 
