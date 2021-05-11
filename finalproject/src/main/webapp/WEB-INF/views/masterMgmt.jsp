@@ -27,13 +27,13 @@
 		<tbody>
 		<c:forEach items="${masterList}" var="list">
 			<tr>
-				<td>${list.companyInfo.comCode}</td>
-				<td>${list.companyInfo.comName}</td>
-				<td>${list.companyInfo.ceo}</td>
-				<td>${list.companyInfo.manager}</td>
-				<td>${list.companyInfo.comPhone}</td>
-				<td>${list.masteraccount.id}</td>
-				<td>${list.masteraccount.signdate}</td>
+				<td><a href="#">${list.companyInfo.comCode}</a></td>
+				<td><a>${list.companyInfo.comName}</a></td>
+				<td><a>${list.companyInfo.ceo}</a></td>
+				<td><a>${list.companyInfo.manager}</a></td>
+				<td><a>${list.companyInfo.comPhone}</a></td>
+				<td><a>${list.masteraccount.id}</a></td>
+				<td><a>${list.masteraccount.signdate}</a></td>
 			</tr>
 		</c:forEach>
 		</tbody>

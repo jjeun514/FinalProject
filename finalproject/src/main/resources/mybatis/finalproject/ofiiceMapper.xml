@@ -24,7 +24,7 @@
    	<!-- 공간 추가 -->
    	<insert id="addSpaceInfo" parameterType="map">
    		insert into office (branchCode, floor, acreages, rent, officeName, max) 
-   		values (#{branchCode}, #{floor}, #{acreages}, #{rent}, #{officeName}, #{max})
+   		values (#{branchCode}, #{floorInput}, #{acreagesInput}, #{rentInput}, #{officeNameInput}, #{maxInput})
    	</insert>
    	
    	<select id="selectOfficeNum" resultType="int">
