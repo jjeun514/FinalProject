@@ -401,10 +401,10 @@
 				//$(".incorrectNewPw").remove();
 				//$('.newPw').after(' <span class="unusablePw">숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요</span>');
 				//$(".unusablePw").css("color","red");
-				
+				if($('.newPw').val()==null){
 				document.getElementById('modalText01').innerHTML='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
 				$('#dangerModal').modal('show');
-				
+				}
 			}else{
 				//$(".usablePw").remove();
 				//$(".unusablePw").remove();
