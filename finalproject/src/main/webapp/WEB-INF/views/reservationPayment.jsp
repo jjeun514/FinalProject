@@ -124,7 +124,7 @@ $(document).ready(function() {
 							
 							<tr>
 								<td>결제금액</td>
-								<td id = "amount">20000</td>
+								<td id = "amount">${content.amount }</td>
 							</tr>
 							<input id = "startT" value = "${content.useStartTime}" type = "hidden">
 							<input id = "userCount" value = "${content.userCount}" type = "hidden">

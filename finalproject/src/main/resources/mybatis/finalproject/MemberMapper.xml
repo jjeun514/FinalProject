@@ -10,11 +10,35 @@
 		limit 7
    	</select>
    	
+   	<select id="memberBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
+		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
+		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		left outer join companyInfo com on mem.comCode=com.comCode
+		order by date desc, num
+		limit #{firstRecordIndex}, 7
+   	</select>
+   	
+   	<select id="countBoardList" resultType="int">
+   		select count(*) from board
+   	</select>
+   	
+   	<select id="selectOneContent" resultType="com.bit.fn.model.vo.BoardVo">
+   		select bbs.num, bbs.title, bbs.date, bbs.content, mem.memName, com.comName
+		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		left outer join companyInfo com on mem.comCode=com.comCode
+		where bbs.num = #{selectNum}
+   	</select>
+   	
+   	<select id="countNoticeList" resultType="int">
+   		select count(*) from notice
+   	</select>
+   	
 	<select id="noticeList" resultType="com.bit.fn.model.vo.NoticeVo">
 		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
 		from notice noti left outer join adminAccount adm
 		on noti.adminNum=adm.adminNum
-		order by num desc
+		order by noti.num desc
+		limit #{firstRecordIndex}, 10
    	</select>
    	
    	<select id="selectNoticeList" resultType="com.bit.fn.model.vo.NoticeVo">
@@ -23,6 +47,13 @@
    		on noti.adminNum=adm.adminNum
    		where showCheck = 1
    		limit 3
+   	</select>
+   	
+   	<select id="selectOneNotice" resultType="com.bit.fn.model.vo.NoticeVo">
+   		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
+   		from notice noti left outer join adminAccount adm
+   		on noti.adminNum=adm.adminNum
+   		where noti.num = #{selectNum}
    	</select>
    	
    	<!-- 여기서 브랜치 코드 컨트롤러에서 전달받아야 함 -->
@@ -61,6 +92,10 @@
    		)
    	</insert>
    	
+   	<select id="meetingRoomRent" resultType="int">
+   		select rent from meetingRoom where roomNum = #{roomNum}
+   	</select>
+   	
    	<insert id="fixReservation" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservation(
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, fee, merchant_uid, etc
@@ -77,4 +112,19 @@
    		reservationDay = '${reservationDay}' and
    		useStartTime = '${reservationDay} ${useStartTime}:00:00'
    	</delete>
+   	
+   	<select id="selectId" resultType="com.bit.fn.model.vo.MemberInfoVo" parameterType="map">
+   		select id from memberInfo where memName=#{name} and memPhone=#{phone}
+   	</select>
+   	
+   	<!-- 관리자페이지(신청서 관리) -->
+   	<select id="pending" resultType="com.bit.fn.model.vo.MemberInfoVo">
+   		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
+   		right outer join companyInfo b on a.comCode=b.comCode where admission=0 order by signdate
+   	</select>
+   	
+   	<select id="approved" resultType="com.bit.fn.model.vo.MemberInfoVo">
+   		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
+   		right outer join companyInfo b on a.comCode=b.comCode where admission=1 order by signdate
+   	</select>
 </mapper>

@@ -72,6 +72,22 @@
 						</div>
 					</form>
 				</div>
+				
+				<div class="bottom">
+				        <div class="bottom-left">
+				            <select id="cntSelectBox" name="cntSelectBox"
+				                onchange="changeSelectBox(${pagination.currentPage},${pagination.countPerPage},${pagination.pageSize});"
+				                class="form-control" style="width: 100px;" hidden = "hidden">
+				                <option value="10"
+				                    <c:if test="${pagination.countPerPage == '10'}">selected</c:if>>10개씩</option>
+				                <option value="20"
+				                    <c:if test="${pagination.countPerPage == '20'}">selected</c:if>>20개씩</option>
+				                <option value="30"
+				                    <c:if test="${pagination.countPerPage == '30'}">selected</c:if>>30개씩</option>
+				            </select>
+				        </div>
+				    </div>
+				
 				<div class="col-md-12">
 					<table id = "noticeTable" class="table table-bordered table-hover">
 						<thead>
@@ -86,20 +102,70 @@
 						<tbody>
 							<c:forEach var = "list" items = "${noticeList }">
 								<tr>
-									<td>${list.num }</td>
-									<td>${list.title }</td>
-									<td>${list.nickName }</td>
-									<td>${list.count }</td>
-									<td>${list.date }</td>
+									<td><a href = "/notice/detail?selectNum=${list.num }" style = "color:black">${list.num }</a></td>
+									<td><a href = "/notice/detail?selectNum=${list.num }" style = "color:black">${list.title }</a></td>
+									<td><a href = "/notice/detail?selectNum=${list.num }" style = "color:black">${list.nickName }</a></td>
+									<td><a href = "/notice/detail?selectNum=${list.num }" style = "color:black">${list.count }</a></td>
+									<td><a href = "/notice/detail?selectNum=${list.num }" style = "color:black">${list.date }</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
+					
+					<!--paginate -->
+				    <div class="paginate">
+				        <div class="paginaion">
+				            <a class="direction prev" href="javascript:void(0);"
+				                onclick="movePage(1,${pagination.countPerPage},${pagination.pageSize});">
+				                &lt;&lt; </a> 
+				            <a class="direction prev" href="javascript:void(0);"
+				                onclick="movePage(${pagination.currentPage}<c:if test="${pagination.hasPreviousPage == true}">-1</c:if>,${pagination.countPerPage},${pagination.pageSize});">
+				                &lt; </a>
+				 
+				            <c:forEach begin="${pagination.firstPageNum}"
+				                end="${pagination.lastPageNum}" var="idx">
+				                <a
+				                    style="color:<c:out value="${pagination.currentPage == idx ? '#000000; font-weight:700; margin-bottom: 2px;' : ''}"/> "
+				                    href="javascript:void(0);"
+				                    onclick="movePage(${idx},${pagination.countPerPage},${pagination.pageSize});"><c:out
+				                        value="${idx}" /></a>
+				            </c:forEach>
+				            
+				            <a class="direction next" href="javascript:void(0);"
+				                onclick="movePage(${pagination.currentPage}<c:if test="${pagination.hasNextPage == true}">+1</c:if>,${pagination.countPerPage},${pagination.pageSize});">
+				                &gt; </a> 
+				            <a class="direction next" href="javascript:void(0);"
+				                onclick="movePage(${pagination.totalRecordCount},${pagination.countPerPage},${pagination.pageSize});">
+				                &gt;&gt; </a>
+				        </div>
+				    </div>
+					
 				</div>
 			</div>
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
+
+<script>
+//10,20,30개씩 selectBox 클릭 이벤트
+function changeSelectBox(currentPage, countPerPage, pageSize){
+    var selectValue = $("#cntSelectBox").children("option:selected").val();
+    movePage(currentPage, selectValue, pageSize);
+}
+ 
+//페이지 이동
+function movePage(currentPage, countPerPage, pageSize){
+    
+    var url = "/notice";
+    url = url + "?currentPage="+currentPage;
+    url = url + "&countPerPage="+countPerPage;
+    url = url + "&pageSize="+pageSize;
+    
+    location.href=url;
+}
+ 
+</script>
+
 <%@ include file="./template/footer.jspf" %>
 </html>
 
