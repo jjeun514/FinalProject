@@ -537,7 +537,7 @@
 		#emailInput{
 			width: 80%;
 		}
-		#authBtn,#authBtn:link,#authBtn:visited,#authBtn:hover,#authBtn:active{
+		#authBtn,#authBtn:link,#authBtn:visited,#authBtn:hover,#authBtn:active,#checkId,#checkCertification,#signUpNickNameCheck{
 			background-color: darkblue;
 			color: white;
 			border: #dee2ee 1px solid;
@@ -545,12 +545,19 @@
 			text-align: center;
 			text-indent: -5px;
 		}
-		#authBtn{
+		#authBtn,#checkId,#checkCertification{
 			position: absolute;
 			top: 54px;
 			right: 14px;
 			width: 20%
 		}
+		#signUpNickNameCheck{
+			position: absolute;
+			top: 270px;
+			right: 14px;
+			width: 20%
+		}
+		
 		#checkBtn{
 			position: absolute;
 			top: 0px;
@@ -581,6 +588,10 @@
 		#closeBtn{
 			border-top-left-radius: 0;
 			border-top-right-radius: 0; 
+		}
+		#selectComName{
+			color: darkblue;
+			font-size: 100%;
 		}
 
 	/* 아이디/비밀번호 찾기 페이지 */
@@ -821,7 +832,6 @@
 	    #signInBtn{
 	   		width: 350px;
 	    }
-	    /* 마이페이지 */
 	    
 	    
 </style>
