@@ -330,7 +330,7 @@ $(function(){
 			$('.memName').val($('.memName').val().substring(0,10));
 		}
 		
-		if(pattern_spc.test($(data).prop('key')) || pattern_num.test($(data).prop('key'))){
+		if(pattern_spc.test($(data).prop('key')) || pattern_num.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
 				document.getElementById('modalText01').innerHTML='이름에 숫자 및 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
@@ -345,7 +345,7 @@ $(function(){
 			$('.memNickName').val($('.memNickName').val().substring(0,10));
 		}
 		
-		if(pattern_spc.test($(data).prop('key'))){
+		if(pattern_spc.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
 				document.getElementById('modalText01').innerHTML='닉네임에 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
@@ -360,7 +360,7 @@ $(function(){
 			$('.dept').val($('.dept').val().substring(0,20));
 		}
 		
-		if(pattern_spc.test($(data).prop('key'))){
+		if(pattern_spc.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
 				document.getElementById('modalText01').innerHTML='부서에 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
