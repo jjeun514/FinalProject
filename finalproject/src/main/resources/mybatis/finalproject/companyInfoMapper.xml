@@ -10,4 +10,8 @@
    		insert into companyInfo (comCode, officeNum, comName, ceo, manager, comPhone, contractDate, rentStartDate, rentFinishDate)
    		values (#{comCode}, #{officeNum}, #{comName}, #{ceo}, #{manager}, #{comPhone}, #{contractDateInput}, #{moveInDateInput}, #{moveOutDateInput})
    	</insert>
+   	
+   	<select id="selectAllCompany" resultType="com.bit.fn.model.vo.CompanyInfoVo">
+   		select comName from companyInfo
+   	</select>
 </mapper>
