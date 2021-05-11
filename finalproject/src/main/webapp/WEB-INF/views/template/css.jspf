@@ -537,7 +537,7 @@
 		#emailInput{
 			width: 80%;
 		}
-		#authBtn,#authBtn:link,#authBtn:visited,#authBtn:hover,#authBtn:active{
+		#authBtn,#authBtn:link,#authBtn:visited,#authBtn:hover,#authBtn:active,#checkId,#checkCertification,#signUpNickNameCheck{
 			background-color: darkblue;
 			color: white;
 			border: #dee2ee 1px solid;
@@ -545,12 +545,19 @@
 			text-align: center;
 			text-indent: -5px;
 		}
-		#authBtn{
+		#authBtn,#checkId,#checkCertification{
 			position: absolute;
 			top: 54px;
 			right: 14px;
 			width: 20%
 		}
+		#signUpNickNameCheck{
+			position: absolute;
+			top: 270px;
+			right: 14px;
+			width: 20%
+		}
+		
 		#checkBtn{
 			position: absolute;
 			top: 0px;
@@ -582,6 +589,10 @@
 			border-top-left-radius: 0;
 			border-top-right-radius: 0; 
 		}
+		#selectComName{
+			color: darkblue;
+			font-size: 100%;
+		}
 
 	/* 아이디/비밀번호 찾기 페이지 */
 		#forgotIdPw, #forgotIdBtn, #forgotPwBtn{
@@ -600,6 +611,16 @@
 		#msg{
 			color: red;
 			font-size: 100%;
+		}
+	
+	/* 비밀번호 찾기 페이지 이동 후 비밀번호 변경 페이지 */
+		#newPwName,#newPwConfirmName{
+			width: 120px;
+			font-weight: bold;
+	    }
+	    #newPwBtn{
+			margin: auto;
+			width: 350px;
 		}
 	
 	/* chart.jsp 차트 */
@@ -794,4 +815,23 @@
 		.addMasterBtn {
 			width: 100px;
 		}
+		/* 로그인 페이지 */
+		 #loginIdPw{
+			margin: auto;
+			width: 350px;
+		}
+		#loginTitle{
+			margin-top: 50px;
+			font-weight: bold;
+			text-align: center;
+		}
+		.signinId,.signinPw{
+			width: 100px;
+			font-weight: bold;
+	    }
+	    #signInBtn{
+	   		width: 350px;
+	    }
+	    
+	    
 </style>
