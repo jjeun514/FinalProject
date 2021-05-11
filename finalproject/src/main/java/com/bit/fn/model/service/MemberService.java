@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.bit.fn.model.mapper.MemberMapper;
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
+import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;
-
 
 @Service
 public class MemberService {
@@ -21,12 +21,32 @@ public class MemberService {
 		return memberMapper.memberBoardList();
 	}
 	
-	public List<NoticeVo> noticeList(){
-		return memberMapper.noticeList();
+	public List<PaginationVo> memberBoardPaginationList(PaginationVo pagination){
+		return memberMapper.memberBoardPaginationList(pagination);
+	}
+	
+	public BoardVo selectOneContent(int num) {
+		return memberMapper.selectOneContent(num);
+	}
+	
+	public int countBoardList() {
+		return memberMapper.countBoardList();
+	}
+	
+	public List<NoticeVo> noticeList(PaginationVo pagination){
+		return memberMapper.noticeList(pagination);
 	}
 	
 	public List<NoticeVo> selectNoticeList(){
 		return memberMapper.selectNoticeList();
+	}
+	
+	public NoticeVo selectOneNotice(int num) {
+		return memberMapper.selectOneNotice(num);
+	}
+	
+	public int countNoticeList() {
+		return memberMapper.countNoticeList();
 	}
 	
 	public List<ReservationVo> meetingRoomList(){
@@ -43,6 +63,10 @@ public class MemberService {
 	
 	public int roomReservationTemp(ReservationVo reservation) {
 		return memberMapper.roomReservationTemp(reservation);
+	}
+	
+	public int meetingRoomRent(int roomNum) {
+		return memberMapper.meetingRoomRent(roomNum);
 	}
 	
 	public List<ReservationVo> myReservationList() {

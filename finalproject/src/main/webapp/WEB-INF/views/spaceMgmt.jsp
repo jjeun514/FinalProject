@@ -3,7 +3,9 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <script type="text/javascript">
 $(document).ready(function(){
-	console
+	var company;
+	$('.valueSetting').html('0');
+
 	$('#detail').on('show.bs.modal', function(event) {
 		var officeName="";
 		officeName = $(event.relatedTarget).data('officename');
@@ -34,7 +36,8 @@ $(document).ready(function(){
 						$('#acreages').html(JSON.stringify(value[0].acreages).replaceAll("\"",""));
 						$('#rent').html(JSON.stringify(value[0].rent).replaceAll("\"","").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 						$('#max').html(JSON.stringify(value[0].max).replaceAll("\"",""));
-						$('#comName').html(JSON.stringify(value[0].comName).replaceAll("\"",""));
+						company=JSON.stringify(value[0].comName).replaceAll("\"","")
+						$('#comName').html(company);
 					} catch(TypeError){
 						console.log('공간 정보 특정 값 null');
 					}
@@ -61,7 +64,7 @@ $(document).ready(function(){
 				$.each(data, function(key, value){
 					try{
 						if(JSON.stringify(value)=='[]'){
-							console.log('값이 없음');
+							console.log('facilities 값이 없음');
 							return false;
 						} else {
 							$('#desk').html(JSON.stringify(value[0].desk).replaceAll("\"",""));
@@ -89,17 +92,100 @@ $(document).ready(function(){
 	
 	$('.modal').on('hidden.bs.modal',function(){
 		console.log('modal 닫힘');
-		$('.valueSetting').html('-');
+		$('.valueSetting').html('0');
+		$('#comName').html('(없음)');
 	});
-});
+	
+	// 추가
+	$(document).on('click','.submitSpaceBtn',function(){
+		console.log('submit버튼');
+		if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
+			document.getElementById('modalText01').innerHTML='필수 입력값을 입력해주세요.';
+			$('#dangerModal').modal('show');
+			return false;
+		} else{
+			console.log($('#branchInput').val()+","+$('#floorInput').val());
+			$.ajax({
+				url: "/addSpace",
+				type: "POST",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				data: {
+					branchInput:$('#branchInput').val(),
+					floorInput:+$('#floorInput').val(),
+					officeNameInput:$('#officeNameInput').val(),
+					acreagesInput:+$('#acreagesInput').val(),
+					rentInput:+$('#rentInput').val(),
+					maxInput:+$('#maxInput').val()
+				},
+				success: function(data){
+					console.log('[ajax성공] data: '+JSON.stringify(data));
+					if(data=='중복'){
+						console.log('branch & office 중복');
+						document.getElementById('modalText01').innerHTML='입력하신 '+$('#branchInput').val()+'지점 '+$('#floorInput').val()+'층에 '+$('#officeNameInput').val()+' 사무실이 이미 등록되어 있습니다.';
+						$('#dangerModal').modal('show');
+						return false;
+					} else if(data=='가능') {
+						console.log('branch & office 가능');
+						document.getElementById('modalText02').innerHTML='입력하신 공간이 추가되었습니다.';
+						$('#primaryModal').modal('show');
+						$('#primaryModal').on('hidden.bs.modal',function(){
+							location.reload();
+						});
+					}
+				},
+				error: function(request, status, error){
+					console.log("ajax 에러");
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+					$('#dangerModal').modal('show');
+				}
+			})
+		}
+	});
 
-$(document).on('click','.submitSpaceBtn',function(){
-	console.log('submit버튼');
-	if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
-		document.getElementById('modalText01').innerHTML='필수 입력값을 입력해주세요.';
-		$('#dangerModal').modal('show');
-		return false;
-	}
+	// 수정
+	$(document).on('click','.editBtn', function(){
+		if($('#comName').text()=='(없음)'){
+			company='(없음)';			
+		}
+		$('.editBtn').attr('class','btn btn-success okBtn');
+		$('.okBtn').html('확인');
+		/*  입주사 변경
+			입주사는 select로 회사명 다 불러오기+(없음) 추가
+			기존에 입력되어 있던 입주사 값을 받아서, 변경후 값과 다르면 occupancy값도 함께 변경
+		*/
+		$('#desk').html('');
+		console.log('음...?'+company);
+		if($('#comName').text()=='(없음)'){
+			console.log('company 없다: '+company);
+		}
+		$('#comName').html('<select class="form-control companySelected" name="companySelected">'
+				+'<option>(없음)</option>'
+				+'<c:forEach items="${companyList }" var="list">'
+				+'<option value="${list.comName }" >${list.comName }</option>'
+				+'</c:forEach>'
+				+'</select>');
+		$('.companySelected').val(company).prop("selected",true);
+		console.log('선택값: '+$('.companySelected option:selected').val())	// 수정값
+		
+		$('#detail').on('hidden.bs.modal',function(){
+			console.log('상세페이지 닫힘');
+			$('.okBtn').attr('class','btn btn-primary editBtn');
+			$('.editBtn').html('수정');
+		});
+		
+		$(document).on('click','.okBtn', function(){
+			console.log('company: '+company);
+			if(company==$('.companySelected').val()){
+				console.log('company: '+company);
+				console.log('값 같음');
+			}else{
+				console.log('값 다름');
+			}
+			$('.okBtn').attr('class','btn btn-primary editBtn');
+			$('.editBtn').html('수정');
+		});
+	});
 });
 </script>
 
@@ -155,7 +241,7 @@ $(document).on('click','.submitSpaceBtn',function(){
 	</table>
 
 <%//상세 Modal %>
-<div class="modal fade" id="detail" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="detail" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -223,13 +309,13 @@ $(document).on('click','.submitSpaceBtn',function(){
 						</tr>
 					</table>
 
-					<table class="table spaceTable">
+					<table class="table spaceTable facilityTable">
 						<tr colspan="4"><h3 class="spaceTitle">기본 제공</h3></tr>	       
 						<tr>
 							<th>책상</th>
-							<td id="desk" class="valueSetting">-</td>
+							<td id="desk" class="valueSetting"><input type="number" name="deskValue" id="deskValue"></td>
 							<th>의자</th>
-							<td id="chair" class="valueSetting">-</td>
+							<td id="chair" class="valueSetting"><input type="number" name="chairValue" id="chairValue"></td>
 						</tr>
 						<tr>
 							<th>공유기</th>
@@ -264,23 +350,23 @@ $(document).on('click','.submitSpaceBtn',function(){
 		
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary closeBtn" data-dismiss="modal">목록</button>
-				<button type="button" class="btn btn-primary">수정</button>
-				<button type="button" class="btn btn-danger">삭제</button>
+				<button type="button" class="btn btn-primary editBtn">수정</button>
+				<button type="button" class="btn btn-danger deleteBtn">삭제</button>
 			</div>
 		</div>
 	</div>
 </div>
 
 <%//공간 추가 %>
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-content">
 		<div class="modal-header">
 			<h5 class="modal-title" id="ModalTitle">공간 추가</h5>
 		</div>
 		
-		<form action="/addSpace" method="post">
-		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
-		<input type="hidden" name="_method" value="POST"/>
+		<!-- <form action="/addSpace" method="post"> -->
+		<!-- <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> -->
+		<!-- <input type="hidden" name="_method" value="POST"/> -->
 		<div class="modal-body">
 			<table class="table addSpaceTable">
 	      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
@@ -295,19 +381,19 @@ $(document).on('click','.submitSpaceBtn',function(){
 						</select>
 					</td>
 					<th>가격 <font color="red">*</font></th>
-					<td id="rent"><input name="rentInput" id="rentInput" placeholder="(월 임대료 입력)"></td>
+					<td id="rent"><input type="number" name="rentInput" id="rentInput" placeholder="(월 임대료 입력)"></td>
 				</tr>
 				<tr>
 					<th>층 <font color="red">*</font></th>
-					<td id="floor"><input name="floorInput" id="floorInput" placeholder="(층 입력)"></td>
+					<td id="floor"><input type="number" name="floorInput" id="floorInput" placeholder="(층 입력)"></td>
 					<th>호수 <font color="red">*</font></th>
 					<td id="officeName"><input name="officeNameInput" id="officeNameInput" placeholder="(호수 입력)"></td>
 				</tr>
 				<tr>
 					<th>평수 <font color="red">*</font></th>
-					<td id="acreages"><input name="acreagesInput" id="acreagesInput" placeholder="(평수 입력)"></td>
+					<td id="acreages"><input type="number" name="acreagesInput" id="acreagesInput" placeholder="(평수 입력)"></td>
 					<th>가용인원 <font color="red">*</font></th>
-					<td id="max"><input name="maxInput" id="maxInput" placeholder="(가용인원 입력)"></td>
+					<td id="max"><input type="number" name="maxInput" id="maxInput" placeholder="(가용인원 입력)"></td>
 				</tr>
 			</table>
 
@@ -315,27 +401,27 @@ $(document).on('click','.submitSpaceBtn',function(){
 				<tr colspan="4"><h3 class="spaceTitle">기본 제공</h3></tr>	       
 				<tr>
 					<th>책상</th>
-					<td id="desk"><input name="deskInput" id="deskInput" placeholder="(책상 갯수 입력)"></td>
+					<td id="desk"><input type="number" name="deskInput" id="deskInput" placeholder="(책상 갯수 입력)"></td>
 					<th>의자</th>
-					<td id="chair"><input name="chairInput" id="chairInput" placeholder="(의자 갯수 입력)"></td>
+					<td id="chair"><input type="number" name="chairInput" id="chairInput" placeholder="(의자 갯수 입력)"></td>
 				</tr>
 				<tr>
 					<th>공유기</th>
-					<td id="modem"><input name="modemInput" id="modemInput" placeholder="(공유기 갯수 입력)"></td>
+					<td id="modem"><input type="number" name="modemInput" id="modemInput" placeholder="(공유기 갯수 입력)"></td>
 					<th>소화기</th>
-					<td id="fireExtinguisher"><input name="fireExtinguisherInput" id="fireExtinguisherInput" placeholder="(소화기 갯수 입력)"></td>
+					<td id="fireExtinguisher"><input type="number" name="fireExtinguisherInput" id="fireExtinguisherInput" placeholder="(소화기 갯수 입력)"></td>
 				</tr>
 				<tr>
 					<th>냉반기</th>
-					<td id="airConditioner"><input name="airConditionerInput" id="airConditionerInput" placeholder="(냉반기 갯수 입력)"></td>
+					<td id="airConditioner"><input type="number" name="airConditionerInput" id="airConditionerInput" placeholder="(냉반기 갯수 입력)"></td>
 					<th>난방기</th>
-					<td id="radiator"><input name="radiatorInput" id="radiatorInput" placeholder="(난방기 갯수 입력)"></td>
+					<td id="radiator"><input type="number" name="radiatorInput" id="radiatorInput" placeholder="(난방기 갯수 입력)"></td>
 				</tr>
 				<tr>
 					<th>완강기</th>
-					<td id="descendingLifeLine"><input name="descendingLifeLineInput" id="descendingLifeLineInput" placeholder="(완강기 갯수 입력)"></td>
+					<td id="descendingLifeLine"><input type="number" name="descendingLifeLineInput" id="descendingLifeLineInput" placeholder="(완강기 갯수 입력)"></td>
 					<th>콘센트</th>
-					<td id="powerSocket"><input name="powerSocketInput" id="powerSocketInput" placeholder="(콘센트 갯수 입력)"></td>
+					<td id="powerSocket"><input type="number" name="powerSocketInput" id="powerSocketInput" placeholder="(콘센트 갯수 입력)"></td>
 				</tr>
 			</table>
 		</div>
@@ -344,12 +430,12 @@ $(document).on('click','.submitSpaceBtn',function(){
 			<button type="submit" class="btn btn-primary submitSpaceBtn">확인</button>
 			<button type="button" class="btn btn-secondary" onclick="location.href='spaceMgmt'">취소</button>
 		</div>
-		</form>
+		<!-- </form> -->
 	</div>
 </div>
 
 <%//1. danger Modal%>
-<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<h5 class="modal-title" id="modalTitle">알림</h5>
@@ -360,7 +446,7 @@ $(document).on('click','.submitSpaceBtn',function(){
 </div>
 
 <%//2. primary Modal%>
-<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<h5 class="modal-title" id="modalTitle">알림</h5>

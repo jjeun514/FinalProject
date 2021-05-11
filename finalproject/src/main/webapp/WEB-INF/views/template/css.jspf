@@ -612,7 +612,7 @@
 			visibility: hidden;
 		}
 		
-		#primaryModal, #dangerModal{
+		#primaryModal, #dangerModal, #addModal{
 			width: 50%;
 			height: 50%;
 			margin: auto;
