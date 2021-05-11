@@ -60,6 +60,9 @@ $(document).on('click','#authBtn',function() {
 				$('#primaryModal').modal('show');
 				document.getElementById('codeInput').disabled=false;
 				
+				$('#authBtn').hide();
+				$(".btncheck").show();
+				
 				//요청 후 회원가입 시 값 체크를 위해 아이디 값 저장.
 			 	var user=$(".username").val();
 				
@@ -88,6 +91,10 @@ $(document).on('click','#authBtn',function() {
 							
 							//닉네임 중복 검사 버튼 활성화
 							$(".nickNameCheck").prop("disabled", false);
+							$(".nickNameCheck").show();
+							
+							//인증 확인 버튼 비활성화
+							$(".btncheck").prop("disabled", true);
 							
 							//비동기 통신 (닉네임 중복검사)
 							var check=0;
@@ -249,6 +256,9 @@ $(document).on('click','#authBtn',function() {
 $(function(){
 	$('#msg').hide();
 	$('#codeInput').hide();
+	$('#authBtn').hide();
+	$('#checkCertification').hide();
+	$('#signUpNickNameCheck').hide();
 	
 	//아이디(이메일) 중복 검사 하기 전 이메일 인증번호 전송버튼 및 인증확인 버튼 닉네임 중복검사 버튼 비활성화
 	$("#authBtn").prop('disabled',"true");
@@ -279,7 +289,8 @@ $(function(){
 								$("#authBtn").prop("disabled", false);
 								//인증요청을 하였을 때 아이디를 바꾸지 못하게 readonly
 								$(".username").prop("readonly","readonly");
-								
+								$(".userCheck").hide();
+								$('#authBtn').show();
 							}else{
 								document.getElementById('modalText01').innerHTML='사용중인 아이디입니다.';
 								$('#dangerModal').modal('show');
@@ -420,7 +431,8 @@ $(function(){
 										<input type="text" class="form-control memNickName"  placeholder="닉네임 *" value="" name="memNickName"/>
 									</div>
 									<div class="form-group">
-									<select name="comCode">      
+									<label id="selectComName">본인의 소속회사를 선택하시기 바랍니다.</label>
+									<select name="comCode" class="form-control">      
 										<c:forEach items="${company }" var="bean">
 								        	<option value="${bean.comCode }" >${bean.comName }</option>
 								        </c:forEach>
@@ -435,9 +447,9 @@ $(function(){
 									</form> 
 									 <input type="submit" class="btnRegister"  value="회원가입"/>
 									 
-									 <input type="submit" class="btncheck"  value="인증확인"/>
-									 <input type="submit" class="userCheck"  value="아이디중복검증"/>
-									 <input type="submit" class="nickNameCheck"  value="닉네임중복검증"/>
+									 <input type="submit" class="btn userCheck" id="checkId" data-toggle="modal" data-target="#modal" value="중복검사"/>
+									 <input type="submit" class="btn btncheck" id="checkCertification" data-toggle="modal" data-target="#modal" value="인증확인"/>
+									 <input type="submit" class="btn nickNameCheck" id="signUpNickNameCheck" data-toggle="modal" data-target="#modal" value="닉네임중복검증"/>
 									 
 								</div>
 							</div>
