@@ -37,7 +37,7 @@
 		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
 		from notice noti left outer join adminAccount adm
 		on noti.adminNum=adm.adminNum
-		order by noti.num desc
+		order by noti.date desc
 		limit #{firstRecordIndex}, 10
    	</select>
    	
@@ -84,7 +84,7 @@
    	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
    	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservationHistory(
-   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, etc
+   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, applyDate
    		)
    		values(
    			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
