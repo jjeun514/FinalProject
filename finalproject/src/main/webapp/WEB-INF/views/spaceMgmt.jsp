@@ -2,12 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
 <script type="text/javascript">
-$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink active');
-$('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
-$('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
-$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
-
 $(document).ready(function(){
 	var company;
 	$('.valueSetting').html('0');

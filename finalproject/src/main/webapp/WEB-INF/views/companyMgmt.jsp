@@ -3,11 +3,7 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>입주사관리</title>
 <script type="text/javascript">
-$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
-$('.companyMgmtLink').attr('class','nav-link companyMgmtLink active');
-$('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
-$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
+
 </script>
 
 <div class="content main">

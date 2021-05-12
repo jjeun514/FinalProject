@@ -87,9 +87,6 @@
 		#navbarSupportedContent{
 			font-size: 15px;
 		}
-		.nav-item {
-			padding-left: 15px;
-		}
 		
 	/* header 우측 상단 메뉴 */
 		.topRightMenu{
