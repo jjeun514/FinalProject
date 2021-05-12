@@ -160,7 +160,7 @@ $(document).ready(function(){
 	<%//입주 상담 신청서 %>
 	<div id="application">
 	<h1> 입주 상담 신청서 </h1>
-	<p id="required"> [필수*] 항목을 모두 입력해주세요. </p>
+	<p id="requiredP"> [필수*] 항목을 모두 입력해주세요. </p>
 	<div class="form-row">
 		<div class="form-group col-md-2">
 			<label for="yourName" style="color:red">이름*</label>
