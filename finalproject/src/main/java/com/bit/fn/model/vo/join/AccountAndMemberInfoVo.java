@@ -5,12 +5,12 @@ import com.bit.fn.security.model.Account;
 
 public class AccountAndMemberInfoVo {
 	private Account account;
-	private MemberInfoVo memberInfoVo;
+	private MemberInfoVo memberInfo;
 	public AccountAndMemberInfoVo() {}
 	public AccountAndMemberInfoVo(Account account, MemberInfoVo memberInfoVo) {
 		super();
 		this.account = account;
-		this.memberInfoVo = memberInfoVo;
+		this.memberInfo = memberInfoVo;
 	}
 	public Account getAccount() {
 		return account;
@@ -19,17 +19,17 @@ public class AccountAndMemberInfoVo {
 		this.account = account;
 	}
 	public MemberInfoVo getMemberInfoVo() {
-		return memberInfoVo;
+		return memberInfo;
 	}
 	public void setMemberInfoVo(MemberInfoVo memberInfoVo) {
-		this.memberInfoVo = memberInfoVo;
+		this.memberInfo = memberInfoVo;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((account == null) ? 0 : account.hashCode());
-		result = prime * result + ((memberInfoVo == null) ? 0 : memberInfoVo.hashCode());
+		result = prime * result + ((memberInfo == null) ? 0 : memberInfo.hashCode());
 		return result;
 	}
 	@Override
@@ -46,16 +46,16 @@ public class AccountAndMemberInfoVo {
 				return false;
 		} else if (!account.equals(other.account))
 			return false;
-		if (memberInfoVo == null) {
-			if (other.memberInfoVo != null)
+		if (memberInfo == null) {
+			if (other.memberInfo != null)
 				return false;
-		} else if (!memberInfoVo.equals(other.memberInfoVo))
+		} else if (!memberInfo.equals(other.memberInfo))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "AccountAndMemberInfoVo [account=" + account + ", memberInfoVo=" + memberInfoVo + "]";
+		return "AccountAndMemberInfoVo [account=" + account + ", memberInfoVo=" + memberInfo + "]";
 	}
 	
 }

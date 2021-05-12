@@ -349,7 +349,7 @@ function noWeekend(date) {
 
 							        	<form id = "REZApply" class="form-horizontal">
 							        	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
-							        	
+							        	<input type="hidden" name="memNum" value="${member.memNum}"/>
 							        	  <div class="form-group">
 							        		<label id = "day" class="col-sm-12 control-label"></label>
 							        	  </div>
