@@ -126,7 +126,7 @@ $(document).ready(function(){
 				modemInput=0;
 				console.log('modemInput: '+modemInput);
 			} else{
-				deskInput=$('#modemInput').val();
+				modemInput=$('#modemInput').val();
 			}
 			if($('#fireExtinguisherInput').val()==""){
 				fireExtinguisherInput=0;

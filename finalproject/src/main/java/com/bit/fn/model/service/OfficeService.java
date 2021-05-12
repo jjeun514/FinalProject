@@ -34,8 +34,8 @@ public class OfficeService {
 		return officeMapper.selectOfficeNum(officeName, floorInput);
 	}
 	
-	public int addSpaceInfo(int branchCode, int floorInput, int acreagesInput, int rentInput, String officeName, int maxInput){
-		return officeMapper.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeName, maxInput);
+	public int addSpaceInfo(int branchCode, int floorInput, int acreagesInput, int rentInput, String officeName, int maxInput, int occupancy){
+		return officeMapper.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeName, maxInput, occupancy);
 	}
 	
 	public int updateOffice(int acreagesInput, int rentInput, int maxInput, int officeNum) {

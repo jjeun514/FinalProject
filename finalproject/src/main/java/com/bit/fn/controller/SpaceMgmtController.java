@@ -152,7 +152,7 @@ public class SpaceMgmtController {
 
 		if(branchAndOfficeList.isEmpty()) {
 			// 공간 추가
-			officeService.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeNameInput, maxInput);
+			officeService.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeNameInput, maxInput, 0);
 			System.out.println("[SpaceMgmtController(addSpace())] 공간 추가 완료");
 			// 시설 추가
 			int officeNum=branchAndOfficeService.selectOfficeNum(branchInput, floorInput, officeNameInput);
