@@ -19,4 +19,7 @@ public class BranchAndOfficeService {
 		return branchAndOfficeMapper.duplicationCheck(branchInput, floorInput, officeNameInput);
 	}
 	
+	public int selectOfficeNum(String branchInput, int floorInput, String officeNameInput) {
+		return branchAndOfficeMapper.selectOfficeNum(branchInput, floorInput, officeNameInput);
+	}
 }

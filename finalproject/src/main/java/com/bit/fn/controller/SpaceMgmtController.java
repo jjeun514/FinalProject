@@ -138,20 +138,27 @@ public class SpaceMgmtController {
 	}
 	
 	@RequestMapping(path="/addSpace", method = RequestMethod.POST, produces="application/text; charset=utf8")
-	public @ResponseBody String addSpace(String branchInput, int floorInput, int acreagesInput, int rentInput, String officeNameInput, int maxInput, HttpServletResponse resp) {
+	public @ResponseBody String addSpace(String branchInput, int floorInput, int acreagesInput, int rentInput, String officeNameInput, int maxInput, int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, HttpServletResponse resp) {
 		System.out.println("[SpaceMgmtController(addSpace())]");
-		System.out.println("[SpaceMgmtController(addSpace())] branchName: "+branchInput+", floor: "+floorInput+", acreages: "+acreagesInput+", rent: "+rentInput+", officeName: "+officeNameInput+", max: "+maxInput);
+		System.out.println("[SpaceMgmtController(addSpace())] branchName: "+branchInput+", floor: "+floorInput+", acreages: "+acreagesInput+", rent: "+rentInput+", officeName: "+officeNameInput+", max: "+maxInput
+						+"\ndeskInput: "+deskInput+", chairInput: "+chairInput+", modemInput: "+modemInput+", fireExtinguisherInput: "+fireExtinguisherInput+", airConditionerInput: "+airConditionerInput+", radiatorInput: "+radiatorInput+", descendingLifeLineInput: "+descendingLifeLineInput+", powerSocketInput: "+powerSocketInput);
 		branchCodeList=branchService.selectBranchCode(branchInput);
 		System.out.println("[SpaceMgmtController(addSpace())] branchCodeList: "+branchCodeList);
 		branchCode=(int) branchCodeList.get(0).get("branchCode");
 		System.out.println("[SpaceMgmtController(addSpace())] branchCode: "+branchCode);
 		
 		branchAndOfficeList=branchAndOfficeService.duplicationCheck(branchInput, floorInput, officeNameInput);
-		System.out.println("[SpaceMgmtController(addSpace())] branch & office: "+branchAndOfficeList);
+		System.out.println("[SpaceMgmtController(addSpace())] branch & office & floor: "+branchAndOfficeList);
 
 		if(branchAndOfficeList.isEmpty()) {
+			// 공간 추가
 			officeService.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeNameInput, maxInput);
-			System.out.println("[SpaceMgmtController(addSpace())] insert완료");
+			System.out.println("[SpaceMgmtController(addSpace())] 공간 추가 완료");
+			// 시설 추가
+			int officeNum=branchAndOfficeService.selectOfficeNum(branchInput, floorInput, officeNameInput);
+			System.out.println("[SpaceMgmtController(addSpace())] officeNum: "+officeNum);
+			officeFacilitiesService.addFacilities(officeNum, deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput);
+			System.out.println("[SpaceMgmtController(addSpace())] 시설 추가 완료");
 			return "가능";
 		} else {
 			return "중복";

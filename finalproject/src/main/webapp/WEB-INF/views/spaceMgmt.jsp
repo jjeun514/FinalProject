@@ -104,11 +104,61 @@ $(document).ready(function(){
 	// 추가
 	$(document).on('click','.submitSpaceBtn',function(){
 		console.log('submit버튼');
+		var deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput;
 		if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
 			document.getElementById('modalText01').innerHTML='필수 입력값을 입력해주세요.';
 			$('#dangerModal').modal('show');
 			return false;
 		} else{
+			if($('#deskInput').val()==""){
+				deskInput=0;
+				console.log('deskInput: '+deskInput);
+			} else{
+				deskInput=$('#deskInput').val();
+			}
+			if($('#chairInput').val()==""){
+				chairInput=0;
+				console.log('chairInput: '+chairInput);
+			} else{
+				chairInput=$('#chairInput').val();
+			}
+			if($('#modemInput').val()==""){
+				modemInput=0;
+				console.log('modemInput: '+modemInput);
+			} else{
+				deskInput=$('#modemInput').val();
+			}
+			if($('#fireExtinguisherInput').val()==""){
+				fireExtinguisherInput=0;
+				console.log('fireExtinguisherInput: '+fireExtinguisherInput);
+			} else{
+				fireExtinguisherInput=$('#fireExtinguisherInput').val();
+			}
+			if($('#airConditionerInput').val()==""){
+				airConditionerInput=0;
+				console.log('airConditionerInput: '+airConditionerInput);
+			} else{
+				airConditionerInput=$('#airConditionerInput').val();
+			}
+			if($('#radiatorInput').val()==""){
+				radiatorInput=0;
+				console.log('radiatorInput: '+radiatorInput);
+			} else{
+				radiatorInput=$('#radiatorInput').val();
+			}
+			if($('#descendingLifeLineInput').val()==""){
+				descendingLifeLineInput=0;
+				console.log('descendingLifeLineInput: '+descendingLifeLineInput);
+			} else{
+				descendingLifeLineInput=$('#descendingLifeLineInput').val();
+			}
+			if($('#powerSocketInput').val()==""){
+				powerSocketInput=0;
+				console.log('powerSocketInput: '+powerSocketInput);
+			} else{
+				powerSocketInput=$('#powerSocketInput').val();
+			}
+			
 			$.ajax({
 				url: "/addSpace",
 				type: "POST",
@@ -119,7 +169,15 @@ $(document).ready(function(){
 					officeNameInput:$('#officeNameInput').val(),
 					acreagesInput:+$('#acreagesInput').val(),
 					rentInput:+$('#rentInput').val(),
-					maxInput:+$('#maxInput').val()
+					maxInput:+$('#maxInput').val(),
+					deskInput:deskInput,
+					chairInput:chairInput,
+					modemInput:modemInput,
+					fireExtinguisherInput:fireExtinguisherInput,
+					airConditionerInput:airConditionerInput,
+					radiatorInput:radiatorInput,
+					descendingLifeLineInput:descendingLifeLineInput,
+					powerSocketInput:powerSocketInput
 				},
 				success: function(data){
 					console.log('[ajax성공] data: '+JSON.stringify(data));
@@ -149,6 +207,8 @@ $(document).ready(function(){
 
 	// 수정
 	$(document).on('click','.editBtn', function(){
+		$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','#f8f8f5');
+		$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','darkgray');
 		if($('#comName').text()=='(없음)'){
 			company='(없음)';
 		}
@@ -156,7 +216,7 @@ $(document).ready(function(){
 		$('.okBtn').html('확인');
 
 		$('.valueSetting').prop('readonly', false);
-		
+		/*
 		if($('#comName').text()=='(없음)'){
 			console.log('company 없다: '+company);
 		}
@@ -168,7 +228,7 @@ $(document).ready(function(){
 				+'</select>');
 		$('.companySelected').val(company).prop("selected",true);
 		console.log('선택값: '+$('.companySelected option:selected').val())	// 수정값
-		
+		*/
 		$('#detail').on('hidden.bs.modal',function(){
 			console.log('상세페이지 닫힘');
 			$('.okBtn').attr('class','btn btn-primary editBtn');
@@ -176,6 +236,7 @@ $(document).ready(function(){
 		});
 		
 		$(document).on('click','.okBtn', function(){
+			/*
 			console.log('company: '+company);
 			if(company==$('.companySelected').val()){
 				console.log('값 같음');
@@ -185,6 +246,7 @@ $(document).ready(function(){
 				company=$('.companySelected option:selected').val()
 				console.log('company: '+company);
 			}
+			*/
 			
 			$.ajax({
 				url: "/updateSpaceDetail",
@@ -194,7 +256,7 @@ $(document).ready(function(){
 					officeName:$('#officeName').text(),
 					floorInput:$('#floor').text(),
 					acreagesInput:$('#acreagesValue').val(),
-					rentInput:$('#rentValue').attr('type','number').val().replaceAll(",",""),
+					rentInput:$('#rentValue').val().replaceAll(",",""),
 					maxInput:$('#maxValue').val(),
 					deskInput:$('#deskValue').val(),
 					chairInput:$('#chairValue').val(),
@@ -211,6 +273,8 @@ $(document).ready(function(){
 					$('#primaryModal').modal('show');
 					$('#primaryModal').on('hidden.bs.modal',function(){
 						location.reload();
+						$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','transparent');
+						$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','black');
 					});
 				},
 				error: function(request, status, error){
@@ -320,7 +384,7 @@ $(document).ready(function(){
 						</div>
 					</div>
 					
-					<table class="table spaceTable">
+					<table class="table spaceTable" >
 			      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
 						<tr>
 							<th>지점</th>
@@ -409,7 +473,7 @@ $(document).ready(function(){
 		<div class="modal-body">
 			<table class="table addSpaceTable">
 	      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
-	      		<tr><font color="red">필수*</font></tr>
+	      		<tr colspan="4" id="requiredTr"><font id="requiredFont" color="red">필수*</font></tr>
 				<tr>
 					<th>지점 <font color="red">*</font></th>
 					<td id="branchName">

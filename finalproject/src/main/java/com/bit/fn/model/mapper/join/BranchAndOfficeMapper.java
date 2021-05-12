@@ -13,4 +13,5 @@ import com.bit.fn.model.vo.join.BranchAndOfficeVo;
 @Mapper
 public interface BranchAndOfficeMapper {
 	public List<BranchAndOfficeVo> duplicationCheck(String branchInput, int floorInput, String officeNameInput);
+	public int selectOfficeNum(String branchInput, int floorInput, String officeNameInput);
 }

@@ -23,8 +23,16 @@
     	<collection property="branch" resultMap="BranchMap"/>
     </resultMap>
     
+    <!-- 공간 추가 중복 체크(지점/층/공간이름) -->
     <select id="duplicationCheck" resultMap="BranchAndOfficeMap">
     	select branchName, floor, officeName from office a
+    	left outer join branch b
+		on a.branchCode=b.branchCode
+		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput}
+   	</select>
+   	
+ 	<select id="selectOfficeNum" resultType="int">
+    	select officeNum from office a
     	left outer join branch b
 		on a.branchCode=b.branchCode
 		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput}

@@ -381,7 +381,7 @@
 			padding-bottom: 50px;
 			border-radius: 25px 25px 25px 25px;
 		}
-		#required{
+		#requiredP{
 			margin-right: 0px auto;
 			text-align: right;
 			padding-right: 10%;
@@ -858,10 +858,22 @@
 			text-align-last: center;
 			border: 0;
 			margin-left: 10px;
+			background-color: transparent;
 		}
 		#detail table {
 			border-collapse : collapse;
 			border-spacing : 0px 0px;
+		}
+		#requiredTr {
+			cellspacing: 0;
+			border-spacing: 0;
+		}
+		#requiredFont {
+			margin: 0 auto;
+			padding: 0 auto;
+			text-align: left;
+			margin-left: -96%;
+			border: 0;
 		}
 		
 		/* 로그인 페이지 */
