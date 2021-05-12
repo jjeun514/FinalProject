@@ -62,6 +62,7 @@
 			<div class="row">
 				<div class="col-md-3">
 					<form action="#" method="get">
+					<input type="hidden" name="memNum" value="${member.memNum}"/>
 						<div class="input-group">
 							<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
 							<input class="form-control" id="system-search" name="q"

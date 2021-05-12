@@ -1,9 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%//1. danger Modal%>
+<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <h5 class="modal-title" id="modalTitle">알림</h5>
+         <div class="modal-body" id="modalText01"></div>
+         <button type="button" class="btn btn-danger btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+      </div>
+   </div>
+</div>
+
+<%//2. primary Modal%>
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <h5 class="modal-title" id="modalTitle">알림</h5>
+         <div class="modal-body" id="modalText02"></div>
+         <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" id="closeBtn">확인</button>
+      </div>
+   </div>
+</div>
 <%@ include file="./template/header.jspf" %>
 
 <meta name="_csrf" content="${_csrf.token}"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	.incorrectPw :{
 		color:"red";
@@ -29,6 +49,10 @@
 	
 	//멤버 닉네임 중복 검사용
 	var memNickBoo=false;
+	
+	//닉네임 오류 검사용
+	var nickNameLengthBoo=false;
+	var nickNameCharacterBoo=false;
 	
 	//기존 비밀번호 확인 및 새 비밀번호 사용가능 확인
 	var booExPw=false;
@@ -69,13 +93,21 @@
 		var span= check + "Unavailable";
 		//console.log(span);
 		if(name.val().length < min || name.val().length > max){
-			$("."+span).remove();
-			var afterSpan="<span class='"+span+"'>"+min+"자리 이상 "+max+"자리 이내로 입력해주세요"+"<span>";
-			name.after(afterSpan);
+			//$("."+span).remove();
+			//var afterSpan="<span class='"+span+"'>"+min+"자리 이상 "+max+"자리 이내로 입력해주세요"+"<span>";
+			//name.after(afterSpan);
+			document.getElementById('modalText01').innerHTML=min+"자리 이상 "+max+"자리 이내로 입력해주세요";
+			$('#dangerModal').modal('show');
 			booInfo = false;
+			if(check=="memNickName"){
+				nickNameLengthBoo=false;
+			}
 		}else{
-			$("."+span).remove();
+			//$("."+span).remove();
 			booInfo = true;
+			if(check=="memNickName"){
+				nickNameLengthBoo=true;
+			}
 		}
 		
 		if(name.val().length > max){
@@ -98,13 +130,30 @@
 		}
 		
 		if(u_Character.test($(data).prop('key'))){
+			console.log($(data).prop('key'));
 			if($(data).prop('key')!='Backspace'){
 				console.log($("."+check).val().length -1);
-				$("."+span).remove();
-				var afterSpan="<span class='"+span+"'> "+text+"<span>";
-				name.after(afterSpan);
-				$("."+check).val($("."+check).val().substring(0,$("."+check).val().length -1));
+				//$("."+span).remove();
+				//var afterSpan="<span class='"+span+"'> "+text+"<span>";
+				//name.after(afterSpan);
+				document.getElementById('modalText01').innerHTML=text;
+				$('#dangerModal').modal('show');
+				//$("."+check).val($("."+check).val().substring(0,$("."+check).val().length -1));
 				booInfo = false;
+				if(check=="memNickName"){
+					nickNameCharacterBoo=false;
+				}
+			}
+		}else if(window.event.keyCode==32){
+			document.getElementById('modalText01').innerHTML='공백은 사용할 수 없습니다.';
+			$('#dangerModal').modal('show')
+			booInfo = false;
+			if(check=="memNickName"){
+				nickNameCharacterBoo=false;
+			}	
+		}else{
+			if(check=="memNickName"){
+				nickNameCharacterBoo=true;
 			}
 		}
 	}
@@ -168,15 +217,16 @@
 		
 		//멤버 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".memNickName").keyup(function(data){
-							   lengthCheck("memNickName",2,10);
 							   unavailableCharacter(data,"memNickName",pattern_spc);
 							   memNickName=$(".memNickName").val();
 						   }).focusout(function(){
+							    lengthCheck("memNickName",2,10);
 							    memNickName = $('.memNickName').val();
 								console.log(memNickName);
 								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
-									alert("공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요");
-								}else{
+									document.getElementById('modalText01').innerHTML="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
+									$('#dangerModal').modal('show');
+								}else if(nickNameLengthBoo==true && nickNameCharacterBoo==true){
 									$.ajax({
 										url: "/nickNameCheck",
 										type : "POST",
@@ -186,16 +236,17 @@
 										success: function(data){
 													console.log("data",data);
 													if(data=="Available"){
-														alert("사용가능한 닉네임입니다.");
+														document.getElementById('modalText02').innerHTML='사용가능한 닉네임입니다.';
+														$('#primaryModal').modal('show');
 														//닉네임을 바꾸지 못하게 readonly
 														$(".memNickName").prop("readonly","readonly");
 														memNickBoo=true;
 													}else{
 														if(memNickName==$(".memNickName").attr("value")){
-															alert("닉네임 바뀌지않음");
 															memNickBoo==true;
 														}else{
-															alert("사용중인 닉네임입니다.");
+															document.getElementById('modalText01').innerHTML='사용중인 닉네임입니다.';
+															$('#dangerModal').modal('show');
 															memNickBoo=false;
 															$(".memNickName").focus();
 														}
@@ -234,13 +285,15 @@
 			if(oneClick){
 				//조건 1. 정보 값 체크한 결과 여부 확인
 				if(booInfo==false){
-					alert("수정할 내용을 확인하세요");
+					document.getElementById('modalText01').innerHTML="수정할 내용을 확인하세요";
+					$('#dangerModal').modal('show');
 					return false;
 				//조건 2. 입력하면서 저장한 값들과 현재 값이 다른 지 확인(값 강제 변경 여부)
 					//2-1 어드민인 경우
 				}else if(adminNickName!= undefined){
 						if(adminNickName != $(".adminNickName").val()){
-							alert("값 강제 변경은 허용하지 않습니다");
+							document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+							$('#dangerModal').modal('show');
 							return false;
 						}
 					//2-2 마스터인 경우
@@ -250,7 +303,8 @@
 					   manager != $(".manager").val() || 
 					   comPhone != $(".comPhone").val() 
 						){
-						alert("값 강제 변경은 허용하지 않습니다");
+						document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+						$('#dangerModal').modal('show');
 						return false;
 					}
 					//2-3 멤버인 경우
@@ -259,13 +313,15 @@
 					   dept != $(".dept").val() || 
 					   memPhone != $(".memPhone").val() 
 						){
-						alert("값 강제 변경은 허용하지 않습니다");
+						document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+						$('#dangerModal').modal('show');
 						return false;
 					}
 					//기존 닉네임을 변경하였을 경우 닉네임 중복검사 여부
 					if(memNickName!=$(".memNickName").attr("value")){
 						if(memNickBoo==false){
-							alert("닉네임 중복을 확인해주세요");
+							document.getElementById('modalText01').innerHTML='닉네임 중복을 확인해주세요.';
+							$('#dangerModal').modal('show');
 							return false;
 						}
 					}
@@ -277,8 +333,8 @@
 		
 		//회원정보 수정 버튼 클릭 시 처음엔 readonly를 해제, 수정 버튼 기능 활성화
 		$(".updateInfoBtn").one("click",function(){
-			$('.modifiable').remove();
-			$('.updateInfoInput').removeAttr("readonly").after('<span class="modifiable"> [수정 가능]</span>');
+			//$('.modifiable').remove();
+			$('.updateInfoInput').removeAttr("readonly");//.after('<span class="modifiable"> [수정 가능]</span>');
 			oneClick=true;
 			return false;
 		});
@@ -305,18 +361,24 @@
 						console.log("data",data);
 						//기존 비밀번호 일치 시
 						if(data == "correct"){
-							$(".incorrectPw").remove();
-							$(".correctPw").remove();
-							$(".existingPw").after(' <span class="correctPw">비밀번호가 확인되었습니다</span>')
-							$(".correctPw").css("color","blue");
+							//$(".incorrectPw").remove();
+							//$(".correctPw").remove();
+							//$(".existingPw").after(' <span class="correctPw">비밀번호가 확인되었습니다</span>')
+							//$(".correctPw").css("color","blue");
+							
+							document.getElementById('modalText02').innerHTML='비밀번호가 확인되었습니다.';
+							$('#primaryModal').modal('show');
+							
 							//기존 비밀번호 일치 기능 활성화
 							booExPw=true;
 						//기존 비밀번호와 일치하지 않을 시 
 						}else{
-							$(".incorrectPw").remove();
-							$(".correctPw").remove();
-							$(".existingPw").after(' <span class="incorrectPw">비밀번호가 일치하지 않습니다</span>');
-							$(".incorrectPw").css("color","red");
+							//$(".incorrectPw").remove();
+							//$(".correctPw").remove();
+							//$(".existingPw").after(' <span class="incorrectPw">비밀번호가 일치하지 않습니다</span>');
+							//$(".incorrectPw").css("color","red");
+							document.getElementById('modalText01').innerHTML='비밀번호가 일치하지 않습니다.';
+							$('#dangerModal').modal('show');
 							//기존 비밀번호 일치 기능 비활성화
 							booExPw=false;
 						}
@@ -334,17 +396,24 @@
 			if(!(pattern_spc.test($('.newPw').val())) ||
 					!(pattern_num.test($('.newPw').val())) ||
 					!(pattern_eng.test($('.newPw').val())) ){
-				$(".usablePw").remove();
-				$(".unusablePw").remove();
-				$(".incorrectNewPw").remove();
-				$('.newPw').after(' <span class="unusablePw">숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요</span>');
-				$(".unusablePw").css("color","red");
+				//$(".usablePw").remove();
+				//$(".unusablePw").remove();
+				//$(".incorrectNewPw").remove();
+				//$('.newPw').after(' <span class="unusablePw">숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요</span>');
+				//$(".unusablePw").css("color","red");
+				if($('.newPw').val()==null){
+				document.getElementById('modalText01').innerHTML='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
+				$('#dangerModal').modal('show');
+				}
 			}else{
-				$(".usablePw").remove();
-				$(".unusablePw").remove();
-				$(".incorrectNewPw").remove();
-				$('.newPw').after(' <span class="usablePw">사용 가능한 비밀번호입니다</span>');
-				$(".usablePw").css("color","blue");
+				//$(".usablePw").remove();
+				//$(".unusablePw").remove();
+				//$(".incorrectNewPw").remove();
+				//$('.newPw').after(' <span class="usablePw">사용 가능한 비밀번호입니다</span>');
+				//$(".usablePw").css("color","blue");
+				
+				document.getElementById('modalText02').innerHTML='사용 가능한 비밀번호입니다.';
+				$('#primaryModal').modal('show');
 			}
 			
 			//2. 새 비밀번호를 변경할때마다 새 비밀번호 확인 인풋과 값이 다른지 확인 후 다르면 새 비밀번호 일치 기능 비활성화 
@@ -381,18 +450,21 @@
 		$(".updatePwBtn").click(function(){
 			//1.기존 비밀번호 기능과 새 비밀번호 기능 활성화 여부 확인
 			if(booExPw==false || booNewPw==false){
-				alert("기존 비밀번호 확인 및 변경할 비밀번호를 확인하세요");
+				document.getElementById('modalText01').innerHTML='기존 비밀번호 확인 및 변경할 비밀번호를 확인하세요.';
+				$('#dangerModal').modal('show');
 				return false;
 			//2.비밀번호 강제 값 변경 여부 확인
 			}else if(existingPw!=$('.existingPw').val() || 
 					 newPw!=$('.newPw').val() ||
 					 newCheckPw!=$('.newCheckPw').val()
 					){
-				alert("비밀번호 강제 변경은 금지입니다");
+				document.getElementById('modalText01').innerHTML='비밀번호 강제 변경은 금지입니다.';
+				$('#dangerModal').modal('show');
 				return false;
 			//3. 기존 비밀번호와 새 비밀번호의 값이 같은 같은지 확인	
 			}else if(existingPw==newCheckPw){
-				alert("기존 비밀번호와 새 비밀번호가 일치합니다");
+				document.getElementById('modalText01').innerHTML='기존 비밀번호와 새 비밀번호가 일치합니다.';
+				$('#dangerModal').modal('show');
 				return false;
 			//4. 위 조건을 모두 충족할 경우 비밀번호 변경
 			}else{
@@ -406,7 +478,8 @@
 								if(data=="success"){
 									location.reload();
 								}else{
-									alert("변경 오류");
+									document.getElementById('modalText01').innerHTML='변경 오류.';
+									$('#dangerModal').modal('show');
 								}
 							},
 					error:function(request,status,error){
@@ -439,18 +512,24 @@
 						console.log("data",data);
 						//기존 비밀번호 일치 시
 						if(data == "correct"){
-							$(".incorrectWPw").remove();
-							$(".correctWPw").remove();
-							$(".withdrawalPw").after(' <span class="correctWPw">비밀번호가 확인되었습니다</span>')
-							$(".correctWPw").css("color","blue");
+							//$(".incorrectWPw").remove();
+							//$(".correctWPw").remove();
+							//$(".withdrawalPw").after(' <span class="correctWPw">비밀번호가 확인되었습니다</span>')
+							//$(".correctWPw").css("color","blue");
+							
+							document.getElementById('modalText02').innerHTML='비밀번호가 확인되었습니다.';
+							$('#primaryModal').modal('show');
 							//기존 비밀번호 일치 기능 활성화
 							booWPw=true;
 						//기존 비밀번호와 일치하지 않을 시 
 						}else{
-							$(".incorrectWPw").remove();
-							$(".correctWPw").remove();
-							$(".withdrawalPw").after(' <span class="incorrectWPw">비밀번호가 일치하지 않습니다</span>');
-							$(".incorrectWPw").css("color","red");
+							//$(".incorrectWPw").remove();
+							//$(".correctWPw").remove();
+							//$(".withdrawalPw").after(' <span class="incorrectWPw">비밀번호가 일치하지 않습니다</span>');
+							//$(".incorrectWPw").css("color","red");
+							
+							document.getElementById('modalText01').innerHTML='비밀번호가 일치하지 않습니다.';
+							$('#dangerModal').modal('show');
 							//기존 비밀번호 일치 기능 비활성화
 							booWPw=false;
 						}
@@ -464,13 +543,16 @@
 		
 		$(".withdrawBtn").click(function(){
 			if(booWPw==false){
-				alert("비밀번호를 확인해주세요");
+				document.getElementById('modalText01').innerHTML='비밀번호를 확인해주세요.';
+				$('#dangerModal').modal('show');
 				return false;
 			}else if(withdrawalPw!=$(".withdrawalPw").val()){
-				alert("강제변경된 비밀번호는 허용하지 않습니다");
+				document.getElementById('modalText01').innerHTML='강제변경된 비밀번호는 허용하지 않습니다.';
+				$('#dangerModal').modal('show');
 				return false;
 			}else if($(".acceptCb").is(":checked")==false){
-				alert("필수 동의란을 체크해주세요");
+				document.getElementById('modalText01').innerHTML='필수 동의란을 체크해주세요.';
+				$('#dangerModal').modal('show');
 				return false;
 			}else{
 				return true;
@@ -479,8 +561,42 @@
 	
 	
 	//회원탈퇴 기능 end
-		
-		
+	
+	//멤버 로그인 권한 부여 기능 start
+		$(".memberAdmission").click(function(){
+			//console.log(this.innerText);
+			//console.log($(this));
+			//console.log($(this).parent().parent().find(".memeberListId").text());
+			//현재 권한 허용, 비허용 여부
+			var currAdmission = this.innerText;
+			var curr=this;
+			//선택한 멤버의 아이디
+			var memberId = $(this).parent().parent().find(".memeberListId").text();
+			
+			$.ajax({
+				url: "/updateMemberAdmission",
+				type : "PUT",
+				data : {currAdmission,memberId},
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				dataType: "text",
+				success: function(data){
+							if(data=="updated"){
+								console.log("업데이트 성공");
+								if(currAdmission=="허용"){
+									console.log(curr.innerText="비허용");
+								}else{
+									console.log(curr.innerText="허용");
+								}
+							}else{
+								console.log("업데이트 실패");
+							}
+						},
+				error:function(request,status,error){
+					 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					 console.log(error);
+					 }
+			});
+		})
 		
 	});
 
@@ -488,6 +604,7 @@
 </script>
 
 <body>
+
 <div class="content mypage"><!--content start-->
  <div class="row vartical-menu">
   <div class="left left-nav">
@@ -505,77 +622,77 @@
       
     </div>
   </div>
-  <div class="right">
+  <div class="right"> 
     <div class="tab-content" id="v-pills-tabContent">
       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      
-        	<h4>계정정보</h4>
+      <div id="mypageMargin">
+        	<h5 class="mypageAccountInfo">계정정보</h5>
         	
         	<!-- 시큐리티 정보로 아이디 불러오기 -->
-        	<div>아이디 <sec:authorize access="isAuthenticated()">
+            <div class="input-group">
+	              <label id="mypageLabel"  class="input-group-text">아이디</label>
+	              <sec:authorize access="isAuthenticated()">
                     <sec:authentication property="principal.username" var="user_id" />
-                     ${user_id }
+                     <input type="text" class="form-control"  value=" ${user_id }" readonly="readonly"/>
                 </sec:authorize> 
-            </div>
-             
-          	<form method="post" action="modifyInfo">
+	         </div>
+          	<form method="post" action="modifyInfo" class="formContents">
           		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
           		<input type="hidden" name="_method" value="PUT"/>
           		
 			    <!-- 어드민일경우  -->
 	      
 	            <sec:authorize access="hasRole('ADMIN')">
-	             <div>
-	            	 <label for="adminNickName">닉네임</label>
-	           		 <input type="text" name="adminNickName" class="updateInfoInput adminNickName" value="${admin.adminAccount.nickName }" readonly="readonly"/>
+	            <div class="input-group">
+	            	 <label id="mypageLabel" class="input-group-text" for="adminNickName">닉네임</label>
+	           		 <input type="text" name="adminNickName" class="form-control updateInfoInput adminNickName" value="${admin.adminAccount.nickName }" readonly="readonly"/>
 	           	 </div>
-	           	 <div>
-	           	 	<label for="adminBranchCode">지점</label>
-	           	 		<input type="text" name="adminBranchCode" value="${admin.branch.branchName }" readonly="readonly"/>
+	            <div class="input-group">
+	           	 	<label id="mypageLabel" class="input-group-text" for="adminBranchCode">지점</label>
+	           	 		<input type="text" class="form-control" name="adminBranchCode" value="${admin.branch.branchName }" readonly="readonly"/>
 	           	 </div>
 	            </sec:authorize>
 	           
 	            <!-- 마스터일경우  -->
 	       
 	            <sec:authorize access="hasRole('MASTER')">
-	           	<div>
-	           	 <label for="masterSigndate">가입일자</label>
-	           	 <input type="text" name="masterSigndate" value="${master.masteraccount.signdate }" readonly="readonly"/>
-	           	</div> 
+	           	 <div class="input-group">
+	           	 <label id="mypageLabel" class="input-group-text" for="masterSigndate">가입일자</label>
+	           	 <input type="text" name="masterSigndate" class="form-control" value="${master.masteraccount.signdate }" readonly="readonly"/>
+	           	</div><br>
+	           	<h5 class="mypageComInfo">회사정보</h5>
 	           	
-	           	<h4>회사정보</h4>
-	           	
-	           	<div>
-	             <label for="comName">회사명</label>
-	             <input type="text" name="comName" class="updateInfoInput comName" value="${master.companyInfo.comName }" readonly="readonly"/>
+	           	 <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="comName">회사명</label>
+	             <input type="text" name="comName" class="form-control updateInfoInput comName" value="${master.companyInfo.comName }" readonly="readonly"/>
 	            </div>
-	           	<div>
-	             <label for="ceo">ceo</label>
-	             <input type="text" name="ceo" class="updateInfoInput ceo" value="${master.companyInfo.ceo }" readonly="readonly"/>
+	           	 <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="ceo">ceo</label>
+	             <input type="text" name="ceo" class="form-control updateInfoInput ceo" value="${master.companyInfo.ceo }" readonly="readonly"/>
 	            </div>
-	           	<div>
-	             <label for="manager">매니저</label>
-	             <input type="text" name="manager" class="updateInfoInput manager" value="${master.companyInfo.manager }" readonly="readonly"/>
+	           	 <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="manager">매니저</label>
+	             <input type="text" name="manager" class="form-control updateInfoInput manager" value="${master.companyInfo.manager }" readonly="readonly"/>
 	            </div>
-	           	<div>
-	             <label for="comPhone">회사연락처</label>
-	             <input type="text" name="comPhone" class="updateInfoInput comPhone" value="${master.companyInfo.comPhone }" readonly="readonly"/>
+	           	 <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="comPhone">회사연락처</label>
+	             <input type="text" name="comPhone" class="form-control updateInfoInput comPhone" value="${master.companyInfo.comPhone }" readonly="readonly"/>
 	            </div>
-	           	<div>
-	             <label for="point">포인트</label>
-	             <input type="text" name="point" value="${master.companyInfo.point }" readonly="readonly"/>
+	           	 <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="point">포인트</label>
+	             <input type="text" name="point" class="form-control" value="${master.companyInfo.point }" readonly="readonly"/>
 	            </div>
-	            <div>
-	             <label for="contractDate">계약일자</label>
-	             <input type="text" name="contractDate" value="${master.companyInfo.contractDate }" readonly="readonly"/>
+	             <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="contractDate">계약일자</label>
+	             <input type="text" name="contractDate" class="form-control" value="${master.companyInfo.contractDate }" readonly="readonly"/>
 	            </div>
-	            <div>
-	             <label for="rentStartDate">입주일자</label>
-	             <input type="text" name="rentStartDate" value="${master.companyInfo.rentStartDate }" readonly="readonly"/>
+	             <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="rentStartDate">입주일자</label>
+	             <input type="text" name="rentStartDate" class="form-control" value="${master.companyInfo.rentStartDate }" readonly="readonly"/>
 	            </div>
-	            <div>
-	             <label for="rentFinishDate">만기일자</label>
-	             <input type="text" name="rentFinishDate" value="${master.companyInfo.rentFinishDate }" readonly="readonly"/>
+	            <div class="input-group">
+	             <label id="mypageLabel" class="input-group-text" for="rentFinishDate">만기일자</label>
+	             <input type="text" name="rentFinishDate" class="form-control" value="${master.companyInfo.rentFinishDate }" readonly="readonly"/>
 	            </div>
 	            </sec:authorize>
 	   
@@ -583,133 +700,188 @@
 	            <!-- 멤버일경우  -->
 	               
 	            <sec:authorize access="hasRole('MEMBER')">
-	             <div>
-	             이름 
-	           	  <input type="text" name="memName" value="${member.memberInfo.memName }" readonly="readonly"/>
+	             <div class="input-group">
+	              <label id="mypageLabel" class="input-group-text" for="memName">이름</label>
+	           	  <input type="text" name="memName" class="form-control" value="${member.memberInfo.memName }" readonly="readonly"/>
 	           	 </div>
-	           	 <div>
-	           	 닉네임 
-	           	  <input type="text" name="memNickName" value="${member.memberInfo.memNickName }" class="updateInfoInput memNickName" readonly="readonly"/>
+	           	 <div class="input-group">
+	           	  <label id="mypageLabel" class="input-group-text" for="memNickName">닉네임</label>
+	           	  <input type="text" name="memNickName" value="${member.memberInfo.memNickName }" class="form-control updateInfoInput memNickName" readonly="readonly"/>
+	          	 </div>
+	          	 <div class="input-group">
+	          	  <label id="mypageLabel" class="input-group-text" for="dept">부서</label>
+	          	  <input type="text" name="dept" value="${member.memberInfo.dept }" class="form-control updateInfoInput dept" readonly="readonly"/>
+	          	 </div>
+	          	 <div class="input-group">
+	          	  <label id="mypageLabel" class="input-group-text" for="memPhone">전화번호</label>
+	          	  <input type="text" name="memPhone" value="${member.memberInfo.memPhone }" class="form-control updateInfoInput memPhone" readonly="readonly"/>
+	          	 </div>
+	          	 <div class="input-group">
+	          	  <label id="mypageLabel" class="input-group-text" for="signdate">가입일자</label>
+	          	  <input type="text" name="signdate" class="form-control" value="${member.memberInfo.signdate }" readonly="readonly"/>
 	          	 </div>
 	          	 <div>
-	          	 부서 
-	          	  <input type="text" name="dept" value="${member.memberInfo.dept }" class="updateInfoInput dept" readonly="readonly"/>
-	          	 </div>
-	          	 <div>
-	          	 전화번호 
-	          	  <input type="text" name="memPhone" value="${member.memberInfo.memPhone }" class="updateInfoInput memPhone" readonly="readonly"/>
-	          	 </div>
-	          	 <div>
-	          	 가입일자 
-	          	  <input type="text" name="signdate" value="${member.memberInfo.signdate }" readonly="readonly"/>
-	          	 </div>
-	          	 
-	          	 <h4>회사정보</h4>
-	           	
-	           	<div>
-	             <label for="comName">회사명</label>
-	             <input type="text" name="comName" value="${member.companyInfo.comName }" readonly="readonly"/>
-	            </div>
-	           	<div>
-	             <label for="ceo">ceo</label>
-	             <input type="text" name="ceo" value="${member.companyInfo.ceo }" readonly="readonly"/>
-	            </div>
-	           	<div>
-	             <label for="manager">매니저</label>
-	             <input type="text" name="manager" value="${member.companyInfo.manager }" readonly="readonly"/>
-	            </div>
-	           	<div>
-	             <label for="comPhone">회사연락처</label>
-	             <input type="text" name="comPhone" value="${member.companyInfo.comPhone }" readonly="readonly"/>
-	            </div>
-	           	<div>
-	             <label for="point">포인트</label>
-	             <input type="text" name="point" value="${member.companyInfo.point }" readonly="readonly"/>
-	            </div>
-	            <div>
-	             <label for="contractDate">계약일자</label>
-	             <input type="text" name="contractDate" value="${member.companyInfo.contractDate }" readonly="readonly"/>
-	            </div>
-	            <div>
-	             <label for="rentStartDate">입주일자</label>
-	             <input type="text" name="rentStartDate" value="${member.companyInfo.rentStartDate }" readonly="readonly"/>
-	            </div>
-	            <div>
-	             <label for="rentFinishDate">만기일자</label>
-	             <input type="text" name="rentFinishDate" value="${member.companyInfo.rentFinishDate }" readonly="readonly"/>
-	            </div>
+	           	  <input type="submit" class="btn btn-primary updateInfoBtn" value="수정하기"/>
+	           	 </div>
+		          	<h5 class="mypageComInfo">회사정보</h5>
+		           	
+		           	<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="comName">회사명</label>
+		             <input type="text" name="comName" class="form-control" value="${member.companyInfo.comName }" readonly="readonly"/>
+		            </div>
+		           		<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="ceo">ceo</label>
+		             <input type="text" name="ceo" class="form-control" value="${member.companyInfo.ceo }" readonly="readonly"/>
+		            </div>
+		           		<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="manager">매니저</label>
+		             <input type="text" name="manager" class="form-control" value="${member.companyInfo.manager }" readonly="readonly"/>
+		            </div>
+		           		<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="comPhone">회사연락처</label>
+		             <input type="text" name="comPhone" class="form-control" value="${member.companyInfo.comPhone }" readonly="readonly"/>
+		            </div>
+		           		<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="point">포인트</label>
+		             <input type="text" name="point" class="form-control" value="${member.companyInfo.point }" readonly="readonly"/>
+		            </div>
+		            	<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="contractDate">계약일자</label>
+		             <input type="text" name="contractDate" class="form-control" value="${member.companyInfo.contractDate }" readonly="readonly"/>
+		            </div>
+		            	<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="rentStartDate">입주일자</label>
+		             <input type="text" name="rentStartDate" class="form-control" value="${member.companyInfo.rentStartDate }" readonly="readonly"/>
+		            </div>
+		            	<div class="input-group">
+		             <label id="mypageLabel" class="input-group-text" for="rentFinishDate">만기일자</label>
+		             <input type="text" name="rentFinishDate" class="form-control" value="${member.companyInfo.rentFinishDate }" readonly="readonly"/>
+		            </div>
 	            </sec:authorize>
-	            
-	             <div>
-	           	  <input type="submit" class="updateInfoBtn" value="수정하기"/>
-	           	 </div>
 			</form>
+		</div>
       </div>
       <div class="tab-pane fade profile" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+      	<div id="mypageMargin">
       	프로필 수정
+      	</div>
       </div>
       <div class="tab-pane fade updatePw" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
-	       <div>
-	        	기존 비밀번호
-	        	<input type="password" class="existingPw" />
+      	<div id="mypageMargin">
+      	   <h5 class="mypagePw">비밀번호 변경</h5>
+	       <div class="input-group">
+        	<label id="mypageLabel2" class="input-group-text" for="existingPw">기존 비밀번호</label>
+        	<input type="password" class="form-control existingPw" />
 	       </div>
-	       <div>
-	       		새 비밀번호
-	        	<input type="password" class="newPw" />
+	       <div class="input-group">
+       		<label id="mypageLabel2" class="input-group-text" for="newPw">새 비밀번호</label>
+        	<input type="password" class="form-control newPw" />
 	       </div> 	
-	       <div>
-	       		새 비밀번호 확인
-	        	<input type="password" class="newCheckPw" />
+	       <div class="input-group">
+       		<label id="mypageLabel2" class="input-group-text" for="newCheckPw">새 비밀번호 확인</label>
+        	<input type="password" class="form-control newCheckPw" />
 	       </div> 	
-	       <div>
-	       	<button type="button" class="updatePwBtn">변경하기</button>
+	       <div class="input-group">
+	       	<button type="button" class="btn btn-primary updatePwBtn">변경하기</button>
 	       </div>
+	      </div>
        </div>
       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-        잘있어요
+      	<div id="mypageMargin">
+        	잘있어요
+        </div>
       </div>
       
       <div class="tab-pane fade" id="v-pills-settings1" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        저는 이만 갑니다
+      	<div id="mypageMargin">
+        	저는 이만 갑니다
+        </div>
       </div>
       <sec:authorize access="hasRole('MASTER')">
       <div class="tab-pane fade" id="v-pills-settings2" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        멤버관리란
+        <div id="mypageMargin">
+        	<table class="table">
+        		<thead class="thead-light">
+        			<tr>
+	        			<th>이름</th>
+	        			<th>ID</th>
+	        			<th>닉네임</th>
+	        			<th>부서</th>
+	        			<th>전화번호</th>
+	        			<th>가입일자</th>
+	        			<th>권한여부</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        				<c:forEach items="${comMemberList }" var="memberList">
+        				<tr>
+	        				<td>${memberList.memName }</td>
+	        				<td class="memeberListId">${memberList.id }</td>
+	        				<td>${memberList.memNickName }</td>
+	        				<td>${memberList.dept }</td>
+	        				<td>${memberList.memPhone }</td>
+	        				<td>${memberList.signdate }</td>
+	        				<td>
+	        				<a href="#" class="memberAdmission">
+	        				<c:if test="${memberList.admission == 1}">
+	        					허용
+	        				</c:if>
+	        				<c:if test="${memberList.admission != 1}">
+	        					비허용
+	        				</c:if>
+	        				</a>
+	        				</td>
+        				</tr>
+        				</c:forEach>
+        		</tbody>
+        	</table>
+        </div>
       </div>
       </sec:authorize>
       <div class="tab-pane fade" id="v-pills-settings3" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-       	<div>
-       		비밀번호 확인
-       		<input type="password" class="withdrawalPw" />
-       	</div>
-       	<div>
-       		<input type="checkbox" class="acceptCb"/> 회원 탈퇴와 함께 등록된 모든 개인정보는 삭제, 폐기 처리되며 복구되지 않습니다. (필수) 
-       	</div>
-       	<div>
-       		탈퇴 후에도 게시판형 서비스에 등록한 게시물은 그대로 남아 있습니다.
-       	</div>
-       	<div>
-       		<form action="/withdraw" method="post">
-       			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
-       			<input type="hidden" name="_method" value="delete"/>
-       			<input type="submit" class="withdrawBtn" value="회원탈퇴"/>
-       		</form>
-       	</div>
+	      <div id="mypageMargin">
+	      	<h5 class="mypageWithdrawInfoTitle">탈퇴 안내</h5>
+	      	<div class="mypageWithdrawInfo">회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</div>
+	      	
+	      	<div><b>사용하고 계신 아이디(${user_id })는 탈퇴할 경우 재사용 및 복구가 불가능합니다.</b></div>
+	      	<div class="mypageWithdrawGuidance"><font class="myPageRed">탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가</font>하오니 신중하게 선택하시기 바랍니다.</div>
+				
+	      	<div><b>탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</b></div>
+	      	<div class="mypageWithdrawGuidance">회원정보 등 개인형 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.<br>
+				삭제되는 내용을 확인하시고 필요한 데이터는 미리 백업을 해주세요.</div>
+	       
+	       	<div><b>게시글 및 댓글은 탈퇴 시 자동 삭제되지 않고 그대로 남아 있습니다.</b></div>
+	       	<div class="mypageWithdrawGuidance">
+				삭제를 원하는 게시글이 있다면 <font class="myPageRed">반드시 탈퇴 전 삭제하시기 바랍니다.</font><br>
+				탈퇴 후에는 회원정보가 삭제되어 본인 여부를 확인할 수 있는 방법이 없어, 게시글을 임의로 삭제해드릴 수 없습니다.
+	       	</div>
+	       	<h5 class="mypageWithdrawInfoTitle">회원 탈퇴</h5>
+	       	<div class="myPageRed">
+	       		탈퇴 후에는 아이디와 데이터는 복구할 수 없습니다.<br>
+				게시판형 서비스에 남아 있는 게시글은 탈퇴 후 삭제할 수 없습니다.<br>
+	       	</div>
+	       	<div class="mypageWithdrawBottom"><br>
+	       		비밀번호 확인
+	       		<input type="password" class="withdrawalPw" />
+	       	</div>
+	       	<div class="mypageWithdrawBottom">
+	       		<input type="checkbox" class="acceptCb"/> &nbsp;안내 사항을 모두 확인하였으며, 이에 동의합니다.
+	       	</div>
+	       	<div>
+	       		<form action="/withdraw" method="post">
+	       			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
+	       			<input type="hidden" name="_method" value="delete"/>
+	       			<input type="submit" class="btn btn-primary withdrawBtn" value="회원탈퇴"/>
+	       		</form>
+	       	</div>
+	      </div>
       </div>
-      
     </div>
   </div>
 </div>   
 </div>
 <!--centent end-->
-
-</body><!--body end-->
-<!--body end-->
 <%@ include file="./template/footer.jspf" %>
-</html>
-
-
-
 <!--
 justify-content-center= 가운데 정렬
 my-2= 높이주기

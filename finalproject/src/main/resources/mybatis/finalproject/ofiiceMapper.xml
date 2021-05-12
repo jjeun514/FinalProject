@@ -11,7 +11,7 @@
     <select id="spaceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
     	 select branchName, floor, officeName, acreages, rent, occupancy, comName, max from office a 
     	 left outer join companyInfo b on a.officeNum=b.officeNum 
-    	 left outer join branch c on a.branchCode=c.branchCode
+    	 left outer join branch c on a.branchCode=c.branchCode order by officeName
    	</select>
    	
    	<select id="officeDetail" resultType="com.bit.fn.model.vo.OfficeVo">
@@ -24,6 +24,10 @@
    	<!-- 공간 추가 -->
    	<insert id="addSpaceInfo" parameterType="map">
    		insert into office (branchCode, floor, acreages, rent, officeName, max) 
-   		values (#{branchCode}, #{floor}, #{acreages}, #{rent}, #{officeName}, #{max})
+   		values (#{branchCode}, #{floorInput}, #{acreagesInput}, #{rentInput}, #{officeNameInput}, #{maxInput})
    	</insert>
+   	
+   	<select id="selectOfficeNum" resultType="int">
+   		select officeNum from office where officeName=#{officeName}
+   	</select>
 </mapper>

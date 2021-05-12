@@ -58,23 +58,10 @@ $(document).on('click','#authBtn',function() {
 				$('#codeInput').show();
 				document.getElementById('modalText02').innerHTML='인증번호가 전송되었습니다.';
 				$('#primaryModal').modal('show');
-				/*
-					1. 생각해 볼 부분
-						emailInput을 전달해서, 이메일을 발송하는 로직이 수행되는 시간이
-						생각보다 길어서 사용자 입장에서 인증 버튼을 누르고 기다려야함
-				
-					2. 나중에 추가 구현할 부분
-						인증 버튼을 disabled 시키고, 5분 타이머 작동
-						5분 후에 다시 인증 버튼 보낼 수 있음
-						타이머가 끝나면 인증 번호도 invalid 상태로 바꿔야함
-				*/
 				document.getElementById('codeInput').disabled=false;
-				/*
-					인증번호 일치 여부
-					1. 일치 여부를 input박스 하단에 표기 등
-					2. 회원가입 버튼을 눌렀을 때 검증
-				*/
 				
+				$('#authBtn').hide();
+				$(".btncheck").show();
 				
 				//요청 후 회원가입 시 값 체크를 위해 아이디 값 저장.
 			 	var user=$(".username").val();
@@ -104,6 +91,10 @@ $(document).on('click','#authBtn',function() {
 							
 							//닉네임 중복 검사 버튼 활성화
 							$(".nickNameCheck").prop("disabled", false);
+							$(".nickNameCheck").show();
+							
+							//인증 확인 버튼 비활성화
+							$(".btncheck").prop("disabled", true);
 							
 							//비동기 통신 (닉네임 중복검사)
 							var check=0;
@@ -265,6 +256,9 @@ $(document).on('click','#authBtn',function() {
 $(function(){
 	$('#msg').hide();
 	$('#codeInput').hide();
+	$('#authBtn').hide();
+	$('#checkCertification').hide();
+	$('#signUpNickNameCheck').hide();
 	
 	//아이디(이메일) 중복 검사 하기 전 이메일 인증번호 전송버튼 및 인증확인 버튼 닉네임 중복검사 버튼 비활성화
 	$("#authBtn").prop('disabled',"true");
@@ -295,7 +289,8 @@ $(function(){
 								$("#authBtn").prop("disabled", false);
 								//인증요청을 하였을 때 아이디를 바꾸지 못하게 readonly
 								$(".username").prop("readonly","readonly");
-								
+								$(".userCheck").hide();
+								$('#authBtn').show();
 							}else{
 								document.getElementById('modalText01').innerHTML='사용중인 아이디입니다.';
 								$('#dangerModal').modal('show');
@@ -335,7 +330,7 @@ $(function(){
 			$('.memName').val($('.memName').val().substring(0,10));
 		}
 		
-		if(pattern_spc.test($(data).prop('key')) || pattern_num.test($(data).prop('key'))){
+		if(pattern_spc.test($(data).prop('key')) || pattern_num.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
 				document.getElementById('modalText01').innerHTML='이름에 숫자 및 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
@@ -350,7 +345,7 @@ $(function(){
 			$('.memNickName').val($('.memNickName').val().substring(0,10));
 		}
 		
-		if(pattern_spc.test($(data).prop('key'))){
+		if(pattern_spc.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
 				document.getElementById('modalText01').innerHTML='닉네임에 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
@@ -365,7 +360,7 @@ $(function(){
 			$('.dept').val($('.dept').val().substring(0,20));
 		}
 		
-		if(pattern_spc.test($(data).prop('key'))){
+		if(pattern_spc.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
 				document.getElementById('modalText01').innerHTML='부서에 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
@@ -417,7 +412,6 @@ $(function(){
 										 input값을 넘겨서 이메일 전송 시 to로 받아서 그 이메일로 인증번호 발송*/%>
 									 
 									<div class="form-group">
-									<!-- name=서버로 전달되는 이름 --> 
 										<input type="email" class="form-control username" placeholder="아이디(gmail) *" value="" id="emailInput" name="username"/>
 										<input type="submit" class="btn" id="authBtn" value="인증" data-toggle="modal" data-target="#modal"/>
 									</div>
@@ -437,7 +431,8 @@ $(function(){
 										<input type="text" class="form-control memNickName"  placeholder="닉네임 *" value="" name="memNickName"/>
 									</div>
 									<div class="form-group">
-									<select name="comCode">      
+									<label id="selectComName">본인의 소속회사를 선택하시기 바랍니다.</label>
+									<select name="comCode" class="form-control">      
 										<c:forEach items="${company }" var="bean">
 								        	<option value="${bean.comCode }" >${bean.comName }</option>
 								        </c:forEach>
@@ -452,23 +447,14 @@ $(function(){
 									</form> 
 									 <input type="submit" class="btnRegister"  value="회원가입"/>
 									 
-									 <input type="submit" class="btncheck"  value="인증확인"/>
-									 <input type="submit" class="userCheck"  value="아이디중복검증"/>
-									 <input type="submit" class="nickNameCheck"  value="닉네임중복검증"/>
+									 <input type="submit" class="btn userCheck" id="checkId" data-toggle="modal" data-target="#modal" value="중복검사"/>
+									 <input type="submit" class="btn btncheck" id="checkCertification" data-toggle="modal" data-target="#modal" value="인증확인"/>
+									 <input type="submit" class="btn nickNameCheck" id="signUpNickNameCheck" data-toggle="modal" data-target="#modal" value="닉네임중복검증"/>
 									 
-								</div>
-								
-							<div class="col-md-1">
-								<div class="form-group"><input class="tmp form-control"/></div>
-								<div class="form-group">
-									<!-- Modal (Button trigger) -->
-									
-									</div>
 								</div>
 							</div>
 					</div>
 				</div>
-			</div>
 						<%//1. danger Modal%>
 			<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
 				<div class="modal-dialog" role="document">

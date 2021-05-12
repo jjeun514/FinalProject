@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.fn.model.mapper.join.AccountAndMemberInfoMapper">
+    <resultMap type="com.bit.fn.security.model.Account" id="AccountMap">
+    	<id property="num" column="num"/>
+    	<result property="username" column="username"/>
+    	<result property="password" column="password"/>
+    	<result property="enabled" column="enabled"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.MemberInfoVo" id="MemberInfoMap">
+    	<id property="memNum" column="memNum"/>
+    	<result property="memName" column="memName"/>
+    	<result property="id" column="id"/>
+    	<result property="memNickName" column="memNickName"/>
+    	<result property="comCode" column="comCode"/>
+    	<result property="dept" column="dept"/>
+    	<result property="memPhone" column="memPhone"/>
+    	<result property="signdate" column="signdate"/>
+    	<result property="admission" column="admission"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.join.AccountAndMemberInfoVo" id="AccountAndMemberInfoMap">
+    	<collection property="account" resultMap="AccountMap"/>
+    	<collection property="memberInfo" resultMap="MemberInfoMap"/>
+    </resultMap>
+    
+   	<update id="updateMemberAdmission">
+   			UPDATE 
+   				account a inner join memberInfo b 
+				on a.username=b.id 
+			SET 
+				a.enabled=#{enabled}, b.admission=#{admission}
+			WHERE
+				b.id=#{id}
+   	</update>
+   	
+</mapper>
+

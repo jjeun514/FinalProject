@@ -1,4 +1,5 @@
 Servers/
+.properties
 application.properties
 email.properties
 .classpath

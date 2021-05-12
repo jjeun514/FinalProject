@@ -15,4 +15,5 @@ public interface AccountMapper {
 	public Account selectOne(@Param("username") String username);
 	public int deleteOne(@Param("username") String username);
 	public int updatePw(@Param("password")String password ,@Param("username") String username);
+	public int idCount(String id);
 }
