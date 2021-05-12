@@ -3,7 +3,7 @@ package com.bit.fn.model.vo;
 import java.sql.*;
 
 public class CompanyInfoVo {
-	private int comCode,ofiiceNum,point;
+	private int comCode,officeNum,point;
 	private String comName,ceo,manager,comPhone;
 	private Date contractDate,rentStartDate,rentFinishDate;
 	public CompanyInfoVo() {}
@@ -11,7 +11,7 @@ public class CompanyInfoVo {
 			String comPhone, Date contractDate, Date rentStartDate, Date rentFinishDate) {
 		super();
 		this.comCode = comCode;
-		this.ofiiceNum = ofiiceNum;
+		this.officeNum = ofiiceNum;
 		this.point = point;
 		this.comName = comName;
 		this.ceo = ceo;
@@ -28,10 +28,10 @@ public class CompanyInfoVo {
 		this.comCode = comCode;
 	}
 	public int getOfiiceNum() {
-		return ofiiceNum;
+		return officeNum;
 	}
 	public void setOfiiceNum(int ofiiceNum) {
-		this.ofiiceNum = ofiiceNum;
+		this.officeNum = ofiiceNum;
 	}
 	public int getPoint() {
 		return point;
@@ -91,7 +91,7 @@ public class CompanyInfoVo {
 		result = prime * result + ((comPhone == null) ? 0 : comPhone.hashCode());
 		result = prime * result + ((contractDate == null) ? 0 : contractDate.hashCode());
 		result = prime * result + ((manager == null) ? 0 : manager.hashCode());
-		result = prime * result + ofiiceNum;
+		result = prime * result + officeNum;
 		result = prime * result + point;
 		result = prime * result + ((rentFinishDate == null) ? 0 : rentFinishDate.hashCode());
 		result = prime * result + ((rentStartDate == null) ? 0 : rentStartDate.hashCode());
@@ -133,7 +133,7 @@ public class CompanyInfoVo {
 				return false;
 		} else if (!manager.equals(other.manager))
 			return false;
-		if (ofiiceNum != other.ofiiceNum)
+		if (officeNum != other.officeNum)
 			return false;
 		if (point != other.point)
 			return false;
@@ -151,7 +151,7 @@ public class CompanyInfoVo {
 	}
 	@Override
 	public String toString() {
-		return "CompanyInfoVo [comCode=" + comCode + ", ofiiceNum=" + ofiiceNum + ", point=" + point + ", comName="
+		return "CompanyInfoVo [comCode=" + comCode + ", ofiiceNum=" + officeNum + ", point=" + point + ", comName="
 				+ comName + ", ceo=" + ceo + ", manager=" + manager + ", comPhone=" + comPhone + ", contractDate="
 				+ contractDate + ", rentStartDate=" + rentStartDate + ", rentFinishDate=" + rentFinishDate + "]";
 	}
