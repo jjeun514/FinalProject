@@ -126,4 +126,14 @@
    		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
    		right outer join companyInfo b on a.comCode=b.comCode where admission=1 order by signdate
    	</select>
+   	
+   	<!-- 마이페이지(내가 작성한글) -->
+   	<select id="memberOneBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
+		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
+		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		left outer join companyInfo com on mem.comCode=com.comCode 
+		where mem.id=#{id} 
+		order by date desc, num 
+		limit 0, 10
+   	</select>
 </mapper>
