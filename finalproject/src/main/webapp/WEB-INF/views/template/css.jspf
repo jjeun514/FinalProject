@@ -822,7 +822,7 @@
 			background-color: transparent;
 			color: black;
 		}
-		.contractDateInput, .branchSelected, .MoveInDateInput, .MoveOutDateInput, .officeSelected {
+		.contractDateInput, .floorSelected, .branchSelected, .MoveInDateInput, .MoveOutDateInput, .officeSelected {
 			position: absolute;
 			top: 0px;
 			left: 110px;

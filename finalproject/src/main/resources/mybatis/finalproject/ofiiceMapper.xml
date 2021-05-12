@@ -5,9 +5,15 @@
     <select id="selectAll" resultType="com.bit.fn.model.vo.OfficeVo">
     	 SELECT * from office
    	</select>
+   	
+   	<select id="selectAllFloors" resultType="com.bit.fn.model.vo.OfficeVo">
+   		select floor from office group by floor
+   	</select>
+   	
     <select id="selectPriceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
     	 select officeName, floor, acreages, rent, max, photo, occupancy from office order by floor
    	</select>
+    
     <select id="spaceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
     	 select branchName, floor, officeName, acreages, rent, occupancy, comName, max from office a 
     	 left outer join companyInfo b on a.officeNum=b.officeNum 

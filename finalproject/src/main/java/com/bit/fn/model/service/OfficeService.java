@@ -18,6 +18,10 @@ public class OfficeService {
 		return officeMapper.selectAll();
 	}
 	
+	public List<OfficeVo> selectAllFloors(){
+		return officeMapper.selectAllFloors();
+	}
+	
 	public List<OfficeVo> selectPriceInfo(){
 		return officeMapper.selectPriceInfo();
 	}

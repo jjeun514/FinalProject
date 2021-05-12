@@ -22,4 +22,16 @@ public class BranchAndOfficeService {
 	public int selectOfficeNum(String branchInput, int floorInput, String officeNameInput) {
 		return branchAndOfficeMapper.selectOfficeNum(branchInput, floorInput, officeNameInput);
 	}
+	
+	public List<BranchAndOfficeVo> OccupancyCheck(String branchSelected, int floorSelected, String officeSelected) {
+		return branchAndOfficeMapper.OccupancyCheck(branchSelected, floorSelected, officeSelected);
+	}
+	
+	public List<BranchAndOfficeVo> selectFloors(String branchSelected) {
+		return branchAndOfficeMapper.selectFloors(branchSelected);
+	}
+	
+	public List<BranchAndOfficeVo> selectOffices(String branchSelected, int floorSelected) {
+		return branchAndOfficeMapper.selectOffices(branchSelected, floorSelected);
+	}
 }
