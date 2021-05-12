@@ -121,6 +121,7 @@ $(document).ready(function() {
 				// 예약 취소 성공
 				if ( data.resultCode == 1 ) { 
 					alert(data.resultMessage);
+					location.href = "/reservation";
 				// 예약 취소 실패
 				} else if ( data.resultCode == 0 ) { 
 					alert(data.resultMessage);

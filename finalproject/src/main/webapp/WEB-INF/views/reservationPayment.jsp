@@ -134,7 +134,7 @@ $(document).ready(function() {
 					<input id = "checkPay" type = "checkbox">
 					<label>결제하시겠습니까?</label>
 					<div>
-						<button id = "canclePay" type="button" class="btn btn-default" onclick = "history.back()">결제취소</button>
+						<button id = "canclePay" type="button" class="btn btn-default" onclick = "location.href = '/reservation';">결제취소</button>
 						<button id = "applyPay" type="button" class="btn btn-default">결제하기</button>
 					</div>
 				</div>
@@ -145,12 +145,3 @@ $(document).ready(function() {
 <%@ include file="./template/footer.jspf" %>
 </html>
 
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->
