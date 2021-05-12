@@ -69,8 +69,8 @@ public class MemberService {
 		return memberMapper.meetingRoomRent(roomNum);
 	}
 	
-	public List<ReservationVo> myReservationList() {
-		return memberMapper.myReservationList();
+	public List<ReservationVo> myReservationList(int memNum) {
+		return memberMapper.myReservationList(memNum);
 	}
 	
 	public int fixReservation(ReservationVo reservation) {

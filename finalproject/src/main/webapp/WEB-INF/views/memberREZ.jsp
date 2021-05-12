@@ -28,6 +28,8 @@ $(document).ready(function() {
 		if ( $('#reservationDay').val() == "" ) {
 			document.getElementById('showAlertForChoice').innerHTML="<b><font color='red'>날짜를 선택해주세요</font><b>";
 			return false;
+		} else if ( $('#reservationDay').val() != "" ) { // 이거 안됨
+			document.getElementById('showAlertForChoice').innerHTML="";
 		}
 		
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
@@ -38,6 +40,7 @@ $(document).ready(function() {
 	$('#REZapplyClick').click(function() { 
 
 		var memNum = $("#memNum").val();
+		var memName = $("#memName").val();
 		var roomNum = $("#roomNum").val();
 		var useStartTime = $("#useStartTime").val();
 		var useFinishTime = $("#useFinishTime").val();
@@ -62,6 +65,7 @@ $(document).ready(function() {
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
 		var applyContent = {
 			memNum : memNum,
+			memName : memName,
 			roomNum : roomNum,
 			useStartTime : useStartTime,
 			useFinishTime : useFinishTime,
@@ -155,14 +159,19 @@ function roomInfo() {
 
 // 나의 회의실 예약 내역 정보
 function myREZ() {
+	
+	var memNum = $("#memNum").val();
+	
 	$.ajax({
 		url : "/reservation/myReservationList",
 		type : "GET",
+		data : { memNum },
 		dataType : "json",
 		success : function(data) {
-			$('#myREZList *').remove(); 
+			console.log(data);
+			$('#myREZList *').remove();
 			for ( var no = 0; no < data.myList.length; no++ ){
-				$('#myREZList').append("<option value = "+data.myList[no].roomNum+"/"+data.myList[no].reservationDay+"/"+data.myList[no].useStartTime+">"+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
+				$('#myREZList').append("<option value = "+data.myList[no].roomNum+"/"+data.myList[no].memNum+"/"+data.myList[no].reservationDay+"/"+data.myList[no].useStartTime+">"+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
 			}
 		},
 		error : function () { alert("나의 회의실 예약 정보를 불러오지 못했습니다. 다시 시도해주세요."); }
@@ -175,6 +184,7 @@ function paymentApplyFunction2(data) {
 	var formdata = new FormData();
 	
 	formdata.append("memNum", data.memNum);
+	formdata.append("memName", data.memName);
 	formdata.append("roomNum", data.room);
 	formdata.append("day", data.day);
 	formdata.append("useStartTime", data.startT);
@@ -349,6 +359,7 @@ function noWeekend(date) {
 							        	<form id = "REZApply" class="form-horizontal">
 							        	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 							        	<input type="hidden" id = "memNum" name="memNum" value="${member.memNum}"/>
+							        	<input type="hidden" id = "memName" name="memNname" value="${member.memName}"/>
 							        	<!-- 브랜치코드를 받아올 것 -->
 							        	  <div class="form-group">
 							        		<label id = "day" class="col-sm-12 control-label"></label>
@@ -441,7 +452,6 @@ function noWeekend(date) {
 					</div>
 				</div>
 			</div>
-			<p></p>
 			<p>* 회의실 예약은 최대 2시간까지 가능합니다.</p>
 			<p>* 회의실 예약은 결제가 완료되어야 확정됩니다.</p>
 			<p>* 문의 : 112</p>

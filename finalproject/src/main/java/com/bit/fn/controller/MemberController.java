@@ -1,6 +1,7 @@
 package com.bit.fn.controller;
 
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -237,18 +238,14 @@ public class MemberController {
 	// 나의 회의실 예약 정보 전달
 	@RequestMapping(value = "/reservation/myReservationList", method = RequestMethod.GET)
 	@ResponseBody
-	/*
-	 * 뷰에서 ajax로 받아온 멤버 넘버를 인자로 전달해줘야 함
-	 * 아직 뷰에서 사용자의 정보를 어떻게 받아오는지 몰라서 처리 안됨
-	 */
-	public Map<String, Object> myREZList(){
+	public Map<String, Object> myREZList(String memNum){
 
 		// 데이터 담을 객체 생성
 		List<Map<String, String>> REZList = new ArrayList<Map<String, String>>();
 		Map<String, String> data = null;
 		
 		// 나의 예약 정보 불러오기
-		List<ReservationVo> myREZ = service.myReservationList();
+		List<ReservationVo> myREZ = service.myReservationList(Integer.parseInt(memNum));
 		
 		// 반복문 돌면서 객체에 데이터 담기
 		for ( ReservationVo reservation : myREZ ) {
@@ -258,7 +255,6 @@ public class MemberController {
 			data.put("reservationDay", reservation.getReservationDay());
 			data.put("useStartTime", reservation.getUseStartTime().substring(11, 13));
 			data.put("originStartTime", reservation.getUseStartTime());
-			data.put("useFinishTime", reservation.getUseFinishTime());
 			REZList.add(data);
 		}
 		
@@ -320,6 +316,7 @@ public class MemberController {
 		int useTime = Integer.parseInt(applyContent.getUseFinishTime());
 		
 		int memNum = applyContent.getMemNum();
+		String memName = applyContent.getMemName();
 		int roomNum = applyContent.getRoomNum();
 		String useStartTime = applyContent.getUseStartTime();
 		String calFinishTime = Integer.toString(startTime+useTime); // 종료 시간 계산
@@ -329,6 +326,7 @@ public class MemberController {
 		// 파라미터를 객체에 담음
 		ReservationVo reservation = new ReservationVo();
 		reservation.setMemNum(memNum);
+		reservation.setMemName(memName);
 		reservation.setRoomNum(roomNum);
 		reservation.setUseStartTime(useStartTime);
 		reservation.setUseFinishTime(calFinishTime);
@@ -365,6 +363,7 @@ public class MemberController {
 				result.put("resultMessage", resultMessage);
 				result.put("resultCode", resultCode);
 				result.put("memNum", memNum);
+				result.put("memName", memName);
 				result.put("roomNum", roomNum);
 				result.put("reservationDay", reservationDay);
 				result.put("useStartTime", useStartTime);
@@ -402,8 +401,9 @@ public class MemberController {
 		// 받아온 파라미터 변환
 		String[] cancle = cancleContent.split("/");
 		int roomNum = Integer.parseInt(cancle[0]);
-		String reservationDay = cancle[1];
-		String useStartTime = cancle[2];
+		int memNum = Integer.parseInt(cancle[1]);
+		String reservationDay = cancle[2];
+		String useStartTime = cancle[3];
 		
 		// 취소하기 전에 해당 내역으로 예약이 있는지 여부를 조회
 		int checkReservation = service.checkReservaion(roomNum, useStartTime, reservationDay);
@@ -449,6 +449,7 @@ public class MemberController {
 	public String payment(Model model, ReservationVo applyContent) {
 		
 		int memNum = applyContent.getMemNum();
+		String memName = applyContent.getMemName();
 		int roomNum = applyContent.getRoomNum();
 		String reservationDay = applyContent.getReservationDay();
 		String useStartTime = applyContent.getUseStartTime();
@@ -459,6 +460,7 @@ public class MemberController {
 		
 		ReservationVo content = new ReservationVo();
 		content.setMemNum(memNum);
+		content.setMemName(memName);
 		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);

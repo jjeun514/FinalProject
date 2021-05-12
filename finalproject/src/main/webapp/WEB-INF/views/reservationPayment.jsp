@@ -29,7 +29,7 @@ $(document).ready(function() {
 			useFinishTime : $('#time').text().substring(0,1),		 // 1
 			reservationDay : $('#REZ').text().substring(0,10),		 // 2021-04-26
 			amount : $('#amount').text(),							 // 20000
-			memNum : $('#memNum').text(),							 // luna
+			memNum : $('#memNum').val(),							 // luna
 			userCount : $('#userCount').val() 						 // 이거 왜 0이지?
 		}
 
@@ -61,7 +61,7 @@ $(document).ready(function() {
 	        			success : function(data) {
 							if ( data.resultCode == 0 ) { // 예약 성공
 								alert(data.resultMessage);
-								location.href = "/reservation"
+								location.href = "/reservation" // 여기서 날짜를 가지고 이동할 수 있을까?
 							} else if ( data.resultCode == 1 ) { // 예약 실패
 								alert(data.resultMessage);
 								location.href = "/reservation"
@@ -104,7 +104,8 @@ $(document).ready(function() {
 					<table id = "bbsTable" class="table table-bordered">
 							<tr>
 								<td>예약자명</td>
-								<td id = "memNum">${content.memNum}</td>
+								<td id = "memName">${content.memName}</td>
+								<input type="hidden" id = "memNum" name="memNum" value="${content.memNum}"/>
 							</tr>
 							
 							<tr>
@@ -133,6 +134,7 @@ $(document).ready(function() {
 					<input id = "checkPay" type = "checkbox">
 					<label>결제하시겠습니까?</label>
 					<div>
+						<button id = "canclePay" type="button" class="btn btn-default" onclick = "history.back()">결제취소</button>
 						<button id = "applyPay" type="button" class="btn btn-default">결제하기</button>
 					</div>
 				</div>

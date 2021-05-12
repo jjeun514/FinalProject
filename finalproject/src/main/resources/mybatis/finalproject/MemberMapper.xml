@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bit.fn.model.mapper.MemberMapper">
+
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
 		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
@@ -14,7 +15,7 @@
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
 		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
-		order by date desc, num
+		order by date desc, num desc
 		limit #{firstRecordIndex}, 7
    	</select>
    	
@@ -74,14 +75,12 @@
    		where room.branchCode = ${branchCode} and reservationDay = '${reservationDay}'
    	</select>
    	
-   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
    	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
-   		select roomNum, reservationDay, useStartTime, useFinishTime from reservation
+   		select roomNum, memNum, reservationDay, useStartTime, useFinishTime from reservation
    		where memNum = #{memNum} and
    		reservationDay >= date_format(sysdate(), '%Y-%m-%d')
    	</select>
    	
-   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
    	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservationHistory(
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, applyDate

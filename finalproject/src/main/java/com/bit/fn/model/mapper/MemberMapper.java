@@ -54,7 +54,7 @@ public interface MemberMapper {
 	public int meetingRoomRent(int roomNum);
 	
 	// 나의 예약 현황 조회
-	public List<ReservationVo> myReservationList();
+	public List<ReservationVo> myReservationList(int memNum);
 	
 	// 결제 후 최종 예약 테이블 저장(reservation 테이블)
 	public int fixReservation(ReservationVo reservaion);
