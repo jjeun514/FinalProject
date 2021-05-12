@@ -179,9 +179,10 @@
 		
 		//어드민 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".adminNickName").keyup(function(data){
-							   lengthCheck("adminNickName",2,10);
 							   unavailableCharacter(data,"adminNickName",pattern_spc);
 							   adminNickName=$(".adminNickName").val();
+						   }).focusout(function(data){
+							   lengthCheck("adminNickName",2,10);
 						   });
 		
 		//마스터 계정 회사명 1자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
@@ -193,26 +194,29 @@
 		
 		//마스터 계정 ceo 2자 이상 10자 이내 입력 수 제한, 숫자, 특수문자 사용 제한, 값 저장
 		$(".ceo").keyup(function(data){
-							   lengthCheck("ceo",2,10);
 							   unavailableCharacter(data,"ceo",pattern_num);
 							   unavailableCharacter(data,"ceo",pattern_spc);
 							   ceo=$(".ceo").val();
+						   }).focusout(function(data){
+							   lengthCheck("ceo",2,10);
 						   });
 		
 		//마스터 계정 매니저 2자 이상 10자 이내 입력 수 제한, 숫자, 특수문자 사용 제한, 값 저장
 		$(".manager").keyup(function(data){
-							   lengthCheck("manager",2,10);
 							   unavailableCharacter(data,"manager",pattern_num);
 							   unavailableCharacter(data,"manager",pattern_spc);
 							   manager=$(".manager").val();
+						   }).focusout(function(data){
+							   lengthCheck("manager",2,10);
 						   });
 		
 		//마스터 계정 전화번호 9자 이상 15자 이내 입력 수 제한, 문자, 특수문자 사용 제한, 값 저장
 		$(".comPhone").keyup(function(data){
-							   lengthCheck("comPhone",9,15);
 							   unavailableCharacter(data,"comPhone",pattern_eng);
 							   unavailableCharacter(data,"comPhone",pattern_spc);
 							   comPhone=$(".comPhone").val();
+					   }).focusout(function(data){
+						   lengthCheck("comPhone",9,15);
 					   });
 		
 		//멤버 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
@@ -264,17 +268,19 @@
 		
 		//멤버 계정 부서 2자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".dept").keyup(function(data){
-							   lengthCheck("dept",2,20);
 							   unavailableCharacter(data,"dept",pattern_spc);
 							   dept=$(".dept").val();
-						   });
+						   }).focusout(function(data){
+							   lengthCheck("dept",2,20);
+						   });;
 		//멤버 계정 전화번호 9자 이상 15자 이내 입력 수 제한, 문자, 특수문자 사용 제한, 값 저장
 		$(".memPhone").keyup(function(data){
-							   lengthCheck("memPhone",9,15);
 							   unavailableCharacter(data,"memPhone",pattern_eng);
 							   unavailableCharacter(data,"memPhone",pattern_spc);
 							   memPhone=$(".memPhone").val();
-					   });
+					   }).focusout(function(data){
+						   	   lengthCheck("memPhone",9,15);
+					   });;
 		
 		//수정 버튼 한 번 클릭 여부 확인 기능
 		var oneClick=false;
@@ -694,6 +700,9 @@
 	             <label id="mypageLabel" class="input-group-text" for="rentFinishDate">만기일자</label>
 	             <input type="text" name="rentFinishDate" class="form-control" value="${master.companyInfo.rentFinishDate }" readonly="readonly"/>
 	            </div>
+	            <div>
+	           	  <input type="submit" class="btn btn-primary updateInfoBtn" value="수정하기"/>
+	           	 </div>
 	            </sec:authorize>
 	   
 	     
