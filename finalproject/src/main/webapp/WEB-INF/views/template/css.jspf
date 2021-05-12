@@ -887,5 +887,9 @@
 		.mypageBbsTitle{
 			margin-bottom: 15px;
 		}
+		
+		#bbsTable{
+			font-size:12px;
+		}
 	    
 </style>
