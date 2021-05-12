@@ -3,6 +3,11 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>마스터계정관리</title>
 <script type="text/javascript">
+$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
+$('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
+$('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
+$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
+$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 </script>
 
 <div class="content main">
