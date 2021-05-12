@@ -66,24 +66,9 @@ public class ViewTestController {
 	public String myPage(Principal  principal,Model model,
 						 HttpServletRequest request,
 						 @RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
-			             @RequestParam(value = "countPerPage", required = false, defaultValue = "10") int countPerPage,
+			             @RequestParam(value = "countPerPage", required = false, defaultValue = "7") int countPerPage,
 			             @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize) {
-		
-		
-		int listCount = service.countBoardList();
-        PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
-        pagination.setTotalRecordCount(listCount);
-        pagination.calculation();
-		
-		// 게시판에 보여줄 게시글 불러오기
-		List<PaginationVo> boardList = service.memberBoardPaginationList(pagination);
-		
-		// 페이징 값 보내기
-		model.addAttribute("pagination", pagination);
-		
-		// 모델 객체에 리스트 담아서 뷰로 전달
-		model.addAttribute("boardList", boardList);
-		
+		countPerPage=7;
 		
 		//아이디
 		String id = principal.getName();
@@ -119,6 +104,18 @@ public class ViewTestController {
 			System.out.println(memberInfoAndCompanyInfoService.memberOne(id).getMemberInfo().getMemName());
 			model.addAttribute("member",memberInfoAndCompanyInfoService.memberOne(id));
 			
+			int listCount = service.countBoardList();
+	        PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
+	        pagination.setTotalRecordCount(listCount);
+	        pagination.calculation();
+			// 게시판에 보여줄 게시글 불러오기
+	        List<PaginationVo> myBoardList = service.memberOneBoardPaginationList(id, pagination);
+			// 페이징 값 보내기
+			model.addAttribute("pagination", pagination);
+			
+			// 모델 객체에 리스트 담아서 뷰로 전달
+			model.addAttribute("boardList", myBoardList);
+			System.out.println("countPerPage:"+countPerPage);
 		}else {
 			return "redirect:/index";
 		}

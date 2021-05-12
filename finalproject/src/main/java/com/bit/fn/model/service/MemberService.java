@@ -80,4 +80,8 @@ public class MemberService {
 	public int cancleReservation(int roomNum, String useStartTime, String reservationDay) {
 		return memberMapper.cancleReservation(roomNum, useStartTime, reservationDay);
 	}
+	
+	public List<PaginationVo> memberOneBoardPaginationList(String id, PaginationVo pagination){
+		return memberMapper.memberOneBoardPaginationList(id, pagination);
+	}
 }
