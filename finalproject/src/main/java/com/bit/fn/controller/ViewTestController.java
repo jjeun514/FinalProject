@@ -110,12 +110,12 @@ public class ViewTestController {
 	        pagination.calculation();
 			// 게시판에 보여줄 게시글 불러오기
 	        List<PaginationVo> myBoardList = service.memberOneBoardPaginationList(id, pagination);
+	        		
 			// 페이징 값 보내기
 			model.addAttribute("pagination", pagination);
 			
 			// 모델 객체에 리스트 담아서 뷰로 전달
 			model.addAttribute("boardList", myBoardList);
-			System.out.println("countPerPage:"+countPerPage);
 		}else {
 			return "redirect:/index";
 		}
