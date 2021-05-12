@@ -13,5 +13,6 @@ import com.bit.fn.model.vo.OfficeFacilitiesVo;
 public interface OfficeFacilitiesMapper {
 	public List<OfficeFacilitiesVo> selectAll();
 
-	public List<OfficeFacilitiesVo> officeFacilities(String officeName);
+	public List<OfficeFacilitiesVo> officeFacilities(String officeName, int floorInput);
+	public int updateSpaceInfo(int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, int officeNum);
 }

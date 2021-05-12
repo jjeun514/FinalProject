@@ -18,7 +18,7 @@
    		select branchName, floor, officeName, acreages, rent, occupancy, max, comName 
    		from office a 
    		left outer join branch b on a.branchCode=b.branchCode 
-   		left outer join companyInfo c on a.officeNum=c.officeNum where a.officeName=#{officeName}
+   		left outer join companyInfo c on a.officeNum=c.officeNum where a.officeName=#{officeName} and a.floor=#{floorInput}
    	</select>
    	
    	<!-- 공간 추가 -->
@@ -28,6 +28,19 @@
    	</insert>
    	
    	<select id="selectOfficeNum" resultType="int">
-   		select officeNum from office where officeName=#{officeName}
+   		select officeNum from office where officeName=#{officeName} and floor=#{floorInput}
    	</select>
+   	
+   	<!-- 공간 수정 -->
+   	<update id="updateOffice">
+   		update office
+		set acreages=#{acreagesInput}, rent=#{rentInput}, max=#{maxInput}
+		where officeNum=#{officeNum}
+   	</update>
+   	
+   	<!-- 공간 삭제 -->
+   	<delete id="deleteSpace">
+   		delete from office
+		where officeNum=#{officeNum}
+   	</delete>
 </mapper>
