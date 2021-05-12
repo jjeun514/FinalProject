@@ -33,6 +33,10 @@ public class MemberService {
 		return memberMapper.countBoardList();
 	}
 	
+	public int countMyBoardList(String id) {
+		return memberMapper.countMyBoardList(id);
+	}
+	
 	public List<NoticeVo> noticeList(PaginationVo pagination){
 		return memberMapper.noticeList(pagination);
 	}

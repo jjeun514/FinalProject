@@ -68,7 +68,6 @@ public class ViewTestController {
 						 @RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
 			             @RequestParam(value = "countPerPage", required = false, defaultValue = "7") int countPerPage,
 			             @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize) {
-		countPerPage=7;
 		
 		//아이디
 		String id = principal.getName();
@@ -104,13 +103,13 @@ public class ViewTestController {
 			System.out.println(memberInfoAndCompanyInfoService.memberOne(id).getMemberInfo().getMemName());
 			model.addAttribute("member",memberInfoAndCompanyInfoService.memberOne(id));
 			
-			int listCount = service.countBoardList();
+			int listCount = service.countMyBoardList(id);
 	        PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
 	        pagination.setTotalRecordCount(listCount);
 	        pagination.calculation();
 			// 게시판에 보여줄 게시글 불러오기
 	        List<PaginationVo> myBoardList = service.memberOneBoardPaginationList(id, pagination);
-	        		
+	        
 			// 페이징 값 보내기
 			model.addAttribute("pagination", pagination);
 			

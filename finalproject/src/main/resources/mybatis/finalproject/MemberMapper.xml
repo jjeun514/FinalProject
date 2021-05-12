@@ -23,6 +23,11 @@
    		select count(*) from board
    	</select>
    	
+   	<select id="countMyBoardList" resultType="int">
+   		select count(*) from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+   		where mem.id = #{id}
+   	</select>
+   	
    	<select id="selectOneContent" resultType="com.bit.fn.model.vo.BoardVo">
    		select bbs.num, bbs.title, bbs.date, bbs.content, mem.memName, com.comName
 		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
@@ -84,8 +89,7 @@
    	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservationHistory(
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, applyDate
-   		)
-   		values(
+   		) values(
    			#{roomNum}, #{memNum}, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
    			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, sysdate()
    		)
@@ -98,8 +102,7 @@
    	<insert id="fixReservation" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservation(
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, fee, merchant_uid, etc
-   		)
-   		values(
+   		) values(
    			#{roomNum}, #{memNum}, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
    			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, #{amount}, #{merchant_uid},'payment test'
    		)
@@ -129,11 +132,12 @@
    	
    	<!-- 마이페이지(내가 작성한글) -->
    	<select id="memberOneBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
-		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
-		left outer join companyInfo com on mem.comCode=com.comCode 
-		where mem.id=#{id} 
-		order by date desc, num 
-		limit 0, 10
+		select myList.* from(
+			select bbs.num, bbs.title, bbs.date from board bbs
+			left outer join memberInfo mem on bbs.writer=mem.memNum
+			where mem.id = #{id}
+			order by date desc, num desc
+		) as myList
+		limit #{pagination.firstRecordIndex}, 10
    	</select>
 </mapper>

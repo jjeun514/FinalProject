@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +70,7 @@ public class MemberController {
             @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize,
             Principal  principal) {
 		
+		// 페이징 처리를 위한 셋팅
 		int listCount = service.countBoardList();
         PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
         pagination.setTotalRecordCount(listCount);
@@ -93,21 +95,13 @@ public class MemberController {
 		int master=principal.toString().indexOf("ROLE_MASTER");
 		int member=principal.toString().indexOf("ROLE_MEMBER");
 		
-		System.out.println("아이디 = " + id);
-		System.out.println("admin 인가? = "+admin);
-		System.out.println("master 인가? = "+master);
-		System.out.println("member 인가? = "+member);
-		
-		//값이 잘 불러오는지 프로필 불러와봄
-		
-		
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-		if(member != -1) {
+		if( member != -1 ) {
 			System.out.println("접속하신 계정은 멤버입니다.");
 			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
 			
-		}else {
+		} else {
 			return "redirect:/intro";
 		}
 		
