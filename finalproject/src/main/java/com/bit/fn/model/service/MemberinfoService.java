@@ -51,4 +51,8 @@ public class MemberinfoService {
 	public int deleteOne(String id) {
 		return memberInfoMapper.deleteOne(id);
 	}
+	
+	public List<MemberInfoVo> comMemberList(int comCode) {
+		return memberInfoMapper.comMemberList(comCode);
+	}
 }

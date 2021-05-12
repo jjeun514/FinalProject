@@ -31,10 +31,8 @@
 			height: 800px;
 			margin-top: -350px;
 		}
-		    
 	/* 마이페이지 */
 		.mypage{
-			height:1000px;
 			position: relative;
 		}
 		#v-pills-home-tab{
@@ -52,7 +50,52 @@
 		.left-nav>div>a{
 			color:black;
 		}
-			    
+		#mypageMargin{
+			margin-top: 10px;
+			margin-left: 30px;
+		}
+		#mypageLabel{
+			width:100px;
+		}
+		#mypageLabel2{
+			width:150px;
+		}
+		.mypageAccountInfo,.mypageComInfo,.mypagePw{
+			font-weight:bold;
+			text-align: center;
+		}
+		.mypageComInfo{
+			margin-top: 6px;
+		}
+		.mypageWithdrawInfoTitle{
+			font-weight:bold;
+			margin-top: 20px;
+		}
+		.mypagePw{
+			margin-top: 30px;
+		}
+		.updateInfoBtn{
+			width:400px;
+		}	    
+		.updatePwBtn{
+			width:410px;
+		}
+		.mypageWithdrawInfo{
+			color: gray;
+			margin-bottom: 30px;
+		}
+		.mypageWithdrawGuidance{
+			margin-bottom: 30px;
+		}
+		.mypageWithdrawBottom{
+			margin-bottom: 6px;
+		}
+		.withdrawBtn{
+			width: 150px;
+		}
+		.myPageRed{
+			color: red;
+		}
 	/* footer*/
 		footer>div>div>p{
 			margin: 50px;
@@ -321,7 +364,7 @@
 			text-align: center;
 			width: 100%;
 		}
-		.priceInfo, .spaceMgmtTable{
+		.priceInfo, .spaceMgmtTable, .companyMgmtTable, .masterMgmtTable{
 			margin: 0 auto;
 			text-align: center;
 			width: 80%;
@@ -357,7 +400,7 @@
 			margin: 0 auto;
 			text-align: center;
 			width: 80%;
-			background-color: rgba(234, 245, 252, 0.4);
+			background-color: rgba(223, 223, 223, 0.2);
 			margin-top: 50px;
 			padding-bottom: 50px;
 			border-radius: 25px 25px 25px 25px;
@@ -365,15 +408,16 @@
 		#required{
 			margin-right: 0px auto;
 			text-align: right;
-			padding-right: 5%;
+			padding-right: 10%;
 			color: red;
 			padding-bottom: 30px;
 		}
 		#submitApplication{
 			margin-top:30px;
-			background-color: rgba(19, 97, 252, 0.7);
+			background-color: black;
+			color: white;
 			border: 0;
-			width: 100%;
+			width: 90%;
 			height: 50px;
 			font-size: 20px;
 		}
@@ -537,7 +581,7 @@
 		#emailInput{
 			width: 80%;
 		}
-		#authBtn,#authBtn:link,#authBtn:visited,#authBtn:hover,#authBtn:active{
+		#authBtn,#authBtn:link,#authBtn:visited,#authBtn:hover,#authBtn:active,#checkId,#checkCertification,#signUpNickNameCheck{
 			background-color: darkblue;
 			color: white;
 			border: #dee2ee 1px solid;
@@ -545,9 +589,22 @@
 			text-align: center;
 			text-indent: -5px;
 		}
-		#authBtn{
+		#authBtn,#checkId,#checkCertification{
 			position: absolute;
 			top: 54px;
+			right: 14px;
+			width: 20%
+		}
+		#signUpNickNameCheck{
+			position: absolute;
+			top: 270px;
+			right: 14px;
+			width: 20%
+		}
+		
+		#checkBtn{
+			position: absolute;
+			top: 0px;
 			right: 14px;
 			width: 20%
 		}
@@ -555,7 +612,7 @@
 			visibility: hidden;
 		}
 		
-		#primaryModal, #dangerModal{
+		#primaryModal, #dangerModal, #addModal{
 			width: 50%;
 			height: 50%;
 			margin: auto;
@@ -576,6 +633,10 @@
 			border-top-left-radius: 0;
 			border-top-right-radius: 0; 
 		}
+		#selectComName{
+			color: darkblue;
+			font-size: 100%;
+		}
 
 	/* 아이디/비밀번호 찾기 페이지 */
 		#forgotIdPw, #forgotIdBtn, #forgotPwBtn{
@@ -594,6 +655,16 @@
 		#msg{
 			color: red;
 			font-size: 100%;
+		}
+	
+	/* 비밀번호 찾기 페이지 이동 후 비밀번호 변경 페이지 */
+		#newPwName,#newPwConfirmName{
+			width: 120px;
+			font-weight: bold;
+	    }
+	    #newPwBtn{
+			margin: auto;
+			width: 350px;
 		}
 	
 	/* chart.jsp 차트 */
@@ -737,15 +808,15 @@
 			text-align: center;
 			padding-top: 10px;
 		}
-		#addSpaceBtn {
+		#addSpaceBtn, #addMasterBtn {
 			margin: 0 auto;
 			text-align: right;
 			border-top: 0;
 		}
-		.addSpaceBtn {
+		.addSpaceBtn, .addMasterBtn {
 			width: 80px;
 		}
-		.spaceMgmtTable {
+		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable {
 			margin-top: -50px;
 		}
 		#addModal {
@@ -767,4 +838,44 @@
 		.addSpaceTable option {
 			background-color: #f0fbee;
 		}
+		.officeInfoTitle {
+			text-align: center;
+			margin: 20px;
+		}
+		
+		.contractDate, .selectBranch, .MoveInDate, .MoveOutDate, .officeRented {
+			width: 120px;
+			border: 0;
+			background-color: transparent;
+			color: black;
+		}
+		.contractDateInput, .branchSelected, .MoveInDateInput, .MoveOutDateInput, .officeSelected {
+			position: absolute;
+			top: 0px;
+			left: 110px;
+			width: 160px;
+			text-align: center;
+		}
+		.addMasterBtn {
+			width: 100px;
+		}
+		/* 로그인 페이지 */
+		 #loginIdPw{
+			margin: auto;
+			width: 350px;
+		}
+		#loginTitle{
+			margin-top: 50px;
+			font-weight: bold;
+			text-align: center;
+		}
+		.signinId,.signinPw{
+			width: 100px;
+			font-weight: bold;
+	    }
+	    #signInBtn{
+	   		width: 350px;
+	    }
+	    
+	    
 </style>

@@ -140,7 +140,8 @@ $(document).on('click','#forgotPwBtn',function() {
 								$('#verification').attr("disabled",true);
 								document.getElementById('modalText02').innerHTML='비밀번호 변경 페이지로 이동합니다.';
 								$('#primaryModal').modal('show').click(function(){
-									location.href='index';	// 비밀번호 변경 페이지
+									$(".hiddenInputId").val(pwId);
+									$(".newPw").submit();
 								});
 							} else{
 								console.log('인증코드 불일치');
@@ -211,7 +212,10 @@ $(document).on('click','#forgotPwBtn',function() {
 	<div>
 	  <span id="msg">처리중입니다. 잠시만 기다려주세요.</span>
 	</div>
-	
+	<form action="newPw" method="post" class="newPw">
+		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/> 
+		<input type="hidden" name="hiddenInputId" class="hiddenInputId"/>
+	</form>
 	<%//1. danger Modal%>
 	<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
 		<div class="modal-dialog" role="document">

@@ -51,5 +51,8 @@
 				a.id=#{id}
    	</update>
    	
+   	<select id="selectAllMasterAccounts" resultMap="MasteraccountAndCompanyInfoMap">
+   		select a.comCode, comName, ceo, manager, comPhone, id, signdate from masterAccount a
+		inner join companyInfo b on a.comCode=b.comCode
+   	</select>
 </mapper>
-

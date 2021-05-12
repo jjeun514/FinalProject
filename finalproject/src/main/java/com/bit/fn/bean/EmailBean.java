@@ -20,6 +20,10 @@ public class EmailBean {
 	@Value("${mail.smtp.auth}")
 	public String auth;
 		
+	
+	@Value("${mail.smtp.email}")
+	public String email;
+	
 	@Value("${mail.smtp.user}")
 	public String user;
 
@@ -55,16 +59,18 @@ public class EmailBean {
 	
 	public EmailBean() {}
 
-	public EmailBean(String protocol, String host, String port, String auth, String user, String pass,
-			String starttlsRequired, String starttlsEnable, String socketFactoryPort, String fallback,
+	public EmailBean(String protocol, String host, String port, String auth, String email, String user, String pass,
+			String from, String starttlsRequired, String starttlsEnable, String socketFactoryPort, String fallback,
 			String socketFactory, String sslTrust, String sslEnable, String debug) {
 		super();
 		this.protocol = protocol;
 		this.host = host;
 		this.port = port;
 		this.auth = auth;
+		this.email = email;
 		this.user = user;
 		this.pass = pass;
+		this.from = from;
 		this.starttlsRequired = starttlsRequired;
 		this.starttlsEnable = starttlsEnable;
 		this.socketFactoryPort = socketFactoryPort;
@@ -105,6 +111,14 @@ public class EmailBean {
 
 	public void setAuth(String auth) {
 		this.auth = auth;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getUser() {
@@ -200,7 +214,10 @@ public class EmailBean {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((auth == null) ? 0 : auth.hashCode());
+		result = prime * result + ((debug == null) ? 0 : debug.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((fallback == null) ? 0 : fallback.hashCode());
+		result = prime * result + ((from == null) ? 0 : from.hashCode());
 		result = prime * result + ((host == null) ? 0 : host.hashCode());
 		result = prime * result + ((pass == null) ? 0 : pass.hashCode());
 		result = prime * result + ((port == null) ? 0 : port.hashCode());
@@ -229,10 +246,25 @@ public class EmailBean {
 				return false;
 		} else if (!auth.equals(other.auth))
 			return false;
+		if (debug == null) {
+			if (other.debug != null)
+				return false;
+		} else if (!debug.equals(other.debug))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
 		if (fallback == null) {
 			if (other.fallback != null)
 				return false;
 		} else if (!fallback.equals(other.fallback))
+			return false;
+		if (from == null) {
+			if (other.from != null)
+				return false;
+		} else if (!from.equals(other.from))
 			return false;
 		if (host == null) {
 			if (other.host != null)
@@ -294,9 +326,10 @@ public class EmailBean {
 
 	@Override
 	public String toString() {
-		return "EmailBean [protocol=" + protocol + ", host=" + host + ", port=" + port + ", auth=" + auth + ", user="
-				+ user + ", pass=" + pass + ", starttlsRequired=" + starttlsRequired + ", starttlsEnable="
-				+ starttlsEnable + ", socketFactoryPort=" + socketFactoryPort + ", fallback=" + fallback
-				+ ", socketFactory=" + socketFactory + ", sslTrust=" + sslTrust + ", sslEnable=" + sslEnable + "]";
+		return "EmailBean [protocol=" + protocol + ", host=" + host + ", port=" + port + ", auth=" + auth + ", email="
+				+ email + ", user=" + user + ", pass=" + pass + ", from=" + from + ", starttlsRequired="
+				+ starttlsRequired + ", starttlsEnable=" + starttlsEnable + ", socketFactoryPort=" + socketFactoryPort
+				+ ", fallback=" + fallback + ", socketFactory=" + socketFactory + ", sslTrust=" + sslTrust
+				+ ", sslEnable=" + sslEnable + ", debug=" + debug + "]";
 	}
 }

@@ -1,6 +1,7 @@
 package com.bit.fn.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.fn.model.service.MemberService;
+import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
@@ -34,6 +36,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	private MemberinfoService memberinfoService;
 	
 	// 결제 기능 객체 생성
 	private IamportClient api;
@@ -60,7 +65,8 @@ public class MemberController {
 	public String bbs(Model model, HttpServletRequest request,
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
             @RequestParam(value = "countPerPage", required = false, defaultValue = "10") int countPerPage,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize) {
+            @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize,
+            Principal  principal) {
 		
 		int listCount = service.countBoardList();
         PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
@@ -77,6 +83,33 @@ public class MemberController {
 		// 모델 객체에 리스트 담아서 뷰로 전달
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("NoticeList", selectNotice);
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		System.out.println("아이디 = " + id);
+		System.out.println("admin 인가? = "+admin);
+		System.out.println("master 인가? = "+master);
+		System.out.println("member 인가? = "+member);
+		
+		//값이 잘 불러오는지 프로필 불러와봄
+		
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if(member != -1) {
+			System.out.println("접속하신 계정은 멤버입니다.");
+			System.out.println(memberinfoService.selectOne(id).getMemNum());
+			model.addAttribute("member",memberinfoService.selectOne(id));
+			
+		}else {
+			return "redirect:/intro";
+		}
+		
 		
 		return "memberBoard";
 	}
@@ -137,7 +170,34 @@ public class MemberController {
 	
 	// 멤버 파트 회의실 예약 인트로 페이지
 	@RequestMapping("/reservation")
-	public String roomREZ(Model model) {
+	public String roomREZ(Model model, Principal  principal) {
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		System.out.println("아이디 = " + id);
+		System.out.println("admin 인가? = "+admin);
+		System.out.println("master 인가? = "+master);
+		System.out.println("member 인가? = "+member);
+		
+		//값이 잘 불러오는지 프로필 불러와봄
+		
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if(member != -1) {
+			System.out.println("접속하신 계정은 멤버입니다.");
+			System.out.println(memberinfoService.selectOne(id).getMemNum());
+			model.addAttribute("member",memberinfoService.selectOne(id));
+			
+		}else {
+			return "redirect:/intro";
+		}
+		
+		
 		
 		List<ReservationVo> roomList = service.meetingRoomList();
 		model.addAttribute("roomList", roomList);

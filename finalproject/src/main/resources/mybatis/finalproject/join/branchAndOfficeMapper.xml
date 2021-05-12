@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.fn.model.mapper.join.BranchAndOfficeMapper">
+    <resultMap type="com.bit.fn.model.vo.BranchVo" id="BranchMap">
+    	<id property="branchCode" column="branchCode"/>
+    	<result property="branchName" column="branchName"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.OfficeVo" id="OfficeMap">
+    	<id property="officeNum" column="officeNum"/>
+    	<result property="officeName" column="officeName"/>
+    	<result property="floor" column="floor"/>
+    	<result property="acreages" column="acreages"/>
+    	<result property="rent" column="rent"/>
+    	<result property="occupancy" column="occupancy"/>
+    	<result property="max" column="max"/>
+    	<result property="photo" column="photo"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.join.BranchAndOfficeVo" id="BranchAndOfficeMap">
+    	<collection property="office" resultMap="OfficeMap"/>
+    	<collection property="branch" resultMap="BranchMap"/>
+    </resultMap>
+    
+    <select id="duplicationCheck" resultMap="BranchAndOfficeMap">
+    	select branchName, floor, officeName from office a
+    	left outer join branch b
+		on a.branchCode=b.branchCode
+		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput}
+   	</select>
+</mapper>
