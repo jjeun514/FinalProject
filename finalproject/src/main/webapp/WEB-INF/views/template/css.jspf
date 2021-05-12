@@ -73,12 +73,14 @@
 		}
 		.mypagePw{
 			margin-top: 30px;
+			margin-bottom: 15px;
 		}
 		.updateInfoBtn{
-			width:400px;
+			width:500px;
 		}	    
 		.updatePwBtn{
-			width:410px;
+			width:530px;
+			/*width:410px;*/
 		}
 		.mypageWithdrawInfo{
 			color: gray;
