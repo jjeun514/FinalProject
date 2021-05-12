@@ -193,11 +193,9 @@ public class MemberController {
 			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
 			
-		}else {
+		} else {
 			return "redirect:/intro";
 		}
-		
-		
 		
 		List<ReservationVo> roomList = service.meetingRoomList();
 		model.addAttribute("roomList", roomList);
@@ -255,6 +253,7 @@ public class MemberController {
 		// 반복문 돌면서 객체에 데이터 담기
 		for ( ReservationVo reservation : myREZ ) {
 			data = new HashMap<String, String>();
+			data.put("memNum", Integer.toString(reservation.getMemNum()));
 			data.put("roomNum", Integer.toString(reservation.getRoomNum()));
 			data.put("reservationDay", reservation.getReservationDay());
 			data.put("useStartTime", reservation.getUseStartTime().substring(11, 13));
@@ -320,7 +319,7 @@ public class MemberController {
 		int startTime = Integer.parseInt(applyContent.getUseStartTime());
 		int useTime = Integer.parseInt(applyContent.getUseFinishTime());
 		
-		// 예약자 정보도 받아와야 함
+		int memNum = applyContent.getMemNum();
 		int roomNum = applyContent.getRoomNum();
 		String useStartTime = applyContent.getUseStartTime();
 		String calFinishTime = Integer.toString(startTime+useTime); // 종료 시간 계산
@@ -329,6 +328,7 @@ public class MemberController {
 		
 		// 파라미터를 객체에 담음
 		ReservationVo reservation = new ReservationVo();
+		reservation.setMemNum(memNum);
 		reservation.setRoomNum(roomNum);
 		reservation.setUseStartTime(useStartTime);
 		reservation.setUseFinishTime(calFinishTime);
@@ -364,6 +364,7 @@ public class MemberController {
 				
 				result.put("resultMessage", resultMessage);
 				result.put("resultCode", resultCode);
+				result.put("memNum", memNum);
 				result.put("roomNum", roomNum);
 				result.put("reservationDay", reservationDay);
 				result.put("useStartTime", useStartTime);
@@ -447,6 +448,7 @@ public class MemberController {
 	@RequestMapping(value = "/reservation/payment", method = RequestMethod.POST)
 	public String payment(Model model, ReservationVo applyContent) {
 		
+		int memNum = applyContent.getMemNum();
 		int roomNum = applyContent.getRoomNum();
 		String reservationDay = applyContent.getReservationDay();
 		String useStartTime = applyContent.getUseStartTime();
@@ -456,6 +458,7 @@ public class MemberController {
 		if ( useFinishTime.equals("2") ) { amount = amount * 2; }
 		
 		ReservationVo content = new ReservationVo();
+		content.setMemNum(memNum);
 		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);
@@ -488,6 +491,7 @@ public class MemberController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		// 결제 요청된 파라미터 받음
+		int memNum = payContent.getMemNum();
 		String useStartTime = payContent.getUseStartTime();
 		int roomNum = payContent.getRoomNum();
 		String reservationDay = payContent.getReservationDay();
@@ -499,6 +503,7 @@ public class MemberController {
 		
 		// 예약 메소드에 데이터 넣을 객체 생성 후 파라미터 받음
 		ReservationVo content = new ReservationVo();
+		content.setMemNum(memNum);
 		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);

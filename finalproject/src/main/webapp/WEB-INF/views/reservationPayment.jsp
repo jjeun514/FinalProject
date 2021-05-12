@@ -29,7 +29,7 @@ $(document).ready(function() {
 			useFinishTime : $('#time').text().substring(0,1),		 // 1
 			reservationDay : $('#REZ').text().substring(0,10),		 // 2021-04-26
 			amount : $('#amount').text(),							 // 20000
-			memName : $('#memName').text(),							 // luna
+			memNum : $('#memNum').text(),							 // luna
 			userCount : $('#userCount').val() 						 // 이거 왜 0이지?
 		}
 
@@ -104,7 +104,7 @@ $(document).ready(function() {
 					<table id = "bbsTable" class="table table-bordered">
 							<tr>
 								<td>예약자명</td>
-								<td id = "memName">LUNA</td>
+								<td id = "memNum">${content.memNum}</td>
 							</tr>
 							
 							<tr>

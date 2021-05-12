@@ -37,35 +37,31 @@ $(document).ready(function() {
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZapplyClick').click(function() { 
 
+		var memNum = $("#memNum").val();
 		var roomNum = $("#roomNum").val();
 		var useStartTime = $("#useStartTime").val();
 		var useFinishTime = $("#useFinishTime").val();
 		var userCount = $("#userCount").val();
 		var reservationDay = $('#reservationDay').val();
 		
-//		if ( $("#roomNum").text() == "" ) {
-//			alert("회의실을 선택해주세요");
-//			return false;
-//		}
-//		
-//		if ( $("#useStartTime").text() == "" ) {
-//			alert("시작 시간을 선택해주세요");
-//			return false;
-//		}
-//		
-//		if ( $("#useStartTime").text() == "" ) {
-//			alert("사용 시간을 선택해주세요");
-//			return false;
-//		}
-//		
-//		if ( $("#userCount").text() == "" ) {
-//			alert("인원을 선택해주세요");
-//			return false;
-//		}
+		if ( $("#roomNum").val() == "선택해주세요" ) {
+			alert("회의실을 선택해주세요");
+			return false;
+		}
+		
+		if ( $("#useStartTime").val() == "선택해주세요" ) {
+			alert("시작 시간을 선택해주세요");
+			return false;
+		}
+		
+		if ( $("#useFinishTime").val() == "선택해주세요" ) {
+			alert("사용 시간을 선택해주세요");
+			return false;
+		}
 		
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
-		// 여기서 예약자 전달해줘야 함
 		var applyContent = {
+			memNum : memNum,
 			roomNum : roomNum,
 			useStartTime : useStartTime,
 			useFinishTime : useFinishTime,
@@ -173,11 +169,12 @@ function myREZ() {
 	});
 }
 
-// 결제 정보 POST 방식으로 보내는 함수
+// paymentApplyFunction2 이 펑션은 수행하지 않음
 function paymentApplyFunction2(data) {
 	
 	var formdata = new FormData();
 	
+	formdata.append("memNum", data.memNum);
 	formdata.append("roomNum", data.room);
 	formdata.append("day", data.day);
 	formdata.append("useStartTime", data.startT);
@@ -186,7 +183,9 @@ function paymentApplyFunction2(data) {
 	formdata.append("amount", data.amount);
 	
 	/*
-	formData는 
+	formData는 console.log();로 출력이 안된다.
+	브라우저 정책에 따른 결과인 것으로 생각중.
+	따라서 아래와 같이 for문으로 출력해야 한다.
 	*/
 	for (let key of formdata.keys()) { console.log(key); }
 	for (let value of formdata.values()) { console.log(value); }
@@ -259,14 +258,14 @@ $( function() {
 						
 						var list = data.allList[no];
 						
-						if ( list.memNum == 1 ) {
+						if ( list.memNum == $("#memNum").val() ) {
 							if ( list.finishT-list.startT > 1 ) {
 								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 							} else {
 								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 							}
-						} else if ( list.memNum != 1 ) {
+						} else if ( list.memNum != $("#memNum").val() ) {
 							if ( list.finishT-list.startT > 1 ) {
 								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.2)");
 								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.2)");
@@ -349,7 +348,8 @@ function noWeekend(date) {
 
 							        	<form id = "REZApply" class="form-horizontal">
 							        	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
-							        	<input type="hidden" name="memNum" value="${member.memNum}"/>
+							        	<input type="hidden" id = "memNum" name="memNum" value="${member.memNum}"/>
+							        	<!-- 브랜치코드를 받아올 것 -->
 							        	  <div class="form-group">
 							        		<label id = "day" class="col-sm-12 control-label"></label>
 							        	  </div>
@@ -451,13 +451,3 @@ function noWeekend(date) {
 <!--body end-->
 <%@ include file="./template/footer.jspf" %>
 </html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->
