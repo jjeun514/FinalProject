@@ -2,14 +2,22 @@
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
 <script type="text/javascript">
+$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink active');
+$('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
+$('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
+$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
+$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
+
 $(document).ready(function(){
 	var company;
 	$('.valueSetting').html('0');
+	$('.valueSetting').val('0');
+	$('#comName').html('(없음)');
 
 	$('#detail').on('show.bs.modal', function(event) {
-		var officeName="";
-		officeName = $(event.relatedTarget).data('officename');
-		console.log("officeName: "+officeName);
+		var officeName=$(event.relatedTarget).data('officename');
+		var floorInput=$(event.relatedTarget).data('floorvalue');
+		console.log("officeName: "+officeName+", floorInput: "+floorInput);
 
 		$.ajax({
 			url: "/spaceDetail",
@@ -17,7 +25,8 @@ $(document).ready(function(){
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			dataType: "JSON",
 			data: {
-				officeName:officeName
+				officeName:officeName,
+				floorInput:floorInput
 			},
 			success: function(data){
 				console.log('[ajax성공] data: '+JSON.stringify(data));
@@ -33,9 +42,9 @@ $(document).ready(function(){
 						$('#branchName').html(JSON.stringify(value[0].branchName).replaceAll("\"",""));
 						$('#floor').html(JSON.stringify(value[0].floor).replaceAll("\"",""));
 						$('#officeName').html(JSON.stringify(value[0].officeName).replaceAll("\"",""));
-						$('#acreages').html(JSON.stringify(value[0].acreages).replaceAll("\"",""));
-						$('#rent').html(JSON.stringify(value[0].rent).replaceAll("\"","").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-						$('#max').html(JSON.stringify(value[0].max).replaceAll("\"",""));
+						$('#acreagesValue').val(JSON.stringify(value[0].acreages).replaceAll("\"",""));
+						$('#rentValue').attr('type','text').val(JSON.stringify(value[0].rent).replaceAll("\"","").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+						$('#maxValue').val(JSON.stringify(value[0].max).replaceAll("\"",""));
 						company=JSON.stringify(value[0].comName).replaceAll("\"","")
 						$('#comName').html(company);
 					} catch(TypeError){
@@ -57,7 +66,8 @@ $(document).ready(function(){
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			dataType: "JSON",
 			data: {
-				officeName:officeName
+				officeName:officeName,
+				floorInput:floorInput
 			},
 			success: function(data){
 				console.log('[ajax성공] data: '+JSON.stringify(data));
@@ -67,14 +77,14 @@ $(document).ready(function(){
 							console.log('facilities 값이 없음');
 							return false;
 						} else {
-							$('#desk').html(JSON.stringify(value[0].desk).replaceAll("\"",""));
-							$('#chair').html(JSON.stringify(value[0].chair).replaceAll("\"",""));
-							$('#modem').html(JSON.stringify(value[0].modem).replaceAll("\"",""));
-							$('#fireExtinguisher').html(JSON.stringify(value[0].fireExtinguisher).replaceAll("\"",""));
-							$('#airConditioner').html(JSON.stringify(value[0].airConditioner).replaceAll("\"",""));
-							$('#radiator').html(JSON.stringify(value[0].radiator).replaceAll("\"",""));
-							$('#descendingLifeLine').html(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
-							$('#powerSocket').html(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
+							$('#deskValue').val(JSON.stringify(value[0].desk).replaceAll("\"",""));
+							$('#chairValue').val(JSON.stringify(value[0].chair).replaceAll("\"",""));
+							$('#modemValue').val(JSON.stringify(value[0].modem).replaceAll("\"",""));
+							$('#fireExtinguisherValue').val(JSON.stringify(value[0].fireExtinguisher).replaceAll("\"",""));
+							$('#airConditionerValue').val(JSON.stringify(value[0].airConditioner).replaceAll("\"",""));
+							$('#radiatorValue').val(JSON.stringify(value[0].radiator).replaceAll("\"",""));
+							$('#descendingLifeLineValue').val(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
+							$('#powerSocketValue').val(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
 						}
 					} catch(TypeError){
 						console.log('공간 시설 특정 값 null');
@@ -90,21 +100,71 @@ $(document).ready(function(){
 		})
        });
 	
-	$('.modal').on('hidden.bs.modal',function(){
+	$(document).on('click','.closeBtn',function(){
 		console.log('modal 닫힘');
 		$('.valueSetting').html('0');
+		$('.valueSetting').val('0');
 		$('#comName').html('(없음)');
 	});
 	
 	// 추가
 	$(document).on('click','.submitSpaceBtn',function(){
 		console.log('submit버튼');
+		var deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput;
 		if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
 			document.getElementById('modalText01').innerHTML='필수 입력값을 입력해주세요.';
 			$('#dangerModal').modal('show');
 			return false;
 		} else{
-			console.log($('#branchInput').val()+","+$('#floorInput').val());
+			if($('#deskInput').val()==""){
+				deskInput=0;
+				console.log('deskInput: '+deskInput);
+			} else{
+				deskInput=$('#deskInput').val();
+			}
+			if($('#chairInput').val()==""){
+				chairInput=0;
+				console.log('chairInput: '+chairInput);
+			} else{
+				chairInput=$('#chairInput').val();
+			}
+			if($('#modemInput').val()==""){
+				modemInput=0;
+				console.log('modemInput: '+modemInput);
+			} else{
+				modemInput=$('#modemInput').val();
+			}
+			if($('#fireExtinguisherInput').val()==""){
+				fireExtinguisherInput=0;
+				console.log('fireExtinguisherInput: '+fireExtinguisherInput);
+			} else{
+				fireExtinguisherInput=$('#fireExtinguisherInput').val();
+			}
+			if($('#airConditionerInput').val()==""){
+				airConditionerInput=0;
+				console.log('airConditionerInput: '+airConditionerInput);
+			} else{
+				airConditionerInput=$('#airConditionerInput').val();
+			}
+			if($('#radiatorInput').val()==""){
+				radiatorInput=0;
+				console.log('radiatorInput: '+radiatorInput);
+			} else{
+				radiatorInput=$('#radiatorInput').val();
+			}
+			if($('#descendingLifeLineInput').val()==""){
+				descendingLifeLineInput=0;
+				console.log('descendingLifeLineInput: '+descendingLifeLineInput);
+			} else{
+				descendingLifeLineInput=$('#descendingLifeLineInput').val();
+			}
+			if($('#powerSocketInput').val()==""){
+				powerSocketInput=0;
+				console.log('powerSocketInput: '+powerSocketInput);
+			} else{
+				powerSocketInput=$('#powerSocketInput').val();
+			}
+			
 			$.ajax({
 				url: "/addSpace",
 				type: "POST",
@@ -115,7 +175,15 @@ $(document).ready(function(){
 					officeNameInput:$('#officeNameInput').val(),
 					acreagesInput:+$('#acreagesInput').val(),
 					rentInput:+$('#rentInput').val(),
-					maxInput:+$('#maxInput').val()
+					maxInput:+$('#maxInput').val(),
+					deskInput:deskInput,
+					chairInput:chairInput,
+					modemInput:modemInput,
+					fireExtinguisherInput:fireExtinguisherInput,
+					airConditionerInput:airConditionerInput,
+					radiatorInput:radiatorInput,
+					descendingLifeLineInput:descendingLifeLineInput,
+					powerSocketInput:powerSocketInput
 				},
 				success: function(data){
 					console.log('[ajax성공] data: '+JSON.stringify(data));
@@ -145,17 +213,16 @@ $(document).ready(function(){
 
 	// 수정
 	$(document).on('click','.editBtn', function(){
+		$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','#f8f8f5');
+		$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','darkgray');
 		if($('#comName').text()=='(없음)'){
-			company='(없음)';			
+			company='(없음)';
 		}
 		$('.editBtn').attr('class','btn btn-success okBtn');
 		$('.okBtn').html('확인');
-		/*  입주사 변경
-			입주사는 select로 회사명 다 불러오기+(없음) 추가
-			기존에 입력되어 있던 입주사 값을 받아서, 변경후 값과 다르면 occupancy값도 함께 변경
-		*/
-		$('#desk').html('');
-		console.log('음...?'+company);
+
+		$('.valueSetting').prop('readonly', false);
+		/*
 		if($('#comName').text()=='(없음)'){
 			console.log('company 없다: '+company);
 		}
@@ -167,7 +234,7 @@ $(document).ready(function(){
 				+'</select>');
 		$('.companySelected').val(company).prop("selected",true);
 		console.log('선택값: '+$('.companySelected option:selected').val())	// 수정값
-		
+		*/
 		$('#detail').on('hidden.bs.modal',function(){
 			console.log('상세페이지 닫힘');
 			$('.okBtn').attr('class','btn btn-primary editBtn');
@@ -175,15 +242,57 @@ $(document).ready(function(){
 		});
 		
 		$(document).on('click','.okBtn', function(){
+			/*
 			console.log('company: '+company);
 			if(company==$('.companySelected').val()){
-				console.log('company: '+company);
 				console.log('값 같음');
+				console.log('company: '+company);
 			}else{
 				console.log('값 다름');
+				company=$('.companySelected option:selected').val()
+				console.log('company: '+company);
 			}
-			$('.okBtn').attr('class','btn btn-primary editBtn');
-			$('.editBtn').html('수정');
+			*/
+			
+			$.ajax({
+				url: "/updateSpaceDetail",
+				type: "POST",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				data: {
+					officeName:$('#officeName').text(),
+					floorInput:$('#floor').text(),
+					acreagesInput:$('#acreagesValue').val(),
+					rentInput:$('#rentValue').val().replaceAll(",",""),
+					maxInput:$('#maxValue').val(),
+					deskInput:$('#deskValue').val(),
+					chairInput:$('#chairValue').val(),
+					modemInput:$('#modemValue').val(),
+					fireExtinguisherInput:$('#fireExtinguisherValue').val(),
+					airConditionerInput:$('#airConditionerValue').val(),
+					radiatorInput:$('#radiatorValue').val(),
+					descendingLifeLineInput:$('#descendingLifeLineValue').val(),
+					powerSocketInput:$('#powerSocketValue').val()
+				},
+				success: function(){
+					console.log('[ajax성공] 공간 상세 정보 업데이트됨');
+					document.getElementById('modalText02').innerHTML='수정이 완료되었습니다.';
+					$('#primaryModal').modal('show');
+					$('#primaryModal').on('hidden.bs.modal',function(){
+						location.reload();
+						$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','transparent');
+						$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','black');
+					});
+				},
+				error: function(request, status, error){
+					console.log("ajax 에러");
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+					$('#dangerModal').modal('show');
+				}
+			})
+			
+			//$('.okBtn').attr('class','btn btn-primary editBtn');
+			//$('.editBtn').html('수정');
 		});
 	});
 });
@@ -212,7 +321,7 @@ $(document).ready(function(){
 		<tbody>
 		<c:forEach items="${spaceInfo}" var="spaceInfo">
 			<c:if test="${spaceInfo.occupancy eq 0}">
-				<tr id="highlight" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}">
+				<tr id="highlight" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}" data-floorvalue="${spaceInfo.floor}">
 					<td><a href="#">${spaceInfo.branchName}</a></td>
 					<td><a href="#">${spaceInfo.floor}</a></td>
 					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
@@ -225,7 +334,7 @@ $(document).ready(function(){
 			</c:if>
 			
 			<c:if test="${spaceInfo.occupancy eq 1}">
-				<tr id="spaceInfo" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}">
+				<tr id="spaceInfo" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}" data-floorvalue="${spaceInfo.floor}">
 					<td><a href="#">${spaceInfo.branchName}</a></td>
 					<td><a href="#">${spaceInfo.floor}</a></td>
 					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
@@ -242,7 +351,7 @@ $(document).ready(function(){
 
 <%//상세 Modal %>
 <div class="modal fade" id="detail" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog modal-lg modal-dialog-scrollable">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="ModalTitle">공간 상세 정보</h5>
@@ -250,7 +359,7 @@ $(document).ready(function(){
 			
 			<div class="modal-body">
 				<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-					<ol class="carousel carousel-indicators">
+					<ol class="carousel carousel-indicators indicatorIcon">
 				        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
 				        <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
 				        <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
@@ -281,13 +390,13 @@ $(document).ready(function(){
 						</div>
 					</div>
 					
-					<table class="table spaceTable">
+					<table class="table spaceTable" >
 			      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
 						<tr>
 							<th>지점</th>
 							<td id="branchName" class="valueSetting">-</td>
 							<th>가격</th>
-							<td id="rent" class="valueSetting">-</td>
+							<td id="rent"><input type="number" name="rentValue" id="rentValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>층</th>
@@ -297,15 +406,15 @@ $(document).ready(function(){
 						</tr>
 						<tr>
 							<th>호수</th>
-							<td id="officeName" class="valueSetting">-</td>
+							<td id="officeName" class="valueSetting"></td>
 							<th>가용인원</th>
-							<td id="max" class="valueSetting">-</td>
+							<td id="max"><input type="number" name="maxValue" id="maxValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>평수</th>
-							<td id="acreages" class="valueSetting">-</td>
+							<td id="acreages"><input type="number" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>
 							<th>현재입주사</th>
-							<td id="comName" class="valueSetting">-</td>
+							<td id="comName" class="valueSetting"></td>
 						</tr>
 					</table>
 
@@ -313,27 +422,27 @@ $(document).ready(function(){
 						<tr colspan="4"><h3 class="spaceTitle">기본 제공</h3></tr>	       
 						<tr>
 							<th>책상</th>
-							<td id="desk" class="valueSetting"><input type="number" name="deskValue" id="deskValue"></td>
+							<td id="desk"><input type="number" name="deskValue" id="deskValue" class="valueSetting" readonly></td>
 							<th>의자</th>
-							<td id="chair" class="valueSetting"><input type="number" name="chairValue" id="chairValue"></td>
+							<td id="chair"><input type="number" name="chairValue" id="chairValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>공유기</th>
-							<td id="modem" class="valueSetting">-</td>
+							<td id="modem"><input type="number" name="modemValue" id="modemValue" class="valueSetting" readonly></td>
 							<th>소화기</th>
-							<td id="fireExtinguisher" class="valueSetting">-</td>
+							<td id="fireExtinguisher"><input type="number" name="fireExtinguisherValue" id="fireExtinguisherValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>냉반기</th>
-							<td id="airConditioner" class="valueSetting">-</td>
+							<td id="airConditioner"><input type="number" name="airConditionerValue" id="airConditionerValue" class="valueSetting" readonly></td>
 							<th>난방기</th>
-							<td id="radiator" class="valueSetting">-</td>
+							<td id="radiator"><input type="number" name="radiatorValue" id="radiatorValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>완강기</th>
-							<td id="descendingLifeLine" class="valueSetting">-</td>
+							<td id="descendingLifeLine"><input type="number" name="descendingLifeLineValue" id="descendingLifeLineValue" class="valueSetting" readonly></td>
 							<th>콘센트</th>
-							<td id="powerSocket" class="valueSetting">-</td>
+							<td id="powerSocket"><input type="number" name="powerSocketValue" id="powerSocketValue" class="valueSetting" readonly></td>
 						</tr>
 					</table>
 	
@@ -370,7 +479,7 @@ $(document).ready(function(){
 		<div class="modal-body">
 			<table class="table addSpaceTable">
 	      		<tr colspan="4"><h3 class="spaceTitle">INFORMATION</h3></tr>
-	      		<tr><font color="red">필수*</font></tr>
+	      		<tr colspan="4" id="requiredTr"><font id="requiredFont" color="red">필수*</font></tr>
 				<tr>
 					<th>지점 <font color="red">*</font></th>
 					<td id="branchName">

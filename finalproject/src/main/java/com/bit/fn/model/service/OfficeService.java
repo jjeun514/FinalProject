@@ -18,6 +18,10 @@ public class OfficeService {
 		return officeMapper.selectAll();
 	}
 	
+	public List<OfficeVo> selectAllFloors(){
+		return officeMapper.selectAllFloors();
+	}
+	
 	public List<OfficeVo> selectPriceInfo(){
 		return officeMapper.selectPriceInfo();
 	}
@@ -26,15 +30,19 @@ public class OfficeService {
 		return officeMapper.spaceInfo();
 	}
 	
-	public List<OfficeVo> officeDetail(String officeName){
-		return officeMapper.officeDetail(officeName);
+	public List<OfficeVo> officeDetail(String officeName, int floorInput){
+		return officeMapper.officeDetail(officeName, floorInput);
 	}
 	
-	public int selectOfficeNum(String officeName){
-		return officeMapper.selectOfficeNum(officeName);
+	public int selectOfficeNum(String officeName, int floorInput){
+		return officeMapper.selectOfficeNum(officeName, floorInput);
 	}
 	
-	public int addSpaceInfo(int branchCode, int floorInput, int acreagesInput, int rentInput, String officeName, int maxInput){
-		return officeMapper.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeName, maxInput);
+	public int addSpaceInfo(int branchCode, int floorInput, int acreagesInput, int rentInput, String officeName, int maxInput, int occupancy){
+		return officeMapper.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeName, maxInput, occupancy);
+	}
+	
+	public int updateOffice(int acreagesInput, int rentInput, int maxInput, int officeNum) {
+		return officeMapper.updateOffice(acreagesInput, rentInput, maxInput, officeNum);
 	}
 }

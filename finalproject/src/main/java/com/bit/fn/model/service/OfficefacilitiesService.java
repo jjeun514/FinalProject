@@ -18,7 +18,15 @@ public class OfficefacilitiesService {
 		return officeFacilitiesMapper.selectAll();
 	}
 	
-	public List<OfficeFacilitiesVo> officeFacilities(String officeName){
-		return officeFacilitiesMapper.officeFacilities(officeName);
+	public List<OfficeFacilitiesVo> officeFacilities(String officeName, int floorInput){
+		return officeFacilitiesMapper.officeFacilities(officeName, floorInput);
+	}
+	
+	public int addFacilities(int officeNum, int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput){
+		return officeFacilitiesMapper.addFacilities(officeNum, deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput);
+	}
+	
+	public int updateSpaceInfo(int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, int officeNum){
+		return officeFacilitiesMapper.updateSpaceInfo(deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput, officeNum);
 	}
 }
