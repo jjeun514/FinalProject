@@ -26,6 +26,18 @@ public class CompanyinfoService {
 		return companyInfoMapper.selectAllCompany();
 	}
 	
+	public List<CompanyInfoVo> comCodeCheck(int comCode) {
+		return companyInfoMapper.comCodeCheck(comCode);
+	}
+	
+	public List<CompanyInfoVo> comPhoneCheck(String comPhone) {
+		return companyInfoMapper.comPhoneCheck(comPhone);
+	}
+	
+	public List<CompanyInfoVo> comNameCheck(String comName) {
+		return companyInfoMapper.comNameCheck(comName);
+	}
+	
 	public int updateCompanyInfo(String ceoValue, String managerValue, String comPhoneValue, int comCode, String comName) {
 		return companyInfoMapper.updateCompanyInfo(ceoValue, managerValue, comPhoneValue, comCode, comName);
 	}

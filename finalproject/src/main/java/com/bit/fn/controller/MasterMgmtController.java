@@ -122,19 +122,33 @@ public class MasterMgmtController {
 		System.out.println("[MasterMgmtController(addMasterAccountPost())] occupancyCheck: "+occupancyCheck);
 		System.out.println("★★★★★"+occupancyCheck.get(0).getOffice().getOccupancy());
 		System.out.println("★★★★★"+occupancyCheck.get(0).getOffice().getComName());
-		if(occupancyCheck.get(0).getOffice().getOccupancy()==0 && occupancyCheck.get(0).getOffice().getComName()==null) {
-			// companyInfo 추가
-			officeNum=officeService.selectOfficeNum(officeSelected, floorSelected);
-			System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
-			companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
-			// 마스터 계정 추가
-			id=username;
-			masterAccountService.insertOne(id, comCode);
-			s_accountService.masterSave(account);
-			return "가능";
+		
+		// 회사코드 & 회사명 중복 체크
+		if(companyInfoService.comCodeCheck(comCode).isEmpty()) {
+			if(companyInfoService.comNameCheck(comName).isEmpty()) {
+				if(companyInfoService.comPhoneCheck(comPhone).isEmpty()) {
+					if(occupancyCheck.get(0).getOffice().getOccupancy()==0 && occupancyCheck.get(0).getOffice().getComName()==null) {
+						// companyInfo 추가
+						officeNum=officeService.selectOfficeNum(officeSelected, floorSelected);
+						System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
+						companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
+						// 마스터 계정 추가
+						id=username;
+						masterAccountService.insertOne(id, comCode);
+						s_accountService.masterSave(account);
+						return "가능";
+					} else {
+						System.out.println("[MasterMgmtController(addMasterAccountPost())] 입주중복");
+						return "중복";
+					}
+				} else {
+					return "회사전화중복";
+				}
+			} else {
+				return "회사명중복";
+			}
 		} else {
-			System.out.println("[MasterMgmtController(addMasterAccountPost())] 입주중복");
-			return "중복";
+			return "회사코드중복";
 		}
 	}
 
