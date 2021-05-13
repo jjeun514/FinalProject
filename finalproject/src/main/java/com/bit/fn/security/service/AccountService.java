@@ -73,7 +73,7 @@ public class AccountService {
 		account.setPassword(encodedPassword);
 		
 		//enabled 사용가능 컬럼 1 반영i
-		account.setEnabled(true);
+		account.setEnabled(false);
 		
 		//권한 구분 1(어드민) 설정
 		Role role = new Role();

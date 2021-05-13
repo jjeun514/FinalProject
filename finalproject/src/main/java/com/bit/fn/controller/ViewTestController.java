@@ -17,11 +17,13 @@ import com.bit.fn.model.service.AdminAccountService;
 import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.MemberService;
 import com.bit.fn.model.service.MemberinfoService;
+import com.bit.fn.model.service.ReservationService;
 import com.bit.fn.model.service.join.BranchAndAdminService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
 import com.bit.fn.model.service.join.MemberInfoAndCompanyInfoService;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
+import com.bit.fn.model.vo.ReservationVo;
 
 @Controller
 public class ViewTestController {
@@ -45,6 +47,9 @@ public class ViewTestController {
 	
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	private ReservationService reservationService;
 	
 	@RequestMapping("/index")
 	public String main() {
@@ -115,6 +120,16 @@ public class ViewTestController {
 			
 			// 모델 객체에 리스트 담아서 뷰로 전달
 			model.addAttribute("boardList", myBoardList);
+			
+			//예약 내역 리스트 전달
+			int memNum = memberInfoAndCompanyInfoService.memberOne(id).getMemberInfo().getMemNum();
+			List<ReservationVo> mrevList=reservationService.selectOne(memNum);
+			for(ReservationVo list : mrevList){
+			    list.setUseStartTime(list.getUseStartTime().substring(11,16));
+			    list.setUseFinishTime(list.getUseFinishTime().substring(11,16));
+			}
+
+			model.addAttribute("myReservation",mrevList);
 		}else {
 			return "redirect:/index";
 		}

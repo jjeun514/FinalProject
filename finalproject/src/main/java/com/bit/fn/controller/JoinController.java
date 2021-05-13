@@ -16,11 +16,10 @@ public class JoinController {
 	
 	//삭제예정
 	@RequestMapping("/join")
-	public ModelAndView index() {
-		ModelAndView mav=new ModelAndView();
+	public String join() {
 		//mav.addObject("list",branchAndAdminService.selectAll());
 		//mav.addObject("aa",branchAndAdminService.selectaa());
-		return mav;
+		return "test/join";
 	}
 	
 }

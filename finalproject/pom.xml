@@ -175,6 +175,11 @@
         <version>0.2.14</version>
       </dependency>
 		
+		<!--Apache HttpComponents  -->
+		<dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpclient</artifactId>
+		</dependency>
 		
 	</dependencies>
 

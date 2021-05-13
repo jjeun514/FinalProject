@@ -916,4 +916,135 @@
 	 	#accountDetail input:focus {
 	 		outline: none;
 	 	}
+	    
+	 /*마이페이지*/
+	    #mypageMargin{
+			margin-top: 10px;
+			margin-left: 30px;
+		}
+		#mypageLabel{
+			width:100px;
+		}
+		#mypageLabel2{
+			width:150px;
+		}
+		.mypageAccountInfo,.mypageComInfo,.mypagePw,.mypageReservationTitle{
+			font-weight:bold;
+			text-align: center;
+		}
+		.mypageComInfo{
+			margin-top: 6px;
+		}
+		.mypageWithdrawInfoTitle,.mypageReservationTitle{
+			font-weight:bold;
+			margin-top: 20px;
+		}
+		.mypagePw{
+			margin-top: 30px;
+			margin-bottom: 15px;
+		}
+		.updateInfoBtn{
+			width:500px;
+		}	    
+		.updatePwBtn{
+			width:530px;
+			/*width:410px;*/
+		}
+		.mypageWithdrawInfo{
+			color: gray;
+			margin-bottom: 30px;
+		}
+		.mypageWithdrawGuidance{
+			margin-bottom: 30px;
+		}
+		.mypageWithdrawBottom{
+			margin-bottom: 6px;
+		}
+		.withdrawBtn{
+			width: 150px;
+		}
+		.myPageRed{
+			color: red;
+		}
+		.myBbs{
+			margin-top: 0px;
+			overflow: scroll;
+		}
+		.mypageReservationTitle{
+			margin-bottom: 15px;
+		}
+		
+		#bbsTable{
+			font-size:12px;
+		}
+			.incorrectPw :{
+		color:"red";
+		}
+		.correctPw:{
+			color:"green";
+		}
+		.pageNum{
+			cursor: pointer;
+		}
+		.mypagePaging{
+			margin-left: 350px;
+		}
+		.mypagePaging2{
+			margin-left: 180px;
+		}
+		
+		.paginated1{
+			margin-top : 25px;
+			width: 900px;
+			table-layout: fixed;
+		}
+		.paginated1 td {
+			white-space : nowrap;
+			text-overflow: ellipsis;
+		}
+		.mypageTablePhone{
+			width : 140px;
+		}
+		.mypageTableId{
+			width: 250px;
+		}
+		.mypageTableAdmission{
+			width: 90px;
+		}
+		.mypageTableAdmissionContent{
+			text-align: center;
+		}
+		.myPagBbsTable{
+			margin-left: 50px;
+			width : 550px;
+			table-layout: fixed;
+		}
+		.myPagBbsTable th{
+			text-align: center;
+			font-size: 15px;
+		}
+		.myPagBbsTableNum{
+			width: 60px;
+		}
+		.myPageBbsTableTitle{
+			overflow :hidden;
+			white-space : nowrap;
+			text-overflow: ellipsis;
+		}
+		.myPagBbsTableDate{
+			width: 100px;
+		}
+		.mypageBbsPaginate{
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.myPageBbsTableNumTd,.myPageBbsTableDateTd{
+			text-align: center;
+		}
+		.myBbsRow{
+			height: 630px;
+		}
+		.paginated2 tr, .paginated2 td{
+			text-align: center;
+		}
 </style>
