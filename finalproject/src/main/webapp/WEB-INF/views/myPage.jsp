@@ -1018,10 +1018,9 @@ page('paginated1');
       <sec:authorize access="hasRole('MEMBER')">
       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
       	<div id="mypageMargin">
-      		<h4 class="mypageBbsTitle">내가 작성한글</h4>
         	<div class="content bbs myBbs"><!--content start-->
 				<div class="container">
-					<div class="row">
+					<div class="row myBbsRow">
 						    <div class="bottom">
 						        <div class="bottom-left">
 						            <select id="k" name="cntSelectBox"

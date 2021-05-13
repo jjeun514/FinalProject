@@ -907,14 +907,14 @@
 		#mypageLabel2{
 			width:150px;
 		}
-		.mypageAccountInfo,.mypageComInfo,.mypagePw,.mypageBbsTitle,.mypageReservationTitle{
+		.mypageAccountInfo,.mypageComInfo,.mypagePw,.mypageReservationTitle{
 			font-weight:bold;
 			text-align: center;
 		}
 		.mypageComInfo{
 			margin-top: 6px;
 		}
-		.mypageWithdrawInfoTitle,.mypageBbsTitle,.mypageReservationTitle{
+		.mypageWithdrawInfoTitle,.mypageReservationTitle{
 			font-weight:bold;
 			margin-top: 20px;
 		}
@@ -949,7 +949,7 @@
 			margin-top: 0px;
 			overflow: scroll;
 		}
-		.mypageBbsTitle,.mypageReservationTitle{
+		.mypageReservationTitle{
 			margin-bottom: 15px;
 		}
 		
@@ -1015,6 +1015,9 @@
 		}
 		.myPageBbsTableNumTd,.myPageBbsTableDateTd{
 			text-align: center;
+		}
+		.myBbsRow{
+			height: 630px;
 		}
 		
 	    
