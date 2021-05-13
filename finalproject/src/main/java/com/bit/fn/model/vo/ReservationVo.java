@@ -1,14 +1,14 @@
 package com.bit.fn.model.vo;
 
 public class ReservationVo {
-	private int roomNum,memNum,userCount, amount, totalReservation, rent;
+	private int roomNum,memNum,userCount, amount, totalReservation, rent, count;
 	private String etc, memName, comName, useStartTime, useFinishTime, reservationDay, merchant_uid;
 	
 	public ReservationVo() {}
 
-	public ReservationVo(int roomNum, int memNum, int userCount, int amount, int totalReservation, int rent, String etc,
-			String memName, String comName, String useStartTime, String useFinishTime, String reservationDay,
-			String merchant_uid) {
+	public ReservationVo(int roomNum, int memNum, int userCount, int amount, int totalReservation, int rent, int count,
+			String etc, String memName, String comName, String useStartTime, String useFinishTime,
+			String reservationDay, String merchant_uid) {
 		super();
 		this.roomNum = roomNum;
 		this.memNum = memNum;
@@ -16,6 +16,7 @@ public class ReservationVo {
 		this.amount = amount;
 		this.totalReservation = totalReservation;
 		this.rent = rent;
+		this.count = count;
 		this.etc = etc;
 		this.memName = memName;
 		this.comName = comName;
@@ -71,6 +72,14 @@ public class ReservationVo {
 
 	public void setRent(int rent) {
 		this.rent = rent;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	public String getEtc() {
@@ -135,6 +144,7 @@ public class ReservationVo {
 		int result = 1;
 		result = prime * result + amount;
 		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
+		result = prime * result + count;
 		result = prime * result + ((etc == null) ? 0 : etc.hashCode());
 		result = prime * result + ((memName == null) ? 0 : memName.hashCode());
 		result = prime * result + memNum;
@@ -164,6 +174,8 @@ public class ReservationVo {
 			if (other.comName != null)
 				return false;
 		} else if (!comName.equals(other.comName))
+			return false;
+		if (count != other.count)
 			return false;
 		if (etc == null) {
 			if (other.etc != null)
@@ -211,9 +223,10 @@ public class ReservationVo {
 	@Override
 	public String toString() {
 		return "ReservationVo [roomNum=" + roomNum + ", memNum=" + memNum + ", userCount=" + userCount + ", amount="
-				+ amount + ", totalReservation=" + totalReservation + ", rent=" + rent + ", etc=" + etc + ", memName="
-				+ memName + ", comName=" + comName + ", useStartTime=" + useStartTime + ", useFinishTime="
-				+ useFinishTime + ", reservationDay=" + reservationDay + ", merchant_uid=" + merchant_uid + "]";
+				+ amount + ", totalReservation=" + totalReservation + ", rent=" + rent + ", count=" + count + ", etc="
+				+ etc + ", memName=" + memName + ", comName=" + comName + ", useStartTime=" + useStartTime
+				+ ", useFinishTime=" + useFinishTime + ", reservationDay=" + reservationDay + ", merchant_uid="
+				+ merchant_uid + "]";
 	}
 
 }

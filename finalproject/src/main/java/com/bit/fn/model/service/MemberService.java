@@ -57,7 +57,7 @@ public class MemberService {
 		return memberMapper.meetingRoomList();
 	}
 	
-	public int checkReservaion(int roomNum, String useStartTime, String reservationDay) {
+	public ReservationVo checkReservaion(int roomNum, String useStartTime, String reservationDay) {
 		return memberMapper.checkReservaion(roomNum, useStartTime, reservationDay);
 	}
 	
