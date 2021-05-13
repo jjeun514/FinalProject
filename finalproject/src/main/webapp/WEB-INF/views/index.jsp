@@ -50,7 +50,7 @@
 	    <div class="row cardSection">
 			<div class="col">
 				<div class="card" >
-					<a href="#"><img src="imgs/home-service-PC.png" class="card-img-top"></a>
+					<a href="#" onclick="return false;"><img src="imgs/home-service-PC.png" class="card-img-top"></a>
 					<div class="card-body">
 						<h3 class="card-title">서비스</h3>
 						<p class="card-text">회사 규모, 필요 기간에 맞춰 쉽고 빠르게 사무공간을 마련할 수 있습니다.</p>
@@ -59,7 +59,7 @@
 			</div>
 			<div class="col">
 				<div class="card" >
-					<a href="#"><img src="imgs/home-place-PC.png" class="card-img-top" alt="..."></a>
+					<a href="#" onclick="return false;"><img src="imgs/home-place-PC.png" class="card-img-top" alt="..."></a>
 					<div class="card-body">
 						<h3 class="card-title">지점 소개</h3>
 						<p class="card-text">초역세권에 위치한 16개의 지점 중우리 회사가 원하는 지점을 찾아보세요.</p>
@@ -68,7 +68,7 @@
 			</div>
 			<div class="col">
 				<div class="card" >
-					<a href="#"><img src="imgs/home-member-PC.png" class="card-img-top" alt="..."></a>
+					<a href="#" onclick="return false;"><img src="imgs/home-member-PC.png" class="card-img-top" alt="..."></a>
 					<div class="card-body">
 						<h3 class="card-title">멤버 혜택</h3>
 						<p class="card-text">입주 멤버를 위해 휴게공간부터 이벤트까지다양한 혜택을 제공합니다.</p>
