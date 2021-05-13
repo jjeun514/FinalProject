@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bit.fn.model.mapper.MemberMapper">
+
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
 		order by date desc, num
 		limit 7
@@ -12,9 +13,9 @@
    	
    	<select id="memberBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
-		order by date desc, num
+		order by date desc, num desc
 		limit #{firstRecordIndex}, 7
    	</select>
    	
@@ -22,9 +23,14 @@
    		select count(*) from board
    	</select>
    	
+   	<select id="countMyBoardList" resultType="int">
+   		select count(*) from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
+   		where mem.id = #{id}
+   	</select>
+   	
    	<select id="selectOneContent" resultType="com.bit.fn.model.vo.BoardVo">
    		select bbs.num, bbs.title, bbs.date, bbs.content, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
 		where bbs.num = #{selectNum}
    	</select>
@@ -37,7 +43,7 @@
 		select noti.num, noti.title, noti.content, noti.count, noti.date, adm.nickName
 		from notice noti left outer join adminAccount adm
 		on noti.adminNum=adm.adminNum
-		order by noti.num desc
+		order by noti.date desc
 		limit #{firstRecordIndex}, 10
    	</select>
    	
@@ -74,20 +80,17 @@
    		where room.branchCode = ${branchCode} and reservationDay = '${reservationDay}'
    	</select>
    	
-   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
    	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
-   		select roomNum, reservationDay, useStartTime, useFinishTime from reservation
-   		where memNum = 1 and
+   		select roomNum, memNum, reservationDay, useStartTime, useFinishTime from reservation
+   		where memNum = #{memNum} and
    		reservationDay >= date_format(sysdate(), '%Y-%m-%d')
    	</select>
    	
-   	<!-- 여기서 멤버 코드 컨트롤러에서 전달받아야 함 -->
    	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservationHistory(
-   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, etc
-   		)
-   		values(
-   			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
+   			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, applyDate
+   		) values(
+   			#{roomNum}, #{memNum}, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
    			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, sysdate()
    		)
    	</insert>
@@ -99,9 +102,8 @@
    	<insert id="fixReservation" parameterType="com.bit.fn.model.vo.ReservationVo">
    		insert into reservation(
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, fee, merchant_uid, etc
-   		)
-   		values(
-   			#{roomNum}, 1, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
+   		) values(
+   			#{roomNum}, #{memNum}, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
    			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, #{amount}, #{merchant_uid},'payment test'
    		)
    	</insert>
@@ -126,5 +128,16 @@
    	<select id="approved" resultType="com.bit.fn.model.vo.MemberInfoVo">
    		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
    		right outer join companyInfo b on a.comCode=b.comCode where admission=1 order by signdate
+   	</select>
+   	
+   	<!-- 마이페이지(내가 작성한글) -->
+   	<select id="memberOneBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
+		select myList.* from(
+			select bbs.num, bbs.title, bbs.date from board bbs
+			left outer join memberInfo mem on bbs.memNum=mem.memNum
+			where mem.id = #{id}
+			order by date desc, num desc
+		) as myList
+		limit #{pagination.firstRecordIndex}, 10
    	</select>
 </mapper>

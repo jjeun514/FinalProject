@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.fn.model.mapper.join.BranchAndOfficeAndCompanyInfoMapper">
+    <resultMap type="com.bit.fn.model.vo.BranchVo" id="BranchMap">
+    	<id property="branchCode" column="branchCode"/>
+    	<result property="branchName" column="branchName"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.OfficeVo" id="OfficeMap">
+    	<id property="officeNum" column="officeNum"/>
+    	<result property="officeName" column="officeName"/>
+    	<result property="floor" column="floor"/>
+    	<result property="acreages" column="acreages"/>
+    	<result property="rent" column="rent"/>
+    	<result property="occupancy" column="occupancy"/>
+    	<result property="max" column="max"/>
+    	<result property="photo" column="photo"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.CompanyInfoVo" id="CompanyInfoMap">
+    	<id property="comCode" column="comCode"/>
+    	<result property="officeNum" column="officeNum"/>
+    	<result property="comName" column="comName"/>
+    	<result property="ceo" column="ceo"/>
+    	<result property="manager" column="manager"/>
+    	<result property="comPhone" column="comPhone"/>
+    	<result property="contractDate" column="contractDate"/>
+    	<result property="rentStartDate" column="rentStartDate"/>
+    	<result property="rentFinishDate" column="rentFinishDate"/>
+    	<result property="point" column="point"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.join.BranchAndOfficeAndCompanyInfoVo" id="BranchAndOfficeAndCompanyInfoMap">
+    	<collection property="office" resultMap="OfficeMap"/>
+    	<collection property="branch" resultMap="BranchMap"/>
+    	<collection property="companyInfo" resultMap="CompanyInfoMap"/>
+    </resultMap>
+    
+    <!-- 마스터 계정은 입주일 일주일 전에 생성해주기(사실상 입주 전에 접근 권한을 줄 필요 없음) -->
+    <!-- 마스터 계정 추가 시, 선택값에 공실만 뽑아내기 -->
+    <select id="AvailableOffice" resultMap="BranchAndOfficeAndCompanyInfoMap">
+    	select branchName, floor, officeName, occupancy, comName, contractDate, rentStartDate, rentFinishDate from office a
+		left outer join branch b
+		on a.branchCode=b.branchCode
+		left outer join companyInfo c
+		on a.officeNum=c.officeNum
+		where branchName=#{branchSelected} and floor=#{floorSelected}
+   	</select>
+    
+    <!-- 마스터 계정 추가에서 입주 공간 연결할 때 중복 체크 -->
+    <select id="officeCheck" resultMap="BranchAndOfficeAndCompanyInfoMap">
+    	select branchName, floor, officeName, occupancy, comName, contractDate, rentStartDate, rentFinishDate from office a
+		left outer join branch b
+		on a.branchCode=b.branchCode
+		left outer join companyInfo c
+		on a.officeNum=c.officeNum
+		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected}
+   	</select>
+</mapper>

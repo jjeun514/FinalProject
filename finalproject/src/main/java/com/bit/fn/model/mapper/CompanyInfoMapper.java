@@ -13,7 +13,6 @@ import com.bit.fn.model.vo.CompanyInfoVo;
 public interface CompanyInfoMapper {
 	public List<CompanyInfoVo> selectAll();
 
-	public int addNewCompany(int comCode, int officeNum, String comName, String ceo, String manager, String comPhone, String contractDateInput, String moveInDateInput, String moveOutDateInput);
-
+	public int addNewCompany(int comCode, int officeNum, String comName, String ceo, String manager, String comPhone, String contractDateInput, String moveInDateInput, String moveOutDateInput, int occupancy);
 	public List<CompanyInfoVo> selectAllCompany();
 }

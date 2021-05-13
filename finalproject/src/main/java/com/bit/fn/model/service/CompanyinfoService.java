@@ -18,8 +18,8 @@ public class CompanyinfoService {
 		return companyInfoMapper.selectAll();
 	}
 	
-	public int addNewCompany(int comCode, int officeNum, String comName, String ceo, String manager, String comPhone, String contractDateInput, String moveInDateInput, String moveOutDateInput) {
-		return companyInfoMapper.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, moveInDateInput, moveOutDateInput);
+	public int addNewCompany(int comCode, int officeNum, String comName, String ceo, String manager, String comPhone, String contractDateInput, String moveInDateInput, String moveOutDateInput, int occupancy) {
+		return companyInfoMapper.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, moveInDateInput, moveOutDateInput, occupancy);
 	}
 	
 	public List<CompanyInfoVo> selectAllCompany(){

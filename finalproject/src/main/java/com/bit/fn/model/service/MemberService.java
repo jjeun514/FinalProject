@@ -33,6 +33,10 @@ public class MemberService {
 		return memberMapper.countBoardList();
 	}
 	
+	public int countMyBoardList(String id) {
+		return memberMapper.countMyBoardList(id);
+	}
+	
 	public List<NoticeVo> noticeList(PaginationVo pagination){
 		return memberMapper.noticeList(pagination);
 	}
@@ -69,8 +73,8 @@ public class MemberService {
 		return memberMapper.meetingRoomRent(roomNum);
 	}
 	
-	public List<ReservationVo> myReservationList() {
-		return memberMapper.myReservationList();
+	public List<ReservationVo> myReservationList(int memNum) {
+		return memberMapper.myReservationList(memNum);
 	}
 	
 	public int fixReservation(ReservationVo reservation) {
@@ -79,5 +83,9 @@ public class MemberService {
 	
 	public int cancleReservation(int roomNum, String useStartTime, String reservationDay) {
 		return memberMapper.cancleReservation(roomNum, useStartTime, reservationDay);
+	}
+	
+	public List<PaginationVo> memberOneBoardPaginationList(String id, PaginationVo pagination){
+		return memberMapper.memberOneBoardPaginationList(id, pagination);
 	}
 }

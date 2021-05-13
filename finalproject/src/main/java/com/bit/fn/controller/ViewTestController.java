@@ -1,7 +1,10 @@
 package com.bit.fn.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bit.fn.model.service.AdminAccountService;
 import com.bit.fn.model.service.MasterAccountService;
+import com.bit.fn.model.service.MemberService;
 import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.service.join.BranchAndAdminService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
 import com.bit.fn.model.service.join.MemberInfoAndCompanyInfoService;
+import com.bit.fn.model.vo.NoticeVo;
+import com.bit.fn.model.vo.PaginationVo;
 
 @Controller
 public class ViewTestController {
@@ -37,6 +43,9 @@ public class ViewTestController {
 	@Autowired
 	AdminAccountService adminAccountService;
 	
+	@Autowired
+	private MemberService service;
+	
 	@RequestMapping("/index")
 	public String main() {
 		return "index";
@@ -54,7 +63,12 @@ public class ViewTestController {
 	
 	//마이페이지
 	@RequestMapping("/mypage")
-	public String myPage(Principal  principal,Model model) {
+	public String myPage(Principal  principal,Model model,
+						 HttpServletRequest request,
+						 @RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			             @RequestParam(value = "countPerPage", required = false, defaultValue = "7") int countPerPage,
+			             @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize) {
+		
 		//아이디
 		String id = principal.getName();
 		
@@ -89,6 +103,18 @@ public class ViewTestController {
 			System.out.println(memberInfoAndCompanyInfoService.memberOne(id).getMemberInfo().getMemName());
 			model.addAttribute("member",memberInfoAndCompanyInfoService.memberOne(id));
 			
+			int listCount = service.countMyBoardList(id);
+	        PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
+	        pagination.setTotalRecordCount(listCount);
+	        pagination.calculation();
+			// 게시판에 보여줄 게시글 불러오기
+	        List<PaginationVo> myBoardList = service.memberOneBoardPaginationList(id, pagination);
+	        
+			// 페이징 값 보내기
+			model.addAttribute("pagination", pagination);
+			
+			// 모델 객체에 리스트 담아서 뷰로 전달
+			model.addAttribute("boardList", myBoardList);
 		}else {
 			return "redirect:/index";
 		}
