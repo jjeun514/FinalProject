@@ -55,7 +55,7 @@ $(document).ready(function(){
 			error: function(request, status, error){
 				console.log("ajax 에러");
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
 		})
@@ -94,7 +94,7 @@ $(document).ready(function(){
 			error: function(request, status, error){
 				console.log("ajax 에러");
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
 		})
@@ -112,7 +112,7 @@ $(document).ready(function(){
 		console.log('submit버튼');
 		var deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput;
 		if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
-			document.getElementById('modalText01').innerHTML='필수 입력값을 입력해주세요.';
+			document.getElementById('modalText01').textContent='필수 입력값을 입력해주세요.';
 			$('#dangerModal').modal('show');
 			return false;
 		} else{
@@ -189,12 +189,12 @@ $(document).ready(function(){
 					console.log('[ajax성공] data: '+JSON.stringify(data));
 					if(data=='중복'){
 						console.log('branch & office 중복');
-						document.getElementById('modalText01').innerHTML='입력하신 '+$('#branchInput').val()+'지점 '+$('#floorInput').val()+'층에 '+$('#officeNameInput').val()+' 사무실이 이미 등록되어 있습니다.';
+						document.getElementById('modalText01').textContent='입력하신 '+$('#branchInput').val()+'지점 '+$('#floorInput').val()+'층에 '+$('#officeNameInput').val()+' 사무실이 이미 등록되어 있습니다.';
 						$('#dangerModal').modal('show');
 						return false;
 					} else if(data=='가능') {
 						console.log('branch & office 가능');
-						document.getElementById('modalText02').innerHTML='입력하신 공간이 추가되었습니다.';
+						document.getElementById('modalText02').textContent='입력하신 공간이 추가되었습니다.';
 						$('#primaryModal').modal('show');
 						$('#primaryModal').on('hidden.bs.modal',function(){
 							location.reload();
@@ -204,7 +204,7 @@ $(document).ready(function(){
 				error: function(request, status, error){
 					console.log("ajax 에러");
 					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
 			})
@@ -222,19 +222,6 @@ $(document).ready(function(){
 		$('.okBtn').html('확인');
 
 		$('.valueSetting').prop('readonly', false);
-		/*
-		if($('#comName').text()=='(없음)'){
-			console.log('company 없다: '+company);
-		}
-		$('#comName').html('<select class="form-control companySelected" name="companySelected">'
-				+'<option>(없음)</option>'
-				+'<c:forEach items="${companyList }" var="list">'
-				+'<option value="${list.comName }" >${list.comName }</option>'
-				+'</c:forEach>'
-				+'</select>');
-		$('.companySelected').val(company).prop("selected",true);
-		console.log('선택값: '+$('.companySelected option:selected').val())	// 수정값
-		*/
 		$('#detail').on('hidden.bs.modal',function(){
 			console.log('상세페이지 닫힘');
 			$('.okBtn').attr('class','btn btn-primary editBtn');
@@ -242,18 +229,6 @@ $(document).ready(function(){
 		});
 		
 		$(document).on('click','.okBtn', function(){
-			/*
-			console.log('company: '+company);
-			if(company==$('.companySelected').val()){
-				console.log('값 같음');
-				console.log('company: '+company);
-			}else{
-				console.log('값 다름');
-				company=$('.companySelected option:selected').val()
-				console.log('company: '+company);
-			}
-			*/
-			
 			$.ajax({
 				url: "/updateSpaceDetail",
 				type: "POST",
@@ -275,7 +250,7 @@ $(document).ready(function(){
 				},
 				success: function(){
 					console.log('[ajax성공] 공간 상세 정보 업데이트됨');
-					document.getElementById('modalText02').innerHTML='수정이 완료되었습니다.';
+					document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
 					$('#primaryModal').modal('show');
 					$('#primaryModal').on('hidden.bs.modal',function(){
 						location.reload();
@@ -286,13 +261,10 @@ $(document).ready(function(){
 				error: function(request, status, error){
 					console.log("ajax 에러");
 					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
 			})
-			
-			//$('.okBtn').attr('class','btn btn-primary editBtn');
-			//$('.editBtn').html('수정');
 		});
 	});
 });
@@ -322,27 +294,27 @@ $(document).ready(function(){
 		<c:forEach items="${spaceInfo}" var="spaceInfo">
 			<c:if test="${spaceInfo.occupancy eq 0}">
 				<tr id="highlight" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}" data-floorvalue="${spaceInfo.floor}">
-					<td><a href="#">${spaceInfo.branchName}</a></td>
-					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
-					<td><a href="#">${spaceInfo.acreages}</a></td>
-					<td><a href="#">${spaceInfo.rent}</a></td>
-					<td id="empty"><a href="#">공실</a></td>
-					<td><a href="#">${spaceInfo.comName}</a></td>
-					<td><a href="#">${spaceInfo.max}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.branchName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.floor}</a></td>
+					<td class="officeName"><a href="#" onclick="return false;">${spaceInfo.officeName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.acreages}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.rent}</a></td>
+					<td id="empty"><a href="#" onclick="return false;">공실</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.comName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.max}</a></td>
 				</tr>
 			</c:if>
 			
 			<c:if test="${spaceInfo.occupancy eq 1}">
 				<tr id="spaceInfo" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}" data-floorvalue="${spaceInfo.floor}">
-					<td><a href="#">${spaceInfo.branchName}</a></td>
-					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
-					<td><a href="#">${spaceInfo.acreages}</a></td>
-					<td><a href="#">${spaceInfo.rent}</a></td>
-					<td id="occupied"><a href="#">임대</a></td>
-					<td><a href="#">${spaceInfo.comName}</a></td>
-					<td><a href="#">${spaceInfo.max}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.branchName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.floor}</a></td>
+					<td class="officeName"><a href="#" onclick="return false;">${spaceInfo.officeName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.acreages}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.rent}</a></td>
+					<td id="occupied"><a href="#" onclick="return false;">임대</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.comName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.max}</a></td>
 				</tr>
 			</c:if>
 		</c:forEach>

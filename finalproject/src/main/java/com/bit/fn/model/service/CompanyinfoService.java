@@ -25,4 +25,12 @@ public class CompanyinfoService {
 	public List<CompanyInfoVo> selectAllCompany(){
 		return companyInfoMapper.selectAllCompany();
 	}
+	
+	public int updateCompanyInfo(String ceoValue, String managerValue, String comPhoneValue, int comCode, String comName) {
+		return companyInfoMapper.updateCompanyInfo(ceoValue, managerValue, comPhoneValue, comCode, comName);
+	}
+	
+	public List<CompanyInfoVo> selectComPhone(String comPhone, int comCode) {
+		return companyInfoMapper.selectComPhone(comPhone, comCode);
+	}
 }

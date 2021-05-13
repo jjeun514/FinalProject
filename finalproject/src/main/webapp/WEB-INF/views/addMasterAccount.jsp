@@ -4,6 +4,12 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 
 <script type="text/javascript">
+$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
+$('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
+$('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
+$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
+$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
+
 var pattern_num = /[0-9]/;	// 숫자 
 var pattern_eng = /[a-zA-Z]/;	// 문자 
 var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
@@ -348,7 +354,6 @@ $(function(){
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 						<h3 class="register-heading">마스터 계정 추가</h3>
-						<!-- <form action="addMasterAccount" method="post" class="joinForm"> -->
 							<div class="row register-form">
 								<div class="col-md-3">
 									<div class="form-group">
@@ -451,11 +456,10 @@ $(function(){
 								</div>
 									
 								<div class="col-md-12">
-									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 									<input type="submit" class="btnRegister addMasterBtn" value="확인"/>
+									<input type="button" class="btnRegister goBackBtn" onclick="location.href='masterMgmt'" value="취소"/>
 								</div>
 							</div>
-						<!-- </form> -->
 					</div>
 				</div>
 			</div>
