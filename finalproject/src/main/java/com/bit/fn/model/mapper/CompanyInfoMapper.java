@@ -17,4 +17,7 @@ public interface CompanyInfoMapper {
 	public List<CompanyInfoVo> selectAllCompany();
 	public int updateCompanyInfo(String ceoValue, String managerValue, String comPhoneValue, int comCode, String comName);
 	public List<CompanyInfoVo> selectComPhone(String comPhone, int comCode);
+	public List<CompanyInfoVo> comCodeCheck(int comCode);
+	public List<CompanyInfoVo> comNameCheck(String comName);
+	public List<CompanyInfoVo> comPhoneCheck(String comPhone);
 }

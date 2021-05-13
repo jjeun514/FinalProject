@@ -841,7 +841,7 @@
 			width: 100px;
 		}
 		.goBackBtn {
-			margin-right: 30px;
+			margin-left: 30px;
 		}
 		
 	/* 공간 상세 정보 */
