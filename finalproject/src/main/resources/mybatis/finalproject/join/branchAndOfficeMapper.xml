@@ -23,10 +23,42 @@
     	<collection property="branch" resultMap="BranchMap"/>
     </resultMap>
     
+    <!-- 공간 추가 중복 체크(지점/층/공간이름) -->
     <select id="duplicationCheck" resultMap="BranchAndOfficeMap">
     	select branchName, floor, officeName from office a
     	left outer join branch b
 		on a.branchCode=b.branchCode
 		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput}
+   	</select>
+   	
+ 	<select id="selectOfficeNum" resultType="int">
+    	select officeNum from office a
+    	left outer join branch b
+		on a.branchCode=b.branchCode
+		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput}
+   	</select>
+    
+    <!-- 마스터계정 추가 시, 입주 공간 중복 체크 -->
+    <select id="OccupancyCheck" resultMap="BranchAndOfficeMap">
+    	select a.officeNum, branchName, floor, officeName, comName from office a
+    	left outer join branch b
+		on a.branchCode=b.branchCode
+		left outer join companyInfo c
+		on a.officeNum=c.officeNum
+		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected}
+   	</select>
+   	
+   	<select id="selectFloors" resultMap="BranchAndOfficeMap">
+   		select floor from branch a
+		left outer join office b
+		on a.branchCode=b.branchCode
+		where branchName=#{branchSelected} group by floor
+   	</select>
+   	
+   	<select id="selectOffices" resultMap="BranchAndOfficeMap">
+   		select officeName from office a
+		left outer join branch b
+		on a.branchCode=b.branchCode
+		where branchName=#{branchSelected} and floor=#{floorSelected} and occupancy=0
    	</select>
 </mapper>

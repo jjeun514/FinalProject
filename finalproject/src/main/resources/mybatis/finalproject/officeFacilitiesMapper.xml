@@ -6,10 +6,33 @@
     	 SELECT * from officeFacilities
    	</select>
 
+	<!-- 공간 시설 조회 -->
     <select id="officeFacilities" resultType="com.bit.fn.model.vo.OfficeFacilitiesVo">
-    	 select officeName, desk, chair, modem, fireExtinguisher, lan, airConditioner, 
+    	 select officeName, desk, chair, modem, fireExtinguisher, airConditioner, 
     	 radiator, descendingLifeLine, powerSocket 
     	 from officeFacilities a 
-    	 left outer join office b on a.officeNum=b.officeNum where officeName=#{officeName}
+    	 left outer join office b on a.officeNum=b.officeNum where officeName=#{officeName} and floor=#{floorInput}
    	</select>
+   	
+   	<!-- 공간 시설 추가 -->
+   	<insert id="addFacilities">
+   		insert into officeFacilities (officeNum, desk, chair, modem, fireExtinguisher, airConditioner, radiator, descendingLifeLine, powerSocket)
+		values (#{officeNum},#{deskInput},#{chairInput},#{modemInput},#{fireExtinguisherInput},#{airConditionerInput},#{radiatorInput},#{descendingLifeLineInput},#{powerSocketInput})
+   	</insert>
+   	
+   	<!-- 공간 시설 수정 -->
+   	<update id="updateSpaceInfo">
+   		update officeFacilities
+		set desk=#{deskInput}, chair=#{chairInput}, modem=#{modemInput},
+		fireExtinguisher=#{fireExtinguisherInput}, airConditioner=#{airConditionerInput},
+		radiator=#{radiatorInput}, descendingLifeLine=#{descendingLifeLineInput},
+		powerSocket=#{powerSocketInput}
+		where officeNum=#{officeNum}
+   	</update>
+   	
+   	<!-- 공간 시설 삭제 -->
+   	<delete id="deleteSpace">
+   		delete from officeFacilities
+		where officeNum=#{officeNum}
+   	</delete>
 </mapper>

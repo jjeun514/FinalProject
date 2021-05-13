@@ -5,7 +5,7 @@
 
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
 		order by date desc, num
 		limit 7
@@ -13,7 +13,7 @@
    	
    	<select id="memberBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
 		order by date desc, num desc
 		limit #{firstRecordIndex}, 7
@@ -24,13 +24,13 @@
    	</select>
    	
    	<select id="countMyBoardList" resultType="int">
-   		select count(*) from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+   		select count(*) from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
    		where mem.id = #{id}
    	</select>
    	
    	<select id="selectOneContent" resultType="com.bit.fn.model.vo.BoardVo">
    		select bbs.num, bbs.title, bbs.date, bbs.content, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
+		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
 		where bbs.num = #{selectNum}
    	</select>
@@ -134,7 +134,7 @@
    	<select id="memberOneBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
 		select myList.* from(
 			select bbs.num, bbs.title, bbs.date from board bbs
-			left outer join memberInfo mem on bbs.writer=mem.memNum
+			left outer join memberInfo mem on bbs.memNum=mem.memNum
 			where mem.id = #{id}
 			order by date desc, num desc
 		) as myList

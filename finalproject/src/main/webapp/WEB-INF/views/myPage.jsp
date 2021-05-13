@@ -851,7 +851,7 @@
 									</c:forEach>
 								</tbody>
 							</table>
-							<!-- 페이징 안됨-->
+							<!-- 페이징 됨-->
 							  <!--paginate -->
 						    <div class="paginate">
 						        <div class="paginaion">

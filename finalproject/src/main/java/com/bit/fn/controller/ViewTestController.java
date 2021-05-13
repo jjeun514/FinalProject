@@ -68,7 +68,6 @@ public class ViewTestController {
 						 @RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
 			             @RequestParam(value = "countPerPage", required = false, defaultValue = "7") int countPerPage,
 			             @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize) {
-		countPerPage=7;
 		
 		//아이디
 		String id = principal.getName();
