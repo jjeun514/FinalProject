@@ -907,14 +907,14 @@
 		#mypageLabel2{
 			width:150px;
 		}
-		.mypageAccountInfo,.mypageComInfo,.mypagePw,.mypageBbsTitle{
+		.mypageAccountInfo,.mypageComInfo,.mypagePw,.mypageBbsTitle,.mypageReservationTitle{
 			font-weight:bold;
 			text-align: center;
 		}
 		.mypageComInfo{
 			margin-top: 6px;
 		}
-		.mypageWithdrawInfoTitle,.mypageBbsTitle{
+		.mypageWithdrawInfoTitle,.mypageBbsTitle,.mypageReservationTitle{
 			font-weight:bold;
 			margin-top: 20px;
 		}
@@ -947,13 +947,75 @@
 		}
 		.myBbs{
 			margin-top: 0px;
+			overflow: scroll;
 		}
-		.mypageBbsTitle{
+		.mypageBbsTitle,.mypageReservationTitle{
 			margin-bottom: 15px;
 		}
 		
 		#bbsTable{
 			font-size:12px;
 		}
+			.incorrectPw :{
+		color:"red";
+		}
+		.correctPw:{
+			color:"green";
+		}
+		.pageNum{
+			cursor: pointer;
+		}
+		.mypagePaging{
+			margin-left: 350px;
+		}
+		.paginated1{
+			margin-top : 25px;
+			width: 900px;
+			table-layout: fixed;
+		}
+		.paginated1 td {
+			white-space : nowrap;
+			text-overflow: ellipsis;
+		}
+		.mypageTablePhone{
+			width : 140px;
+		}
+		.mypageTableId{
+			width: 250px;
+		}
+		.mypageTableAdmission{
+			width: 90px;
+		}
+		.mypageTableAdmissionContent{
+			text-align: center;
+		}
+		.myPagBbsTable{
+			margin-left: 50px;
+			width : 550px;
+			table-layout: fixed;
+		}
+		.myPagBbsTable th{
+			text-align: center;
+			font-size: 15px;
+		}
+		.myPagBbsTableNum{
+			width: 60px;
+		}
+		.myPageBbsTableTitle{
+			overflow :hidden;
+			white-space : nowrap;
+			text-overflow: ellipsis;
+		}
+		.myPagBbsTableDate{
+			width: 100px;
+		}
+		.mypageBbsPaginate{
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.myPageBbsTableNumTd,.myPageBbsTableDateTd{
+			text-align: center;
+		}
+		
 	    
 </style>
