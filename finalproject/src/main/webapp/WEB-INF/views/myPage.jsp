@@ -24,16 +24,7 @@
 <%@ include file="./template/header.jspf" %>
 
 <meta name="_csrf" content="${_csrf.token}"/>
-<style type="text/css">
-	.incorrectPw :{
-		color:"red";
-	}
-	.correctPw:{
-		color:"green";
-	}
-	
 
-</style>
 
 <script type="text/javascript">
 	//csrf 토큰 타입별 전송 기능
@@ -85,6 +76,13 @@
 
 	var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
 	
+	//파라미터 받기 기능
+	function getParameter(name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
 	
 	//입력 수 제한 기능
 	function lengthCheck(check, min, max){
@@ -96,7 +94,7 @@
 			//$("."+span).remove();
 			//var afterSpan="<span class='"+span+"'>"+min+"자리 이상 "+max+"자리 이내로 입력해주세요"+"<span>";
 			//name.after(afterSpan);
-			document.getElementById('modalText01').innerHTML=min+"자리 이상 "+max+"자리 이내로 입력해주세요";
+			document.getElementById('modalText01').textContent=min+"자리 이상 "+max+"자리 이내로 입력해주세요";
 			$('#dangerModal').modal('show');
 			booInfo = false;
 			if(check=="memNickName"){
@@ -136,7 +134,7 @@
 				//$("."+span).remove();
 				//var afterSpan="<span class='"+span+"'> "+text+"<span>";
 				//name.after(afterSpan);
-				document.getElementById('modalText01').innerHTML=text;
+				document.getElementById('modalText01').textContent=text;
 				$('#dangerModal').modal('show');
 				//$("."+check).val($("."+check).val().substring(0,$("."+check).val().length -1));
 				booInfo = false;
@@ -145,7 +143,7 @@
 				}
 			}
 		}else if(window.event.keyCode==32){
-			document.getElementById('modalText01').innerHTML='공백은 사용할 수 없습니다.';
+			document.getElementById('modalText01').textContent='공백은 사용할 수 없습니다.';
 			$('#dangerModal').modal('show')
 			booInfo = false;
 			if(check=="memNickName"){
@@ -159,9 +157,12 @@
 	}
 	
 	
-	
-	
 	$(function(){
+		
+		var bbsPaging = getParameter("currentPage");
+		if(bbsPaging!=""){
+			$('.bbsPagingClick').trigger('click');
+		}
 		
 	//회원정보 수정 
 		//수정 버튼 클릭 시 값 강제 변경 여부 확인용 값 저장
@@ -228,7 +229,7 @@
 							    memNickName = $('.memNickName').val();
 								console.log(memNickName);
 								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
-									document.getElementById('modalText01').innerHTML="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
+									document.getElementById('modalText01').textContent="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
 									$('#dangerModal').modal('show');
 								}else if(nickNameLengthBoo==true && nickNameCharacterBoo==true){
 									$.ajax({
@@ -240,7 +241,7 @@
 										success: function(data){
 													console.log("data",data);
 													if(data=="Available"){
-														document.getElementById('modalText02').innerHTML='사용가능한 닉네임입니다.';
+														document.getElementById('modalText02').textContent='사용가능한 닉네임입니다.';
 														$('#primaryModal').modal('show');
 														//닉네임을 바꾸지 못하게 readonly
 														$(".memNickName").prop("readonly","readonly");
@@ -249,7 +250,7 @@
 														if(memNickName==$(".memNickName").attr("value")){
 															memNickBoo==true;
 														}else{
-															document.getElementById('modalText01').innerHTML='사용중인 닉네임입니다.';
+															document.getElementById('modalText01').textContent='사용중인 닉네임입니다.';
 															$('#dangerModal').modal('show');
 															memNickBoo=false;
 															$(".memNickName").focus();
@@ -291,14 +292,14 @@
 			if(oneClick){
 				//조건 1. 정보 값 체크한 결과 여부 확인
 				if(booInfo==false){
-					document.getElementById('modalText01').innerHTML="수정할 내용을 확인하세요";
+					document.getElementById('modalText01').textContent="수정할 내용을 확인하세요";
 					$('#dangerModal').modal('show');
 					return false;
 				//조건 2. 입력하면서 저장한 값들과 현재 값이 다른 지 확인(값 강제 변경 여부)
 					//2-1 어드민인 경우
 				}else if(adminNickName!= undefined){
 						if(adminNickName != $(".adminNickName").val()){
-							document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+							document.getElementById('modalText01').textContent='값 강제 변경은 허용하지 않습니다.';
 							$('#dangerModal').modal('show');
 							return false;
 						}
@@ -309,7 +310,7 @@
 					   manager != $(".manager").val() || 
 					   comPhone != $(".comPhone").val() 
 						){
-						document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+						document.getElementById('modalText01').textContent='값 강제 변경은 허용하지 않습니다.';
 						$('#dangerModal').modal('show');
 						return false;
 					}
@@ -319,14 +320,14 @@
 					   dept != $(".dept").val() || 
 					   memPhone != $(".memPhone").val() 
 						){
-						document.getElementById('modalText01').innerHTML='값 강제 변경은 허용하지 않습니다.';
+						document.getElementById('modalText01').textContent='값 강제 변경은 허용하지 않습니다.';
 						$('#dangerModal').modal('show');
 						return false;
 					}
 					//기존 닉네임을 변경하였을 경우 닉네임 중복검사 여부
 					if(memNickName!=$(".memNickName").attr("value")){
 						if(memNickBoo==false){
-							document.getElementById('modalText01').innerHTML='닉네임 중복을 확인해주세요.';
+							document.getElementById('modalText01').textContent='닉네임 중복을 확인해주세요.';
 							$('#dangerModal').modal('show');
 							return false;
 						}
@@ -340,7 +341,7 @@
 		//회원정보 수정 버튼 클릭 시 처음엔 readonly를 해제, 수정 버튼 기능 활성화
 		$(".updateInfoBtn").one("click",function(){
 			//$('.modifiable').remove();
-			$('.updateInfoInput').removeAttr("readonly");//.after('<span class="modifiable"> [수정 가능]</span>');
+			$('.updateInfoInput').removeAttr("readonly").css('background-color', '#FFFFE0');//.after('<span class="modifiable"> [수정 가능]</span>');
 			oneClick=true;
 			return false;
 		});
@@ -372,7 +373,7 @@
 							//$(".existingPw").after(' <span class="correctPw">비밀번호가 확인되었습니다</span>')
 							//$(".correctPw").css("color","blue");
 							
-							document.getElementById('modalText02').innerHTML='비밀번호가 확인되었습니다.';
+							document.getElementById('modalText02').textContent='비밀번호가 확인되었습니다.';
 							$('#primaryModal').modal('show');
 							
 							//기존 비밀번호 일치 기능 활성화
@@ -383,7 +384,7 @@
 							//$(".correctPw").remove();
 							//$(".existingPw").after(' <span class="incorrectPw">비밀번호가 일치하지 않습니다</span>');
 							//$(".incorrectPw").css("color","red");
-							document.getElementById('modalText01').innerHTML='비밀번호가 일치하지 않습니다.';
+							document.getElementById('modalText01').textContent='비밀번호가 일치하지 않습니다.';
 							$('#dangerModal').modal('show');
 							//기존 비밀번호 일치 기능 비활성화
 							booExPw=false;
@@ -408,7 +409,7 @@
 				//$('.newPw').after(' <span class="unusablePw">숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요</span>');
 				//$(".unusablePw").css("color","red");
 				if($('.newPw').val()==null){
-				document.getElementById('modalText01').innerHTML='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
+				document.getElementById('modalText01').textContent='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
 				$('#dangerModal').modal('show');
 				}
 			}else{
@@ -418,7 +419,7 @@
 				//$('.newPw').after(' <span class="usablePw">사용 가능한 비밀번호입니다</span>');
 				//$(".usablePw").css("color","blue");
 				
-				document.getElementById('modalText02').innerHTML='사용 가능한 비밀번호입니다.';
+				document.getElementById('modalText02').textContent='사용 가능한 비밀번호입니다.';
 				$('#primaryModal').modal('show');
 			}
 			
@@ -456,7 +457,7 @@
 		$(".updatePwBtn").click(function(){
 			//1.기존 비밀번호 기능과 새 비밀번호 기능 활성화 여부 확인
 			if(booExPw==false || booNewPw==false){
-				document.getElementById('modalText01').innerHTML='기존 비밀번호 확인 및 변경할 비밀번호를 확인하세요.';
+				document.getElementById('modalText01').textContent='기존 비밀번호 확인 및 변경할 비밀번호를 확인하세요.';
 				$('#dangerModal').modal('show');
 				return false;
 			//2.비밀번호 강제 값 변경 여부 확인
@@ -464,12 +465,12 @@
 					 newPw!=$('.newPw').val() ||
 					 newCheckPw!=$('.newCheckPw').val()
 					){
-				document.getElementById('modalText01').innerHTML='비밀번호 강제 변경은 금지입니다.';
+				document.getElementById('modalText01').textContent='비밀번호 강제 변경은 금지입니다.';
 				$('#dangerModal').modal('show');
 				return false;
 			//3. 기존 비밀번호와 새 비밀번호의 값이 같은 같은지 확인	
 			}else if(existingPw==newCheckPw){
-				document.getElementById('modalText01').innerHTML='기존 비밀번호와 새 비밀번호가 일치합니다.';
+				document.getElementById('modalText01').textContent='기존 비밀번호와 새 비밀번호가 일치합니다.';
 				$('#dangerModal').modal('show');
 				return false;
 			//4. 위 조건을 모두 충족할 경우 비밀번호 변경
@@ -484,7 +485,7 @@
 								if(data=="success"){
 									location.reload();
 								}else{
-									document.getElementById('modalText01').innerHTML='변경 오류.';
+									document.getElementById('modalText01').textContent='변경 오류.';
 									$('#dangerModal').modal('show');
 								}
 							},
@@ -523,7 +524,7 @@
 							//$(".withdrawalPw").after(' <span class="correctWPw">비밀번호가 확인되었습니다</span>')
 							//$(".correctWPw").css("color","blue");
 							
-							document.getElementById('modalText02').innerHTML='비밀번호가 확인되었습니다.';
+							document.getElementById('modalText02').textContent='비밀번호가 확인되었습니다.';
 							$('#primaryModal').modal('show');
 							//기존 비밀번호 일치 기능 활성화
 							booWPw=true;
@@ -534,7 +535,7 @@
 							//$(".withdrawalPw").after(' <span class="incorrectWPw">비밀번호가 일치하지 않습니다</span>');
 							//$(".incorrectWPw").css("color","red");
 							
-							document.getElementById('modalText01').innerHTML='비밀번호가 일치하지 않습니다.';
+							document.getElementById('modalText01').textContent='비밀번호가 일치하지 않습니다.';
 							$('#dangerModal').modal('show');
 							//기존 비밀번호 일치 기능 비활성화
 							booWPw=false;
@@ -549,15 +550,15 @@
 		
 		$(".withdrawBtn").click(function(){
 			if(booWPw==false){
-				document.getElementById('modalText01').innerHTML='비밀번호를 확인해주세요.';
+				document.getElementById('modalText01').textContent='비밀번호를 확인해주세요.';
 				$('#dangerModal').modal('show');
 				return false;
 			}else if(withdrawalPw!=$(".withdrawalPw").val()){
-				document.getElementById('modalText01').innerHTML='강제변경된 비밀번호는 허용하지 않습니다.';
+				document.getElementById('modalText01').textContent='강제변경된 비밀번호는 허용하지 않습니다.';
 				$('#dangerModal').modal('show');
 				return false;
 			}else if($(".acceptCb").is(":checked")==false){
-				document.getElementById('modalText01').innerHTML='필수 동의란을 체크해주세요.';
+				document.getElementById('modalText01').textContent='필수 동의란을 체크해주세요.';
 				$('#dangerModal').modal('show');
 				return false;
 			}else{
@@ -605,25 +606,223 @@
 		})
 		
 	});
+</script>
+<script type="text/javascript">
+//10,20,30개씩 selectBox 클릭 이벤트
+function changeSelectBox(currentPage, countPerPage, pageSize){
+    var selectValue = $("#cntSelectBox").children("option:selected").val();
+    movePage(currentPage, selectValue, pageSize);
+}
+ 
+//페이지 이동
+function movePage(currentPage, countPerPage, pageSize){
+    
+    var url = "/mypage";
+    url = url + "?currentPage="+currentPage;
+    url = url + "&countPerPage="+countPerPage;
+    url = url + "&pageSize="+pageSize;
+    
+    location.href=url;
+}
 
-	
-	//10,20,30개씩 selectBox 클릭 이벤트
-	function changeSelectBox(currentPage, countPerPage, pageSize){
-	    var selectValue = $("#cntSelectBox").children("option:selected").val();
-	    movePage(currentPage, selectValue, pageSize);
-	}
-	 
-	//페이지 이동
-	function movePage(currentPage, countPerPage, pageSize){
-	    
-	    var url = "/mypage";
-	    url = url + "?currentPage="+currentPage;
-	    url = url + "&countPerPage="+countPerPage;
-	    url = url + "&pageSize="+pageSize;
-	    
-	    location.href=url;
-	}
-	
+
+//만들어진 테이블에 페이지 처리
+
+function page(table){ 
+$('.'+table).each(function() {
+
+var pagesu = 10;  //페이지 번호 갯수
+
+var currentPage = 0;
+
+var numPerPage = 10;  //목록의 수
+
+var $table = $(this);    
+
+var pagination = $("#pagination");
+
+
+//length로 원래 리스트의 전체길이구함
+
+var numRows = $table.find('tbody tr').length;
+
+
+//Math.ceil를 이용하여 반올림
+
+var numPages = Math.ceil(numRows / numPerPage);
+
+
+//리스트가 없으면 종료
+
+if (numPages==0) return;
+
+
+
+//pager라는 클래스의 div엘리먼트 작성
+
+var $pager = $('<div class="pager"></div>');
+
+var nowp = currentPage;
+
+var endp = nowp+10;
+
+
+//페이지를 클릭하면 다시 셋팅
+
+$table.bind('repaginate', function() {
+
+//기본적으로 모두 감춘다, 현재페이지+1 곱하기 현재페이지까지 보여준다
+
+$table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+
+$("#pagination").html("");
+
+
+
+if (numPages > 1) {     // 한페이지 이상이면
+
+if (currentPage < 5 && numPages-currentPage >= 5) {   // 현재 5p 이하이면
+
+nowp = 0;     // 1부터 
+
+endp = pagesu;    // 10까지
+
+}else{
+
+nowp = currentPage -5;  // 6넘어가면 2부터 찍고
+
+endp = nowp+pagesu;   // 10까지
+
+pi = 1;
+
+}
+
+if (numPages < endp) {   // 10페이지가 안되면
+
+endp = numPages;   // 마지막페이지를 갯수 만큼
+
+nowp = numPages-pagesu;  // 시작페이지를   갯수 -10
+
+}
+
+if (nowp < 1) {     // 시작이 음수 or 0 이면
+
+nowp = 0;     // 1페이지부터 시작
+
+}
+
+}else{       // 한페이지 이하이면
+
+nowp = 0;      // 한번만 페이징 생성
+
+endp = numPages;
+
+}
+
+
+// [처음]
+
+$('<span class="pageNum first"><<</span>').bind('click', {newPage: page},function(event) {
+
+currentPage = 0;   
+
+$table.trigger('repaginate');  
+
+$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
+
+}).appendTo(pagination).addClass('clickable');
+
+
+
+// [이전]
+
+$('<span class="pageNum back">&nbsp;<&nbsp;</span>').bind('click', {newPage: page},function(event) {
+
+if(currentPage == 0) return; 
+
+
+currentPage = currentPage-1;
+
+$table.trigger('repaginate'); 
+
+$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+
+}).appendTo(pagination).addClass('clickable');
+
+
+// [1,2,3,4,5,6,7,8]
+
+for (var page = nowp ; page < endp; page++) {
+
+$('<span  style="cursor:pointer" class="pageNum"></span>').text(page + 1).append('&nbsp;').bind('click', {newPage: page}, function(event) {
+
+currentPage = event.data['newPage'];
+
+$table.trigger('repaginate');
+
+$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+
+}).appendTo(pagination).addClass('clickable');
+
+} 
+
+
+
+// [다음]
+
+$('<span class="pageNum next">>&nbsp;</span>').bind('click', {newPage: page},function(event) {
+
+if(currentPage == numPages-1) return;
+
+
+currentPage = currentPage+1;
+
+$table.trigger('repaginate'); 
+
+$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+
+}).appendTo(pagination).addClass('clickable');
+
+
+// [끝]
+
+$('<span class="pageNum last">>></span>').bind('click', {newPage: page},function(event) {
+
+currentPage = numPages-1;
+
+$table.trigger('repaginate');
+
+$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
+
+}).appendTo(pagination).addClass('clickable');
+
+
+$($(".pageNum")[2]).addClass('active');
+
+});
+
+
+$pager.insertAfter($table).find('span.pageNum:first').next().next().addClass('active');   
+
+$pager.appendTo(pagination);
+
+$table.trigger('repaginate');
+
+});
+
+}
+
+
+
+$(function(){
+
+// table pagination
+
+page('paginated1');
+
+
+});
+
 </script>
 
 <body>
@@ -635,8 +834,11 @@
       <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><img src="imgs/person-circle.svg"/><span>회원정보</span></a>
       <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false"><img src="imgs/pencil.svg"/><span>프로필 수정</span></a>
       <a class="nav-link" id="v-pills-password-tab" data-toggle="pill" href="#v-pills-password" role="tab" aria-controls="v-pills-password" aria-selected="false"><img src="imgs/pencil.svg"/><span>비밀번호 변경</span></a>
-      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><img src="imgs/pencil-square.svg"/><span>내가 작성한글</span></a>
+      <!-- 멤버일경우 내가 작성한글과 예약내역 -->
+	  <sec:authorize access="hasRole('MEMBER')">
+      <a class="nav-link bbsPagingClick" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><img src="imgs/pencil-square.svg"/><span>내가 작성한글</span></a>
       <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings1" role="tab" aria-controls="v-pills-settings1" aria-selected="false"><img src="imgs/file-text.svg"/><span>예약내역</span></a>
+      </sec:authorize>
       <!-- 마스터일 경우 멤버관리 탭-->
       <sec:authorize access="hasRole('MASTER')">
       <a class="nav-link" id="v-pills-settings2-tab" data-toggle="pill" href="#v-pills-settings2" role="tab" aria-controls="v-pills-settings2" aria-selected="false"><img src="imgs/inboxes.svg"/><span>멤버관리</span></a>
@@ -812,6 +1014,8 @@
 	       </div>
 	      </div>
        </div>
+      <!-- 멤버일 경우 내가 작성한글과 예약내역 탭 start-->
+      <sec:authorize access="hasRole('MEMBER')">
       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
       	<div id="mypageMargin">
       		<h4 class="mypageBbsTitle">내가 작성한글</h4>
@@ -833,27 +1037,27 @@
 						        </div>
 						    </div>
 						    
-							<table id = "bbsTable" class="table table-bordered table-hover">
+							<table id = "bbsTable" class="table table-bordered table-hover myPagBbsTable">
 								<thead>
 									<tr>
-										<th>번호</th>
+										<th class="myPagBbsTableNum">번호</th>
 										<th>제목</th>
-										<th>날짜</th>
+										<th class="myPagBbsTableDate">날짜</th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var = "list" items = "${boardList }">
 										<tr>
-											<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.num }</a></td>
-											<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.title }</a></td>
-											<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.date }</a></td>
+											<td class="myPageBbsTableNumTd"><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.num }</a></td>
+											<td class="myPageBbsTableTitle"><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.title }</a></td>
+											<td class="myPageBbsTableDateTd"><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.date }</a></td>
 										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
 							<!-- 페이징 됨-->
 							  <!--paginate -->
-						    <div class="paginate">
+						    <div class="paginate mypageBbsPaginate">
 						        <div class="paginaion">
 						            <a class="direction prev" href="javascript:void(0);"
 						                onclick="movePage(1,${pagination.countPerPage},${pagination.pageSize});">
@@ -888,22 +1092,36 @@
       
       <div class="tab-pane fade" id="v-pills-settings1" role="tabpanel" aria-labelledby="v-pills-settings-tab">
       	<div id="mypageMargin">
-        	저는 이만 갑니다
+        	<h4 class="mypageReservationTitle">예약내역</h4>
+        	<table class="table paginated2">
+        		<thead>
+        			<tr>
+        				<th>gg</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<tr>
+        				<td>ggg</td>
+        			</tr>
+        		</tbody>
+        	</table>
         </div>
       </div>
+      </sec:authorize>
+      <!-- 멤버일 경우 내가 작성한글이랑 예약내역 탭 end -->
       <sec:authorize access="hasRole('MASTER')">
       <div class="tab-pane fade" id="v-pills-settings2" role="tabpanel" aria-labelledby="v-pills-settings-tab">
         <div id="mypageMargin">
-        	<table class="table">
+        	<table class="table paginated1">
         		<thead class="thead-light">
         			<tr>
 	        			<th>이름</th>
-	        			<th>ID</th>
+	        			<th class="mypageTableId">ID</th>
 	        			<th>닉네임</th>
 	        			<th>부서</th>
-	        			<th>전화번호</th>
+	        			<th class="mypageTablePhone">전화번호</th>
 	        			<th>가입일자</th>
-	        			<th>권한여부</th>
+	        			<th class="mypageTableAdmission">권한여부</th>
         			</tr>
         		</thead>
         		<tbody>
@@ -915,7 +1133,7 @@
 	        				<td>${memberList.dept }</td>
 	        				<td>${memberList.memPhone }</td>
 	        				<td>${memberList.signdate }</td>
-	        				<td>
+	        				<td class="mypageTableAdmissionContent">
 	        				<a href="#" class="memberAdmission">
 	        				<c:if test="${memberList.admission == 1}">
 	        					허용
@@ -929,6 +1147,9 @@
         				</c:forEach>
         		</tbody>
         	</table>
+        	<div class="btnContent">
+			<div class="pagination mypagePaging" id="pagination">페이지 영역</div>
+			</div>
         </div>
       </div>
       </sec:authorize>
