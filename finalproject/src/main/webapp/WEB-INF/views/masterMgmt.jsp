@@ -11,10 +11,11 @@ $('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 $(function(){
 	var comName;
+	var comCode="";
 	$('#accountDetail').on('show.bs.modal', function(event) {
 		$('#accountDetail').css('margin-top',$(window).height()/4.5);
 		comName=$(event.relatedTarget).data('comname');
-		var comCode=$(event.relatedTarget).data('comcode');
+		comCode=$(event.relatedTarget).data('comcode');
 		var ceoValue=$(event.relatedTarget).data('ceo');
 		var comPhoneValue=$(event.relatedTarget).data('comphone');
 		var managerValue=$(event.relatedTarget).data('manager');
