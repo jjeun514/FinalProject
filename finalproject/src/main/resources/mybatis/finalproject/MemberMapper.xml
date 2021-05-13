@@ -61,8 +61,8 @@
 		select roomNum from meetingRoom where branchCode = 1
    	</select>
    	
-   	<select id="checkReservaion" resultType="int">
-   		select count(roomNum) as countREZ from reservation
+   	<select id="checkReservaion" resultType="com.bit.fn.model.vo.ReservationVo">
+   		select count(roomNum) as count, merchant_uid from reservation
    		where roomNum = #{roomNum} and
    		reservationDay = '${reservationDay}' and
    		useStartTime = '${reservationDay} ${useStartTime}:00:00'
