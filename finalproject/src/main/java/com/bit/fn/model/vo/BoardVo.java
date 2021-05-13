@@ -3,21 +3,20 @@ package com.bit.fn.model.vo;
 import java.sql.*;
 
 public class BoardVo {
-	private int num,writer,count;
-	private String title,content, memName, comName;
+	private int num, count;
+	private String title,content, writer, company;
 	private Date date;
 	
 	public BoardVo() {}
 
-	public BoardVo(int num, int writer, int count, String title, String content, String memName, String comName, Date date) {
+	public BoardVo(int num, int count, String title, String content, String writer, String company, Date date) {
 		super();
 		this.num = num;
-		this.writer = writer;
 		this.count = count;
 		this.title = title;
 		this.content = content;
-		this.memName = memName;
-		this.comName = comName;
+		this.writer = writer;
+		this.company = company;
 		this.date = date;
 	}
 
@@ -27,14 +26,6 @@ public class BoardVo {
 
 	public void setNum(int num) {
 		this.num = num;
-	}
-
-	public int getWriter() {
-		return writer;
-	}
-
-	public void setWriter(int writer) {
-		this.writer = writer;
 	}
 
 	public int getCount() {
@@ -61,12 +52,20 @@ public class BoardVo {
 		this.content = content;
 	}
 
-	public String getMemName() {
-		return memName;
+	public String getWriter() {
+		return writer;
 	}
 
-	public void setMemName(String memName) {
-		this.memName = memName;
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
 	}
 
 	public Date getDate() {
@@ -76,27 +75,18 @@ public class BoardVo {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	public String getComName() {
-		return comName;
-	}
-
-	public void setComName(String comName) {
-		this.comName = comName;
-	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((comName == null) ? 0 : comName.hashCode());
+		result = prime * result + ((company == null) ? 0 : company.hashCode());
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + count;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((memName == null) ? 0 : memName.hashCode());
 		result = prime * result + num;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + writer;
+		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
 		return result;
 	}
 
@@ -109,10 +99,10 @@ public class BoardVo {
 		if (getClass() != obj.getClass())
 			return false;
 		BoardVo other = (BoardVo) obj;
-		if (comName == null) {
-			if (other.comName != null)
+		if (company == null) {
+			if (other.company != null)
 				return false;
-		} else if (!comName.equals(other.comName))
+		} else if (!company.equals(other.company))
 			return false;
 		if (content == null) {
 			if (other.content != null)
@@ -126,11 +116,6 @@ public class BoardVo {
 				return false;
 		} else if (!date.equals(other.date))
 			return false;
-		if (memName == null) {
-			if (other.memName != null)
-				return false;
-		} else if (!memName.equals(other.memName))
-			return false;
 		if (num != other.num)
 			return false;
 		if (title == null) {
@@ -138,16 +123,18 @@ public class BoardVo {
 				return false;
 		} else if (!title.equals(other.title))
 			return false;
-		if (writer != other.writer)
+		if (writer == null) {
+			if (other.writer != null)
+				return false;
+		} else if (!writer.equals(other.writer))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "BoardVo [num=" + num + ", writer=" + writer + ", count=" + count + ", title=" + title + ", content="
-				+ content + ", memName=" + memName + ", comName=" + comName + ", date=" + date + "]";
+		return "BoardVo [num=" + num + ", count=" + count + ", title=" + title + ", content=" + content + ", writer="
+				+ writer + ", company=" + company + ", date=" + date + "]";
 	}
 
-	
 }
