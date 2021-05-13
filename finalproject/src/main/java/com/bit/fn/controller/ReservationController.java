@@ -1,7 +1,6 @@
 package com.bit.fn.controller;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair; 
 import org.apache.http.client.HttpClient; 
 import org.apache.http.client.entity.UrlEncodedFormEntity; 
-import org.apache.http.client.methods.HttpGet; 
 import org.apache.http.client.methods.HttpPost; 
 import org.apache.http.impl.client.HttpClientBuilder; 
 import org.apache.http.message.BasicNameValuePair; 
@@ -367,7 +365,7 @@ public class ReservationController {
 					asd = rootNode.get("response").asText();
 
 				} catch(Exception e) {
-					String resultMessage = "결제가 정상적으로 취소되지 않았습니다. 다시 시도해주세요.";
+					String resultMessage = "결제 취소 요청이 정상적으로 취소되지 않았습니다. 다시 시도해주세요.";
 					String resultCode = "0";
 					
 					result.put("resultMessage", resultMessage);
@@ -375,7 +373,6 @@ public class ReservationController {
 					
 					return result;
 				} if (asd.equals("null")) { 
-		            System.out.println("환불 실패"); 
 		            
 		            String resultMessage = "결제가 정상적으로 취소되지 않았습니다. 다시 시도해주세요.";
 					String resultCode = "0";
@@ -385,10 +382,10 @@ public class ReservationController {
 					
 					return result;
 		        } else { 
-		            System.out.println("환불 성공"); 
-		            
+		        	
 		            // 취소 쿼리 메소드 실행
-		            int cancleResult = service.cancleReservation(roomNum, useStartTime, reservationDay); // 여기서 삭제하고 취소 테이블에 또 넣어야겠다
+		            int cancleResult = service.cancleReservation(roomNum, useStartTime, reservationDay); 
+		            // 여기서 삭제하고 취소 테이블에 또 넣어야겠다
 		            
 		            String resultMessage = "예약이 정상적으로 취소되었습니다.";
 					String resultCode = "1";
