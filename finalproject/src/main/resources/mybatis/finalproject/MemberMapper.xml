@@ -4,7 +4,7 @@
 <mapper namespace="com.bit.fn.model.mapper.MemberMapper">
 
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
-		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
+		select bbs.num, bbs.title, bbs.date, bbs.memName, com.comName
 		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
 		order by date desc, num
@@ -12,11 +12,8 @@
    	</select>
    	
    	<select id="memberBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
-		select bbs.num, bbs.title, bbs.date, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
-		left outer join companyInfo com on mem.comCode=com.comCode
-		order by date desc, num desc
-		limit #{firstRecordIndex}, 7
+		select num, title, date, writer, company from board
+		order by date desc, num desc limit #{firstRecordIndex}, 7
    	</select>
    	
    	<select id="countBoardList" resultType="int">
@@ -29,10 +26,7 @@
    	</select>
    	
    	<select id="selectOneContent" resultType="com.bit.fn.model.vo.BoardVo">
-   		select bbs.num, bbs.title, bbs.date, bbs.content, mem.memName, com.comName
-		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
-		left outer join companyInfo com on mem.comCode=com.comCode
-		where bbs.num = #{selectNum}
+   		select num, title, date, writer, company, content from board where num = #{selectNum}
    	</select>
    	
    	<select id="countNoticeList" resultType="int">
