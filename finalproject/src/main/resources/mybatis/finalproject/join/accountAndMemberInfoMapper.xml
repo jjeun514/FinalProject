@@ -22,8 +22,8 @@
     </resultMap>
     
     <resultMap type="com.bit.fn.model.vo.join.AccountAndMemberInfoVo" id="AccountAndMemberInfoMap">
-    	<collection property="account" resultMap="accountMap"/>
-    	<collection property="memberInfo" resultMap="memberInfoMap"/>
+    	<collection property="account" resultMap="AccountMap"/>
+    	<collection property="memberInfo" resultMap="MemberInfoMap"/>
     </resultMap>
     
    	<update id="updateMemberAdmission">

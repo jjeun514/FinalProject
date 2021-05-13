@@ -31,7 +31,6 @@
 			height: 800px;
 			margin-top: -350px;
 		}
-		    
 	/* 마이페이지 */
 		.mypage{
 			position: relative;
@@ -51,7 +50,7 @@
 		.left-nav>div>a{
 			color:black;
 		}
-			    
+		
 	/* footer*/
 		footer>div>div>p{
 			margin: 50px;
@@ -897,5 +896,64 @@
 	   		width: 350px;
 	    }
 	    
+	    /*마이페이지*/
+	    #mypageMargin{
+			margin-top: 10px;
+			margin-left: 30px;
+		}
+		#mypageLabel{
+			width:100px;
+		}
+		#mypageLabel2{
+			width:150px;
+		}
+		.mypageAccountInfo,.mypageComInfo,.mypagePw,.mypageBbsTitle{
+			font-weight:bold;
+			text-align: center;
+		}
+		.mypageComInfo{
+			margin-top: 6px;
+		}
+		.mypageWithdrawInfoTitle,.mypageBbsTitle{
+			font-weight:bold;
+			margin-top: 20px;
+		}
+		.mypagePw{
+			margin-top: 30px;
+			margin-bottom: 15px;
+		}
+		.updateInfoBtn{
+			width:500px;
+		}	    
+		.updatePwBtn{
+			width:530px;
+			/*width:410px;*/
+		}
+		.mypageWithdrawInfo{
+			color: gray;
+			margin-bottom: 30px;
+		}
+		.mypageWithdrawGuidance{
+			margin-bottom: 30px;
+		}
+		.mypageWithdrawBottom{
+			margin-bottom: 6px;
+		}
+		.withdrawBtn{
+			width: 150px;
+		}
+		.myPageRed{
+			color: red;
+		}
+		.myBbs{
+			margin-top: 0px;
+		}
+		.mypageBbsTitle{
+			margin-bottom: 15px;
+		}
+		
+		#bbsTable{
+			font-size:12px;
+		}
 	    
 </style>

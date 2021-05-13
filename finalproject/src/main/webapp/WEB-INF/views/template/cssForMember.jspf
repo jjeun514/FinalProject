@@ -61,6 +61,34 @@
 		border: 1px solid white;
   	}
 
+  	#REZbtn{ /*사용예약버튼*/
+    	border: 1px solid;
+    	position: relative;
+    	width : 100px;
+    	left: 38%;
+    }
+    
+    #checkbtn{ /*예약취소버튼*/
+    	border: 1px solid;
+    	position: relative;
+    	width : 100px;
+    	left: 43%;
+    }
+    
+    #applyPay{ /*결제 페이지에서 결제하기 버튼*/
+    	border: 1px solid black;
+    	position: relative;
+    	left: 43%;
+    }
+    
+    #canclePay{ /*결제 페이지에서 결제 취소*/
+    	border: 1px solid gray;
+    	position: relative;
+    	color : gray;
+    	left: 38%;
+    }
+  	
+
 }
 
     
@@ -127,6 +155,33 @@
 		left: 60%;
 		border: 1px solid white;
   	}
+  	
+  	#REZbtn{ /*사용예약버튼*/
+    	border: 1px solid;
+    	position: relative;
+    	width : 100px;
+    	left: 38%;
+    }
+    
+    #checkbtn{ /*예약취소버튼*/
+    	border: 1px solid;
+    	position: relative;
+    	width : 100px;
+    	left: 43%;
+    }
+    
+    #applyPay{ /*결제 페이지에서 결제하기 버튼*/
+    	border: 1px solid black;
+    	position: relative;
+    	left: 41%;
+    }
+    
+    #canclePay{ /*결제 페이지에서 결제 취소*/
+    	border: 1px solid gray;
+    	position: relative;
+    	color : gray;
+    	left: 36%;
+    }
 
 	
 }
@@ -336,35 +391,20 @@
 
     #roomCell{
     	text-align:center;
-    	background-color: rgba(187,240,237,1);
+    	background-color: rgba(52,58,64,1);
+    	color : white;
     }
     
     #REZTimeCell{
     	text-align:center;
     }
     
-    #REZbtn{
-    	border: 1px solid;
-    	position: relative;
-    	left: 38%;
+    #REZapplyClick, #applyCancleREZ{
+    	background-color: rgba(52,58,64,1);
+    	border-color: none;
+    	color : white;
     }
     
-    #checkbtn{
-    	border: 1px solid;
-    	position: relative;
-    	left: 43%;
-    }
-    
-    #REZapplyClick, applyCancleREZ{
-    	background-color: rgba(187,240,237,1);
-    	border-color: gray;
-    }
-    
-    #applyPay{ /*결제 페이지에서 결제하기 버튼*/
-    	border: 1px solid black;
-    	position: relative;
-    	left: 43%;
-    }
 
 /*회의실*/
 	
