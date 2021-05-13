@@ -1,6 +1,7 @@
 package com.bit.fn.controller;
 
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,6 +70,7 @@ public class MemberController {
             @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize,
             Principal  principal) {
 		
+		// 페이징 처리를 위한 셋팅
 		int listCount = service.countBoardList();
         PaginationVo pagination = new PaginationVo(currentPage, countPerPage, pageSize);
         pagination.setTotalRecordCount(listCount);
@@ -92,21 +95,13 @@ public class MemberController {
 		int master=principal.toString().indexOf("ROLE_MASTER");
 		int member=principal.toString().indexOf("ROLE_MEMBER");
 		
-		System.out.println("아이디 = " + id);
-		System.out.println("admin 인가? = "+admin);
-		System.out.println("master 인가? = "+master);
-		System.out.println("member 인가? = "+member);
-		
-		//값이 잘 불러오는지 프로필 불러와봄
-		
-		
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-		if(member != -1) {
+		if( member != -1 ) {
 			System.out.println("접속하신 계정은 멤버입니다.");
 			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
 			
-		}else {
+		} else {
 			return "redirect:/intro";
 		}
 		
@@ -193,11 +188,9 @@ public class MemberController {
 			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
 			
-		}else {
+		} else {
 			return "redirect:/intro";
 		}
-		
-		
 		
 		List<ReservationVo> roomList = service.meetingRoomList();
 		model.addAttribute("roomList", roomList);
@@ -239,27 +232,23 @@ public class MemberController {
 	// 나의 회의실 예약 정보 전달
 	@RequestMapping(value = "/reservation/myReservationList", method = RequestMethod.GET)
 	@ResponseBody
-	/*
-	 * 뷰에서 ajax로 받아온 멤버 넘버를 인자로 전달해줘야 함
-	 * 아직 뷰에서 사용자의 정보를 어떻게 받아오는지 몰라서 처리 안됨
-	 */
-	public Map<String, Object> myREZList(){
+	public Map<String, Object> myREZList(String memNum){
 
 		// 데이터 담을 객체 생성
 		List<Map<String, String>> REZList = new ArrayList<Map<String, String>>();
 		Map<String, String> data = null;
 		
 		// 나의 예약 정보 불러오기
-		List<ReservationVo> myREZ = service.myReservationList();
+		List<ReservationVo> myREZ = service.myReservationList(Integer.parseInt(memNum));
 		
 		// 반복문 돌면서 객체에 데이터 담기
 		for ( ReservationVo reservation : myREZ ) {
 			data = new HashMap<String, String>();
+			data.put("memNum", Integer.toString(reservation.getMemNum()));
 			data.put("roomNum", Integer.toString(reservation.getRoomNum()));
 			data.put("reservationDay", reservation.getReservationDay());
 			data.put("useStartTime", reservation.getUseStartTime().substring(11, 13));
 			data.put("originStartTime", reservation.getUseStartTime());
-			data.put("useFinishTime", reservation.getUseFinishTime());
 			REZList.add(data);
 		}
 		
@@ -320,7 +309,8 @@ public class MemberController {
 		int startTime = Integer.parseInt(applyContent.getUseStartTime());
 		int useTime = Integer.parseInt(applyContent.getUseFinishTime());
 		
-		// 예약자 정보도 받아와야 함
+		int memNum = applyContent.getMemNum();
+		String memName = applyContent.getMemName();
 		int roomNum = applyContent.getRoomNum();
 		String useStartTime = applyContent.getUseStartTime();
 		String calFinishTime = Integer.toString(startTime+useTime); // 종료 시간 계산
@@ -329,6 +319,8 @@ public class MemberController {
 		
 		// 파라미터를 객체에 담음
 		ReservationVo reservation = new ReservationVo();
+		reservation.setMemNum(memNum);
+		reservation.setMemName(memName);
 		reservation.setRoomNum(roomNum);
 		reservation.setUseStartTime(useStartTime);
 		reservation.setUseFinishTime(calFinishTime);
@@ -364,6 +356,8 @@ public class MemberController {
 				
 				result.put("resultMessage", resultMessage);
 				result.put("resultCode", resultCode);
+				result.put("memNum", memNum);
+				result.put("memName", memName);
 				result.put("roomNum", roomNum);
 				result.put("reservationDay", reservationDay);
 				result.put("useStartTime", useStartTime);
@@ -401,8 +395,9 @@ public class MemberController {
 		// 받아온 파라미터 변환
 		String[] cancle = cancleContent.split("/");
 		int roomNum = Integer.parseInt(cancle[0]);
-		String reservationDay = cancle[1];
-		String useStartTime = cancle[2];
+		int memNum = Integer.parseInt(cancle[1]);
+		String reservationDay = cancle[2];
+		String useStartTime = cancle[3];
 		
 		// 취소하기 전에 해당 내역으로 예약이 있는지 여부를 조회
 		int checkReservation = service.checkReservaion(roomNum, useStartTime, reservationDay);
@@ -447,20 +442,26 @@ public class MemberController {
 	@RequestMapping(value = "/reservation/payment", method = RequestMethod.POST)
 	public String payment(Model model, ReservationVo applyContent) {
 		
+		int memNum = applyContent.getMemNum();
+		String memName = applyContent.getMemName();
 		int roomNum = applyContent.getRoomNum();
 		String reservationDay = applyContent.getReservationDay();
 		String useStartTime = applyContent.getUseStartTime();
 		String useFinishTime = applyContent.getUseFinishTime();
 		int amount = applyContent.getAmount();
 		
+		if ( useFinishTime.equals("2") ) { amount = amount * 2; }
+		
 		ReservationVo content = new ReservationVo();
+		content.setMemNum(memNum);
+		content.setMemName(memName);
 		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);
 		content.setReservationDay(reservationDay);
 		content.setAmount(amount);
 		
-		model.addAttribute("content", applyContent);
+		model.addAttribute("content", content);
 		
 		return "reservationPayment";
 	}
@@ -486,6 +487,7 @@ public class MemberController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		// 결제 요청된 파라미터 받음
+		int memNum = payContent.getMemNum();
 		String useStartTime = payContent.getUseStartTime();
 		int roomNum = payContent.getRoomNum();
 		String reservationDay = payContent.getReservationDay();
@@ -497,6 +499,7 @@ public class MemberController {
 		
 		// 예약 메소드에 데이터 넣을 객체 생성 후 파라미터 받음
 		ReservationVo content = new ReservationVo();
+		content.setMemNum(memNum);
 		content.setRoomNum(roomNum);
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);
@@ -550,7 +553,7 @@ public class MemberController {
 	
 	
 	
-	// 멤버 파트 내 스케쥴 관리 인트로 페이지 ... 구현할 수 있을까?
+	// 멤버 파트 내 스케쥴 관리 인트로 페이지
 	@RequestMapping("/schedule")
 	public String schedule() {
 

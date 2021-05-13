@@ -24,6 +24,9 @@ public interface MemberMapper {
 	// 멤버 페이지 게시글 카운팅
 	public int countBoardList();
 	
+	// 멤버 페이지 나의 게시글 카운팅
+	public int countMyBoardList(String id);
+	
 	// 멤버 페이지 게시글 디테일
 	public BoardVo selectOneContent(int num);
 	
@@ -55,7 +58,7 @@ public interface MemberMapper {
 	public int meetingRoomRent(int roomNum);
 	
 	// 나의 예약 현황 조회
-	public List<ReservationVo> myReservationList();
+	public List<ReservationVo> myReservationList(int memNum);
 	
 	// 결제 후 최종 예약 테이블 저장(reservation 테이블)
 	public int fixReservation(ReservationVo reservaion);
@@ -64,6 +67,6 @@ public interface MemberMapper {
 	public int cancleReservation(int roomNum, String useStartTime, String reservationDay);
 	
 	//마이페이지 내가쓴글 리스트
-	public List<PaginationVo> memberOneBoardPaginationList(String id, PaginationVo pagination);
+	public List<PaginationVo> memberOneBoardPaginationList(@Param("id") String id, @Param("pagination") PaginationVo pagination);
 	
 }
