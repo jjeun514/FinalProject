@@ -28,6 +28,8 @@ $(document).ready(function() {
 		if ( $('#reservationDay').val() == "" ) {
 			document.getElementById('showAlertForChoice').innerHTML="<b><font color='red'>날짜를 선택해주세요</font><b>";
 			return false;
+		} else if ( $('#reservationDay').val() != "" ) { // 이거 안됨
+			document.getElementById('showAlertForChoice').innerHTML="";
 		}
 		
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
@@ -37,35 +39,33 @@ $(document).ready(function() {
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZapplyClick').click(function() { 
 
+		var memNum = $("#memNum").val();
+		var memName = $("#memName").val();
 		var roomNum = $("#roomNum").val();
 		var useStartTime = $("#useStartTime").val();
 		var useFinishTime = $("#useFinishTime").val();
 		var userCount = $("#userCount").val();
 		var reservationDay = $('#reservationDay').val();
 		
-//		if ( $("#roomNum").text() == "" ) {
-//			alert("회의실을 선택해주세요");
-//			return false;
-//		}
-//		
-//		if ( $("#useStartTime").text() == "" ) {
-//			alert("시작 시간을 선택해주세요");
-//			return false;
-//		}
-//		
-//		if ( $("#useStartTime").text() == "" ) {
-//			alert("사용 시간을 선택해주세요");
-//			return false;
-//		}
-//		
-//		if ( $("#userCount").text() == "" ) {
-//			alert("인원을 선택해주세요");
-//			return false;
-//		}
+		if ( $("#roomNum").val() == "선택해주세요" ) {
+			alert("회의실을 선택해주세요");
+			return false;
+		}
+		
+		if ( $("#useStartTime").val() == "선택해주세요" ) {
+			alert("시작 시간을 선택해주세요");
+			return false;
+		}
+		
+		if ( $("#useFinishTime").val() == "선택해주세요" ) {
+			alert("사용 시간을 선택해주세요");
+			return false;
+		}
 		
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
-		// 여기서 예약자 전달해줘야 함
 		var applyContent = {
+			memNum : memNum,
+			memName : memName,
 			roomNum : roomNum,
 			useStartTime : useStartTime,
 			useFinishTime : useFinishTime,
@@ -121,6 +121,7 @@ $(document).ready(function() {
 				// 예약 취소 성공
 				if ( data.resultCode == 1 ) { 
 					alert(data.resultMessage);
+					location.href = "/reservation";
 				// 예약 취소 실패
 				} else if ( data.resultCode == 0 ) { 
 					alert(data.resultMessage);
@@ -159,25 +160,32 @@ function roomInfo() {
 
 // 나의 회의실 예약 내역 정보
 function myREZ() {
+	
+	var memNum = $("#memNum").val();
+	
 	$.ajax({
 		url : "/reservation/myReservationList",
 		type : "GET",
+		data : { memNum },
 		dataType : "json",
 		success : function(data) {
-			$('#myREZList *').remove(); 
+			console.log(data);
+			$('#myREZList *').remove();
 			for ( var no = 0; no < data.myList.length; no++ ){
-				$('#myREZList').append("<option value = "+data.myList[no].roomNum+"/"+data.myList[no].reservationDay+"/"+data.myList[no].useStartTime+">"+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
+				$('#myREZList').append("<option value = "+data.myList[no].roomNum+"/"+data.myList[no].memNum+"/"+data.myList[no].reservationDay+"/"+data.myList[no].useStartTime+">"+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
 			}
 		},
 		error : function () { alert("나의 회의실 예약 정보를 불러오지 못했습니다. 다시 시도해주세요."); }
 	});
 }
 
-// 결제 정보 POST 방식으로 보내는 함수
+// paymentApplyFunction2 이 펑션은 수행하지 않음
 function paymentApplyFunction2(data) {
 	
 	var formdata = new FormData();
 	
+	formdata.append("memNum", data.memNum);
+	formdata.append("memName", data.memName);
 	formdata.append("roomNum", data.room);
 	formdata.append("day", data.day);
 	formdata.append("useStartTime", data.startT);
@@ -186,7 +194,9 @@ function paymentApplyFunction2(data) {
 	formdata.append("amount", data.amount);
 	
 	/*
-	formData는 
+	formData는 console.log();로 출력이 안된다.
+	브라우저 정책에 따른 결과인 것으로 생각중.
+	따라서 아래와 같이 for문으로 출력해야 한다.
 	*/
 	for (let key of formdata.keys()) { console.log(key); }
 	for (let value of formdata.values()) { console.log(value); }
@@ -259,14 +269,14 @@ $( function() {
 						
 						var list = data.allList[no];
 						
-						if ( list.memNum == 1 ) {
+						if ( list.memNum == $("#memNum").val() ) {
 							if ( list.finishT-list.startT > 1 ) {
 								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 							} else {
 								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.6)");
 							}
-						} else if ( list.memNum != 1 ) {
+						} else if ( list.memNum != $("#memNum").val() ) {
 							if ( list.finishT-list.startT > 1 ) {
 								$("#"+list.roomNum+"_"+list.startT).eq(0).css("background-color", "rgba(0,0,0,0.2)");
 								$("#"+list.roomNum+"_"+(parseInt(list.startT)+1)).eq(0).css("background-color", "rgba(0,0,0,0.2)");
@@ -349,7 +359,9 @@ function noWeekend(date) {
 
 							        	<form id = "REZApply" class="form-horizontal">
 							        	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
-							        	
+							        	<input type="hidden" id = "memNum" name="memNum" value="${member.memNum}"/>
+							        	<input type="hidden" id = "memName" name="memNname" value="${member.memName}"/>
+							        	<!-- 브랜치코드를 받아올 것 -->
 							        	  <div class="form-group">
 							        		<label id = "day" class="col-sm-12 control-label"></label>
 							        	  </div>
@@ -441,7 +453,6 @@ function noWeekend(date) {
 					</div>
 				</div>
 			</div>
-			<p></p>
 			<p>* 회의실 예약은 최대 2시간까지 가능합니다.</p>
 			<p>* 회의실 예약은 결제가 완료되어야 확정됩니다.</p>
 			<p>* 문의 : 112</p>
@@ -451,13 +462,3 @@ function noWeekend(date) {
 <!--body end-->
 <%@ include file="./template/footer.jspf" %>
 </html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->
