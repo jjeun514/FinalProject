@@ -21,4 +21,8 @@
     	 ) tot
     	 group by tot.roomNum, tot.reservationDay
    	</select>
+   	<select id="selectOne" resultType="com.bit.fn.model.vo.ReservationVo">
+    	 select roomNum,memNum,reservationDay,useStartTime,useFinishTime,userCount,fee,etc,ckeckPay,merchant_uid 
+    	 from reservation where memNum=#{memNum} order by reservationDay desc, useStartTime desc
+   	</select>
 </mapper>

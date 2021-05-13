@@ -23,4 +23,7 @@ public class ReservationService {
 	public List<ReservationVo> countReservation(String today) {
 		return reservationMapper.countReservation(today);
 	}
+	public  List<ReservationVo> selectOne(int memNum) {
+		return reservationMapper.selectOne(memNum);
+	}
 }

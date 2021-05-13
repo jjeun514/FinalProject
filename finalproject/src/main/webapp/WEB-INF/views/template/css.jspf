@@ -968,6 +968,10 @@
 		.mypagePaging{
 			margin-left: 350px;
 		}
+		.mypagePaging2{
+			margin-left: 180px;
+		}
+		
 		.paginated1{
 			margin-top : 25px;
 			width: 900px;
@@ -1019,6 +1023,8 @@
 		.myBbsRow{
 			height: 630px;
 		}
-		
+		.paginated2 tr, .paginated2 td{
+			text-align: center;
+		}
 	    
 </style>

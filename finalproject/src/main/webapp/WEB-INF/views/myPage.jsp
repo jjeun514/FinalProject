@@ -819,6 +819,7 @@ $(function(){
 // table pagination
 
 page('paginated1');
+page('paginated2');
 
 
 });
@@ -1093,17 +1094,30 @@ page('paginated1');
       	<div id="mypageMargin">
         	<h4 class="mypageReservationTitle">예약내역</h4>
         	<table class="table paginated2">
-        		<thead>
+        		<thead class="thead-light">
         			<tr>
-        				<th>gg</th>
+        				<th>예약일</th>
+        				<th>방번호</th>
+        				<th>입실시간</th>
+        				<th>퇴실시간</th>
+        				<th>사용인원</th>
         			</tr>
         		</thead>
         		<tbody>
+        			<c:forEach items="${myReservation }" var="myRevList">
         			<tr>
-        				<td>ggg</td>
+        				<td>${myRevList.reservationDay }</td>
+        				<td>${myRevList.roomNum }호</td>
+        				<td>${myRevList.useStartTime }</td>
+        				<td>${myRevList.useFinishTime }</td>
+        				<td>${myRevList.userCount }</td>
         			</tr>
+        			</c:forEach>
         		</tbody>
         	</table>
+        	<div class="btnContent">
+			<div class="pagination mypagePaging2" id="pagination">페이지 영역</div>
+			</div>
         </div>
       </div>
       </sec:authorize>
