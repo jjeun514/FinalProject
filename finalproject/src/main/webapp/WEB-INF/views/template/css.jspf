@@ -1052,4 +1052,5 @@
 			hite-space : nowrap;
 			text-overflow: ellipsis;
 		}
+		
 </style>
