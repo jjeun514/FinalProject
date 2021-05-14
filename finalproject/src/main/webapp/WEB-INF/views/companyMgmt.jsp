@@ -36,27 +36,27 @@ $('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 		<c:forEach items="${spaceInfo}" var="spaceInfo">
 			<c:if test="${spaceInfo.occupancy eq 0}">
 				<tr id="highlight" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}">
-					<td><a href="#">${spaceInfo.branchName}</a></td>
-					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
-					<td><a href="#">${spaceInfo.acreages}</a></td>
-					<td><a href="#">${spaceInfo.rent}</a></td>
-					<td id="empty"><a href="#">공실</a></td>
-					<td><a href="#">${spaceInfo.comName}</a></td>
-					<td><a href="#">${spaceInfo.max}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.branchName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.floor}</a></td>
+					<td class="officeName"><a href="#" onclick="return false;">${spaceInfo.officeName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.acreages}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.rent}</a></td>
+					<td id="empty"><a href="#" onclick="return false;">공실</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.comName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.max}</a></td>
 				</tr>
 			</c:if>
 			
 			<c:if test="${spaceInfo.occupancy eq 1}">
 				<tr id="spaceInfo" data-toggle="modal" data-target="#detail" data-officename="${spaceInfo.officeName}">
-					<td><a href="#">${spaceInfo.branchName}</a></td>
-					<td><a href="#">${spaceInfo.floor}</a></td>
-					<td class="officeName"><a href="#">${spaceInfo.officeName}</a></td>
-					<td><a href="#">${spaceInfo.acreages}</a></td>
-					<td><a href="#">${spaceInfo.rent}</a></td>
-					<td id="occupied"><a href="#">임대</a></td>
-					<td><a href="#">${spaceInfo.comName}</a></td>
-					<td><a href="#">${spaceInfo.max}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.branchName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.floor}</a></td>
+					<td class="officeName"><a href="#" onclick="return false;">${spaceInfo.officeName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.acreages}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.rent}</a></td>
+					<td id="occupied"><a href="#" onclick="return false;">임대</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.comName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.max}</a></td>
 				</tr>
 			</c:if>
 		</c:forEach>

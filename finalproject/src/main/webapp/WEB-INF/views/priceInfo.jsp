@@ -13,7 +13,7 @@ $(document).ready(function(){
 	$(document).on('click','#submitApplication',function() {
 		if($('#yourName').val()==""||$('#yourCompany').val()==""||$('#yourPhone').val()==""||$('#yourEmail').val()==""||$('#yourCrew').val()==""||$('#yourBudget').val()==""){
 			console.log('이름/회사명/연락처/이메일/인원/금액 공백임');
-			document.getElementById('modalText01').innerHTML='필수 항목을 모두 입력해주세요.';
+			document.getElementById('modalText01').textContent='필수 항목을 모두 입력해주세요.';
 			$('#dangerModal').modal('show');
 			return false;
 		} else{
@@ -25,7 +25,7 @@ $(document).ready(function(){
 			$("#yourCrew").attr('disabled',true);
 			$("#yourBudget").attr('disabled',true);
 			$("#yourMessage").attr('disabled',true);
-			document.getElementById('modalText01').innerHTML='처리중입니다. 잠시만 기다려주세요.';
+			document.getElementById('modalText01').textContent='처리중입니다. 잠시만 기다려주세요.';
 			$('.closeDangerModal').hide()
 			$('#dangerModal').css('color','red');
 			$('#dangerModal').modal('show');
@@ -45,7 +45,7 @@ $(document).ready(function(){
 				success: function(){
 					$('#submitApplication').attr('disabled',false);
 					$('#dangerModal').modal('hide');
-					document.getElementById('modalText02').innerHTML='상담 신청을 해주셔서 감사합니다. 곧 연락드리겠습니다.';
+					document.getElementById('modalText02').textContent='상담 신청을 해주셔서 감사합니다. 곧 연락드리겠습니다.';
 					$('#primaryModal').modal('show');
 					$('#primaryModal').on('hidden.bs.modal',function(){
 						console.log('modal 닫힘');
@@ -55,7 +55,7 @@ $(document).ready(function(){
 				error: function(request, status, error){
 					console.log("ajax 에러");
 					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					document.getElementById('modalText01').innerHTML='오류가 발생했습니다. 다시 시도해주세요.';
+					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
 			})

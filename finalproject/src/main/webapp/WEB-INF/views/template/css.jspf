@@ -31,6 +31,7 @@
 			height: 800px;
 			margin-top: -350px;
 		}
+		    
 	/* 마이페이지 */
 		.mypage{
 			position: relative;
@@ -50,7 +51,7 @@
 		.left-nav>div>a{
 			color:black;
 		}
-		
+			    
 	/* footer*/
 		footer>div>div>p{
 			margin: 50px;
@@ -347,7 +348,7 @@
 			text-align: center;
 			width: 80%;
 		}
-		#priceData a, #spaceInfo a, #highlight a{
+		#priceData a, #spaceInfo a, #highlight a, #masterAccounts a{
 			display: block;
 			width: 100%;
 			height: 100%;
@@ -355,7 +356,11 @@
 		#priceData>td, #spaceInfo>td, #highlight>td{
 			padding: 0px;
 		}
-		#priceData:hover, #spaceInfo:hover{
+		#masterAccounts>td {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		#priceData:hover, #spaceInfo:hover, #masterAccounts:hover{
 			background-color: #eaf9f1;
 		}
 		#highlight:hover{
@@ -363,6 +368,7 @@
 		}
 		#priceData>td>a:hover, #priceData>td>a:active, #priceData>td>a:visited, #priceData>td>a:link,
 		#spaceInfo>td>a:hover, #spaceInfo>td>a:active, #spaceInfo>td>a:visited, #spaceInfo>td>a:link,
+		#masterAccounts>td>a:hover, #masterAccounts>td>a:active, #masterAccounts>td>a:visited, #masterAccounts>td>a:link,
 		#highlight>td>a:hover, #highlight>td>a:active, #highlight>td>a:visited, #highlight>td>a:link{
 			color: black;
 			text-decoration: none;
@@ -788,7 +794,7 @@
 			text-align: right;
 			border-top: 0;
 		}
-		.addSpaceBtn, .addMasterBtn {
+		.addSpaceBtn, .addMasterBtn, .goBackBtn {
 			width: 80px;
 		}
 		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable {
@@ -831,8 +837,11 @@
 			width: 160px;
 			text-align: center;
 		}
-		.addMasterBtn {
+		.addMasterBtn, .goBackBtn {
 			width: 100px;
+		}
+		.goBackBtn {
+			margin-left: 30px;
 		}
 		
 	/* 공간 상세 정보 */
@@ -895,8 +904,20 @@
 	    #signInBtn{
 	   		width: 350px;
 	    }
+	 
+	 /* 마스터계정 */
+	 	.masterAccountTitle {
+	 		text-align: center;
+	 	}
+	 	#accountDetail input {
+	 		text-align: center;
+	 		border: 0;
+	 	}
+	 	#accountDetail input:focus {
+	 		outline: none;
+	 	}
 	    
-	    /*마이페이지*/
+	 /*마이페이지*/
 	    #mypageMargin{
 			margin-top: 10px;
 			margin-left: 30px;
@@ -1026,5 +1047,4 @@
 		.paginated2 tr, .paginated2 td{
 			text-align: center;
 		}
-	    
 </style>
