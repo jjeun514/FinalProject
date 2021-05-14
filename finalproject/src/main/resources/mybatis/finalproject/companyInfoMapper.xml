@@ -14,4 +14,35 @@
    	<select id="selectAllCompany" resultType="com.bit.fn.model.vo.CompanyInfoVo">
    		select comName from companyInfo
    	</select>
+   	
+   	<!-- 마스터계정 추가 시, 회사코드 중복체크 -->
+   	<select id="comCodeCheck" resultType="com.bit.fn.model.vo.CompanyInfoVo">
+   		select comCode from companyInfo
+   		where comCode=#{comCode}
+   	</select>
+   	
+   	<!-- 마스터계정 추가 시, 회사명 중복체크 -->
+   	<select id="comNameCheck" resultType="com.bit.fn.model.vo.CompanyInfoVo">
+   		select comName from companyInfo
+   		where comName=#{comName}
+   	</select>
+   	
+   	<!-- 마스터계정 추가 시, 회사전화 중복체크 -->
+   	<select id="comPhoneCheck" resultType="com.bit.fn.model.vo.CompanyInfoVo">
+   		select comPhone from companyInfo
+   		where comPhone=#{comPhone}
+   	</select>
+   	
+   	<!-- 마스터계정 관리에서 수정 -->
+   	<update id="updateCompanyInfo">
+   		update companyInfo set ceo=#{ceoValue}, manager=#{managerValue}, comPhone=#{comPhoneValue}
+		where comCode=#{comCode} and comName=#{comName}
+   	</update>
+   	
+   	<!-- 마스터계정 수정 시, 회사전화번호 중복 체크 -->
+   	<select id="selectComPhone" resultType="com.bit.fn.model.vo.CompanyInfoVo">
+   		select comPhone from companyInfo
+		where comPhone=#{comPhone}
+		and not comCode=#{comCode}
+   	</select>
 </mapper>

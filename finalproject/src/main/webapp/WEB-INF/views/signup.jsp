@@ -30,14 +30,14 @@ $(document).on('click','#authBtn',function() {
 		따라서, gamil이 아닌 경우에도 알림띄움 */
 	if (email==""||!(email.endsWith("@gmail.com"))) {
 		console.log("공백/지메일 아님");
-		document.getElementById('modalText01').innerHTML='올바른 이메일을 입력해주세요.';
+		document.getElementById('modalText01').textContent='올바른 이메일을 입력해주세요.';
 		$('#dangerModal').modal('show');
 		return false;
 	} else {
 		$('#emailInput').attr('disabled', true);
 		$('#authBtn').attr('disabled', true);
 		$('#msg').show();
-		document.getElementById('modalText01').innerHTML='잠시만 기다려주세요.';
+		document.getElementById('modalText01').textContent='잠시만 기다려주세요.';
 		$('#dangerModal').modal('show');
 		console.log("이메일 넘겨서 인증번호 전송될 차례");
 		
@@ -56,7 +56,7 @@ $(document).on('click','#authBtn',function() {
 				$('#msg').hide();
 				$('#codeInput').attr("disabled", false);
 				$('#codeInput').show();
-				document.getElementById('modalText02').innerHTML='인증번호가 전송되었습니다.';
+				document.getElementById('modalText02').textContent='인증번호가 전송되었습니다.';
 				$('#primaryModal').modal('show');
 				document.getElementById('codeInput').disabled=false;
 				
@@ -78,7 +78,7 @@ $(document).on('click','#authBtn',function() {
 						if(codeInput==code){
 							console.log('인증코드 일치');
 							
-							document.getElementById('modalText02').innerHTML='감사합니다. 인증에 성공하였습니다.';
+							document.getElementById('modalText02').textContent='감사합니다. 인증에 성공하였습니다.';
 							$('#primaryModal').modal('show');
 							
 							$("#codeInput").prop("readonly","readonly");
@@ -102,7 +102,7 @@ $(document).on('click','#authBtn',function() {
 								var memNickName = $('.memNickName').val();
 								console.log(memNickName);
 								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
-									document.getElementById('modalText01').innerHTML='공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요.';
+									document.getElementById('modalText01').textContent='공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요.';
 									$('#dangerModal').modal('show');
 								}else{
 									$.ajax({
@@ -114,13 +114,13 @@ $(document).on('click','#authBtn',function() {
 										success: function(data){
 													console.log("data",data);
 													if(data=="Available"){
-														document.getElementById('modalText02').innerHTML='사용가능한 닉네임입니다.';
+														document.getElementById('modalText02').textContent='사용가능한 닉네임입니다.';
 														$('#primaryModal').modal('show');
 														//닉네임을 바꾸지 못하게 readonly
 														$(".memNickName").prop("readonly","readonly");
 														check=1;
 													}else{
-														document.getElementById('modalText01').innerHTML='사용중인 닉네임입니다.';
+														document.getElementById('modalText01').textContent='사용중인 닉네임입니다.';
 														$('#dangerModal').modal('show');
 													}
 												 },
@@ -140,18 +140,18 @@ $(document).on('click','#authBtn',function() {
 							$(".btnRegister").click(function(){
 								//닉네임 중복 검사 유무 및 중복 여부 확인
 								if(check!=1){
-									document.getElementById('modalText01').innerHTML='닉네임 중복 검사를 완료하시기 바랍니다.';
+									document.getElementById('modalText01').textContent='닉네임 중복 검사를 완료하시기 바랍니다.';
 									$('#dangerModal').modal('show');
 									return false;
 								//이메일 인증 시 아이디 값과 현재 값이 다른지 체크 
 								}else if(!(user==$(".username").val())){
-									document.getElementById('modalText01').innerHTML='강제 변경된 아이디는 허용하지 않습니다.';
+									document.getElementById('modalText01').textContent='강제 변경된 아이디는 허용하지 않습니다.';
 									$('#dangerModal').modal('show');
 									return false;
 								//패스워드 값 체크
 									//1. 8~16자리 이내
 								}else if($('.password1').val().length>16 || $('.password1').val().length<8){
-									document.getElementById('modalText01').innerHTML='비밀번호는 8~16자리까지 입력해야합니다.';
+									document.getElementById('modalText01').textContent='비밀번호는 8~16자리까지 입력해야합니다.';
 									$('#dangerModal').modal('show');
 									return false;
 									
@@ -159,25 +159,25 @@ $(document).on('click','#authBtn',function() {
 								}else if(!(pattern_spc.test($('.password1').val())) ||
 										!(pattern_num.test($('.password1').val())) ||
 										!(pattern_eng.test($('.password1').val())) ){
-									document.getElementById('modalText01').innerHTML='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
+									document.getElementById('modalText01').textContent='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
 									$('#dangerModal').modal('show');
 									return false;
 									//3. 비밀번호 확인 번호와 일치 여부 체크
 								}else if(!($('.password1').val()==$('.password2').val())){
-									document.getElementById('modalText01').innerHTML='비밀번호와 확인번호가 서로 일치하지 않습니다.';
+									document.getElementById('modalText01').textContent='비밀번호와 확인번호가 서로 일치하지 않습니다.';
 									$('#dangerModal').modal('show');
 									return false;
 									
 								//이름 체크
 									//1. 2자이상 10자 이하	
 								}else if($('.memName').val().length>10 || $('.memName').val().length<2){
-									document.getElementById('modalText01').innerHTML='이름은 2자 이상 10자리 이내로 입력해주세요.';
+									document.getElementById('modalText01').textContent='이름은 2자 이상 10자리 이내로 입력해주세요.';
 									$('#dangerModal').modal('show');
 									return false;
 									//2. $('.memName').val('이름')을 통한 특수문자, 숫자 입력 방어
 								}else if(pattern_spc.test($('.memName').val()) || 
 										 pattern_num.test($('.memName').val())){
-									document.getElementById('modalText01').innerHTML='강제 입력한 이름은 허용하지 않습니다.';
+									document.getElementById('modalText01').textContent='강제 입력한 이름은 허용하지 않습니다.';
 									$('#dangerModal').modal('show');
 									$('.memName').val("");
 									return false;
@@ -185,12 +185,12 @@ $(document).on('click','#authBtn',function() {
 								//닉네임 체크
 									//1. 2자이상 10자 이하	
 								}else if($('.memNickName').val().length>10 || $('.memNickName').val().length<2){
-									document.getElementById('modalText01').innerHTML='닉네임은 2자 이상 10자리 이내로 입력해주세요.';
+									document.getElementById('modalText01').textContent='닉네임은 2자 이상 10자리 이내로 입력해주세요.';
 									$('#dangerModal').modal('show');
 									return false;
 									//2. $('.memNickName').val('닉네임')을 통한 특수문자 입력 방어
 								}else if(pattern_spc.test($('.memNickName').val())){
-									document.getElementById('modalText01').innerHTML='강제 입력은 허용하지 않습니다.';
+									document.getElementById('modalText01').textContent='강제 입력은 허용하지 않습니다.';
 									$('#dangerModal').modal('show');
 									$('.memNickName').val("");
 									return false;
@@ -198,13 +198,13 @@ $(document).on('click','#authBtn',function() {
 								//부서 체크
 									//1. 2자이상 20자 이하	
 								}else if($('.dept').val().length>20 || $('.dept').val().length<2){
-									document.getElementById('modalText01').innerHTML='부서는 2자 이상 20자리 이내로 입력해주세요.';
+									document.getElementById('modalText01').textContent='부서는 2자 이상 20자리 이내로 입력해주세요.';
 									$('#dangerModal').modal('show');
 									$('.dept').focus();
 									return false;
 									//2. $('.dept').val('부서')을 통한 특수문자 입력 방어
 								}else if(pattern_spc.test($('.dept').val())){
-									document.getElementById('modalText01').innerHTML='강제 입력은 허용하지 않습니다.';
+									document.getElementById('modalText01').textContent='강제 입력은 허용하지 않습니다.';
 									$('#dangerModal').modal('show');
 									$('.dept').val("");
 									return false;
@@ -212,13 +212,13 @@ $(document).on('click','#authBtn',function() {
 								//번호 체크
 									//1. 9자이상 15자 이하	
 								}else if($('.memPhone').val().length>15 || $('.memPhone').val().length<9){
-									document.getElementById('modalText01').innerHTML='번호는 9자 이상 15자리 이내로 입력해주세요.';
+									document.getElementById('modalText01').textContent='번호는 9자 이상 15자리 이내로 입력해주세요.';
 									$('#dangerModal').modal('show');
 									$('.memPhone').focus();
 									return false;
 									//2. $('.memPhone').val('번호')을 통한 문자,특수문자 입력 방어
 								}else if(!(pattern_num.test($('.memPhone').val()))){
-									document.getElementById('modalText01').innerHTML='강제 입력은 허용하지 않습니다.';
+									document.getElementById('modalText01').textContent='강제 입력은 허용하지 않습니다.';
 									$('#dangerModal').modal('show');
 									$('.memPhone').val("");
 									return false;
@@ -233,7 +233,7 @@ $(document).on('click','#authBtn',function() {
 							
 						} else{
 							console.log('인증코드 불일치');
-							document.getElementById('modalText01').innerHTML='인증번호가 일치하지 않습니다.';
+							document.getElementById('modalText01').textContent='인증번호가 일치하지 않습니다.';
 							$('#dangerModal').modal('show');
 							$(".btnRegister").click(function(){
 								return false;
@@ -271,7 +271,7 @@ $(function(){
 		var username = $(".username").val().replace(/\s/gi,"");
 		console.log(username);
 		if(username==""||!(username.endsWith("@gmail.com"))){
-			document.getElementById('modalText01').innerHTML='공백 및 지메일 아이디를 확인해주세요';
+			document.getElementById('modalText01').textContent='공백 및 지메일 아이디를 확인해주세요';
 			$('#dangerModal').modal('show');
 		}else{
 			$.ajax({
@@ -282,7 +282,7 @@ $(function(){
 				success: function(data){
 							console.log("data",data);
 							if(data=="Available"){
-								document.getElementById('modalText02').innerHTML='사용가능한 아이디입니다.';
+								document.getElementById('modalText02').textContent='사용가능한 아이디입니다.';
 								$('#username').val(username);
 								$('#primaryModal').modal('show');
 								//인증버튼 활성화
@@ -292,7 +292,7 @@ $(function(){
 								$(".userCheck").hide();
 								$('#authBtn').show();
 							}else{
-								document.getElementById('modalText01').innerHTML='사용중인 아이디입니다.';
+								document.getElementById('modalText01').textContent='사용중인 아이디입니다.';
 								$('#dangerModal').modal('show');
 							}
 						 },
@@ -309,7 +309,7 @@ $(function(){
 	
 	
 	$(".btnRegister").on("click", function(){
-		document.getElementById('modalText01').innerHTML='인증 먼저 부탁드립니다.';
+		document.getElementById('modalText01').textContent='인증 먼저 부탁드립니다.';
 		$('#dangerModal').modal('show');
 	});
 	
@@ -332,7 +332,7 @@ $(function(){
 		
 		if(pattern_spc.test($(data).prop('key')) || pattern_num.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
-				document.getElementById('modalText01').innerHTML='이름에 숫자 및 특수문자는 사용할 수 없습니다.';
+				document.getElementById('modalText01').textContent='이름에 숫자 및 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
 				$('.memName').val("").focus();
 			}
@@ -347,7 +347,7 @@ $(function(){
 		
 		if(pattern_spc.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
-				document.getElementById('modalText01').innerHTML='닉네임에 특수문자는 사용할 수 없습니다.';
+				document.getElementById('modalText01').textContent='닉네임에 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
 				$('.memNickName').val("").focus();
 			}
@@ -362,7 +362,7 @@ $(function(){
 		
 		if(pattern_spc.test($(data).prop('key')) || window.event.keyCode==32){
 			if($(data).prop('key')!='Backspace'){
-				document.getElementById('modalText01').innerHTML='부서에 특수문자는 사용할 수 없습니다.';
+				document.getElementById('modalText01').textContent='부서에 특수문자는 사용할 수 없습니다.';
 				$('#dangerModal').modal('show');
 				$('.dept').val("").focus();
 			}
@@ -376,7 +376,7 @@ $(function(){
 		}
 		if(!pattern_num.test($(data).prop('key'))){
 			if($(data).prop('key')!='Backspace'){
-				document.getElementById('modalText01').innerHTML='숫자만 입력 가능합니다.';
+				document.getElementById('modalText01').textContent='숫자만 입력 가능합니다.';
 				$('#dangerModal').modal('show');
 				$('.memPhone').val("").focus();
 			}

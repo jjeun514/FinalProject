@@ -14,4 +14,5 @@ public interface ReservationMapper {
 	public List<ReservationVo> selectAll();
 	public List<ReservationVo> selectAllRoomNum();
 	public List<ReservationVo> countReservation(String today);
+	public List<ReservationVo> selectOne(int memNum);
 }

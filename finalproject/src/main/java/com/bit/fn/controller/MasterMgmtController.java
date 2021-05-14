@@ -43,6 +43,7 @@ public class MasterMgmtController {
 	
 	@Autowired
 	CompanyinfoService companyInfoService;
+	int comPhoneCheck;
 	
 	@Autowired
 	OfficeService officeService;
@@ -121,36 +122,34 @@ public class MasterMgmtController {
 		System.out.println("[MasterMgmtController(addMasterAccountPost())] occupancyCheck: "+occupancyCheck);
 		System.out.println("★★★★★"+occupancyCheck.get(0).getOffice().getOccupancy());
 		System.out.println("★★★★★"+occupancyCheck.get(0).getOffice().getComName());
-		if(occupancyCheck.get(0).getOffice().getOccupancy()==0 && occupancyCheck.get(0).getOffice().getComName()==null) {
-			// companyInfo 추가
-			officeNum=officeService.selectOfficeNum(officeSelected, floorSelected);
-			System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
-			companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
-			// 마스터 계정 추가
-			id=username;
-			masterAccountService.insertOne(id, comCode);
-			s_accountService.masterSave(account);
-			return "가능";
+		
+		// 회사코드 & 회사명 중복 체크
+		if(companyInfoService.comCodeCheck(comCode).isEmpty()) {
+			if(companyInfoService.comNameCheck(comName).isEmpty()) {
+				if(companyInfoService.comPhoneCheck(comPhone).isEmpty()) {
+					if(occupancyCheck.get(0).getOffice().getOccupancy()==0 && occupancyCheck.get(0).getOffice().getComName()==null) {
+						// companyInfo 추가
+						officeNum=officeService.selectOfficeNum(officeSelected, floorSelected);
+						System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
+						companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
+						// 마스터 계정 추가
+						id=username;
+						masterAccountService.insertOne(id, comCode);
+						s_accountService.masterSave(account);
+						return "가능";
+					} else {
+						System.out.println("[MasterMgmtController(addMasterAccountPost())] 입주중복");
+						return "중복";
+					}
+				} else {
+					return "회사전화중복";
+				}
+			} else {
+				return "회사명중복";
+			}
 		} else {
-			System.out.println("[MasterMgmtController(addMasterAccountPost())] 입주중복");
-			return "중복";
+			return "회사코드중복";
 		}
-		/*
-		try {
-			// companyInfo 추가
-			officeNum=officeService.selectOfficeNum(officeSelected, floorSelected);
-			System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
-			companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
-			// 마스터 계정 추가
-			id=username;
-			masterAccountService.insertOne(id, comCode);
-			s_accountService.masterSave(account);
-		}catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/jungbok";
-		}
-		return "redirect:/masterMgmt";
-		*/
 	}
 
 	@RequestMapping(path="/branchSelected", method=RequestMethod.POST)
@@ -205,6 +204,32 @@ public class MasterMgmtController {
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
 			System.out.println("[MasterMgmtController(floorSelected())] null");
+		}
+		return new ResponseEntity(status);
+	}
+	
+	// 마스터계정 수정
+	@RequestMapping(path="/updateCompanyInfo", method=RequestMethod.POST)
+	public ResponseEntity updateCompanyInfo(String ceoValue, String managerValue, String comPhoneValue, int comCode, String comName) {
+		HttpStatus status;
+		System.out.println("[MasterMgmtController(updateCompanyInfo())]");
+		System.out.println("[MasterMgmtController(updateCompanyInfo())] ceoValue: "+ceoValue+", managerValue: "+managerValue+", comPhoneValue: "+comPhoneValue+", comCode: "+comCode+", comName: "+comName);
+
+			
+		try {
+			status=HttpStatus.OK;
+			if(companyInfoService.selectComPhone(comPhoneValue, comCode).isEmpty()) {
+				companyInfoService.updateCompanyInfo(ceoValue, managerValue, comPhoneValue, comCode, comName);
+				System.out.println("[MasterMgmtController(updateCompanyInfo())] "+comName+" 정보 수정 완료");
+			} else {
+				status=HttpStatus.NOT_ACCEPTABLE;
+				System.out.println("[MasterMgmtController(updateCompanyInfo())] comPhone 중복");
+			}
+		} catch(NullPointerException e) {
+			System.out.println("[MasterMgmtController(updateCompanyInfo())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[MasterMgmtController(updateCompanyInfo())] null");
 		}
 		return new ResponseEntity(status);
 	}
