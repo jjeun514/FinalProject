@@ -45,4 +45,15 @@
 		where comPhone=#{comPhone}
 		and not comCode=#{comCode}
    	</select>
+   	
+   	<!-- 마스터계정 삭제 시, 회사정보 삭제  -->
+   	<delete id="deleteCompanyInfo">
+   		delete from companyInfo
+   		where comCode=#{comCode}
+   	</delete>
+   	
+   	<!-- 회사코드를 통한 오피스 번호 찾기 -->
+   	<select id="selectOfficeNum" resultType="com.bit.fn.model.vo.CompanyInfoVo">
+   		select officeNum where comCode=#{comCode}
+   	</select>
 </mapper>

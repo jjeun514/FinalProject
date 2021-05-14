@@ -45,4 +45,7 @@ public class OfficeService {
 	public int updateOffice(int acreagesInput, int rentInput, int maxInput, int officeNum) {
 		return officeMapper.updateOffice(acreagesInput, rentInput, maxInput, officeNum);
 	}
+	public int updateOccupancy(int occupancy, int officeNum) {
+		return officeMapper.updateOccupancy(occupancy, officeNum);
+	}
 }

@@ -19,4 +19,5 @@ public interface OfficeMapper {
 	public int selectOfficeNum(String officeName, int floorInput);
 	public int updateOffice(int acreagesInput, int rentInput, int maxInput, int officeNum);
 	public List<OfficeVo> selectAllFloors();
+	public int updateOccupancy(int occupancy, int officeNum);
 }

@@ -20,4 +20,6 @@ public interface CompanyInfoMapper {
 	public List<CompanyInfoVo> comCodeCheck(int comCode);
 	public List<CompanyInfoVo> comNameCheck(String comName);
 	public List<CompanyInfoVo> comPhoneCheck(String comPhone);
+	public int deleteCompanyInfo(int comCode);
+	public int selectOfficeNum(int comCode);
 }
