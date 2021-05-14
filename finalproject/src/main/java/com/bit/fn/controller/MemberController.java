@@ -76,9 +76,7 @@ public class MemberController {
 			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
 			
-		} else {
-			return "redirect:/intro";
-		}
+		} 
 		
 		
 		return "memberBoard";
