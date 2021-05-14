@@ -130,8 +130,7 @@
 			select bbs.num, bbs.title, bbs.date from board bbs
 			left outer join memberInfo mem on bbs.memNum=mem.memNum
 			where mem.id = #{id}
-			order by date desc, num desc
-		) as myList
+		) as myList order by date desc, num desc
 		limit #{pagination.firstRecordIndex}, 10
    	</select>
 </mapper>

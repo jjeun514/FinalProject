@@ -46,7 +46,9 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR){
 				</form>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
+				<!-- 
 				<td class="topRightMenu" id="profileMenu"><span><a href="#">프로필</a></span></td>
+				 -->
 				<td class="topRightMenu" id="mypageMenu"><span><a href="mypage">마이페이지</a></span></td>
 				<td class="topRightMenu" id="memberpageMenu"><span><a href="board">멤버페이지</a></span></td>
 				</sec:authorize>
