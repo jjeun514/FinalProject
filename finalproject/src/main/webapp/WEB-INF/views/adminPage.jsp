@@ -40,13 +40,13 @@
 		</td>
 		
 		<td id="reservationMgmt">
-			<a href="#" id="more">> 더보기</a><br>
+			<a href="#" onclick="return false;" id="more">> 더보기</a><br>
 			<%@ include file="chart.jsp" %>
 		</td>
 	</tr>
 	<tr>
 		<td colspan=2 id="signUpMgmt">
-			<a href="#" id="more">> 더보기</a>
+			<a href="#" onclick="return false;" id="more">> 더보기</a>
 			<h2 id="admissionTitle">〈회원가입 승인 대기자 목록〉</h2>
 			<p id="text01">※ 관리자 승인 대기중인 회원가입 신청서</p>
 			<table id="signUpMgmtTable">

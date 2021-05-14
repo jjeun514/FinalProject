@@ -44,7 +44,7 @@
 			}else if(!(pattern_spc.test($('#newPw').val())) ||
 					!(pattern_num.test($('#newPw').val())) ||
 					!(pattern_eng.test($('#newPw').val())) ){
-				document.getElementById('modalText01').innerHTML='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
+				document.getElementById('modalText01').textContent ='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
 				$('#dangerModal').modal('show');
 				booPattern=false;
 			}else{
@@ -86,14 +86,14 @@
 		$("#newPwBtn").click(function(){
 			//1.새 비밀번호 기능 활성화 여부 확인
 			if(booPattern==false || booNewPw==false){
-				document.getElementById('modalText01').innerHTML='변경할 비밀번호 확인하세요.';
+				document.getElementById('modalText01').textContent ='변경할 비밀번호 확인하세요.';
 				$('#dangerModal').modal('show');
 				return false;
 			//2.비밀번호 강제 값 변경 여부 확인
 			}else if(newPw!=$('#newPw').val() ||
 					newPwConfirm!=$('#newPwConfirm').val()
 					){
-				document.getElementById('modalText01').innerHTML='비밀번호 강제 변경은 금지입니다.';
+				document.getElementById('modalText01').textContent ='비밀번호 강제 변경은 금지입니다.';
 				$('#dangerModal').modal('show');
 				return false;
 			//3. 위 조건을 모두 충족할 경우 비밀번호 변경
@@ -106,13 +106,13 @@
 					dataType: "text",
 					success: function(data){
 								if(data=="success"){
-									document.getElementById('modalText02').innerHTML='비밀번호가 변경되었습니다.';
+									document.getElementById('modalText02').textContent ='비밀번호가 변경되었습니다.';
 									$('#primaryModal').modal('show').click(function(){
 										location.href="index";
 									});
 									
 								}else{
-									document.getElementById('modalText01').innerHTML='변경 오류.';
+									document.getElementById('modalText01').textContent ='변경 오류.';
 									$('#dangerModal').modal('show');
 								}
 							},

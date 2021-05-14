@@ -24,11 +24,11 @@
 							</tr>
 							<tr>
 								<th>이름</th>
-								<th>${detail.memName }</th>
+								<th>${detail.writer }</th>
 							</tr>
 							<tr>
 								<th>회사명</th>
-								<th>${detail.comName }</th>
+								<th>${detail.company }</th>
 							</tr>
 							<tr>
 								<th>날짜</th>

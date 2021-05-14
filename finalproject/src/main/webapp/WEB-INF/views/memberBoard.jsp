@@ -118,8 +118,8 @@
 								<tr>
 									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.num }</a></td>
 									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.title }</a></td>
-									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.memName }</a></td>
-									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.comName }</a></td>
+									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.writer }</a></td>
+									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.company }</a></td>
 									<td><a href = "/board/detail?selectNum=${list.num }" style = "color:black">${list.date }</a></td>
 								</tr>
 							</c:forEach>
