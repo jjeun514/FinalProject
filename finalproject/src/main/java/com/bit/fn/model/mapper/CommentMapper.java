@@ -11,5 +11,17 @@ import com.bit.fn.model.vo.CommentVo;
 @Repository
 @Mapper
 public interface CommentMapper {
-	public List<CommentVo> selectAll();
+	
+	public int countComment();
+	
+	public List<CommentVo> allComment();
+	
+	public int searchMaxCommentNumber(int num);
+	
+	public int insertComment(CommentVo comment);
+	
+	public int updateComment(CommentVo comment);
+	
+	public int deleteComment(int commentNum);
+	
 }

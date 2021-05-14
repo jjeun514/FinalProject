@@ -3,6 +3,7 @@
 
 <mapper namespace="com.bit.fn.model.mapper.MemberMapper">
 
+	<!-- 게시판 -->
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, bbs.memName, com.comName
 		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
@@ -29,6 +30,36 @@
    		select num, title, date, writer, company, content from board where num = #{selectNum}
    	</select>
    	
+   	<!-- 댓글 -->
+   	<select id="countComment" resultType="int">
+   		select count(*) from comment where checkDelete != 1
+   	</select>
+   	
+   	<select id="allComment" resultType="com.bit.fn.model.vo.CommentVo">
+   		select commentNum, num, commentWriter, commentContent, commentDate from comment where checkDelete != 1
+   	</select>
+   	
+   	<select id="searchMaxCommentNumber" resultType="int">
+   		select max(commentNum) from comment where num = #{}
+   	</select>
+   	
+   	<insert id="insertComment" parameterType="com.bit.fn.model.vo.CommentVo">
+   		insert into comment(
+   			commentNum, num, commentWriter, commentContent, commentDate
+   		) values (
+   			#{commentNum}, #{num}, #{commentWriter}, #{commentContent}, now()
+   		)
+   	</insert>
+   	
+   	<update id="updateComment" parameterType="com.bit.fn.model.vo.CommentVo">
+   		update comment set content = #{content} where commentNum = #{commentNum}
+   	</update>
+   	
+   	<update id="deleteComment" parameterType="com.bit.fn.model.vo.CommentVo">
+   		update comment set checkDelete = #{checkDelete} where commentNum = #{commentNum}
+   	</update>
+   	
+   	<!-- 공지 게시판 -->
    	<select id="countNoticeList" resultType="int">
    		select count(*) from notice
    	</select>

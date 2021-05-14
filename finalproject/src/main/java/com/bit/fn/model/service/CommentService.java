@@ -11,10 +11,31 @@ import com.bit.fn.model.vo.CommentVo;
 
 @Service
 public class CommentService {
+
 	@Autowired
 	CommentMapper commentMapper;
 	
-	public List<CommentVo> selectAll(){
-		return commentMapper.selectAll();
+	public int countComment() {
+		return commentMapper.countComment();
+	}
+	
+	public List<CommentVo> allComment() {
+		return commentMapper.allComment();
+	}
+	
+	public int searchMaxCommentNumber(int num) {
+		return commentMapper.searchMaxCommentNumber(num);
+	}
+	
+	public int insertComment(CommentVo comment) {
+		return commentMapper.insertComment(comment);
+	}
+	
+	public int updateComment(CommentVo comment) {
+		return commentMapper.updateComment(comment);
+	}
+	
+	public int deleteComment(int commentNum) {
+		return commentMapper.deleteComment(commentNum);
 	}
 }

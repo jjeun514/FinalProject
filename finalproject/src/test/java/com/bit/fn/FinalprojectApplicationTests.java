@@ -85,7 +85,6 @@ class FinalprojectApplicationTests {
 		assertNotNull(adminAccountService.selectAll());
 		assertNotNull(boardService.selectAll());
 		assertNotNull(branchService.selectAll());
-		assertNotNull(commentService.selectAll());
 		assertNotNull(companyinfoService.selectAll());
 		assertNotNull(masterAccountMapper.selectAll());
 		assertNotNull(memberinfoService.selectAll());

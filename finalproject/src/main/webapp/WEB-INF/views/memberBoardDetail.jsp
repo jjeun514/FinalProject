@@ -17,30 +17,29 @@
 				
 				<div class="col-md-12">
 					<table id = "bbsTable" class="table table-bordered table-hover">
-						<thead>
+						<thead id = "boardDetailContent">
 							<tr>
 								<th>글번호</th>
-								<th>${detail.num }</th>
+								<td>${detail.num }</td>
 							</tr>
 							<tr>
 								<th>이름</th>
-								<th>${detail.writer }</th>
+								<td>${detail.writer }</td>
 							</tr>
 							<tr>
 								<th>회사명</th>
-								<th>${detail.company }</th>
+								<td>${detail.company }</td>
 							</tr>
 							<tr>
 								<th>날짜</th>
-								<th>${detail.date }</th>
+								<td>${detail.date }</td>
+							</tr>
+							<tr>
+								<th>내용</th>
+								<td id = "textField">${detail.content }</td>
 							</tr>
 						</thead>
 						
-						<tbody>
-								<tr>
-									<td colspan = "2" id = "textField">${detail.content }</td>
-								</tr>
-						</tbody>
 					</table>
 					
 					<div id = "detailbtn">
@@ -49,6 +48,26 @@
 						<button id = "deletebtn" type="button" class="btn btn-default">삭제</button>
 					</div>
 				</div>
+				    <!--  댓글  -->
+			    <div class="container">
+			        <label for="content">comment</label>
+			        <form name="commentInsertForm">
+			            <div class="input-group">
+			               <input type="hidden" name="num" value="${detail.num}"/>
+			               <input type="text" class="form-control" id="content" name="content" placeholder="내용을 입력하세요.">
+			               <span class="input-group-btn">
+			                    <button class="btn btn-default" type="button" name="commentInsertBtn">등록</button>
+			               </span>
+			              </div>
+			        </form>
+			    </div>
+			    <%@ include file="./memberBoardComment.jsp" %>
+    <div class="container">
+        <div class="commentList"></div>
+    </div>
+</div>
+
+
 			</div>
 		</div>
 	</div><!--centent end-->
