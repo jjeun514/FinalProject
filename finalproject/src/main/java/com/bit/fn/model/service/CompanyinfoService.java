@@ -45,4 +45,12 @@ public class CompanyinfoService {
 	public List<CompanyInfoVo> selectComPhone(String comPhone, int comCode) {
 		return companyInfoMapper.selectComPhone(comPhone, comCode);
 	}
+	
+	public int deleteCompanyInfo(int comCode) {
+		return companyInfoMapper.deleteCompanyInfo(comCode);
+	}
+	public int selectOfficeNum(int comCode) {
+		return companyInfoMapper.selectOfficeNum(comCode);
+	}
+	
 }

@@ -269,8 +269,8 @@
 		
 		//멤버 계정 부서 2자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".dept").keyup(function(data){
-							   unavailableCharacter(data,"dept",pattern_spc);
 							   dept=$(".dept").val();
+							   unavailableCharacter(data,"dept",pattern_spc);
 						   }).focusout(function(data){
 							   lengthCheck("dept",2,20);
 						   });;
@@ -332,6 +332,13 @@
 							return false;
 						}
 					}
+					//부서 검사
+					if(pattern_spc.test(dept)){
+						document.getElementById('modalText01').textContent='부서에 특수문자는 사용하실 수 없습니다.';
+						$('#dangerModal').modal('show');
+						return false;
+					}
+					
 				}
 			}else{
 				return false;
@@ -833,7 +840,9 @@ page('paginated2');
   <div class="left left-nav">
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
       <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><img src="imgs/person-circle.svg"/><span>회원정보</span></a>
+      <!-- 
       <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false"><img src="imgs/pencil.svg"/><span>프로필 수정</span></a>
+       -->
       <a class="nav-link" id="v-pills-password-tab" data-toggle="pill" href="#v-pills-password" role="tab" aria-controls="v-pills-password" aria-selected="false"><img src="imgs/pencil.svg"/><span>비밀번호 변경</span></a>
       <!-- 멤버일경우 내가 작성한글과 예약내역 -->
 	  <sec:authorize access="hasRole('MEMBER')">
@@ -877,8 +886,10 @@ page('paginated2');
 	           	 	<label id="mypageLabel" class="input-group-text" for="adminBranchCode">지점</label>
 	           	 		<input type="text" class="form-control" name="adminBranchCode" value="${admin.branch.branchName }" readonly="readonly"/>
 	           	 </div>
+	           	 <div>
+	           	  <input type="submit" class="btn btn-primary updateInfoBtn" value="수정하기"/>
+	           	 </div>
 	            </sec:authorize>
-	           
 	            <!-- 마스터일경우  -->
 	       
 	            <sec:authorize access="hasRole('MASTER')">
@@ -990,11 +1001,13 @@ page('paginated2');
 			</form>
 		</div>
       </div>
+      <!-- 
       <div class="tab-pane fade profile" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
       	<div id="mypageMargin">
       	프로필 수정
       	</div>
       </div>
+       -->
       <div class="tab-pane fade updatePw" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
       	<div id="mypageMargin">
       	   <h5 class="mypagePw">비밀번호 변경</h5>

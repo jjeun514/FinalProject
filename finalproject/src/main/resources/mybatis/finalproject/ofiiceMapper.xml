@@ -49,4 +49,12 @@
    		delete from office
 		where officeNum=#{officeNum}
    	</delete>
+   	
+   	<!-- 공간 점유 업데이트 -->
+   	<update id="updateOccupancy">
+   		update office
+		set occupancy=#{occupancy}
+		where officeNum=#{officeNum}
+   	</update>
+   	
 </mapper>
