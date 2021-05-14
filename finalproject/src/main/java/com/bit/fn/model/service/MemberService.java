@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.bit.fn.model.mapper.MemberMapper;
 import com.bit.fn.model.vo.BoardVo;
+import com.bit.fn.model.vo.CommentVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;

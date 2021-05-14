@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.bit.fn.model.vo.BoardVo;
+import com.bit.fn.model.vo.CommentVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;

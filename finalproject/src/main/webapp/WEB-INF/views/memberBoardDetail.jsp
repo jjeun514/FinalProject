@@ -5,8 +5,43 @@
 <script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 <%@ include file="template/memberNavBar.jspf" %>
 <%@ include file="template/cssForMember.jspf" %>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script>
-    
+
+//var num = $("#boardNum").serialize();
+
+$(document).ready(function(){
+	commentList(); //페이지 로딩시 댓글 목록 출력 
+});
+
+function commentList(){
+    $.ajax({
+        url : '/board/detail/comment',
+        type : 'get',
+        data : "num="+$("#boardNum").val(),
+        dataType : "json",
+        success : function(data){
+        	console.log(data);
+        	console.log(data.commetData.length);
+        	
+            var a ='';
+            
+        	for (var no = 0; no < data.commetData.length; no++ ) {
+        		a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom: 15px;">';
+                a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
+                a += '<a onclick="commentUpdate('+data.commetData[no].commentNum+',\''+data.commetData[no].commentContent+'\');"></a>';
+                a += '<a onclick="commentDelete('+data.commetData[no].commentNum+');"></a> </div>';
+                a += '<div class="commentContent'+data.commetData[no].commentNum+'"> <p>    '+data.commetData[no].commentContent +'</p>';
+                a += '</div></div>';
+			}
+        	
+            $(".commentList").html(a);
+        },
+        error : function (a,b,c) { console.log(a,b,c); }
+    });
+}
+
 </script>
 <body>
 	<div class="content bbs"><!--content start-->
@@ -19,23 +54,23 @@
 					<table id = "bbsTable" class="table table-bordered table-hover">
 						<thead id = "boardDetailContent">
 							<tr>
-								<th>글번호</th>
-								<td>${detail.num }</td>
+								<th class = "detailHeader">글번호</th>
+								<td class = "headerContent">${detail.num }</td>
 							</tr>
 							<tr>
-								<th>이름</th>
-								<td>${detail.writer }</td>
+								<th class = "detailHeader">이름</th>
+								<td class = "headerContent">${detail.writer }</td>
 							</tr>
 							<tr>
-								<th>회사명</th>
-								<td>${detail.company }</td>
+								<th class = "detailHeader">회사명</th>
+								<td class = "headerContent">${detail.company }</td>
 							</tr>
 							<tr>
-								<th>날짜</th>
-								<td>${detail.date }</td>
+								<th class = "detailHeader">날짜</th>
+								<td class = "headerContent">${detail.date }</td>
 							</tr>
 							<tr>
-								<th>내용</th>
+								<th class = "detailHeader">내용</th>
 								<td id = "textField">${detail.content }</td>
 							</tr>
 						</thead>
@@ -49,11 +84,11 @@
 					</div>
 				</div>
 				    <!--  댓글  -->
-			    <div class="container">
-			        <label for="content">comment</label>
-			        <form name="commentInsertForm">
+			   <div class="container">
+			        <label for="content" id = "commentLable">comment</label>
+			        <form name="commentInsertForm" id = "commentBox">
 			            <div class="input-group">
-			               <input type="hidden" name="num" value="${detail.num}"/>
+			               <input type="hidden" name="num" id = "boardNum" value="${detail.num}"/>
 			               <input type="text" class="form-control" id="content" name="content" placeholder="내용을 입력하세요.">
 			               <span class="input-group-btn">
 			                    <button class="btn btn-default" type="button" name="commentInsertBtn">등록</button>
@@ -61,27 +96,12 @@
 			              </div>
 			        </form>
 			    </div>
-			    <%@ include file="./memberBoardComment.jsp" %>
-    <div class="container">
-        <div class="commentList"></div>
-    </div>
-</div>
-
-
+		    	<div class="container">
+        			<div class="commentList"></div>
+    			</div>
 			</div>
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
 
-<%@ include file="./template/footer.jspf" %>
 </html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->

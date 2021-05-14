@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.bit.fn.model.mapper.CommentMapper;
 import com.bit.fn.model.vo.CommentVo;
 
-
 @Service
 public class CommentService {
 
@@ -19,8 +18,8 @@ public class CommentService {
 		return commentMapper.countComment();
 	}
 	
-	public List<CommentVo> allComment() {
-		return commentMapper.allComment();
+	public List<CommentVo> allComment(int num) {
+		return commentMapper.allComment(num);
 	}
 	
 	public int searchMaxCommentNumber(int num) {

@@ -7,14 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.bit.fn.model.vo.CommentVo;
 
-
 @Repository
 @Mapper
 public interface CommentMapper {
 	
 	public int countComment();
 	
-	public List<CommentVo> allComment();
+	public List<CommentVo> allComment(int num);
 	
 	public int searchMaxCommentNumber(int num);
 	

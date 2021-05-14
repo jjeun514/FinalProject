@@ -44,7 +44,7 @@
    	#writebtn{ /*멤버 페이지 게시판 글쓰기 버튼*/
 		border: 1px solid;
     	position: relative;
-		left: 65.5%;
+		left: 68%;
 		margin : 10px;
 		height : 40px;
 		padding: 5px;
@@ -57,7 +57,7 @@
   	
   	#backbtn, #modifybtn, #deletebtn{ /*디테일 하단 버튼*/
   		position: relative;
-		left: 75%;
+		left: 84%;
 		border: 1px solid white;
   	}
 
@@ -88,6 +88,10 @@
     	left: 38%;
     }
   	
+  	#system-search{ /*게시판 검색 input box*/
+  		position: relative;
+  		left: 8%;
+  	}
 
 }
 
@@ -138,7 +142,7 @@
     #writebtn{ /*멤버 페이지 게시판 글쓰기 버튼*/
 		border: 1px solid;
     	position: relative;
-		left: 60%;
+		left: 64%;
 		margin : 10px;
 		height : 40px;
 		padding: 5px;
@@ -152,7 +156,7 @@
   	  	
   	#backbtn, #modifybtn, #deletebtn{ /*디테일 하단 버튼*/
   		position: relative;
-		left: 60%;
+		left: 72%;
 		border: 1px solid white;
   	}
   	
@@ -182,6 +186,12 @@
     	color : gray;
     	left: 36%;
     }
+    
+    #system-search{ /*게시판 검색 input box*/
+  		position: relative;
+  		left: 8%;
+  		width : 110px;
+  	}
 
 	
 }
@@ -381,6 +391,34 @@
   	#deletebtn{ /*삭제 버튼*/
   		background-color : rgb(255,153,153);
   	}
+  	
+  	.commentArea{ /*코멘트 구역*/
+  		font-size :12px;
+  		border : 0px solid white;
+  		margin-bottom: 15px;
+  		margin-left : 20px;
+  		border-bottom:1px solid lightgray;
+  	}
+  	
+  	#commentLable{ /*코멘트 라벨*/
+  		margin-left : 20px;
+  	}
+  	
+  	#commentBox{ /*코멘트 작성 박스*/
+  		margin-left : 10px;
+  		margin-bottom : 20px;
+  		width : 102%
+  	}
+  	
+  	.detailHeader{ /*게시판 th 헤더*/
+		text-align : right;
+		width : 100px;
+	}
+	
+	.headerContent{
+		text-align : left;
+	}
+	
 
 /*게시판*/
 

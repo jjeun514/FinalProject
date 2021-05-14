@@ -1,13 +1,21 @@
 package com.bit.fn.controller;
 
 import java.security.Principal;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -105,8 +113,9 @@ public class MemberController {
 	
 	
 	// 멤버 파트 게시판 댓글 리스트
-	@RequestMapping(value = "/board/comment", method = RequestMethod.GET)
-    public String allComment(Model model, Principal  principal) {
+	@RequestMapping(value = "/board/detail/comment")
+	@ResponseBody
+    public ResponseEntity allComment(Model model, Principal  principal, @RequestParam(value = "num") int num) {
         
 		//아이디
 		String id = principal.getName();
@@ -119,107 +128,130 @@ public class MemberController {
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if( member != -1 ) {
 			model.addAttribute("member",memberinfoService.selectOne(id));
-		} else {
-			return "redirect:/intro";
 		}
 		
-		// 모든 코멘트 출력
-		List<CommentVo> comment = commentService.allComment();
-		model.addAttribute("commentList", comment);
+		// 데이터 담을 객체 생성
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		java.util.Date from = new java.util.Date();
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
-		return "";
+		// 모든 코멘트 출력
+		List<CommentVo> comment = commentService.allComment(num);
+		
+		for ( CommentVo content : comment ) {
+			Map<String, String> data = new HashMap<String, String>();
+			data.put("commentNum", Integer.toString(content.getCommentNum()));
+			data.put("num", Integer.toString(content.getNum()));
+			data.put("commentWriter", content.getCommentWriter());
+			data.put("commentContent", content.getCommentContent());
+			data.put("commentDate", transFormat.format(content.getCommentDate()));
+			dataList.add(data);
+		}
+		
+		// 담겨진 리스트를 뷰로 전달
+		Map<String, Object> commentData = new HashMap<String, Object>();
+		commentData.put("commetData", dataList);
+		
+		return ResponseEntity.ok().build().ok(commentData);
     }
 	
 	
+//	
+//	// 멤버 파트 게시판 댓글 작성
+//	@RequestMapping(value = "/board/insertComment")
+//	public String insertComment(Model model, Principal  principal, @RequestParam String contentWriter, @RequestParam int num, @RequestParam String commentContent) {
+//		
+//		//아이디
+//		String id = principal.getName();
+//		
+//		//권한 여부
+//		int admin=principal.toString().indexOf("ROLE_ADMIN");
+//		int master=principal.toString().indexOf("ROLE_MASTER");
+//		int member=principal.toString().indexOf("ROLE_MEMBER");
+//		
+//		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+//		if( member != -1 ) {
+//			model.addAttribute("member",memberinfoService.selectOne(id));
+//		} else {
+//			return "redirect:/intro";
+//		}
+//		
+//		CommentVo comment = new CommentVo();
+//		comment.setCommentNum(commentService.searchMaxCommentNumber(num)+1);
+//		comment.setNum(num);
+//		comment.setCommentWriter(contentWriter);
+//		comment.setCommentContent(commentContent);
+//		int insert = commentService.insertComment(comment);
+//		
+//		return "";
+//	}
+//	
+//	
+//	
+//	// 멤버 파트 게시판 댓글 수정
+//	@RequestMapping(value = "/board/updateComment")
+//	public String updateComment(Model model, Principal  principal, @RequestParam int commentNum, @RequestParam String content) {
+//		
+//		//아이디
+//		String id = principal.getName();
+//		
+//		//권한 여부
+//		int admin=principal.toString().indexOf("ROLE_ADMIN");
+//		int master=principal.toString().indexOf("ROLE_MASTER");
+//		int member=principal.toString().indexOf("ROLE_MEMBER");
+//		
+//		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+//		if( member != -1 ) {
+//			model.addAttribute("member",memberinfoService.selectOne(id));
+//		} else {
+//			return "redirect:/intro";
+//		}
+//		
+//		CommentVo comment = new CommentVo();
+//		comment.setCommentNum(commentNum);
+//		comment.setCommentContent(content);
+//		int update = commentService.updateComment(comment);
+//		
+//		return "";
+//		
+//	}
+//	
+//	
+//	
+//	// 멤버 파트 게시판 댓글 삭제
+//	@RequestMapping(value = "/board/deleteComment/{commentNum}")
+//	public String deleteComment(Model model, Principal  principal, @RequestParam int commentNum) {
+//		
+//		//아이디
+//		String id = principal.getName();
+//		
+//		//권한 여부
+//		int admin=principal.toString().indexOf("ROLE_ADMIN");
+//		int master=principal.toString().indexOf("ROLE_MASTER");
+//		int member=principal.toString().indexOf("ROLE_MEMBER");
+//		
+//		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+//		if( member != -1 ) {
+//			model.addAttribute("member",memberinfoService.selectOne(id));
+//		} else {
+//			return "redirect:/intro";
+//		}
+//		
+//		int delete = commentService.deleteComment(commentNum);
+//		
+//		return "";
+//	}
+//
+//
+//	
 	
-	// 멤버 파트 게시판 댓글 작성
-	@RequestMapping(value = "/board/insertComment")
-	public String insertComment(Model model, Principal  principal, @RequestParam String contentWriter, @RequestParam int num, @RequestParam String commentContent) {
-		
-		//아이디
-		String id = principal.getName();
-		
-		//권한 여부
-		int admin=principal.toString().indexOf("ROLE_ADMIN");
-		int master=principal.toString().indexOf("ROLE_MASTER");
-		int member=principal.toString().indexOf("ROLE_MEMBER");
-		
-		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-		if( member != -1 ) {
-			model.addAttribute("member",memberinfoService.selectOne(id));
-		} else {
-			return "redirect:/intro";
-		}
-		
-		CommentVo comment = new CommentVo();
-		comment.setCommentNum(commentService.searchMaxCommentNumber(num)+1);
-		comment.setNum(num);
-		comment.setCommentWriter(contentWriter);
-		comment.setCommentContent(commentContent);
-		int insert = commentService.insertComment(comment);
-		
-		return "";
-	}
-	
-	
-	
-	// 멤버 파트 게시판 댓글 수정
-	@RequestMapping(value = "/board/updateComment")
-	public String updateComment(Model model, Principal  principal, @RequestParam int commentNum, @RequestParam String content) {
-		
-		//아이디
-		String id = principal.getName();
-		
-		//권한 여부
-		int admin=principal.toString().indexOf("ROLE_ADMIN");
-		int master=principal.toString().indexOf("ROLE_MASTER");
-		int member=principal.toString().indexOf("ROLE_MEMBER");
-		
-		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-		if( member != -1 ) {
-			model.addAttribute("member",memberinfoService.selectOne(id));
-		} else {
-			return "redirect:/intro";
-		}
-		
-		CommentVo comment = new CommentVo();
-		comment.setCommentNum(commentNum);
-		comment.setCommentContent(content);
-		int update = commentService.updateComment(comment);
-		
-		return "";
-		
-	}
-	
-	
-	
-	// 멤버 파트 게시판 댓글 삭제
-	@RequestMapping(value = "/board/deleteComment/{commentNum}")
-	public String deleteComment(Model model, Principal  principal, @RequestParam int commentNum) {
-		
-		//아이디
-		String id = principal.getName();
-		
-		//권한 여부
-		int admin=principal.toString().indexOf("ROLE_ADMIN");
-		int master=principal.toString().indexOf("ROLE_MASTER");
-		int member=principal.toString().indexOf("ROLE_MEMBER");
-		
-		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-		if( member != -1 ) {
-			model.addAttribute("member",memberinfoService.selectOne(id));
-		} else {
-			return "redirect:/intro";
-		}
-		
-		int delete = commentService.deleteComment(commentNum);
-		
-		return "";
+	private ResponseEntity ResponseEntity(List<CommentVo> allComment, HttpStatus ok) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
-	
-	
+
 	// 멤버 파트 공지 게시판 인트로 페이지
 	@RequestMapping("/notice")
 	public String notice(Model model, HttpServletRequest request,
