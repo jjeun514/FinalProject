@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bit.fn.model.mapper.join.AccountAndMemberInfoMapper;
 import com.bit.fn.model.service.AccountRoleService;
 import com.bit.fn.model.service.AdminAccountService;
+import com.bit.fn.model.service.CompanyinfoService;
 import com.bit.fn.model.service.MasterAccountService;
 import com.bit.fn.model.service.MemberinfoService;
+import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.join.AccountAndMemberInfoService;
 import com.bit.fn.security.model.Account;
 import com.bit.fn.security.service.AccountService;
@@ -53,6 +55,12 @@ public class AccountController {
 	
 	@Autowired
 	AccountAndMemberInfoService accountAndMemberInfoService;
+	
+	@Autowired
+	CompanyinfoService companyinfoService;
+	
+	@Autowired
+	OfficeService officeService;
 	
 	/*
 	@RequestMapping("/index")
@@ -278,7 +286,16 @@ public class AccountController {
 			adminAccountService.deleteOne(username);
 		}else if(master != -1) {
 			System.out.println("탈퇴할 계정은 마스터입니다.");
+			//회사 코드 불러오기
+			int comCode = masterAccountService.selectOne(username).getComCode();
+			//사무실 번호 불러오기
+			int officeNum = companyinfoService.selectOfficeNum(comCode);
+			//마스터 계정 삭제
 			masterAccountService.deleteOne(username);
+			//회사 정보 삭제
+			companyinfoService.deleteCompanyInfo(comCode);
+			//사무실 공실 업데이트
+			officeService.updateOccupancy(officeNum, 0);
 		}else if(member != -1) {
 			System.out.println("탈퇴할 계정은 멤버입니다.");
 			memberinfoService.deleteOne(username);

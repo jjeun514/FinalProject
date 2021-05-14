@@ -269,8 +269,8 @@
 		
 		//멤버 계정 부서 2자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
 		$(".dept").keyup(function(data){
-							   unavailableCharacter(data,"dept",pattern_spc);
 							   dept=$(".dept").val();
+							   unavailableCharacter(data,"dept",pattern_spc);
 						   }).focusout(function(data){
 							   lengthCheck("dept",2,20);
 						   });;
@@ -332,6 +332,13 @@
 							return false;
 						}
 					}
+					//부서 검사
+					if(pattern_spc.test(dept)){
+						document.getElementById('modalText01').textContent='부서에 특수문자는 사용하실 수 없습니다.';
+						$('#dangerModal').modal('show');
+						return false;
+					}
+					
 				}
 			}else{
 				return false;

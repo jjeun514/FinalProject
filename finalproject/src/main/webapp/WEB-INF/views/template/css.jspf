@@ -1047,4 +1047,9 @@
 		.paginated2 tr, .paginated2 td{
 			text-align: center;
 		}
+		.paginated2 td{
+			overflow : hidden;
+			hite-space : nowrap;
+			text-overflow: ellipsis;
+		}
 </style>
