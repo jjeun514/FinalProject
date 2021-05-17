@@ -52,7 +52,6 @@
 	//회원탈퇴 기존 비밀번호 확인
 	var booWPw=false;
 	
-	
 	//비밀번호 변경 버튼 클릭 시 고의적인 값 변경을 막기 위한 값 체크
 	var existingPw="none"; //기존 비밀번호 확인 값 저장
 	var newPw="none"; //새 비밀번호 값 저장
@@ -141,6 +140,7 @@
 				if(check=="memNickName"){
 					nickNameCharacterBoo=false;
 				}
+				
 			}
 		}else if(window.event.keyCode==32){
 			document.getElementById('modalText01').textContent='공백은 사용할 수 없습니다.';
@@ -178,110 +178,7 @@
 		
 		
 		
-		//어드민 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
-		$(".adminNickName").keyup(function(data){
-							   unavailableCharacter(data,"adminNickName",pattern_spc);
-							   adminNickName=$(".adminNickName").val();
-						   }).focusout(function(data){
-							   lengthCheck("adminNickName",2,10);
-						   });
 		
-		//마스터 계정 회사명 1자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
-		$(".comName").keyup(function(data){
-							   lengthCheck("comName",1,20);
-							   unavailableCharacter(data,"comName",pattern_spc);
-							   comName=$(".comName").val();
-						   });
-		
-		//마스터 계정 ceo 2자 이상 10자 이내 입력 수 제한, 숫자, 특수문자 사용 제한, 값 저장
-		$(".ceo").keyup(function(data){
-							   unavailableCharacter(data,"ceo",pattern_num);
-							   unavailableCharacter(data,"ceo",pattern_spc);
-							   ceo=$(".ceo").val();
-						   }).focusout(function(data){
-							   lengthCheck("ceo",2,10);
-						   });
-		
-		//마스터 계정 매니저 2자 이상 10자 이내 입력 수 제한, 숫자, 특수문자 사용 제한, 값 저장
-		$(".manager").keyup(function(data){
-							   unavailableCharacter(data,"manager",pattern_num);
-							   unavailableCharacter(data,"manager",pattern_spc);
-							   manager=$(".manager").val();
-						   }).focusout(function(data){
-							   lengthCheck("manager",2,10);
-						   });
-		
-		//마스터 계정 전화번호 9자 이상 15자 이내 입력 수 제한, 문자, 특수문자 사용 제한, 값 저장
-		$(".comPhone").keyup(function(data){
-							   unavailableCharacter(data,"comPhone",pattern_eng);
-							   unavailableCharacter(data,"comPhone",pattern_spc);
-							   comPhone=$(".comPhone").val();
-					   }).focusout(function(data){
-						   lengthCheck("comPhone",9,15);
-					   });
-		
-		//멤버 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
-		$(".memNickName").keyup(function(data){
-							   unavailableCharacter(data,"memNickName",pattern_spc);
-							   memNickName=$(".memNickName").val();
-						   }).focusout(function(){
-							    lengthCheck("memNickName",2,10);
-							    memNickName = $('.memNickName').val();
-								console.log(memNickName);
-								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
-									document.getElementById('modalText01').textContent="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
-									$('#dangerModal').modal('show');
-								}else if(nickNameLengthBoo==true && nickNameCharacterBoo==true){
-									$.ajax({
-										url: "/nickNameCheck",
-										type : "POST",
-										data: {memNickName},
-										contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-										dataType: "text",
-										success: function(data){
-													console.log("data",data);
-													if(data=="Available"){
-														document.getElementById('modalText02').textContent='사용가능한 닉네임입니다.';
-														$('#primaryModal').modal('show');
-														//닉네임을 바꾸지 못하게 readonly
-														$(".memNickName").prop("readonly","readonly");
-														memNickBoo=true;
-													}else{
-														if(memNickName==$(".memNickName").attr("value")){
-															memNickBoo==true;
-														}else{
-															document.getElementById('modalText01').textContent='사용중인 닉네임입니다.';
-															$('#dangerModal').modal('show');
-															memNickBoo=false;
-															$(".memNickName").focus();
-														}
-													}
-												 },
-										error: function(error){
-											console.log(error);
-											console.log("ajax 에러");
-										}
-										
-									});
-								}
-							   
-						   });
-		
-		//멤버 계정 부서 2자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
-		$(".dept").keyup(function(data){
-							   dept=$(".dept").val();
-							   unavailableCharacter(data,"dept",pattern_spc);
-						   }).focusout(function(data){
-							   lengthCheck("dept",2,20);
-						   });;
-		//멤버 계정 전화번호 9자 이상 15자 이내 입력 수 제한, 문자, 특수문자 사용 제한, 값 저장
-		$(".memPhone").keyup(function(data){
-							   unavailableCharacter(data,"memPhone",pattern_eng);
-							   unavailableCharacter(data,"memPhone",pattern_spc);
-							   memPhone=$(".memPhone").val();
-					   }).focusout(function(data){
-						   	   lengthCheck("memPhone",9,15);
-					   });;
 		
 		//수정 버튼 한 번 클릭 여부 확인 기능
 		var oneClick=false;
@@ -302,6 +199,10 @@
 							document.getElementById('modalText01').textContent='값 강제 변경은 허용하지 않습니다.';
 							$('#dangerModal').modal('show');
 							return false;
+						}else if(pattern_spc.test($(".adminNickName").val())){
+							document.getElementById('modalText01').textContent='닉네임에 특수문자는 사용할 수 없습니다.';
+							$('#dangerModal').modal('show');
+							return false;
 						}
 					//2-2 마스터인 경우
 				}else if(comName!= undefined){
@@ -313,7 +214,21 @@
 						document.getElementById('modalText01').textContent='값 강제 변경은 허용하지 않습니다.';
 						$('#dangerModal').modal('show');
 						return false;
+					}else if(pattern_spc.test($(".comName").val())){
+						document.getElementById('modalText01').textContent='회사명에 특수문자는 사용할 수 없습니다.';
+						$('#dangerModal').modal('show');
+						return false;
+					}else if(pattern_spc.test($(".ceo").val()) || pattern_num.test($(".ceo").val())){
+						document.getElementById('modalText01').textContent='ceo에 특수문자 및 숫자는 사용할 수 없습니다.';
+						$('#dangerModal').modal('show');
+						return false;
+					}else if(pattern_spc.test($(".manager").val()) || pattern_num.test($(".ceo").val())){
+						document.getElementById('modalText01').textContent='매니저에 특수문자 및 숫자는 사용할 수 없습니다.';
+						$('#dangerModal').modal('show');
+						return false;
 					}
+					 $(".comPhone").val($(".comPhone").val().replace(/[^0-9]/g,""));
+					
 					//2-3 멤버인 경우
 				}else{
 					if(memNickName != $(".memNickName").val() || 
@@ -325,20 +240,22 @@
 						return false;
 					}
 					//기존 닉네임을 변경하였을 경우 닉네임 중복검사 여부
-					if(memNickName!=$(".memNickName").attr("value")){
+					else if(memNickName!=$(".memNickName").attr("value")){
 						if(memNickBoo==false){
 							document.getElementById('modalText01').textContent='닉네임 중복을 확인해주세요.';
 							$('#dangerModal').modal('show');
 							return false;
 						}
-					}
-					//부서 검사
-					if(pattern_spc.test(dept)){
+					}else if(pattern_spc.test($(".memNickName").val())){
+						document.getElementById('modalText01').textContent='닉네임에 특수문자는 사용하실 수 없습니다.';
+						$('#dangerModal').modal('show');
+						return false;
+					}else if(pattern_spc.test(dept)){
 						document.getElementById('modalText01').textContent='부서에 특수문자는 사용하실 수 없습니다.';
 						$('#dangerModal').modal('show');
 						return false;
 					}
-					
+					$(".memPhone").val($(".memPhone").val().replace(/[^0-9]/g,""));
 				}
 			}else{
 				return false;
@@ -350,6 +267,114 @@
 			//$('.modifiable').remove();
 			$('.updateInfoInput').removeAttr("readonly").css('background-color', '#FFFFE0');//.after('<span class="modifiable"> [수정 가능]</span>');
 			oneClick=true;
+			//어드민 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
+			$(".adminNickName").keyup(function(data){
+								   unavailableCharacter(data,"adminNickName",pattern_spc);
+								   adminNickName=$(".adminNickName").val();
+							   }).focusout(function(data){
+								   lengthCheck("adminNickName",2,10);
+							   });
+			
+			//마스터 계정 회사명 1자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
+			$(".comName").keyup(function(data){
+								   lengthCheck("comName",1,20);
+								   unavailableCharacter(data,"comName",pattern_spc);
+								   comName=$(".comName").val();
+							   });
+			
+			//마스터 계정 ceo 2자 이상 10자 이내 입력 수 제한, 숫자, 특수문자 사용 제한, 값 저장
+			$(".ceo").keyup(function(data){
+								   unavailableCharacter(data,"ceo",pattern_num);
+								   unavailableCharacter(data,"ceo",pattern_spc);
+								   ceo=$(".ceo").val();
+							   }).focusout(function(data){
+								   lengthCheck("ceo",2,10);
+							   });
+			
+			//마스터 계정 매니저 2자 이상 10자 이내 입력 수 제한, 숫자, 특수문자 사용 제한, 값 저장
+			$(".manager").keyup(function(data){
+								   unavailableCharacter(data,"manager",pattern_num);
+								   unavailableCharacter(data,"manager",pattern_spc);
+								   manager=$(".manager").val();
+							   }).focusout(function(data){
+								   lengthCheck("manager",2,10);
+							   });
+			
+			//마스터 계정 전화번호 9자 이상 15자 이내 입력 수 제한, 문자, 특수문자 사용 제한, 값 저장
+			$(".comPhone").keyup(function(data){
+								   unavailableCharacter(data,"comPhone",pattern_eng);
+								   unavailableCharacter(data,"comPhone",pattern_spc);
+								   comPhone=$(".comPhone").val();
+								   $(this).val($(this).val().replace(/[^0-9]/g,""));
+						   }).focusout(function(data){
+							   	   lengthCheck("comPhone",9,15);
+							   	   $(this).val($(this).val().replace(/[^0-9]/g,""));
+						   });
+			
+			//멤버 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
+			$(".memNickName").keyup(function(data){
+								   unavailableCharacter(data,"memNickName",pattern_spc);
+								   memNickName=$(".memNickName").val();
+							   }).focusout(function(){
+								    lengthCheck("memNickName",2,10);
+								    memNickName = $('.memNickName').val();
+									console.log(memNickName);
+									if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
+										document.getElementById('modalText01').textContent="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
+										$('#dangerModal').modal('show');
+									}else if(nickNameLengthBoo==true && nickNameCharacterBoo==true){
+										$.ajax({
+											url: "/nickNameCheck",
+											type : "POST",
+											data: {memNickName},
+											contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+											dataType: "text",
+											success: function(data){
+														console.log("data",data);
+														if(data=="Available"){
+															document.getElementById('modalText02').textContent='사용가능한 닉네임입니다.';
+															$('#primaryModal').modal('show');
+															//닉네임을 바꾸지 못하게 readonly
+															$(".memNickName").prop("readonly","readonly");
+															memNickBoo=true;
+														}else{
+															if(memNickName==$(".memNickName").attr("value")){
+																memNickBoo==true;
+															}else{
+																document.getElementById('modalText01').textContent='사용중인 닉네임입니다.';
+																$('#dangerModal').modal('show');
+																memNickBoo=false;
+																$(".memNickName").focus();
+															}
+														}
+													 },
+											error: function(error){
+												console.log(error);
+												console.log("ajax 에러");
+											}
+											
+										});
+									}
+								   
+							   });
+			
+			//멤버 계정 부서 2자 이상 20자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
+			$(".dept").keyup(function(data){
+								   dept=$(".dept").val();
+								   unavailableCharacter(data,"dept",pattern_spc);
+							   }).focusout(function(data){
+								   lengthCheck("dept",2,20);
+							   });;
+			//멤버 계정 전화번호 9자 이상 15자 이내 입력 수 제한, 문자, 특수문자 사용 제한, 값 저장
+			$(".memPhone").keyup(function(data){
+								   unavailableCharacter(data,"memPhone",pattern_eng);
+								   unavailableCharacter(data,"memPhone",pattern_spc);
+								   memPhone=$(".memPhone").val();
+								   $(this).val($(this).val().replace(/[^0-9]/g,""));
+						   }).focusout(function(data){
+							   	   lengthCheck("memPhone",9,15);
+							   	   $(this).val($(this).val().replace(/[^0-9]/g,""));
+						   });;
 			return false;
 		});
 		
