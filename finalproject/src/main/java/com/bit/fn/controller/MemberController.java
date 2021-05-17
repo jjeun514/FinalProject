@@ -165,7 +165,8 @@ public class MemberController {
 	
 	// 멤버 파트 게시판 글쓰기 저장
 	@RequestMapping(value = "/board/save", method = RequestMethod.POST)
-	public String savePost(Model model, Principal  principal, BoardVo writePost) {
+	@ResponseBody
+	public Map<String, Object> savePost(Model model, Principal  principal, HttpServletRequest request) {
 		
 		//아이디
 		String id = principal.getName();
@@ -178,9 +179,7 @@ public class MemberController {
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if( member != -1 ) {
 			model.addAttribute("member",memberinfoService.selectOne(id));
-		} else {
-			return "redirect:/intro";
-		}
+		} 
 		
 		int memNum = memberinfoService.selectOne(id).getMemNum();
 		
@@ -189,18 +188,16 @@ public class MemberController {
 		post.setMemNum(memNum);
 		post.setWriter(memberinfoService.selectOne(id).getMemName());
 		post.setCompany(memberinfoService.searchCompanyName(memNum));
-		post.setTitle(writePost.getTitle());
-		post.setContent(writePost.getContent());
+		post.setTitle(request.getParameter("title"));
+		post.setContent(request.getParameter("content"));
 		
 		// 게시글 저장 쿼리 실행
 		int savePostResult = service.savePost(post);
 
-		if ( savePostResult > 0 ) {
-			return "memberBoard";
-		} else {
-			return "redirect:/memberBoardWrite";
-			
-		}
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", savePostResult);
+		
+		return result;
 
 	}
 	
