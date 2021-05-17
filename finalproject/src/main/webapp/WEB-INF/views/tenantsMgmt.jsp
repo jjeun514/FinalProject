@@ -12,6 +12,7 @@ $('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 $(document).ready(function(){
 	$('#detail').on('show.bs.modal', function(event) {
 		var comName=$(event.relatedTarget).data('comname');
+		var comCode=$(event.relatedTarget).data('comcode');
 		var ceo=$(event.relatedTarget).data('ceo');
 		var manager=$(event.relatedTarget).data('manager');
 		var comPhone=$(event.relatedTarget).data('comphone');
@@ -23,7 +24,7 @@ $(document).ready(function(){
 		var masterAccount=$(event.relatedTarget).data('masteraccount');
 		console.log('comName: '+comName);
 		$('.tenantsTitle').html(comName+' 상세 정보');
-		$('#comCode').html(ceo);
+		$('#comCode').html(comCode);
 		$('#ceo').html(ceo);
 		$('#manager').html(manager);
 		$('#comPhone').html(comPhone);
