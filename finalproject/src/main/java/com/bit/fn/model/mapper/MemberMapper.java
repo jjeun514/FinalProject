@@ -46,6 +46,9 @@ public interface MemberMapper {
 	// 멤버 페이지 게시글 삭제
 	public int deletePost(int num);
 	
+	// 멤버 페이지 게시글 수정
+	public int updatePost(BoardVo modify);
+	
 	// 멤버 페이지 공지사항 리스트
 	public List<NoticeVo> noticeList(PaginationVo pagination);
 	

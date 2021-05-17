@@ -42,6 +42,10 @@
    		update board set showCheck = 0 where num = #{num}
    	</update>
    	
+   	<update id="updatePost" parameterType="com.bit.fn.model.vo.BoardVo">
+   		update board set title = #{title}, content = #{content} where num = #{num}
+   	</update>
+   	
    	<select id="memberBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
 		select num, title, date, writer, company from board
 		where showCheck = 1

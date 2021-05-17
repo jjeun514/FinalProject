@@ -50,6 +50,10 @@ public class MemberService {
 		return memberMapper.deletePost(num);
 	}
 	
+	public int updatePost(BoardVo modify) {
+		return memberMapper.updatePost(modify);
+	}
+	
 	public int countBoardList() {
 		return memberMapper.countBoardList();
 	}

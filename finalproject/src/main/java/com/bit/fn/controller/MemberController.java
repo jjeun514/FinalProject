@@ -219,12 +219,30 @@ public class MemberController {
 	// 멤버 파트 게시글 삭제
 	@RequestMapping(value = "/board/detail/delete")
 	@ResponseBody
-	public ResponseEntity deletePost(Model model, Principal  principal, @RequestParam(value = "num") int num) {
+	public ResponseEntity deletePost(@RequestParam(value = "num") int num) {
+		
+		// 항상 조회 먼저 해야지
 		
 		int result = service.deletePost(num);
 		
 		return ResponseEntity.ok().build().ok(result);
 	}
+	
+	
+	
+	// 멤버 파트 게시글 수정
+	@RequestMapping(value = "/board/detail/modify")
+	@ResponseBody
+	public ResponseEntity updatePost(BoardVo modify) {
+		
+		// 항상 조회 먼저 해야지
+		
+		int result = service.updatePost(modify);
+		System.out.println("도대체 파라미터로 뭘 받은거야?"+modify);
+		
+		return ResponseEntity.ok().build().ok(result);
+	}
+	
 	
 	
 	// 멤버 파트 게시판 댓글 리스트

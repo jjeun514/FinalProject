@@ -21,12 +21,15 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR){
 });
 
 $(document).ready(function(){
+
+	commentList(); //페이지 로딩시 댓글 목록 출력 
 	
 	var memNum = $("#memNum").val();
 	var writer = $("#writer").val();
 	var modifybtn = document.getElementById("modifybtn");
 	var deletebtn = document.getElementById("deletebtn");
 	var backbtn = document.getElementById("backbtn");
+	var num = $("#boardNum").val();
 	
 	if ( memNum == writer ) {
 		modifybtn.style.display = "block";
@@ -37,15 +40,11 @@ $(document).ready(function(){
 		backbtn.style.left = "94%";
 	}
 	
-	commentList(); //페이지 로딩시 댓글 목록 출력 
-	
-	var num = $("#boardNum").val();
-
 	$('#commentInsertBtn').click(function(){ //댓글 등록 버튼 클릭
 	    var content = {
 			commentContent : document.getElementById('content').value,
 			num : $("#boardNum").val()
-		}
+		};
 	    commentInsert(content); //Insert 함수 호출
 	});
 	
@@ -53,9 +52,25 @@ $(document).ready(function(){
 		deletePost(num); // delete 함수 호출
 	});
 	
+	
 	$('#modifybtn').click(function() {
-		document.getElementById("title").readonly = false;
+		
+		$("#modifybtn").html('등록');
+		$("#boardContent").attr("readonly", false);
+		$("#title").attr("readonly", false);
+		
+	}); // 토글 기능 찾아야 함
+	
+	$('#testbtn').click(function() { // 이거 위에 토글기능 찾아서 붙여야 함
+		var modify = {
+			num : $("#boardNum").val(),
+			title : $("#title").val(),
+			content : $("#boardContent").val()
+		};
+		modifyPost(modify); //update 함수 호출
 	});
+	
+	
 });
 
 // 게시글 삭제
@@ -75,13 +90,15 @@ function deletePost(num) {
 }
 
 // 게시글 수정
-function updatePost(modify) {
+function modifyPost(modify) {
 	$.ajax({
 		url : "/board/detail/modify",
 		type : 'post',
-		data : { modify },
+		data : modify,
+		dataType : "json",
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		success : function(data) {
-			alert("요청하신 게시글 삭제가 정상적으로 처리되었습니다.");
+			alert("요청하신 게시글 수정이 정상적으로 처리되었습니다.");
 			location.href = "/board";
 		},
 		error : function(request, status, error) {
@@ -131,8 +148,8 @@ function commentInsert(content){
     });
 }
 
-
 </script>
+
 <body>
 
 	<div class="content bbs"><!--content start-->
@@ -169,7 +186,7 @@ function commentInsert(content){
 								</tr>
 								<tr>
 									<th class = "detailHeader">내용</th>
-									<td id = "textField"><input id = "boardContent" type = "text" class = "boardBorderStyle" readonly = "readonly" value = "${detail.content }"/></td>
+									<td id = "textField"><textarea rows="15" cols="63" id = "boardContent" style = "border:none" readonly>${detail.content }</textarea></td>
 								</tr>
 							</thead>
 							
@@ -180,6 +197,7 @@ function commentInsert(content){
 						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>
 						<button id = "modifybtn" type="button" class="btn btn-default">수정</button>
 						<button id = "deletebtn" type="button" class="btn btn-default">삭제</button>
+						<button id = "testbtn" type="button" class="btn btn-default">테스트</button> <!-- 수정 테스트하려고 붙였음. 삭제 예정. -->
 					</div>
 				</div>
 				    <!--  댓글  -->
