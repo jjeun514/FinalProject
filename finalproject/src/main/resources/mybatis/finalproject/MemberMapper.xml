@@ -3,6 +3,23 @@
 
 <mapper namespace="com.bit.fn.model.mapper.MemberMapper">
 
+	<!-- 인트로 -->
+	<select id="boardListForIntro" resultType="com.bit.fn.model.vo.BoardVo">
+		select bbs.num, bbs.title, bbs.writer
+		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
+		order by date desc, num desc
+		limit 4
+	</select>
+	
+	<select id="noticeListForIntro" resultType="com.bit.fn.model.vo.NoticeVo">
+		select num, title from notice order by date desc, num desc limit 4
+	</select>
+	
+	<select id="reservationListForIntro" resultType="com.bit.fn.model.vo.ReservationVo">
+		select myREZ.* from (select roomNum, reservationDay, useStartTime, useFinishTime, fee from reservation
+		where memNum = #{memNum}) AS myREZ where reservationDay = sysdate() limit 4
+	</select>
+
 	<!-- 게시판 -->
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
 		select bbs.num, bbs.title, bbs.date, bbs.memName, com.comName
@@ -11,6 +28,14 @@
 		order by date desc, num
 		limit 7
    	</select>
+   	
+   	<insert id="savePost" parameterType="com.bit.fn.model.vo.BoardVo">
+   		insert into board(
+   			memNum, writer, company, title, content, date
+   		) values (
+   			#{memNum}, #{writer}, #{company}, #{title}, #{content}, sysdate()
+   		)
+   	</insert>
    	
    	<select id="memberBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
 		select num, title, date, writer, company from board

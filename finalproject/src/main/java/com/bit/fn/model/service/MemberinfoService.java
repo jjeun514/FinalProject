@@ -55,4 +55,8 @@ public class MemberinfoService {
 	public List<MemberInfoVo> comMemberList(int comCode) {
 		return memberInfoMapper.comMemberList(comCode);
 	}
+	
+	public String searchCompanyName(int memNum) {
+		return memberInfoMapper.searchCompanyName(memNum);
+	}
 }

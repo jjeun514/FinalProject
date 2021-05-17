@@ -28,6 +28,7 @@ import com.bit.fn.model.vo.BoardVo;
 import com.bit.fn.model.vo.CommentVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
+import com.bit.fn.model.vo.ReservationVo;
 
 @Controller
 public class MemberController {
@@ -45,7 +46,34 @@ public class MemberController {
 	
 	// 멤버 파트 인트로 페이지
 	@RequestMapping("/intro")
-	public String intro() {
+	public String intro(Model model, Principal  principal) {
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			System.out.println("접속하신 계정은 멤버입니다.");
+			System.out.println(memberinfoService.selectOne(id).getMemNum());
+			model.addAttribute("member",memberinfoService.selectOne(id));
+			
+		} else {
+			return "redirect:/intro";
+		}
+		
+		List<BoardVo> boardContent = service.boardListForIntro();
+		List<NoticeVo> noticeContent = service.noticeListForIntro();
+		List<ReservationVo> reservationContent = service.reservationListForIntro(memberinfoService.selectOne(id).getMemNum());
+		
+		model.addAttribute("boardContent",boardContent);
+		model.addAttribute("noticeContent",noticeContent);
+		model.addAttribute("reservationContent",reservationContent);
+		
 		return "memberIntro";
 	}
 	
@@ -112,6 +140,73 @@ public class MemberController {
 	
 	
 	
+	// 멤버 파트 게시판 글쓰기
+	@RequestMapping("/board/write")
+	public String boardWrite(Model model, Principal  principal) {
+
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		} else {
+			return "redirect:/intro";
+		}
+		
+		return "memberBoardWrite";
+		
+	}
+	
+	
+	
+	// 멤버 파트 게시판 글쓰기 저장
+	@RequestMapping(value = "/board/save", method = RequestMethod.POST)
+	public String savePost(Model model, Principal  principal, BoardVo writePost) {
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		} else {
+			return "redirect:/intro";
+		}
+		
+		int memNum = memberinfoService.selectOne(id).getMemNum();
+		
+		// 객체 생성 후 파라미터 저장
+		BoardVo post = new BoardVo();
+		post.setMemNum(memNum);
+		post.setWriter(memberinfoService.selectOne(id).getMemName());
+		post.setCompany(memberinfoService.searchCompanyName(memNum));
+		post.setTitle(writePost.getTitle());
+		post.setContent(writePost.getContent());
+		
+		// 게시글 저장 쿼리 실행
+		int savePostResult = service.savePost(post);
+
+		if ( savePostResult > 0 ) {
+			return "memberBoard";
+		} else {
+			return "redirect:/memberBoardWrite";
+			
+		}
+
+	}
+	
+	
 	// 멤버 파트 게시판 댓글 리스트
 	@RequestMapping(value = "/board/detail/comment")
 	@ResponseBody
@@ -156,36 +251,36 @@ public class MemberController {
     }
 	
 	
-//	
-//	// 멤버 파트 게시판 댓글 작성
-//	@RequestMapping(value = "/board/insertComment")
-//	public String insertComment(Model model, Principal  principal, @RequestParam String contentWriter, @RequestParam int num, @RequestParam String commentContent) {
-//		
-//		//아이디
-//		String id = principal.getName();
-//		
-//		//권한 여부
-//		int admin=principal.toString().indexOf("ROLE_ADMIN");
-//		int master=principal.toString().indexOf("ROLE_MASTER");
-//		int member=principal.toString().indexOf("ROLE_MEMBER");
-//		
-//		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-//		if( member != -1 ) {
-//			model.addAttribute("member",memberinfoService.selectOne(id));
-//		} else {
-//			return "redirect:/intro";
-//		}
-//		
-//		CommentVo comment = new CommentVo();
-//		comment.setCommentNum(commentService.searchMaxCommentNumber(num)+1);
-//		comment.setNum(num);
-//		comment.setCommentWriter(contentWriter);
-//		comment.setCommentContent(commentContent);
-//		int insert = commentService.insertComment(comment);
-//		
-//		return "";
-//	}
-//	
+	
+	// 멤버 파트 게시판 댓글 작성
+	@RequestMapping(value = "/board/insertComment")
+	public String insertComment(Model model, Principal  principal, @RequestParam String contentWriter, @RequestParam int num, @RequestParam String commentContent) {
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		} else {
+			return "redirect:/intro";
+		}
+		
+		CommentVo comment = new CommentVo();
+		comment.setCommentNum(commentService.searchMaxCommentNumber(num)+1);
+		comment.setNum(num);
+		comment.setCommentWriter(contentWriter);
+		comment.setCommentContent(commentContent);
+		int insert = commentService.insertComment(comment);
+		
+		return "";
+	}
+	
 //	
 //	
 //	// 멤버 파트 게시판 댓글 수정
@@ -244,11 +339,6 @@ public class MemberController {
 //
 //
 //	
-	
-	private ResponseEntity ResponseEntity(List<CommentVo> allComment, HttpStatus ok) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 

@@ -29,10 +29,10 @@
     #reservationDay{
     	margin: 30px auto;
     	text-align: center;
-    	width: 150px;
+    	width: 200px;
     	height : 30px;
     	position: relative;
-    	left: 290%;
+    	left: 215%;
     }
     
     #showAlertForChoice{
@@ -92,6 +92,115 @@
   		position: relative;
   		left: 8%;
   	}
+  	
+  	#noticeTitle{ /*인트로 게시판 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 72px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 10%;
+		top : -10%;
+	}
+	
+	#moreNotice{ /*인트로 게시판 더보기 div*/
+		position: relative;
+		top : 8%;
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		left : 75%;
+	}
+	
+	#boardTitle{ /*인트로 공지 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 70px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 10%;
+		top : -10%;
+	}
+	
+	#moreBoard{ /*인트로 공지 더보기 div*/
+		position: relative;
+		top : 8%;
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		left : 80%;
+	}
+	
+	#reservationTitle{ /*인트로 게시판 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 125px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 8%;
+		top : -10%;
+	}
+	
+	#moreReservation{ /*인트로 게시판 더보기 div*/
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		position: relative;
+		left : 80%;
+		top : 50%;
+		color : gray;
+	}
+	
+	#eventTitle{ /*인트로 공지 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 68px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 10%;
+		top : -10%;
+	}
+	
+	#moreEvent{ /*인트로 공지 더보기 div*/
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		position: relative;
+		left : 75%;
+		top : 70%;
+		color : gray;
+	}
+	
+	#boardOverFlow{ /*인트로 페이지 board text overflow*/
+		max-width: 420px;
+		overflow : hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	
+	#noticeOverFlow{ /*인트로 페이지 notice text overflow*/
+		overflow : hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	
+	#writeTitle{ /*글쓰기 제목*/
+		width : 900px;
+		height : 30px;
+	}
+	
+	#writeContent{ /*글쓰기 내용*/
+		width : 900px;
+		height : 300px;
+	}
 
 }
 
@@ -127,10 +236,10 @@
     #reservationDay{
     	margin: 30px auto;
     	text-align: center;
-    	width: 150px;
+    	width: 200px;
     	height : 30px;
     	position: relative;
-    	left: 180%;
+    	left: 130%;
     }
     
     #showAlertForChoice{
@@ -193,6 +302,119 @@
   		width : 110px;
   	}
 
+	#introBoard, #introNotice{ /*멤버 인트로 페이지 박스*/
+
+	}
+	
+	#noticeTitle{ /*인트로 게시판 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 72px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 10%;
+		top : -10%;
+	}
+	
+	#moreNotice{ /*인트로 게시판 더보기 div*/
+		position: relative;
+		top : 8%;
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		left : 75%;
+		color : gray;
+	}
+	
+	#boardTitle{ /*인트로 공지 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 70px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 10%;
+		top : -10%;
+	}
+	
+	#moreBoard{ /*인트로 공지 더보기 div*/
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		position: relative;
+		left : 80%;
+		top : 8%;
+		color : gray;
+	}
+	
+	#reservationTitle{ /*인트로 게시판 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 125px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 10%;
+		top : -10%;
+	}
+	
+	#moreReservation{ /*인트로 게시판 더보기 div*/
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		position: relative;
+		left : 80%;
+		top : 50%;
+		color : gray;
+	}
+	
+	#eventTitle{ /*인트로 공지 제목 div*/
+		font : bold;
+		font-size : 20px;
+		color : white;
+		padding : 5px;
+		width : 68px;
+		background-color : rgba(52,58,64,0.95);
+		position: relative;
+		left : 10%;
+		top : -10%;
+	}
+	
+	#moreEvent{ /*인트로 공지 더보기 div*/
+		padding : 5px;
+		width : 53px;
+		background-color : white;
+		position: relative;
+		left : 75%;
+		top : 70%;
+		color : gray;
+	}
+	
+	#boardOverFlow{ /*인트로 페이지 board text overflow*/
+		max-width: 160px;
+		overflow : hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	
+	#noticeOverFlow{ /*인트로 페이지 notice text overflow*/
+		overflow : hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	
+	#writeTitle{ /*글쓰기 제목*/
+		width : 480px;
+	}
+	
+	#writeContent{ /*글쓰기 내용*/
+		width : 480px;
+		height : 280px;
+	}
 	
 }
 
@@ -292,7 +514,7 @@
 /*바디 영역*/
     .main{
         position: relative;
-        top:250px;
+        top:80px;
     }
 
     .r3>div>img{
@@ -328,12 +550,51 @@
         float:right;
     }
 /*바디 영역*/  
-    
+
+/*인트로*/
+
+	#introRow{
+		height : 200px;
+		margin : 5px;
+		margin-bottom : 60px;
+	}
+	
+	#introBoard, #introNotice, #introReservation, #introEvent{
+		border : 2px solid gray;
+	}
+	
+	#introNoticeContent{ /*인트로 페이지 공지 게시글 3개까지*/
+		position: static;
+		text-align: center;
+		font-size: 11px;
+		height:10px;
+		margin: 0px;
+		padding: 0px;
+	}
+	
+	#introBoardContent{ /*인트로 페이지 게시글 3개까지*/
+		position: static;
+		text-align: center;
+		font-size: 11px;
+		height:10px;
+		margin: 0px;
+		padding: 0px;
+		border-left : none !important;
+	}
+	
+	#todayReservationMSG{ /*인트로 페이지 예약없을 때 안내 메시지*/
+		text-align: center;
+	}
+	
+	#introEventIMG{
+		width : 100%;
+	}
+	
 /*게시판*/
 	
     .bbs{ /*게시판 페이지 전체*/
         position: relative;
-        top:120px;
+        top:80px;
         height:30px;
     }
     
@@ -388,7 +649,7 @@
   		background-color : rgb(204,204,204);
   	}
   	
-  	#deletebtn{ /*삭제 버튼*/
+  	#submitbtn{ /*삭제 버튼*/
   		background-color : rgb(255,153,153);
   	}
   	
@@ -413,10 +674,17 @@
   	.detailHeader{ /*게시판 th 헤더*/
 		text-align : right;
 		width : 100px;
+		valign : top;
 	}
 	
-	.headerContent{
+	.headerContent{ /*게시판 td 내용*/
 		text-align : left;
+	}
+	
+	#writeTitle, #writeContent{
+		clear : none;
+		border : 0px none;
+		float : none;
 	}
 	
 

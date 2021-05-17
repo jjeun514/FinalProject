@@ -76,7 +76,7 @@
 					</form>
 				</div>
 				
-				<button id = "writebtn" type="button" class="btn btn-default">글쓰기</button>
+				<button id = "writebtn" type="button" class="btn btn-default" onclick = "location.href='/board/write';">글쓰기</button>
 				
 				    <div class="bottom">
 				        <div class="bottom-left">

@@ -9,8 +9,6 @@
 
 <script>
 
-//var num = $("#boardNum").serialize();
-
 $(document).ready(function(){
 	commentList(); //페이지 로딩시 댓글 목록 출력 
 });
@@ -22,13 +20,10 @@ function commentList(){
         data : "num="+$("#boardNum").val(),
         dataType : "json",
         success : function(data){
-        	console.log(data);
-        	console.log(data.commetData.length);
-        	
             var a ='';
             
         	for (var no = 0; no < data.commetData.length; no++ ) {
-        		a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom: 15px;">';
+        		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
                 a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
                 a += '<a onclick="commentUpdate('+data.commetData[no].commentNum+',\''+data.commetData[no].commentContent+'\');"></a>';
                 a += '<a onclick="commentDelete('+data.commetData[no].commentNum+');"></a> </div>';
@@ -47,9 +42,6 @@ function commentList(){
 	<div class="content bbs"><!--content start-->
 		<div class="container">
 			<div class="row">
-				<div class="col-md-3">
-				</div>
-				
 				<div class="col-md-12">
 					<table id = "bbsTable" class="table table-bordered table-hover">
 						<thead id = "boardDetailContent">
@@ -70,6 +62,10 @@ function commentList(){
 								<td class = "headerContent">${detail.date }</td>
 							</tr>
 							<tr>
+								<th class = "detailHeader">제목</th>
+								<td class = "headerContent">${detail.title }</td>
+							</tr>
+							<tr>
 								<th class = "detailHeader">내용</th>
 								<td id = "textField">${detail.content }</td>
 							</tr>
@@ -85,7 +81,7 @@ function commentList(){
 				</div>
 				    <!--  댓글  -->
 			   <div class="container">
-			        <label for="content" id = "commentLable">comment</label>
+			        <label for="content" id = "commentLable">댓글</label>
 			        <form name="commentInsertForm" id = "commentBox">
 			            <div class="input-group">
 			               <input type="hidden" name="num" id = "boardNum" value="${detail.num}"/>
