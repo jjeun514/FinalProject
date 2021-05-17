@@ -13,7 +13,30 @@
 
 <script>
 
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+   if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
+      jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+   }
+});
+
 $(document).ready(function(){
+	
+	var memNum = $("#memNum").val();
+	var writer = $("#writer").val();
+	var modifybtn = document.getElementById("modifybtn");
+	var deletebtn = document.getElementById("deletebtn");
+	var backbtn = document.getElementById("backbtn");
+	
+	if ( memNum == writer ) {
+		modifybtn.style.display = "block";
+		deletebtn.style.display = "block";
+	} else {
+		modifybtn.style.display = "none";
+		deletebtn.style.display = "none";
+		backbtn.style.left = "94%";
+	}
+	
 	commentList(); //페이지 로딩시 댓글 목록 출력 
 	
 	var num = $("#boardNum").val();
@@ -25,7 +48,47 @@ $(document).ready(function(){
 		}
 	    commentInsert(content); //Insert 함수 호출
 	});
+	
+	$('#deletebtn').click(function() {
+		deletePost(num); // delete 함수 호출
+	});
+	
+	$('#modifybtn').click(function() {
+		document.getElementById("title").readonly = false;
+	});
 });
+
+// 게시글 삭제
+function deletePost(num) {
+	$.ajax({
+		url : "/board/detail/delete",
+		type : 'post',
+		data : { num },
+		success : function(data) {
+			alert("요청하신 게시글 삭제가 정상적으로 처리되었습니다.");
+			location.href = "/board";
+		},
+		error : function(request, status, error) {
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
+// 게시글 수정
+function updatePost(modify) {
+	$.ajax({
+		url : "/board/detail/modify",
+		type : 'post',
+		data : { modify },
+		success : function(data) {
+			alert("요청하신 게시글 삭제가 정상적으로 처리되었습니다.");
+			location.href = "/board";
+		},
+		error : function(request, status, error) {
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
 
 // 댓글 목록
 function commentList(){
@@ -61,7 +124,7 @@ function commentInsert(content){
         dataType : "json",
         success : function(data){
             if(data.insertResult == 1) {
-                commentList(); //댓글 작성 후 댓글 목록 reload가 왜 안되지?
+                commentList(); //댓글 작성 후 댓글 목록 reload
                 $('[name=content]').val('');
             }
         }
@@ -71,39 +134,47 @@ function commentInsert(content){
 
 </script>
 <body>
+
 	<div class="content bbs"><!--content start-->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<table id = "bbsTable" class="table table-bordered table-hover">
-						<thead id = "boardDetailContent">
-							<tr>
-								<th class = "detailHeader">글번호</th>
-								<td class = "headerContent">${detail.num }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">이름</th>
-								<td class = "headerContent">${detail.writer }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">회사명</th>
-								<td class = "headerContent">${detail.company }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">날짜</th>
-								<td class = "headerContent">${detail.date }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">제목</th>
-								<td class = "headerContent">${detail.title }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">내용</th>
-								<td id = "textField">${detail.content }</td>
-							</tr>
-						</thead>
+					<form action="memberBoardContentForm">
+					
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+						<input type="hidden" id = "memNum" name="memNum" value="${member.memNum}"/>
+						<input type="hidden" id = "memName" name="memNname" value="${member.memName}"/>
 						
-					</table>
+						<table id = "bbsTable" class="table table-bordered table-hover">
+							<thead id = "boardDetailContent">
+								<tr>
+									<th class = "detailHeader">글번호</th>
+									<td class = "headerContent"><input id = "boardNum" hidden = "hidden" value = "${detail.num }"/>${detail.num }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">이름</th>
+									<td class = "headerContent"><input id = "writer" hidden = "hidden" value = "${detail.memNum }"/>${detail.writer }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">회사명</th>
+									<td class = "headerContent"><input id = "company" hidden = "hidden" value = "${detail.company }"/>${detail.company }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">날짜</th>
+									<td class = "headerContent"><input id = "date" hidden = "hidden" value = "${detail.date }"/>${detail.date }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">제목</th>
+									<td class = "headerContent"><input id = "title" type = "text" class = "boardBorderStyle" readonly = "readonly" value = "${detail.title }"/></td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">내용</th>
+									<td id = "textField"><input id = "boardContent" type = "text" class = "boardBorderStyle" readonly = "readonly" value = "${detail.content }"/></td>
+								</tr>
+							</thead>
+							
+						</table>
+					</form>
 					
 					<div id = "detailbtn">
 						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>

@@ -127,7 +127,20 @@ public class MemberController {
 	
 	// 멤버 파트 게시판 디테일
 	@RequestMapping(value = "/board/detail", method = RequestMethod.GET)
-	public String boardDetail(Model model, @RequestParam(value = "selectNum") int selectNum) {
+	public String boardDetail(Model model, Principal  principal, @RequestParam(value = "selectNum") int selectNum) {
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		}
 		
 		BoardVo detail = service.selectOneContent(selectNum);
 		
@@ -199,6 +212,18 @@ public class MemberController {
 		
 		return result;
 
+	}
+	
+	
+	
+	// 멤버 파트 게시글 삭제
+	@RequestMapping(value = "/board/detail/delete")
+	@ResponseBody
+	public ResponseEntity deletePost(Model model, Principal  principal, @RequestParam(value = "num") int num) {
+		
+		int result = service.deletePost(num);
+		
+		return ResponseEntity.ok().build().ok(result);
 	}
 	
 	

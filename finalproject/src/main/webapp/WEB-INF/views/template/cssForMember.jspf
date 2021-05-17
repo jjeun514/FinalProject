@@ -41,6 +41,12 @@
     	left: 41%;
     }
     
+    #system-search-notice{ /*공지 게시판 search input*/
+    	position: relative;
+    	left : -2%;
+    	margin-bottom: 33px;
+    }
+    
    	#writebtn{ /*멤버 페이지 게시판 글쓰기 버튼*/
 		border: 1px solid;
     	position: relative;
@@ -201,6 +207,24 @@
 		width : 900px;
 		height : 300px;
 	}
+	
+	#modifybtn{ /*수정 버튼*/
+  		background-color : rgb(153,204,255);
+  		position: absolute;
+  		top : 93.8%;
+  		left : 89%;
+  	}
+  	
+  	#deletebtn{ /*삭제 버튼*/
+  		background-color : rgb(255,153,153);
+  		position: absolute;
+  		top : 93.8%;
+  		left : 95%;
+  	}
+  	
+  	#backbtn{
+  		
+  	}
 
 }
 
@@ -246,6 +270,13 @@
 		margin : 10px;
     	position: relative;
     	left: 42%;
+    }
+    
+    #system-search-notice{ /*공지 게시판 search input*/
+    	position: relative;
+    	left : -5%;
+    	width : 110px;
+    	margin-bottom: 20px;
     }
     
     #writebtn{ /*멤버 페이지 게시판 글쓰기 버튼*/
@@ -416,6 +447,23 @@
 		height : 280px;
 	}
 	
+  	#modifybtn{ /*수정 버튼*/
+  		background-color : rgb(153,204,255);
+  		position: absolute;
+  		top : 93.8%;
+  		left : 80.5%;
+  	}
+  	
+  	#submitbtn{ /*등록 버튼*/
+  		background-color : rgb(153,204,255);
+  	}
+  	
+  	#deletebtn{ /*삭제 버튼*/
+  		background-color : rgb(255,153,153);
+  		position: absolute;
+  		top : 93.8%;
+  		left : 90%;
+  	}
 }
 
 
@@ -641,18 +689,6 @@
   		
   	}
   	
-  	#backbtn{ /*뒤로 가기 버튼*/
-  		background-color : rgb(153,204,255);
-  	}
-  	
-  	#modifybtn{ /*수정 버튼*/
-  		background-color : rgb(204,204,204);
-  	}
-  	
-  	#submitbtn{ /*삭제 버튼*/
-  		background-color : rgb(255,153,153);
-  	}
-  	
   	.commentArea{ /*코멘트 구역*/
   		font-size :12px;
   		border : 0px solid white;
@@ -687,6 +723,10 @@
 		float : none;
 	}
 	
+	#backbtn{ /*뒤로 가기 버튼*/
+  		background-color : rgb(204,204,204);
+  	}
+	
 
 /*게시판*/
 
@@ -716,6 +756,11 @@
     	background-color: rgba(52,58,64,1);
     	border-color: none;
     	color : white;
+    }
+    
+    .boardBorderStyle{
+    	clear : none;
+    	border : 0px none;
     }
     
 

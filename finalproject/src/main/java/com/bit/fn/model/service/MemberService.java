@@ -46,6 +46,10 @@ public class MemberService {
 		return memberMapper.selectOneContent(num);
 	}
 	
+	public int deletePost(int num) {
+		return memberMapper.deletePost(num);
+	}
+	
 	public int countBoardList() {
 		return memberMapper.countBoardList();
 	}

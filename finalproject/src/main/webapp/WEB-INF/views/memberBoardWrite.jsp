@@ -72,8 +72,8 @@ $(document).ready(function() {
 						</table>
 					</form>
 					<div id = "detailbtn">
-						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>
-						<button id = "submitbtn" type="button" class="btn btn-default">등록</button>
+						<button id = "backbtn" type="button" class="btn btn-default" style = "position : relative; left : 80%;" onclick = "history.back()">뒤로</button>
+						<button id = "submitbtn" type="button" class="btn btn-default" style = "position : relative; left : 82%;">등록</button>
 					</div>
 				</div>
 			</div>
