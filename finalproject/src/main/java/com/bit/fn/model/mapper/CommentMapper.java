@@ -15,9 +15,9 @@ public interface CommentMapper {
 	
 	public List<CommentVo> allComment(int num);
 	
-	public int searchMaxCommentNumber(int num);
+	public Integer searchMaxCommentNumber(int num);
 	
-	public int insertComment(CommentVo comment);
+	public Integer insertComment(CommentVo comment);
 	
 	public int updateComment(CommentVo comment);
 	

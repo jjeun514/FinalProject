@@ -252,7 +252,8 @@ public class MemberController {
 	
 	// 멤버 파트 게시판 댓글 작성
 	@RequestMapping(value = "/board/insertComment")
-	public String insertComment(Model model, Principal  principal, @RequestParam String contentWriter, @RequestParam int num, @RequestParam String commentContent) {
+	@ResponseBody
+	public Map<String, Object> insertComment(Model model, Principal  principal, CommentVo content) {
 		
 		//아이디
 		String id = principal.getName();
@@ -265,18 +266,20 @@ public class MemberController {
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if( member != -1 ) {
 			model.addAttribute("member",memberinfoService.selectOne(id));
-		} else {
-			return "redirect:/intro";
-		}
+		} 
 		
 		CommentVo comment = new CommentVo();
-		comment.setCommentNum(commentService.searchMaxCommentNumber(num)+1);
-		comment.setNum(num);
-		comment.setCommentWriter(contentWriter);
-		comment.setCommentContent(commentContent);
-		int insert = commentService.insertComment(comment);
+		comment.setCommentNum(commentService.searchMaxCommentNumber(content.getNum())+1);
+		comment.setNum(content.getNum());
+		comment.setCommentWriter(memberinfoService.selectOne(id).getMemName());
+		comment.setCommentContent(content.getCommentContent());
+		int insertResult = commentService.insertComment(comment);
+		System.out.println("댓글 입력 결과 : "+insertResult);
 		
-		return "";
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("insertResult", insertResult);
+		
+		return result;
 	}
 	
 //	

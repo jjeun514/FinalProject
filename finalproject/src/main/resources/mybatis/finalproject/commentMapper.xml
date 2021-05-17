@@ -11,8 +11,8 @@
    		select commentNum, num, commentWriter, commentContent, commentDate from comment where num = #{num} and checkDelete != 1
    	</select>
    	
-   	<select id="searchMaxCommentNumber" resultType="int">
-   		select max(commentNum) from comment where num = #{num}
+   	<select id="searchMaxCommentNumber" resultType="Integer">
+   		select ifnull(max(commentNum),0) from comment where num = #{num}
    	</select>
    	
    	<insert id="insertComment" parameterType="com.bit.fn.model.vo.CommentVo">

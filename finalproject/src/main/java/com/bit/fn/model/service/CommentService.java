@@ -22,11 +22,11 @@ public class CommentService {
 		return commentMapper.allComment(num);
 	}
 	
-	public int searchMaxCommentNumber(int num) {
+	public Integer searchMaxCommentNumber(int num) {
 		return commentMapper.searchMaxCommentNumber(num);
 	}
 	
-	public int insertComment(CommentVo comment) {
+	public Integer insertComment(CommentVo comment) {
 		return commentMapper.insertComment(comment);
 	}
 	

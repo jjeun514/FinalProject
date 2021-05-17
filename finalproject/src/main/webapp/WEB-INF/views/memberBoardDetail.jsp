@@ -1,18 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <title>MEMBER : BOARD</title>
-<link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
-<script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 <%@ include file="template/memberNavBar.jspf" %>
 <%@ include file="template/cssForMember.jspf" %>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
+<script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
+
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <%@ include file="template/cssForReservation.jspf" %>
 
 <script>
 
 $(document).ready(function(){
 	commentList(); //페이지 로딩시 댓글 목록 출력 
+	
+	var num = $("#boardNum").val();
+
+	$('#commentInsertBtn').click(function(){ //댓글 등록 버튼 클릭
+	    var content = {
+			commentContent : document.getElementById('content').value,
+			num : $("#boardNum").val()
+		}
+	    commentInsert(content); //Insert 함수 호출
+	});
 });
 
+// 댓글 목록
 function commentList(){
     $.ajax({
         url : '/board/detail/comment',
@@ -36,6 +51,23 @@ function commentList(){
         error : function (a,b,c) { console.log(a,b,c); }
     });
 }
+
+//댓글 등록
+function commentInsert(content){
+    $.ajax({
+        url : '/board/insertComment',
+        type : 'post',
+        data : content,
+        dataType : "json",
+        success : function(data){
+            if(data.insertResult == 1) {
+                commentList(); //댓글 작성 후 댓글 목록 reload가 왜 안되지?
+                $('[name=content]').val('');
+            }
+        }
+    });
+}
+
 
 </script>
 <body>
@@ -87,7 +119,7 @@ function commentList(){
 			               <input type="hidden" name="num" id = "boardNum" value="${detail.num}"/>
 			               <input type="text" class="form-control" id="content" name="content" placeholder="내용을 입력하세요.">
 			               <span class="input-group-btn">
-			                    <button class="btn btn-default" type="button" name="commentInsertBtn">등록</button>
+			                    <button class="btn btn-default" type="button" id = "commentInsertBtn" name="commentInsertBtn">등록</button>
 			               </span>
 			              </div>
 			        </form>

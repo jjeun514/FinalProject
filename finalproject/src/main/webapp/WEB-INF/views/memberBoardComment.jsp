@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <title>MEMBER : COMMENT</title>
+<link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
+<script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 <%@ include file="template/memberNavBar.jspf" %>
 <%@ include file="template/cssForMember.jspf" %>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
-<script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
 
 <script>
 
