@@ -784,7 +784,7 @@
 			margin: 0 auto;
 			text-align: center;
 		}
-		.spaceTitle {
+		.spaceTitle, .tenantsTitle {
 			margin: 0 auto;
 			text-align: center;
 			padding-top: 10px;

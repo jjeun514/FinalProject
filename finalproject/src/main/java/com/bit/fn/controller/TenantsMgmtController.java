@@ -11,31 +11,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.fn.model.service.BranchService;
+import com.bit.fn.model.service.join.TenantsMgmtService;
 import com.bit.fn.model.vo.BranchVo;
+import com.bit.fn.model.vo.join.TenantsMgmtVo;
 
 @Controller
 @ComponentScan
-public class CompanyMgmtController {
+public class TenantsMgmtController {
 	@Autowired
-	BranchService branchService;
-	List<BranchVo> branchNameList;
-	List<Map<String, Object>> branchCodeList;
-	int branchCode;
+	TenantsMgmtService tenantsMgmtService;
+	List<TenantsMgmtVo> tenantsList;
 	
-	@RequestMapping("/companyMgmt")
-	public String companyMgmtGet(HttpServletRequest req) throws Exception {
-		System.out.println("[CompanyMgmtController(companyMgmtGet())]");
-//	// 공간 관리
-//		spaceInfo=officeService.spaceInfo();
-//		System.out.println("[SpaceMgmtController(spaceMgmtGet())] 공간: "+spaceInfo);
-//		req.setAttribute("spaceInfo", spaceInfo);
-//
-//	// 공간 추가
-//		branchNameList=branchService.selectAllBranchName();
-//		req.setAttribute("branchList", branchNameList);
-//		System.out.println("[SpaceMgmtController(addSpace())] branchList: "+branchNameList);
+	@RequestMapping("/tenantsMgmt")
+	public String tenantsMgmtGet(HttpServletRequest req) throws Exception {
+		System.out.println("[TenantsMgmtController(tenantsMgmtGet())]");
+	// 입주사 관리
+		tenantsList=tenantsMgmtService.selectAllTenants();
+		System.out.println("[TenantsMgmtController(tenantsMgmtGet())] tenantsList: "+tenantsList);
+		req.setAttribute("tenantsList", tenantsList);
 		
-		return "companyMgmt";
+		return "tenantsMgmt";
 	}
 
 //	@RequestMapping(path="/spaceDetail", method = RequestMethod.POST)
