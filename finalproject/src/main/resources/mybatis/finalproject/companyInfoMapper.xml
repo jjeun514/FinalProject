@@ -53,7 +53,7 @@
    	</delete>
    	
    	<!-- 회사코드를 통한 오피스 번호 찾기 -->
-   	<select id="selectOfficeNum" resultType="com.bit.fn.model.vo.CompanyInfoVo">
-   		select officeNum where comCode=#{comCode}
+   	<select id="selectOfficeNum" resultType="int">
+   		select officeNum from companyInfo where comCode=#{comCode}
    	</select>
 </mapper>

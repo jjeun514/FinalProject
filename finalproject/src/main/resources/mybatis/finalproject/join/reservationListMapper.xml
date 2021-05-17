@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.fn.model.mapper.join.ReservationListMapper">
+	<resultMap type="com.bit.fn.model.vo.ReservationVo" id="ReservationMap">
+    	<id property="roomNum" column="roomNum"/>
+    	<result property="memNum" column="memNum"/>
+    	<result property="reservationDay" column="reservationDay"/>
+    	<result property="useStartTime" column="useStartTime"/>
+    	<result property="useFinishTime" column="useFinishTime"/>
+    	<result property="userCount" column="userCount"/>
+    	<result property="amount" column="fee"/>
+    	<result property="etc" column="etc"/>
+    	<result property="merchant_uid" column="merchant_uid"/>
+    </resultMap>
+    <resultMap type="com.bit.fn.model.vo.MemberInfoVo" id="MemberInfoMap">
+    	<id property="memNum" column="memNum"/>
+    	<result property="memName" column="memName"/>
+    	<result property="memNickName" column="memNickName"/>
+    	<result property="id" column="id"/>
+    	<result property="comCode" column="comCode"/>
+    	<result property="dept" column="dept"/>
+    	<result property="memPhone" column="memPhone"/>
+    	<result property="signdate" column="signdate"/>
+    	<result property="admission" column="admission"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.CompanyInfoVo" id="CompanyInfoMap">
+    	<id property="comCode" column="comCode"/>
+    	<result property="officeNum" column="officeNum"/>
+    	<result property="comName" column="comName"/>
+    	<result property="ceo" column="ceo"/>
+    	<result property="manager" column="manager"/>
+    	<result property="comPhone" column="comPhone"/>
+    	<result property="contractDate" column="contractDate"/>
+    	<result property="rentStartDate" column="rentStartDate"/>
+    	<result property="rentFinishDate" column="rentFinishDate"/>
+    	<result property="point" column="point"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.join.ReservationListVo" id="ReservationListMap">
+    	<collection property="reservation" resultMap="ReservationMap"/>
+    	<collection property="memberInfo" resultMap="MemberInfoMap"/>
+    	<collection property="companyInfo" resultMap="CompanyInfoMap"/>
+    </resultMap>
+    
+   	<select id="selectAllJoin" resultMap="ReservationListMap">
+   		SELECT r.roomNum, r.memNum, r.reservationDay, r.useStartTime, r.useFinishTime, r.userCount, r.fee, r.etc, r.merchant_uid,
+		 m.memNum,m.memName,m.id,m.memNickName,m.comCode,m.dept,m.memPhone,m.signdate,m.admission, 
+		 c.comCode,c.officeNum,c.comName,c.ceo,c.manager,c.comPhone,c.contractDate,c.rentStartDate,c.rentFinishDate,c.point 
+		FROM reservation r INNER JOIN memberInfo m on r.memNum=m.memNum inner join companyInfo c ON m.comCode=c.comCode
+		order by r.reservationDay desc, r.useStartTime desc;
+   	</select>
+</mapper>
+
