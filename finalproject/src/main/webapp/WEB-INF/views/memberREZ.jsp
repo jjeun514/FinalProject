@@ -10,6 +10,7 @@
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <%@ include file="template/cssForReservation.jspf" %>
 <script>
 
 var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -307,7 +308,7 @@ function noWeekend(date) {
 		<div class = "container">
 			<div class = "row">
 			<div id = "reservationDate" class = "com-md-12">
-				<input type = "text" id="reservationDay" class="form-control" value="">
+				<input type = "date" id="reservationDay" class="form-control" value="">
 			</div>
 				<div class = "col-md-12">
 				<div id = "showAlertForChoice"></div>

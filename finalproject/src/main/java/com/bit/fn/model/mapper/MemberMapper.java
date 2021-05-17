@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.bit.fn.model.vo.BoardVo;
+import com.bit.fn.model.vo.CommentVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;
@@ -15,8 +16,20 @@ import com.bit.fn.model.vo.ReservationVo;
 @Mapper
 public interface MemberMapper {
 	
+	// 인트로 페이지 게시판 리스트
+	public List<BoardVo> boardListForIntro();
+	
+	// 인트로 페이지 공지 리스트
+	public List<NoticeVo> noticeListForIntro(); 
+	
+	// 인트로 페이지 예약 리스트
+	public List<ReservationVo> reservationListForIntro(int memNum);
+	
 	// 멤버 페이지 게시판 리스트
 	public List<BoardVo> memberBoardList();
+	
+	// 멤버 페이지 게시글 저장
+	public int savePost(BoardVo post);
 	
 	// 멤버 페이지 페이징
 	public List<PaginationVo> memberBoardPaginationList(PaginationVo pagination);

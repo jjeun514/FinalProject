@@ -68,4 +68,12 @@
     	 where 
     	 	comCode=#{comCode}
    	</select>
+   	
+   	<!-- 게시글 작성에 필요한 회사 이름 추출 -->
+   	<select id="searchCompanyName" resultType="String">
+   		select com.comName from companyInfo com
+   		left outer join memberInfo mem
+   		on com.comCode = mem.comCode
+   		where mem.memNum = #{memNum} 
+   	</select>
 </mapper>
