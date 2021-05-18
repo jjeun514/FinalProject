@@ -15,8 +15,8 @@ public interface TenantsMgmtMapper {
 	public List<TenantsMgmtVo> selectAllTenants();
 
 	public int editSpaceInfo(String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput,
-			String branchSelected, int comCode);
+			String branchSelected, String comCode);
 	public List<TenantsMgmtVo> selectFloor(String branchName);
 	public List<TenantsMgmtVo> selectOffices(String floor, String branchName);
-	public List<TenantsMgmtVo> dateCheck(String officeName);
+	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, String floor);
 }

@@ -80,6 +80,6 @@
    		select c.officeNum, branchName, officeName, rentStartDate, rentFinishDate from companyInfo a
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch b on b.branchCode=c.branchCode
-		where c.officeName=#{officeName} and b.branchName=#{branchName} AND c.floor=#{floor}
+		where c.officeName=#{officeName} and b.branchName=#{branchName} and c.floor=#{floor}
    	</select>
 </mapper>

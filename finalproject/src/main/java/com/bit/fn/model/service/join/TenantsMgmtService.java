@@ -18,7 +18,7 @@ public class TenantsMgmtService {
 		return tenantsMgmtMapper.selectAllTenants();
 	}
 	
-	public int editSpaceInfo(String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, String branchSelected, int comCode) {
+	public int editSpaceInfo(String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, String branchSelected, String comCode) {
 		return tenantsMgmtMapper.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
 	}
 	
@@ -30,7 +30,7 @@ public class TenantsMgmtService {
 		return tenantsMgmtMapper.selectOffices(floor, branchName);
 	}
 	
-	public List<TenantsMgmtVo> dateCheck(String officeName){
-		return tenantsMgmtMapper.dateCheck(officeName);
+	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, String floor){
+		return tenantsMgmtMapper.dateCheck(officeName, branchName, floor);
 	}
 }

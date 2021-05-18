@@ -11,6 +11,8 @@ $('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 $(document).ready(function(){
 	$('#detail').on('show.bs.modal', function(event) {
+		event.stopImmediatePropagation();
+		console.log('[modal상세]');
 		var comName=$(event.relatedTarget).data('comname');
 		var comCode=$(event.relatedTarget).data('comcode');
 		var ceo=$(event.relatedTarget).data('ceo');
@@ -23,7 +25,7 @@ $(document).ready(function(){
 		var rentStartDate=$(event.relatedTarget).data('rentstartdate');
 		var rentFinishDate=$(event.relatedTarget).data('rentfinishdate');
 		var masterAccount=$(event.relatedTarget).data('masteraccount');
-		console.log('[officeName] modal 열렸을 때: '+officeName);
+		console.log('[modal상세] officeName: '+officeName);
 		$('.tenantsTitle').html(comName+' 상세 정보');
 		$('#comCode').html(comCode);
 		$('#ceo').html(ceo);
@@ -39,7 +41,10 @@ $(document).ready(function(){
 		$('#floor').html(floor);
 		$('.floor').html('<option>'+floor+'</option>');
 		
-		$('.editSpace').on('click', function(){
+		$(document).on('click','.editSpace', function(e){
+		//$('.editSpace').on('click', function(e){
+			e.stopImmediatePropagation();
+			console.log('[수정버튼누름]');
 			$('.spaceTitle').html('입주 공간 정보 수정').css('color','red');
 			$('#comCode, #ceo, #manager, #comPhone, #masterAccount').css('background-color','rgba(230, 230, 230, 0.4)').css('color','darkgray');
 			$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소');
@@ -47,81 +52,122 @@ $(document).ready(function(){
 			$('.branchName').attr('disabled',false).attr('class', 'form-control editBranch');
 			$('.branchName').val(branchName).attr('selected', 'selected');
 			$('#contractDate, #rentStartDate, #rentEndDate').attr('disabled', false);
-			console.log('[officeName] modal 수정버튼 눌렀을 때: '+officeName);
-			
+			console.log('[수정버튼누름] officeName: '+officeName);
 			$.selectFloor();
+		}); // end of eidtSpace click event
+		
+		$('#branch>select').change(function(){
+			console.log('[수정버튼누름>지점 변경]');
+			console.log('[수정버튼누름>지점 변경] officeName: '+officeName);
+			$.selectFloor();
+		});
+		
+		$('.floor').change(function(){
+			console.log('[수정버튼누름>층 변경]');
+			$.selectOffice();
+		});
+		
+		$('#rentStartDate').change(function(){
+			console.log('[수정버튼누름>입주일 변경]');
 			
-			$('#branch>select').change(function(){
-				console.log('지점 변경되었음');
-				console.log('[officeName] 지점 변경됐을 때: '+officeName);
-				$.selectFloor();
-			});
+		});
+		
+		$('#rentEndDate').change(function(){
+			console.log('[수정버튼누름>퇴소일 변경]');
 			
-			$('.floor').change(function(){
-				console.log('층 변경');
-				$.selectOffice();
-			});
-			
-			$('#rentStartDate').change(function(){
-				console.log('입주일 변경');
-				
-			});
-			$('#rentEndDate').change(function(){
-				console.log('퇴소일 변경');
-				
-			});
-			
-			
-			$(document).on('click','.okBtn', function(){
-				console.log('[officeName] 확인 버튼 눌렀을 때: '+officeName);
-				if($('.officeName').val()=='공간 선택'){
-					document.getElementById('modalText01').textContent='공간을 선택해주세요.';
+		});
+		
+		$(document).on('click','.okBtn', function(e){
+			e.stopImmediatePropagation();
+			console.log('[수정>확인버튼누름] officeName: '+officeName);
+			if($('.officeName').val()=='공간 선택'){
+				document.getElementById('modalText01').textContent='공간을 선택해주세요.';
+				$('#dangerModal').modal('show');
+			} else {
+				if($('#contractDate').val()>=$('#rentStartDate').val()){
+					console.log('[X]계약일>=입주일');
+					document.getElementById('modalText01').textContent='계약일을 확인해주세요.';
 					$('#dangerModal').modal('show');
-				}
-				$('select, input').change(function(){
-					console.log('변경됨');
-					/*
-					$.ajax({
-						url: "/editSpaceInfo",
-						type : "POST",
-						contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-						data: {
-							comCode:$('#comCodeInput').val(),
-							branchSelected:$('.branchSelected').val(),
-							officeSelected:$('.officeSelected').val(),
-							contractDateInput:$('.contractDateInput').val(),
-							MoveInDateInput:$('.MoveInDateInput').val(),
-							MoveOutDateInput:$('.MoveOutDateInput').val()					
-						},
-						success: function(data){
-							console.log('[ajax성공] data: '+JSON.stringify(data));
+				} else {
+					console.log('[O]계약일<입주일');
+					if($('#rentStartDate').val()>=$('#rentEndDate').val()){
+						console.log('[X]계약일>=퇴소일');
+						document.getElementById('modalText01').textContent='입주일과 퇴소일을 확인해주세요.';
+						$('#dangerModal').modal('show');
+					} else {
+						console.log('[O]계약일<퇴소일');
+						if(branchName==$('.editBranch').val() && floor==$('.floor').val() && officeName==$('.officeName').val() && contractDate==$('#contractDate').val() && rentStartDate==$('#rentStartDate').val() && rentFinishDate==$('#rentEndDate').val()){
+							console.log('[수정>확인버튼누름] 값 변경 없음');
+							console.log('branchName: '+branchName+', branchName(입력값): '+$('.editBranch').val()+', floor: '+floor+', floor(입력값): '+$('.floor').val()+', officeName: '+officeName+', officeName(입력값): '+$('.officeName').val()+', contractDate: '+contractDate+', contractDate(입력값): '+$('#contractDate').val()+', rentStartDate: '+rentStartDate+', rentStartDate(입력값): '+$('#rentStartDate').val()+', rentEndDate: '+rentFinishDate+', rentEndDate(입력값): '+$('#rentEndDate').val());
 							$.cssBack();
-						},
-						error: function(error){
-							console.log("ajax 에러");
-							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
-							$('#dangerModal').modal('show');
+							document.getElementById('modalText02').textContent='변경된 값이 없습니다.';
+							$('#primaryModal').modal('show');
+						} else {
+							console.log('[수정>확인버튼누름] 지점/층/공간/계약일/입주일/퇴소일 변경됨');
+							console.log('branchName: '+branchName+', branchName(입력값): '+$('.editBranch').val()+', floor: '+floor+', floor(입력값): '+$('.floor').val()+', officeName: '+officeName+', officeName(입력값): '+$('.officeName').val()+', contractDate: '+contractDate+', contractDate(입력값): '+$('#contractDate').val()+', rentStartDate: '+rentStartDate+', rentStartDate(입력값): '+$('#rentStartDate').val()+', rentEndDate: '+rentFinishDate+', rentEndDate(입력값): '+$('#rentEndDate').val());
+							
+							$.ajax({
+								url: "/editSpaceInfo",
+								type : "POST",
+								contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+								dataType: "JSON",
+								data: {
+									comCode:$('#comCode').text(),
+									branchSelected:$('.editBranch').val(),
+									officeSelected:$('.officeName').val(),
+									contractDateInput:$('#contractDate').val(),
+									MoveInDateInput:$('#rentStartDate').val(),
+									MoveOutDateInput:$('#rentEndDate').val(),
+									floor:$('.floor').val()
+								},
+								success: function(data){
+									console.log('[editSpaceInfo] ajax성공 data: '+JSON.stringify(data));
+									document.getElementById('modalText02').textContent='수정이 완료되었습니다';
+									$('#primaryModal').modal('show');
+									
+									branchName=$('.editBranch').val();
+									floor=$('.floor').val();
+									officeName=$('.officeName').val();
+									contractDate=$('#contractDate').val();
+									rentStartDate=$('#rentStartDate').val();
+									rentFinishDate=$('#rentEndDate').val();
+									$('.editBranch').val(branchName);
+									$('.officeName').html('<option>'+officeName+'</option>');
+									$('.floor').html('<option>'+floor+'</option>');
+									$('#contractDate').val(contractDate);
+									$('#rentStartDate').val(rentStartDate);
+									$('#rentEndDate').val(rentFinishDate);
+									
+									$.cssBack();
+								},
+								statusCode: {
+									403: function(data){
+										console.log('[editSpaceInfo] ajax - 입주일/퇴소일 확인 필요 data" '+JSON.stringify(data));
+										document.getElementById('modalText01').textContent='입력하신 기간은 공실이 아닙니다.';
+										$('#dangerModal').modal('show');
+									}
+								},
+								error: function(error){
+									console.log('[editSpaceInfo] ajax 에러');
+									document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+									$('#dangerModal').modal('show');
+								}
+							});
 						}
-					});
-					*/
-				});
-			});
-
-			$(document).on('click', '.cancleBtn', function(){
-				console.log('[officeName] 취소 눌렀을 때: '+officeName);
-				$.cssBack();
-				$('.branchName').val(branchName);
-				console.log('officeName은?? '+officeName);
-				$('.officeName').html('<option>'+officeName+'</option>');
-				$('.floor').html('<option>'+floor+'</option>');
-				$('#contractDate').val(contractDate);
-				$('#rentStartDate').val(rentStartDate);
-				$('#rentEndDate').val(rentFinishDate);
-			});
+					}
+				}
+			}
+		});
+		
+		$(document).on('click', '.cancleBtn', function(e){
+			e.stopImmediatePropagation();
+			console.log('[취소버튼누름] officeName: '+officeName);
+			$.cssBack();
+			$.dataBack();
 		});
 		
 		$('#detail').on('hide.bs.modal', function(event) {
-			console.log('[officeName] modal 닫혔을 때: '+officeName);
+			console.log('[modal상세 닫힘] officeName: '+officeName);
 			$.cssBack();
 		});
 		
@@ -134,6 +180,16 @@ $(document).ready(function(){
 			$('#contractDate, #rentStartDate, #rentEndDate, .officeName, .floor').attr('disabled', true);
 		}
 		
+		$.dataBack=function(){
+			$('.branchName').val(branchName);
+			console.log('[dataBack] officeName: '+officeName);
+			$('.officeName').html('<option>'+officeName+'</option>');
+			$('.floor').html('<option>'+floor+'</option>');
+			$('#contractDate').val(contractDate);
+			$('#rentStartDate').val(rentStartDate);
+			$('#rentEndDate').val(rentFinishDate);
+		}
+		
 		$.selectFloor=function(){
 			$.ajax({
 				url: "/selectFloor",
@@ -144,33 +200,33 @@ $(document).ready(function(){
 					branchName:$('.editBranch').val()
 				},
 				success: function(data){
-					console.log('ajax 성공'+JSON.stringify(data));
+					console.log('[selectFloor] ajax 성공');
 					$.each(data, function(key, value){
-						console.log('length: '+value.length);
+						console.log('[selectFloor] length: '+value.length);
 							$('.officeName').attr('disabled',false);
 							$('.floor').attr('disabled',false);
 							$('.floor').html('');
 							for(var index=0; index<value.length; index++){
-								console.log('[ajax성공] floor['+index+']: '+JSON.stringify(value[index].office.floor));
+								console.log('[selectFloor] floor['+index+']: '+JSON.stringify(value[index].office.floor));
 								if($('.editBranch').val()==value[index].branch.branchName){
-									console.log('선택된 지점에 따라서 층/공간 select 동적 구성');
+									console.log('[selectFloor] 선택된 지점에 따라서 층/공간 select 동적 구성');
 									if(floor==value[index].office.floor){
-										console.log('[selected] floor: '+floor+', option: '+value[index].office.floor);
+										console.log('[selectFloor] selected floor: '+floor+', option: '+value[index].office.floor);
 										$('.floor').val('<option selected>'+value[index].office.floor+'</option>');
 									}
-									console.log('[다름selected] floor: '+floor+', option: '+value[index].office.floor);
+									console.log('[selectFloor] selected(다름) floor: '+floor+', option: '+value[index].office.floor);
 									$('.floor').append('<option>'+value[index].office.floor+'</option>');
-									console.log('floor는??? '+value[index].office.floor);
+									console.log('[selectFloor] floor: '+value[index].office.floor);
 								}
 							}
 							$('.floor').val(floor).attr('selected','selected');
 					});
-					console.log('[floor] ajax 성공 했을 때: '+floor);
-					console.log('[officeName] ajax 성공 했을 때: '+officeName);
+					console.log('[selectFloor] floor(ajax each 끝나고): '+floor);
+					console.log('[selectFloor] officeName(ajax each 끝나고): '+officeName);
 					$.selectOffice();
 				},
 				error: function(error){
-					console.log("ajax 에러");
+					console.log('[selectFloor] ajax 에러');
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -188,39 +244,39 @@ $(document).ready(function(){
 					branchName:$('.editBranch').val()
 				},
 				success: function(data){
-					console.log('ajax 성공'+JSON.stringify(data));
+					console.log('[selectOffices] ajax 성공');
 					$.each(data, function(key, value){
-						console.log('length: '+value.length);
+						console.log('[selectOffices] length: '+value.length);
 							$('.officeName').attr('disabled',false);
 							$('.officeName').html('');
 							for(var index=0; index<value.length; index++){
-								console.log('[ajax성공] branchName['+index+']: '+JSON.stringify(value[index].branch.branchName));
-								console.log('[ajax성공] floor['+index+']: '+JSON.stringify(value[index].office.floor));
-								console.log('[ajax성공] value['+index+']: '+JSON.stringify(value[index].office.officeName));
-								console.log('[ajax성공] value['+index+']: '+JSON.stringify(value[index].companyInfo.rentStartDate));
-								console.log('[ajax성공] value['+index+']: '+JSON.stringify(value[index].companyInfo.rentFinishDate));
+								console.log('[selectOffices] ajax성공 branchName['+index+']: '+JSON.stringify(value[index].branch.branchName));
+								console.log('[selectOffices] ajax성공 floor['+index+']: '+JSON.stringify(value[index].office.floor));
+								console.log('[selectOffices] ajax성공 officeName['+index+']: '+JSON.stringify(value[index].office.officeName));
+								console.log('[selectOffices] ajax성공 rentStartDate['+index+']: '+JSON.stringify(value[index].companyInfo.rentStartDate));
+								console.log('[selectOffices] ajax성공 rentFinishDate['+index+']: '+JSON.stringify(value[index].companyInfo.rentFinishDate));
 								if($('.editBranch').val()==value[index].branch.branchName){
-									console.log('선택된 지점에 따라서 층/공간 select 동적 구성');
+									console.log('[selectOffices] 선택된 지점에 따라서 층/공간 select 동적 구성');
 									if(officeName==value[index].office.officeName){
-										console.log('[selected] officeName: '+officeName+', option: '+value[index].office.officeName);
+										console.log('[selectOffices] selected officeName: '+officeName+', option: '+value[index].office.officeName);
 										$('.officeName').val('<option selected>'+value[index].office.officeName+'</option>');
 									}
 									$('.officeName').append('<option>'+value[index].office.officeName+'</option>');
-									console.log('officeName은??? '+value[index].office.officeName);
+									console.log('[selectOffices] selected 다름 officeName: '+value[index].office.officeName);
 								}
 							}
 							$('.officeName').val(officeName).attr('selected','selected');
 							if($('.officeName').val()==null){
-								console.log('공간 null');
+								console.log('[selectOffices] 공간 null');
 								$('.officeName').append('<option>공간 선택</option>');
 								$('.officeName').val('공간 선택').attr('selected','selected');
 							}
 					});
-					console.log('[floor] ajax 성공 했을 때: '+floor);
-					console.log('[officeName] ajax 성공 했을 때: '+officeName);
+					console.log('[selectOffices] ajax each 끝나고 floor: '+floor);
+					console.log('[selectOffices] ajax each 끝나고 officeName: '+officeName);
 				},
 				error: function(error){
-					console.log("ajax 에러");
+					console.log('[selectOffices] ajax 에러');
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -235,7 +291,7 @@ $(document).ready(function(){
 	<table class="table companyMgmtTable">
 		<thead class="thead-light">
 			<tr>
-				<td colspan="10" id="addSpaceBtn">
+				<td colspan="11" id="addSpaceBtn">
 					<button type="button" class="btn btn-primary addSpaceBtn" data-toggle="modal" data-target="#addModal">추가</button>
 				</td>
 			</tr>

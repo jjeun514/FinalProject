@@ -2,6 +2,8 @@ package com.bit.fn.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,13 +51,54 @@ public class TenantsMgmtController {
 	}
 
 	@RequestMapping(path="/editSpaceInfo", method = RequestMethod.POST)
-	public ResponseEntity spaceDetail(int comCode, String branchSelected, String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, HttpServletResponse resp) throws Exception {
+	public ResponseEntity spaceDetail(String comCode, String branchSelected, String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, String floor, HttpServletResponse resp) throws Exception {
 		System.out.println("[SpaceMgmtController(editSpaceInfo())]");
+		System.out.println("[SpaceMgmtController(editSpaceInfo())] comCode: "+comCode+", branchSelected: "+branchSelected+", officeSelected: "+officeSelected+", contractDateInput: "+contractDateInput+", MoveInDateInput: "+MoveInDateInput+", MoveOutDateInput: "+MoveOutDateInput+", floor: "+floor);
 		resp.setCharacterEncoding("utf-8");
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
-			tenantsMgmtService.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
+			dateList=tenantsMgmtService.dateCheck(officeSelected, branchSelected, floor);
+			System.out.println("[SpaceMgmtController(editSpaceInfo())] dateList: "+dateList);
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+			for(int index=0; index<dateList.size(); index++) {
+				System.out.println("i: "+index);
+				System.out.println("["+index+"]"+"rentStartDate: "+dateList.get(index).getCompanyInfo().getRentStartDate());
+				System.out.println("["+index+"]"+"rentFinishDate: "+dateList.get(index).getCompanyInfo().getRentFinishDate());
+				
+				String dbRentStart=dateFormat.format(dateList.get(index).getCompanyInfo().getRentStartDate());
+				String dbRentEnd=dateFormat.format(dateList.get(index).getCompanyInfo().getRentFinishDate());
+				System.out.println("dbRentStart= "+dbRentStart+", dbRentEnd= "+dbRentEnd);
+				System.out.println("contractDateInput/dbRentStart: "+contractDateInput.compareTo(dbRentStart));
+				
+				if(MoveInDateInput.compareTo(dbRentStart)<0 && MoveOutDateInput.compareTo(dbRentStart)<0
+						|| MoveInDateInput.compareTo(dbRentEnd)>0 && MoveOutDateInput.compareTo(dbRentEnd)>0) {
+					System.out.println("[O]입주일<DB입주일 && 퇴소일<DB입주일 || 입주일>DB퇴소일 && 퇴소일>DB퇴소일");
+					tenantsMgmtService.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
+				} else {
+					System.out.println("입주일/퇴소일 확인 필요");
+					status=HttpStatus.FORBIDDEN;
+				}
+				/*
+				 	A.compareTo(B)
+				 	A==B: 0
+				 	A>B: 1
+				 	A<B: -1
+				 */
+				
+				System.out.println("[SpaceMgmtController(editSpaceInfo())] contractDateInput: "+contractDateInput+", dbRentStart: "+dbRentStart+", dbRentEnd: "+dbRentEnd);
+			}
+			
+			try {
+				JSONObject jobj=new JSONObject();
+				PrintWriter out;
+				jobj.put("dateList", dateList);
+				out = resp.getWriter();
+				out.print(jobj.toString());
+			} catch (IOException e) {
+				System.out.println("[MasterMgmtController(editSpaceInfo())] json 오류");
+				e.printStackTrace();
+			}
 		} catch(NullPointerException e) {
 			System.out.println("[SpaceMgmtController(editSpaceInfo())] bad request");
 			status=HttpStatus.BAD_REQUEST;
@@ -138,7 +181,7 @@ public class TenantsMgmtController {
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
-			dateList=tenantsMgmtService.dateCheck(officeName);
+			//dateList=tenantsMgmtService.dateCheck(officeName);
 			System.out.println("[SpaceMgmtController(dateCheck())] dateList: "+dateList);
 			try {
 				JSONObject jobj=new JSONObject();
