@@ -83,12 +83,12 @@ $(document).ready(function(){
 				document.getElementById('modalText01').textContent='공간을 선택해주세요.';
 				$('#dangerModal').modal('show');
 			} else {
-				if($('#contractDate').val()>=$('#rentStartDate').val()){
-					console.log('[X]계약일>=입주일');
+				if($('#contractDate').val()>$('#rentStartDate').val()){
+					console.log('[X]계약일>입주일');
 					document.getElementById('modalText01').textContent='계약일을 확인해주세요.';
 					$('#dangerModal').modal('show');
 				} else {
-					console.log('[O]계약일<입주일');
+					console.log('[O]계약일<=입주일');
 					if($('#rentStartDate').val()>=$('#rentEndDate').val()){
 						console.log('[X]계약일>=퇴소일');
 						document.getElementById('modalText01').textContent='입주일과 퇴소일을 확인해주세요.';
@@ -143,6 +143,11 @@ $(document).ready(function(){
 									403: function(data){
 										console.log('[editSpaceInfo] ajax - 입주일/퇴소일 확인 필요 data" '+JSON.stringify(data));
 										document.getElementById('modalText01').textContent='입력하신 기간은 공실이 아닙니다.';
+										$('#dangerModal').modal('show');
+									},
+									400: function(data){
+										console.log('[editSpaceInfo] ajax - 사무실 존재X" '+JSON.stringify(data));
+										document.getElementById('modalText01').textContent='입력하신 공간은 선택할 수 없습니다.';
 										$('#dangerModal').modal('show');
 									}
 								},
@@ -267,8 +272,17 @@ $(document).ready(function(){
 							$('.officeName').val(officeName).attr('selected','selected');
 							if($('.officeName').val()==null){
 								console.log('[selectOffices] 공간 null');
-								$('.officeName').append('<option>공간 선택</option>');
+								$('.officeName').prepend('<option>공간 선택</option>');
 								$('.officeName').val('공간 선택').attr('selected','selected');
+							}
+							if($.contains($('.officeName').text(), officeName)){
+								console.log('포함함');
+							}else{
+								console.log('포함안함');
+								if(branchName==$('.editBranch').val() && floor==$('.floor').val()){
+									console.log('값 안바뀜');
+									$('.officeName').val('공간 선택').append('<option selected>'+officeName+'</option>');
+								}
 							}
 					});
 					console.log('[selectOffices] ajax each 끝나고 floor: '+floor);

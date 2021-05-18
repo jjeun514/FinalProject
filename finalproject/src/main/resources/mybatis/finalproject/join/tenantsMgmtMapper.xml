@@ -52,7 +52,7 @@
 		left outer join masterAccount b on a.comCode=b.comCode
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch d on c.branchCode=d.branchCode 
-		where not branchName in ('0') order by contractDate
+		where not branchName in ('0') and c.deleted=0 and a.deleted=0 order by contractDate
    	</select>
    	
    	<!-- [관리자페이지] 입주사관리(수정) -->
@@ -61,27 +61,27 @@
 		left outer join branch c on b.branchCode=c.branchCode
 		set b.officeName=#{officeSelected}, a.contractDate=#{contractDateInput}, a. rentStartDate=#{MoveInDateInput}, a.rentFinishDate=#{MoveOutDateInput},
 		b.branchCode=(select c.branchCode from branch c where c.branchName=#{branchSelected})
-		where a.comCode=#{comCode} and a.deleted=0 and not branchName in ('0') 
+		where a.comCode=#{comCode} and a.deleted=0 and b.deleted=0 and not branchName in ('0') 
    	</update>
    	
    	<!-- [관리자페이지] 입주사관리 (수정 - 지점 변경할 경우) -->
    	<select id="selectFloor" resultMap="TenantsMgmtMap">
    		select branchName, floor from branch a
 		left outer join office b on a.branchCode=b.branchCode
-		where branchName=#{branchName} group by floor
+		where branchName=#{branchName} and b.deleted=0 group by floor
    	</select>
    	
    	<select id="selectOffices" resultMap="TenantsMgmtMap">
    		select branchName, officeName, c.floor, rentStartDate, rentFinishDate from companyInfo a
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch b on b.branchCode=c.branchCode
-		where floor=#{floor} and branchName=#{branchName} group by officeName and a.deleted=0
+		where floor=#{floor} and branchName=#{branchName} and a.deleted=0 and c.deleted=0 group by officeName and a.deleted=0
    	</select>
    	
    	<select id="dateCheck" resultMap="TenantsMgmtMap">
    		select c.officeNum, branchName, officeName, rentStartDate, rentFinishDate from companyInfo a
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch b on b.branchCode=c.branchCode
-		where c.officeName=#{officeName} and b.branchName=#{branchName} and c.floor=#{floor} and a.deleted=0
+		where c.officeName=#{officeName} and b.branchName=#{branchName} and c.floor=#{floor} and a.deleted=0 and c.deleted=0
    	</select>
 </mapper>
