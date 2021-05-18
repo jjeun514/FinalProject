@@ -888,9 +888,6 @@
 		}
 	
 	/* 입주사관리 */
-		.contractTd {
-			line-height: 80px;
-		}
 		.branchName {
 			appearance: none;
 			-webkit-appearance : none;

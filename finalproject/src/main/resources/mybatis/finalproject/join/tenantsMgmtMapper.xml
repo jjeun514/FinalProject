@@ -48,7 +48,7 @@
     
     <!-- [관리자페이지] 입주사관리(목록) -->
     <select id="selectAllTenants" resultMap="TenantsMgmtMap">
-    	select a.comCode, comName, ceo, manager, comPhone, branchName, officeName, contractDate, rentStartDate, rentFinishDate, id from companyInfo a
+    	select a.comCode, comName, ceo, manager, comPhone, branchName, c.floor, officeName, contractDate, rentStartDate, rentFinishDate, id from companyInfo a
 		left outer join masterAccount b on a.comCode=b.comCode
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch d on c.branchCode=d.branchCode order by contractDate
@@ -64,10 +64,22 @@
    	</update>
    	
    	<!-- [관리자페이지] 입주사관리 (수정 - 지점 변경할 경우) -->
+   	<select id="selectFloor" resultMap="TenantsMgmtMap">
+   		select branchName, floor from branch a
+		left outer join office b on a.branchCode=b.branchCode
+		where branchName=#{branchName} group by floor
+   	</select>
    	<select id="selectOffices" resultMap="TenantsMgmtMap">
-   		select branchName, officeName, rentStartDate, rentFinishDate from companyInfo a
+   		select branchName, officeName, c.floor, rentStartDate, rentFinishDate from companyInfo a
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch b on b.branchCode=c.branchCode
-		group by officeName
+		where floor=#{floor} and branchName=#{branchName} group by officeName
+   	</select>
+   	
+   	<select id="dateCheck" resultMap="TenantsMgmtMap">
+   		select c.officeNum, branchName, officeName, rentStartDate, rentFinishDate from companyInfo a
+		left outer join office c on a.officeNum=c.officeNum
+		left outer join branch b on b.branchCode=c.branchCode
+		where c.officeName=#{officeName} and b.branchName=#{branchName} AND c.floor=#{floor}
    	</select>
 </mapper>

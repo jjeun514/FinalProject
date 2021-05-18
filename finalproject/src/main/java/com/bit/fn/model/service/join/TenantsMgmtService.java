@@ -22,7 +22,15 @@ public class TenantsMgmtService {
 		return tenantsMgmtMapper.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
 	}
 	
-	public List<TenantsMgmtVo> selectOffices(){
-		return tenantsMgmtMapper.selectOffices();
+	public List<TenantsMgmtVo> selectFloor(String branchName){
+		return tenantsMgmtMapper.selectFloor(branchName);
+	}
+	
+	public List<TenantsMgmtVo> selectOffices(String floor, String branchName){
+		return tenantsMgmtMapper.selectOffices(floor, branchName);
+	}
+	
+	public List<TenantsMgmtVo> dateCheck(String officeName){
+		return tenantsMgmtMapper.dateCheck(officeName);
 	}
 }

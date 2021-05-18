@@ -32,7 +32,9 @@ public class TenantsMgmtController {
 	@Autowired
 	BranchService branchService;
 	
+	List<TenantsMgmtVo> floorList;
 	List<TenantsMgmtVo> officeList;
+	List<TenantsMgmtVo> dateList;
 	
 	@RequestMapping("/tenantsMgmt")
 	public String tenantsMgmtGet(HttpServletRequest req) throws Exception {
@@ -63,21 +65,88 @@ public class TenantsMgmtController {
 		return new ResponseEntity(status);
 	}
 	
-	@RequestMapping(path="/selectOffices", method = RequestMethod.POST)
-	public ResponseEntity selectOffices(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		System.out.println("[SpaceMgmtController(selectOffices())]");
+	@RequestMapping(path="/selectFloor", method = RequestMethod.POST)
+	public ResponseEntity selectFloor(String branchName, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(selectFloor())]");
+		System.out.println("[SpaceMgmtController(selectFloor())] branchName: "+branchName);
 		resp.setCharacterEncoding("utf-8");
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
-			officeList=tenantsMgmtService.selectOffices();
+			floorList=tenantsMgmtService.selectFloor(branchName);
+			System.out.println("[SpaceMgmtController(selectFloor())] floorList: "+floorList);
+			try {
+				JSONObject jobj=new JSONObject();
+				PrintWriter out;
+				jobj.put("floorList", floorList);
+				out = resp.getWriter();
+				out.print(jobj.toString());
+			} catch (IOException e) {
+				System.out.println("[MasterMgmtController(selectFloor())] json 오류");
+				e.printStackTrace();
+			}
+		} catch(NullPointerException e) {
+			System.out.println("[SpaceMgmtController(selectFloor())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[SpaceMgmtController(selectFloor())] null");
+		}
+		return new ResponseEntity(status);
+	}
+	
+	@RequestMapping(path="/selectOffices", method = RequestMethod.POST)
+	public ResponseEntity selectOffices(String floor, String branchName, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(selectOffices())]");
+		System.out.println("[SpaceMgmtController(selectOffices())] floor: "+floor+", branchName: "+branchName);
+		resp.setCharacterEncoding("utf-8");
+		HttpStatus status;
+		try {
+			status=HttpStatus.OK;
+			//floorList=tenantsMgmtService.selectFloor(branchName);
+			//System.out.println("[SpaceMgmtController(selectFloor())] floorList: "+floorList);
+			officeList=tenantsMgmtService.selectOffices(floor, branchName);
 			System.out.println("[SpaceMgmtController(selectOffices())] officeList: "+officeList);
 			try {
 				JSONObject jobj=new JSONObject();
 				PrintWriter out;
+//				jobj.put("floorList", floorList);
+//				for(int index=0; index<floorList.size(); index++) {
+//					System.out.println("i: "+index);
+//					System.out.println("branchName: "+officeList.get(index).getBranch().getBranchName());
+//					System.out.println("floorList: "+floorList.get(index).getOffice().getFloor());
+//				}
 				jobj.put("officeList", officeList);
-				for(int index=0; index<officeList.size(); index++) {
+				out = resp.getWriter();
+				out.print(jobj.toString());
+			} catch (IOException e) {
+				System.out.println("[MasterMgmtController(selectOffices())] json 오류");
+				e.printStackTrace();
+			}
+		} catch(NullPointerException e) {
+			System.out.println("[SpaceMgmtController(selectOffices())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[SpaceMgmtController(selectOffices())] null");
+		}
+		return new ResponseEntity(status);
+	}
+	
+	@RequestMapping(path="/dateCheck", method = RequestMethod.POST)
+	public ResponseEntity dateCheck(String officeName, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(dateCheck())]");
+		resp.setCharacterEncoding("utf-8");
+		HttpStatus status;
+		try {
+			status=HttpStatus.OK;
+			dateList=tenantsMgmtService.dateCheck(officeName);
+			System.out.println("[SpaceMgmtController(dateCheck())] dateList: "+dateList);
+			try {
+				JSONObject jobj=new JSONObject();
+				PrintWriter out;
+				jobj.put("dateList", dateList);
+				for(int index=0; index<dateList.size(); index++) {
 					System.out.println("i: "+index);
+					System.out.println("officeNum: "+officeList.get(index).getOffice().getOfficeNum());
 					System.out.println("branchName: "+officeList.get(index).getBranch().getBranchName());
 					System.out.println("officeName: "+officeList.get(index).getOffice().getOfficeName());
 					System.out.println("rentStartDate: "+officeList.get(index).getCompanyInfo().getRentStartDate());
@@ -86,14 +155,14 @@ public class TenantsMgmtController {
 				out = resp.getWriter();
 				out.print(jobj.toString());
 			} catch (IOException e) {
-				System.out.println("[MasterMgmtController(branchSelected())] json 오류");
+				System.out.println("[MasterMgmtController(dateList())] json 오류");
 				e.printStackTrace();
 			}
 		} catch(NullPointerException e) {
-			System.out.println("[SpaceMgmtController(selectOffices())] bad request");
+			System.out.println("[SpaceMgmtController(dateList())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[SpaceMgmtController(selectOffices())] null");
+			System.out.println("[SpaceMgmtController(dateList())] null");
 		}
 		return new ResponseEntity(status);
 	}
