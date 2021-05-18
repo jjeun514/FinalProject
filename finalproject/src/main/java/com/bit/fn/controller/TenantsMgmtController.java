@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.fn.model.service.BranchService;
+import com.bit.fn.model.service.join.BranchAndOfficeService;
 import com.bit.fn.model.service.join.TenantsMgmtService;
 import com.bit.fn.model.vo.BranchVo;
 import com.bit.fn.model.vo.join.TenantsMgmtVo;
@@ -37,6 +38,9 @@ public class TenantsMgmtController {
 	List<TenantsMgmtVo> floorList;
 	List<TenantsMgmtVo> officeList;
 	List<TenantsMgmtVo> dateList;
+	
+	@Autowired
+	BranchAndOfficeService branchAndOfficeService;
 	
 	@RequestMapping("/tenantsMgmt")
 	public String tenantsMgmtGet(HttpServletRequest req) throws Exception {
@@ -61,7 +65,7 @@ public class TenantsMgmtController {
 			dateList=tenantsMgmtService.dateCheck(officeSelected, branchSelected, floor);
 			System.out.println("[SpaceMgmtController(editSpaceInfo())] dateList: "+dateList);
 			if(dateList.isEmpty()) {
-				status=HttpStatus.BAD_REQUEST;
+				status=HttpStatus.NOT_ACCEPTABLE;
 			} else {
 				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 				for(int index=0; index<dateList.size(); index++) {
@@ -160,6 +164,27 @@ public class TenantsMgmtController {
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
 			System.out.println("[SpaceMgmtController(selectOffices())] null");
+		}
+		return new ResponseEntity(status);
+	}
+	
+	@RequestMapping(path="/deleteOffices", method = RequestMethod.POST)
+	public ResponseEntity deleteOffices(String branchInput, int floorInput, String officeNameInput, int comCode, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(deleteOffices())]");
+		System.out.println("[SpaceMgmtController(deleteOffices())] branchInput: "+branchInput+", floorInput: "+floorInput+", officeNameInput: "+officeNameInput+", comCode: "+comCode);
+		resp.setCharacterEncoding("utf-8");
+		HttpStatus status;
+		try {
+			status=HttpStatus.OK;
+			int officeNum=branchAndOfficeService.selectOfficeNum(branchInput, floorInput, officeNameInput);
+			tenantsMgmtService.deleteOffice(officeNum);
+			tenantsMgmtService.deleteCompanyInfo(comCode);
+			tenantsMgmtService.deleteMasterAccount(comCode);
+		} catch(NullPointerException e) {
+			System.out.println("[SpaceMgmtController(deleteOffices())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[SpaceMgmtController(deleteOffices())] null");
 		}
 		return new ResponseEntity(status);
 	}

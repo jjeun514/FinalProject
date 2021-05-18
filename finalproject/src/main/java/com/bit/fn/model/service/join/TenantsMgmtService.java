@@ -33,4 +33,16 @@ public class TenantsMgmtService {
 	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, String floor){
 		return tenantsMgmtMapper.dateCheck(officeName, branchName, floor);
 	}
+	
+	public int deleteOffice(int officeNum) {
+		return tenantsMgmtMapper.deleteOffice(officeNum);
+	}
+	
+	public int deleteCompanyInfo(int comCode) {
+		return tenantsMgmtMapper.deleteCompanyInfo(comCode);
+	}
+	
+	public int deleteMasterAccount(int comCode) {
+		return tenantsMgmtMapper.deleteMasterAccount(comCode);
+	}
 }

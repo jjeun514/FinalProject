@@ -7,15 +7,15 @@
    	</select>
    	
    	<select id="selectOne" resultType="com.bit.fn.model.vo.MasterAccountVo">
-    	 select * from masterAccount where id=#{value}
+    	 select * from masterAccount where id=#{value} and deleted=0
    	</select>
    	
 	<select id="idCount" resultType="int">
-		select count(id) from masterAccount where id=#{value}
+		select count(id) from masterAccount where id=#{value} and deleted=0
    	</select>
    	
    	<insert id="insertOne" parameterType="map">
-   		Insert into masterAccount (id,comCode,signdate,profile) values(#{id},#{comCode},now(),0)
+   		Insert into masterAccount (id,comCode,signdate,profile,deleted) values(#{id},#{comCode},now(),0,0)
    	</insert>
    	
    	<delete id="deleteOne">

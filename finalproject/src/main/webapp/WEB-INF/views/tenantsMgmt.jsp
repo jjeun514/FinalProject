@@ -145,7 +145,7 @@ $(document).ready(function(){
 										document.getElementById('modalText01').textContent='입력하신 기간은 공실이 아닙니다.';
 										$('#dangerModal').modal('show');
 									},
-									400: function(data){
+									406: function(data){
 										console.log('[editSpaceInfo] ajax - 사무실 존재X" '+JSON.stringify(data));
 										document.getElementById('modalText01').textContent='입력하신 공간은 선택할 수 없습니다.';
 										$('#dangerModal').modal('show');
@@ -295,6 +295,41 @@ $(document).ready(function(){
 				}
 			});
 		}
+		
+		// 삭제
+		$(document).on('click', '.deleteBtn', function(e){
+			e.stopImmediatePropagation();
+			console.log('[삭제버튼누름]');
+			var branchValue=$('.branchName').val();
+			if(branchValue=='undefined' || branchValue=='' || branchValue==null){
+				branchValue=$('.editBranch').val();
+			}
+			$.ajax({
+				url: "/deleteOffices",
+				type : "POST",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				data: {
+					comCode:$('#comCode').text(),
+					branchInput:branchValue,
+					officeNameInput:$('.officeName').val(),
+					floorInput:$('.floor').val()
+				},
+				success: function(){
+					console.log('[deleteOffices] ajax성공');
+					document.getElementById('modalText02').textContent='삭제가 완료되었습니다';
+					$('#primaryModal').modal('show');
+					$('#primaryModal').on('hidden.bs.modal',function(){
+						location.reload();
+					});
+				},
+				error: function(request, status, error){
+					console.log('[editSpaceInfo] ajax 에러');
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+					$('#dangerModal').modal('show');
+				}
+			});
+		});
 	});
 });
 </script>
@@ -412,7 +447,7 @@ $(document).ready(function(){
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary closeBtn" data-dismiss="modal">목록</button>
 				<button type="button" class="btn btn-primary editSpace">수정</button>
-				<button type="button" class="btn btn-danger">삭제</button>
+				<button type="button" class="btn btn-danger deleteBtn">삭제</button>
 			</div>
 		</div>
 	</div>

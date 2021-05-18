@@ -75,7 +75,7 @@
    		select branchName, officeName, c.floor, rentStartDate, rentFinishDate from companyInfo a
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch b on b.branchCode=c.branchCode
-		where floor=#{floor} and branchName=#{branchName} and a.deleted=0 and c.deleted=0 group by officeName and a.deleted=0
+		where floor=#{floor} and branchName=#{branchName} and a.deleted=0 and c.deleted=0 and a.deleted=0 group by officeName
    	</select>
    	
    	<select id="dateCheck" resultMap="TenantsMgmtMap">
@@ -84,4 +84,17 @@
 		left outer join branch b on b.branchCode=c.branchCode
 		where c.officeName=#{officeName} and b.branchName=#{branchName} and c.floor=#{floor} and a.deleted=0 and c.deleted=0
    	</select>
+   	
+   	<!-- 입주사 삭제 -->
+   	<update id="deleteOffice">
+   		update office set occupancy=0 where officeNum=#{officeNum} and deleted=0
+   	</update>
+   	
+   	<update id="deleteCompanyInfo">
+   		update companyInfo set deleted=1 where comCode=#{comCode} and deleted=0
+   	</update>
+   	
+   	<update id="deleteMasterAccount">
+		update masterAccount set deleted=1 where comCode=#{comCode} and deleted=0   	
+   	</update>
 </mapper>

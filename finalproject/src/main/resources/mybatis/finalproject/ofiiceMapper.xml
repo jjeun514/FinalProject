@@ -7,7 +7,7 @@
    	</select>
    	
    	<select id="selectAllFloors" resultType="com.bit.fn.model.vo.OfficeVo">
-   		select floor from office group by floor where deleted=0
+   		select floor from office where deleted=0 group by floor
    	</select>
    	
     <select id="selectPriceInfo" resultType="com.bit.fn.model.vo.OfficeVo">

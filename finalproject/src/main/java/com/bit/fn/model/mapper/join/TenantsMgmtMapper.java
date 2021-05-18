@@ -19,4 +19,7 @@ public interface TenantsMgmtMapper {
 	public List<TenantsMgmtVo> selectFloor(String branchName);
 	public List<TenantsMgmtVo> selectOffices(String floor, String branchName);
 	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, String floor);
+	public int deleteOffice(int officeNum);
+	public int deleteCompanyInfo(int comCode);
+	public int deleteMasterAccount(int comCode);
 }
