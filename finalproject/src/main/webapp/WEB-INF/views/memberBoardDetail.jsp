@@ -13,19 +13,95 @@
 
 <script>
 
+var csrfToken = $("meta[name='_csrf']").attr("content");
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+   if (options['type'].toLowerCase() === "post" || options['type'].toLowerCase() === "put" || options['type'].toLowerCase() === "delete") {
+      jqXHR.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+   }
+});
+
 $(document).ready(function(){
+
 	commentList(); //페이지 로딩시 댓글 목록 출력 
 	
+	var memNum = $("#memNum").val();
+	var writer = $("#writer").val();
+	var modifybtn = document.getElementById("modifybtn");
+	var deletebtn = document.getElementById("deletebtn");
+	var backbtn = document.getElementById("backbtn");
 	var num = $("#boardNum").val();
-
+	
+	if ( memNum == writer ) {
+		modifybtn.style.display = "block";
+		deletebtn.style.display = "block";
+	} else {
+		modifybtn.style.display = "none";
+		deletebtn.style.display = "none";
+		backbtn.style.left = "94%";
+	}
+	
 	$('#commentInsertBtn').click(function(){ //댓글 등록 버튼 클릭
 	    var content = {
 			commentContent : document.getElementById('content').value,
 			num : $("#boardNum").val()
-		}
+		};
 	    commentInsert(content); //Insert 함수 호출
 	});
+	
+	$('#deletebtn').click(function() {
+		deletePost(num); // delete 함수 호출
+	});
+	
+	$('#modifybtn').click(function() {
+		if ( $('#modifybtn').html() == "수정" ) {
+			$("#modifybtn").html('등록');
+			$("#boardContent").attr("readonly", false);
+			$("#title").attr("readonly", false);
+		} else if ( $('#modifybtn').html() == "등록" ){
+			var modify = {
+				num : $("#boardNum").val(),
+				title : $("#title").val(),
+				content : $("#boardContent").val()
+			};
+			modifyPost(modify); //update 함수 호출
+		}
+	});
+	
 });
+
+// 게시글 삭제
+function deletePost(num) {
+	$.ajax({
+		url : "/board/detail/delete",
+		type : 'post',
+		data : { num },
+		success : function(data) {
+			alert("요청하신 게시글 삭제가 정상적으로 처리되었습니다.");
+			location.href = "/board";
+		},
+		error : function(request, status, error) {
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
+// 게시글 수정
+function modifyPost(modify) {
+	$.ajax({
+		url : "/board/detail/modify",
+		type : 'post',
+		data : modify,
+		dataType : "json",
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success : function(data) {
+			alert("요청하신 게시글 수정이 정상적으로 처리되었습니다.");
+			location.href = "/board";
+		},
+		error : function(request, status, error) {
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
 
 // 댓글 목록
 function commentList(){
@@ -61,49 +137,57 @@ function commentInsert(content){
         dataType : "json",
         success : function(data){
             if(data.insertResult == 1) {
-                commentList(); //댓글 작성 후 댓글 목록 reload가 왜 안되지?
+                commentList(); //댓글 작성 후 댓글 목록 reload
                 $('[name=content]').val('');
             }
         }
     });
 }
 
-
 </script>
+
 <body>
+
 	<div class="content bbs"><!--content start-->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<table id = "bbsTable" class="table table-bordered table-hover">
-						<thead id = "boardDetailContent">
-							<tr>
-								<th class = "detailHeader">글번호</th>
-								<td class = "headerContent">${detail.num }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">이름</th>
-								<td class = "headerContent">${detail.writer }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">회사명</th>
-								<td class = "headerContent">${detail.company }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">날짜</th>
-								<td class = "headerContent">${detail.date }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">제목</th>
-								<td class = "headerContent">${detail.title }</td>
-							</tr>
-							<tr>
-								<th class = "detailHeader">내용</th>
-								<td id = "textField">${detail.content }</td>
-							</tr>
-						</thead>
+					<form action="memberBoardContentForm">
+					
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+						<input type="hidden" id = "memNum" name="memNum" value="${member.memNum}"/>
+						<input type="hidden" id = "memName" name="memNname" value="${member.memName}"/>
 						
-					</table>
+						<table id = "bbsTable" class="table table-bordered table-hover">
+							<thead id = "boardDetailContent">
+								<tr>
+									<th class = "detailHeader">글번호</th>
+									<td class = "headerContent"><input id = "boardNum" hidden = "hidden" value = "${detail.num }"/>${detail.num }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">이름</th>
+									<td class = "headerContent"><input id = "writer" hidden = "hidden" value = "${detail.memNum }"/>${detail.writer }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">회사명</th>
+									<td class = "headerContent"><input id = "company" hidden = "hidden" value = "${detail.company }"/>${detail.company }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">날짜</th>
+									<td class = "headerContent"><input id = "date" hidden = "hidden" value = "${detail.date }"/>${detail.date }</td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">제목</th>
+									<td class = "headerContent"><input id = "title" type = "text" class = "boardBorderStyle" readonly = "readonly" value = "${detail.title }"/></td>
+								</tr>
+								<tr>
+									<th class = "detailHeader">내용</th>
+									<td id = "textField"><textarea rows="15" cols="63" id = "boardContent" style = "border:none" readonly>${detail.content }</textarea></td>
+								</tr>
+							</thead>
+							
+						</table>
+					</form>
 					
 					<div id = "detailbtn">
 						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>

@@ -127,7 +127,20 @@ public class MemberController {
 	
 	// 멤버 파트 게시판 디테일
 	@RequestMapping(value = "/board/detail", method = RequestMethod.GET)
-	public String boardDetail(Model model, @RequestParam(value = "selectNum") int selectNum) {
+	public String boardDetail(Model model, Principal  principal, @RequestParam(value = "selectNum") int selectNum) {
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		}
 		
 		BoardVo detail = service.selectOneContent(selectNum);
 		
@@ -165,7 +178,8 @@ public class MemberController {
 	
 	// 멤버 파트 게시판 글쓰기 저장
 	@RequestMapping(value = "/board/save", method = RequestMethod.POST)
-	public String savePost(Model model, Principal  principal, BoardVo writePost) {
+	@ResponseBody
+	public Map<String, Object> savePost(Model model, Principal  principal, HttpServletRequest request) {
 		
 		//아이디
 		String id = principal.getName();
@@ -178,9 +192,7 @@ public class MemberController {
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if( member != -1 ) {
 			model.addAttribute("member",memberinfoService.selectOne(id));
-		} else {
-			return "redirect:/intro";
-		}
+		} 
 		
 		int memNum = memberinfoService.selectOne(id).getMemNum();
 		
@@ -189,20 +201,48 @@ public class MemberController {
 		post.setMemNum(memNum);
 		post.setWriter(memberinfoService.selectOne(id).getMemName());
 		post.setCompany(memberinfoService.searchCompanyName(memNum));
-		post.setTitle(writePost.getTitle());
-		post.setContent(writePost.getContent());
+		post.setTitle(request.getParameter("title"));
+		post.setContent(request.getParameter("content"));
 		
 		// 게시글 저장 쿼리 실행
 		int savePostResult = service.savePost(post);
 
-		if ( savePostResult > 0 ) {
-			return "memberBoard";
-		} else {
-			return "redirect:/memberBoardWrite";
-			
-		}
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", savePostResult);
+		
+		return result;
 
 	}
+	
+	
+	
+	// 멤버 파트 게시글 삭제
+	@RequestMapping(value = "/board/detail/delete")
+	@ResponseBody
+	public ResponseEntity deletePost(@RequestParam(value = "num") int num) {
+		
+		// 항상 조회 먼저 해야지
+		
+		int result = service.deletePost(num);
+		
+		return ResponseEntity.ok().build().ok(result);
+	}
+	
+	
+	
+	// 멤버 파트 게시글 수정
+	@RequestMapping(value = "/board/detail/modify")
+	@ResponseBody
+	public ResponseEntity updatePost(BoardVo modify) {
+		
+		// 항상 조회 먼저 해야지
+		
+		int result = service.updatePost(modify);
+		System.out.println("도대체 파라미터로 뭘 받은거야?"+modify);
+		
+		return ResponseEntity.ok().build().ok(result);
+	}
+	
 	
 	
 	// 멤버 파트 게시판 댓글 리스트

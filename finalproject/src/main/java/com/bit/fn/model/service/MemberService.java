@@ -46,6 +46,14 @@ public class MemberService {
 		return memberMapper.selectOneContent(num);
 	}
 	
+	public int deletePost(int num) {
+		return memberMapper.deletePost(num);
+	}
+	
+	public int updatePost(BoardVo modify) {
+		return memberMapper.updatePost(modify);
+	}
+	
 	public int countBoardList() {
 		return memberMapper.countBoardList();
 	}
@@ -76,6 +84,10 @@ public class MemberService {
 	
 	public ReservationVo checkReservaion(int roomNum, String useStartTime, String reservationDay) {
 		return memberMapper.checkReservaion(roomNum, useStartTime, reservationDay);
+	}
+	
+	public List<ReservationVo> searchAllReservation() {
+		return memberMapper.searchAllReservation();
 	}
 	
 	public List<ReservationVo> reservationList(int branchCode, String reservationDay){

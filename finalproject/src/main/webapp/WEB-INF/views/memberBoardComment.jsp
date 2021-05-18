@@ -9,40 +9,6 @@
 
 <script>
 
-var num = $("#boardNum").val();
-
-$('[name=commentInsertBtn]').click(function(){ //댓글 등록 버튼 클릭시 
-    var insertData = $('[name=commentInsertForm]').serialize(); //commentInsertForm의 내용을 가져옴
-    commentInsert(insertData); //Insert 함수호출(아래)
-});
-
-//댓글 목록 
-function commentList(){
-    $.ajax({
-        url : '/board/comment',
-        type : 'get',
-        dataType : "json",
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        data : {'num':num},
-        success : function(data){
-        	
-        	var comment = data.commentList[no];
-            var a =''; 
-            
-        	for (var no = 0; no < data.commentList.length; no++ ) {
-        		a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom: 15px;">';
-                a += '<div class="commentInfo'+comment.commentNum+'">'+'댓글번호 : '+comment.commentNum+' / 작성자 : '+comment.commentWriter;
-                a += '<a onclick="commentUpdate('+comment.commentNum+',\''+comment.commentContent+'\');"> 수정 </a>';
-                a += '<a onclick="commentDelete('+comment.commentNum+');"> 삭제 </a> </div>';
-                a += '<div class="commentContent'+comment.commentNum+'"> <p> 내용 : '+comment.commentContent +'</p>';
-                a += '</div></div>';
-			}
-        	
-            $(".commentList").html(a);
-        }
-    });
-}
-
 //댓글 수정 - 댓글 내용 출력을 input 폼으로 변경 
 function commentUpdate(commentNum, commentContent){
     var a ='';

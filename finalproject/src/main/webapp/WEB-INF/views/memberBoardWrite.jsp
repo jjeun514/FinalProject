@@ -32,23 +32,12 @@ $(document).ready(function() {
 			url : "/board/save",
 			type : "POST",
 			data : writePost,
-			dataType : "json",
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			dataType : "text",
 			success : function() {
-				console.log("글쓰기 성공");
-				
-				/*
-				
-				쿼리는 정상적으로 실행되는데
-				글쓰기가 안됨
-				왜 안되는지 확인해야 됨
-				미쳐버리겠네
-				
-				*/
-				
+				location.href = "/board";
 			},
-			error : function() {
-				alert("글이 정상적으로 저장되지 않았습니다. 다시 시도해주세요.");
+			error : function(request, status, error) {
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 		
@@ -83,8 +72,8 @@ $(document).ready(function() {
 						</table>
 					</form>
 					<div id = "detailbtn">
-						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>
-						<button id = "submitbtn" type="button" class="btn btn-default">등록</button>
+						<button id = "backbtn" type="button" class="btn btn-default" style = "position : relative; left : 80%;" onclick = "history.back()">뒤로</button>
+						<button id = "submitbtn" type="button" class="btn btn-default" style = "position : relative; left : 82%;">등록</button>
 					</div>
 				</div>
 			</div>
