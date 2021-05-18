@@ -42,7 +42,6 @@ $(document).ready(function(){
 		$('.floor').html('<option>'+floor+'</option>');
 		
 		$(document).on('click','.editSpace', function(e){
-		//$('.editSpace').on('click', function(e){
 			e.stopImmediatePropagation();
 			console.log('[수정버튼누름]');
 			$('.spaceTitle').html('입주 공간 정보 수정').css('color','red');
@@ -54,7 +53,7 @@ $(document).ready(function(){
 			$('#contractDate, #rentStartDate, #rentEndDate').attr('disabled', false);
 			console.log('[수정버튼누름] officeName: '+officeName);
 			$.selectFloor();
-		}); // end of eidtSpace click event
+		});
 		
 		$('#branch>select').change(function(){
 			console.log('[수정버튼누름>지점 변경]');

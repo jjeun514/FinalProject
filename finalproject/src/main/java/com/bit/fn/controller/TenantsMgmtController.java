@@ -79,12 +79,6 @@ public class TenantsMgmtController {
 					System.out.println("입주일/퇴소일 확인 필요");
 					status=HttpStatus.FORBIDDEN;
 				}
-				/*
-				 	A.compareTo(B)
-				 	A==B: 0
-				 	A>B: 1
-				 	A<B: -1
-				 */
 				
 				System.out.println("[SpaceMgmtController(editSpaceInfo())] contractDateInput: "+contractDateInput+", dbRentStart: "+dbRentStart+", dbRentEnd: "+dbRentEnd);
 			}
@@ -145,19 +139,11 @@ public class TenantsMgmtController {
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
-			//floorList=tenantsMgmtService.selectFloor(branchName);
-			//System.out.println("[SpaceMgmtController(selectFloor())] floorList: "+floorList);
 			officeList=tenantsMgmtService.selectOffices(floor, branchName);
 			System.out.println("[SpaceMgmtController(selectOffices())] officeList: "+officeList);
 			try {
 				JSONObject jobj=new JSONObject();
 				PrintWriter out;
-//				jobj.put("floorList", floorList);
-//				for(int index=0; index<floorList.size(); index++) {
-//					System.out.println("i: "+index);
-//					System.out.println("branchName: "+officeList.get(index).getBranch().getBranchName());
-//					System.out.println("floorList: "+floorList.get(index).getOffice().getFloor());
-//				}
 				jobj.put("officeList", officeList);
 				out = resp.getWriter();
 				out.print(jobj.toString());
@@ -170,42 +156,6 @@ public class TenantsMgmtController {
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
 			System.out.println("[SpaceMgmtController(selectOffices())] null");
-		}
-		return new ResponseEntity(status);
-	}
-	
-	@RequestMapping(path="/dateCheck", method = RequestMethod.POST)
-	public ResponseEntity dateCheck(String officeName, HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		System.out.println("[SpaceMgmtController(dateCheck())]");
-		resp.setCharacterEncoding("utf-8");
-		HttpStatus status;
-		try {
-			status=HttpStatus.OK;
-			//dateList=tenantsMgmtService.dateCheck(officeName);
-			System.out.println("[SpaceMgmtController(dateCheck())] dateList: "+dateList);
-			try {
-				JSONObject jobj=new JSONObject();
-				PrintWriter out;
-				jobj.put("dateList", dateList);
-				for(int index=0; index<dateList.size(); index++) {
-					System.out.println("i: "+index);
-					System.out.println("officeNum: "+officeList.get(index).getOffice().getOfficeNum());
-					System.out.println("branchName: "+officeList.get(index).getBranch().getBranchName());
-					System.out.println("officeName: "+officeList.get(index).getOffice().getOfficeName());
-					System.out.println("rentStartDate: "+officeList.get(index).getCompanyInfo().getRentStartDate());
-					System.out.println("rentFinishDate: "+officeList.get(index).getCompanyInfo().getRentFinishDate());
-				}
-				out = resp.getWriter();
-				out.print(jobj.toString());
-			} catch (IOException e) {
-				System.out.println("[MasterMgmtController(dateList())] json 오류");
-				e.printStackTrace();
-			}
-		} catch(NullPointerException e) {
-			System.out.println("[SpaceMgmtController(dateList())] bad request");
-			status=HttpStatus.BAD_REQUEST;
-			e.printStackTrace();
-			System.out.println("[SpaceMgmtController(dateList())] null");
 		}
 		return new ResponseEntity(status);
 	}
