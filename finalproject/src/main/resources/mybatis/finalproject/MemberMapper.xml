@@ -111,10 +111,16 @@
    		where room.branchCode = ${branchCode} and reservationDay = '${reservationDay}'
    	</select>
    	
+   	<select id="searchAllReservation" resultType="com.bit.fn.model.vo.ReservationVo">
+   		select roomNum, memNum, reservationDay, date_format(useStartTime, '%Y-%m-%d %H') as useStartTime, useFinishTime from reservation
+   		where date_format(useStartTime, '%Y-%m-%d %H') >= date_format(sysdate(), '%Y-%m-%d %H')
+   		AND <![CDATA[ date_format(useStartTime, '%Y-%m-%d') < DATE_FORMAT(date_add(SYSDATE(), interval 1 day), '%Y-%m-%d') ]]>
+   	</select>
+   	
    	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
    		select roomNum, memNum, reservationDay, useStartTime, useFinishTime from reservation
    		where memNum = #{memNum} and
-   		reservationDay >= date_format(sysdate(), '%Y-%m-%d')
+   		date_format(useStartTime, '%Y-%m-%d %H') >= date_format(sysdate(), '%Y-%m-%d %H')
    	</select>
    	
    	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">

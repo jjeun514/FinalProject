@@ -52,24 +52,20 @@ $(document).ready(function(){
 		deletePost(num); // delete 함수 호출
 	});
 	
-	
 	$('#modifybtn').click(function() {
-		
-		$("#modifybtn").html('등록');
-		$("#boardContent").attr("readonly", false);
-		$("#title").attr("readonly", false);
-		
-	}); // 토글 기능 찾아야 함
-	
-	$('#testbtn').click(function() { // 이거 위에 토글기능 찾아서 붙여야 함
-		var modify = {
-			num : $("#boardNum").val(),
-			title : $("#title").val(),
-			content : $("#boardContent").val()
-		};
-		modifyPost(modify); //update 함수 호출
+		if ( $('#modifybtn').html() == "수정" ) {
+			$("#modifybtn").html('등록');
+			$("#boardContent").attr("readonly", false);
+			$("#title").attr("readonly", false);
+		} else if ( $('#modifybtn').html() == "등록" ){
+			var modify = {
+				num : $("#boardNum").val(),
+				title : $("#title").val(),
+				content : $("#boardContent").val()
+			};
+			modifyPost(modify); //update 함수 호출
+		}
 	});
-	
 	
 });
 
@@ -197,7 +193,6 @@ function commentInsert(content){
 						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>
 						<button id = "modifybtn" type="button" class="btn btn-default">수정</button>
 						<button id = "deletebtn" type="button" class="btn btn-default">삭제</button>
-						<button id = "testbtn" type="button" class="btn btn-default">테스트</button> <!-- 수정 테스트하려고 붙였음. 삭제 예정. -->
 					</div>
 				</div>
 				    <!--  댓글  -->

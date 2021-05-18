@@ -86,6 +86,10 @@ public class MemberService {
 		return memberMapper.checkReservaion(roomNum, useStartTime, reservationDay);
 	}
 	
+	public List<ReservationVo> searchAllReservation() {
+		return memberMapper.searchAllReservation();
+	}
+	
 	public List<ReservationVo> reservationList(int branchCode, String reservationDay){
 		return memberMapper.reservationList(branchCode, reservationDay);
 	}

@@ -67,6 +67,9 @@ public interface MemberMapper {
 	// 회의실 예약 여부 조회
 	public ReservationVo checkReservaion(int roomNum, String useStartTime, String reservationDay);
 	
+	// 회의실 오늘 전체 예약 건 조회
+	public List<ReservationVo> searchAllReservation();
+	
 	// 회의실 예약 현황 리스트 조회
 	public List<ReservationVo> reservationList(int branchCode, String reservationDay);
 	
