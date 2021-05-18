@@ -68,4 +68,17 @@
     	 where 
     	 	comCode=#{comCode}
    	</select>
+   	
+   	<!-- 게시글 작성에 필요한 회사 이름 추출 -->
+   	<select id="searchCompanyName" resultType="String">
+   		select com.comName from companyInfo com
+   		left outer join memberInfo mem
+   		on com.comCode = mem.comCode
+   		where mem.memNum = #{memNum} 
+   	</select>
+   	
+   	<!-- 예약 리마인드 메일 발송에 필요한 유저 정보 조회 -->
+   	<select id="searchUserByMemNum" resultType="com.bit.fn.model.vo.MemberInfoVo">
+   		select memName, id from memberInfo where memNum = #{memNum}
+   	</select>
 </mapper>

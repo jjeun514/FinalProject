@@ -8,13 +8,33 @@ import org.springframework.stereotype.Service;
 import com.bit.fn.model.mapper.CommentMapper;
 import com.bit.fn.model.vo.CommentVo;
 
-
 @Service
 public class CommentService {
+
 	@Autowired
 	CommentMapper commentMapper;
 	
-	public List<CommentVo> selectAll(){
-		return commentMapper.selectAll();
+	public int countComment() {
+		return commentMapper.countComment();
+	}
+	
+	public List<CommentVo> allComment(int num) {
+		return commentMapper.allComment(num);
+	}
+	
+	public Integer searchMaxCommentNumber(int num) {
+		return commentMapper.searchMaxCommentNumber(num);
+	}
+	
+	public Integer insertComment(CommentVo comment) {
+		return commentMapper.insertComment(comment);
+	}
+	
+	public int updateComment(CommentVo comment) {
+		return commentMapper.updateComment(comment);
+	}
+	
+	public int deleteComment(int commentNum) {
+		return commentMapper.deleteComment(commentNum);
 	}
 }
