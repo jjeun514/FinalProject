@@ -46,8 +46,8 @@ public class CompanyinfoService {
 		return companyInfoMapper.selectComPhone(comPhone, comCode);
 	}
 	
-	public int deleteCompanyInfo(int comCode) {
-		return companyInfoMapper.deleteCompanyInfo(comCode);
+	public int deleteCompanyInfo(int officeNum) {
+		return companyInfoMapper.deleteCompanyInfo(officeNum);
 	}
 	public int selectOfficeNum(int comCode) {
 		return companyInfoMapper.selectOfficeNum(comCode);

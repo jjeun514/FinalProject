@@ -51,7 +51,8 @@
     	select a.comCode, comName, ceo, manager, comPhone, branchName, c.floor, officeName, contractDate, rentStartDate, rentFinishDate, id from companyInfo a
 		left outer join masterAccount b on a.comCode=b.comCode
 		left outer join office c on a.officeNum=c.officeNum
-		left outer join branch d on c.branchCode=d.branchCode order by contractDate
+		left outer join branch d on c.branchCode=d.branchCode 
+		where not branchName in ('0') order by contractDate
    	</select>
    	
    	<!-- [관리자페이지] 입주사관리(수정) -->
@@ -60,7 +61,7 @@
 		left outer join branch c on b.branchCode=c.branchCode
 		set b.officeName=#{officeSelected}, a.contractDate=#{contractDateInput}, a. rentStartDate=#{MoveInDateInput}, a.rentFinishDate=#{MoveOutDateInput},
 		b.branchCode=(select c.branchCode from branch c where c.branchName=#{branchSelected})
-		where a.comCode=#{comCode}
+		where a.comCode=#{comCode} and a.deleted=0 and not branchName in ('0') 
    	</update>
    	
    	<!-- [관리자페이지] 입주사관리 (수정 - 지점 변경할 경우) -->
@@ -69,17 +70,18 @@
 		left outer join office b on a.branchCode=b.branchCode
 		where branchName=#{branchName} group by floor
    	</select>
+   	
    	<select id="selectOffices" resultMap="TenantsMgmtMap">
    		select branchName, officeName, c.floor, rentStartDate, rentFinishDate from companyInfo a
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch b on b.branchCode=c.branchCode
-		where floor=#{floor} and branchName=#{branchName} group by officeName
+		where floor=#{floor} and branchName=#{branchName} group by officeName and a.deleted=0
    	</select>
    	
    	<select id="dateCheck" resultMap="TenantsMgmtMap">
    		select c.officeNum, branchName, officeName, rentStartDate, rentFinishDate from companyInfo a
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch b on b.branchCode=c.branchCode
-		where c.officeName=#{officeName} and b.branchName=#{branchName} and c.floor=#{floor}
+		where c.officeName=#{officeName} and b.branchName=#{branchName} and c.floor=#{floor} and a.deleted=0
    	</select>
 </mapper>

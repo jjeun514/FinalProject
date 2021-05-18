@@ -54,5 +54,6 @@
    	<select id="selectAllMasterAccounts" resultMap="MasteraccountAndCompanyInfoMap">
    		select a.comCode, comName, ceo, manager, comPhone, id, signdate from masterAccount a
 		inner join companyInfo b on a.comCode=b.comCode
+		where b.deleted=0
    	</select>
 </mapper>

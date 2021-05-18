@@ -32,7 +32,6 @@
    	
    	<!-- 공간 시설 삭제 -->
    	<delete id="deleteSpace">
-   		delete from officeFacilities
-		where officeNum=#{officeNum}
+   		delete from officeFacilities where officeNum=#{officeNum}
    	</delete>
 </mapper>

@@ -155,7 +155,7 @@ public class SpaceMgmtController {
 			officeService.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeNameInput, maxInput, 0);
 			System.out.println("[SpaceMgmtController(addSpace())] 공간 추가 완료");
 			// 시설 추가
-			int officeNum=branchAndOfficeService.selectOfficeNum(branchInput, floorInput, officeNameInput);
+			int officeNum=branchAndOfficeService.selectOfficeNum(officeNameInput, floorInput, branchInput);
 			System.out.println("[SpaceMgmtController(addSpace())] officeNum: "+officeNum);
 			officeFacilitiesService.addFacilities(officeNum, deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput);
 			System.out.println("[SpaceMgmtController(addSpace())] 시설 추가 완료");
@@ -166,12 +166,16 @@ public class SpaceMgmtController {
 	}
 	
 	@RequestMapping(path="/updateSpaceDetail", method = RequestMethod.POST, produces="application/text; charset=utf8")
-	public void updateSpace(String officeName, int floorInput, int acreagesInput, int rentInput, int maxInput, int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, HttpServletResponse resp) {
+	public void updateSpace(String officeName, int floorInput, String branchName, int acreagesInput, int rentInput, int maxInput, int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, HttpServletResponse resp) {
 		System.out.println("[SpaceMgmtController(updateSpace())]");
 		System.out.println("[SpaceMgmtController(updateSpace())] acreagesInput: "+acreagesInput+", rentInput: "+rentInput+", maxInput: "+maxInput+", deskInput: "+deskInput+", chairInput: "+chairInput+", modemInput: "+modemInput+", fireExtinguisherInput: "+fireExtinguisherInput+", airConditionerInput: "+airConditionerInput+", radiatorInput: "+radiatorInput+", descendingLifeLineInput: "+descendingLifeLineInput+", powerSocketInput: "+powerSocketInput);
 		
 		// officeFacilities 업데이트
-		int officeNum=officeService.selectOfficeNum(officeName, floorInput);
+		List<OfficeVo> Num=officeService.selectOfficeNum(officeName, floorInput, branchName);
+		int officeNum=0;
+		if(Num.size()>0) {
+			officeNum=Num.get(0).getOfficeNum();
+		}
 		System.out.println("[SpaceMgmtController(updateSpace())] officeNum: "+officeNum);
 		officeFacilitiesService.updateSpaceInfo(deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput, officeNum);
 		System.out.println("[SpaceMgmtController(updateSpace())] officeFacilities 업데이트 완료");
@@ -179,5 +183,30 @@ public class SpaceMgmtController {
 		// office 업데이트
 		officeService.updateOffice(acreagesInput, rentInput, maxInput, officeNum);
 		System.out.println("[SpaceMgmtController(updateSpace())] office 업데이트 완료");
+	}
+	
+	@RequestMapping(path="/deleteSpace", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public void deleteSpace(String branchName, String officeName, int floor, HttpServletResponse resp) {
+		System.out.println("[SpaceMgmtController(deleteSpace())]");
+		System.out.println("[SpaceMgmtController(deleteSpace())] branchName: "+branchName+", officeName: "+officeName+", floor: "+floor);
+		
+		// officeNum 추출
+		List<OfficeVo> Num=officeService.officeNum(floor, branchName, officeName);
+		System.out.println("[SpaceMgmtController(deleteSpace())] Num: "+Num);
+		int officeNum=Num.get(0).getOfficeNum();
+		System.out.println("[SpaceMgmtController(deleteSpace())] officeNum: "+officeNum);
+		
+		// officeFacilities 삭제 (delete)
+		officeFacilitiesService.deleteSpace(officeNum);
+		System.out.println("[SpaceMgmtController(deleteSpace())] officeFacilities 삭제");
+		
+		// companyInfo 삭제 (update) 
+		companyService.deleteCompanyInfo(officeNum);
+		System.out.println("[SpaceMgmtController(deleteSpace())] companyInfo 삭제");
+		
+		// office 삭제 (update)
+		officeService.deleteSpace(officeNum);
+		System.out.println("[SpaceMgmtController(deleteSpace())] office 삭제");
+		
 	}
 }

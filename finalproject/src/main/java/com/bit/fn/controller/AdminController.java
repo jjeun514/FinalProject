@@ -48,11 +48,6 @@ public class AdminController {
 		System.out.println("[AdminController(adminPageGet())] 마스터 계정 리스트: "+masterAndComService.selectAllMasterAccounts());
 		req.setAttribute("masterList", masterAndComService.selectAllMasterAccounts());
 		
-	// 회원 관리
-		memberList=memberInfoService.approved();
-		System.out.println("[AdminController(adminPageGet())] 회원: "+memberList);
-		req.setAttribute("memberList", memberList);
-		
 	// 공간 관리
 		spaceInfo=officeService.spaceInfo();
 		System.out.println("[AdminController(adminPageGet())] 공간: "+spaceInfo);
