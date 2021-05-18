@@ -106,7 +106,7 @@ $(function(){
 		    <tr>
 				<th scope="col">회사코드</th>
 				<th scope="col">회사명</th>
-				<th scope="col" data->대표</th>
+				<th scope="col">대표</th>
 				<th scope="col">담당자</th>
 				<th scope="col">대표번호</th>
 				<th scope="col">마스터계정</th>

@@ -20,55 +20,54 @@
 					<th id="max">가용<br>인원수</th>
 				</tr>
 				<c:forEach items="${spaceInfo}" var="spaceInfo" end="8">
-				<tr>
-					<td>${spaceInfo.branchName}</td>
-					<td>${spaceInfo.floor}</td>
-					<td>${spaceInfo.officeName}</td>
-					<td>${spaceInfo.acreages}</td>
-					<td>${spaceInfo.rent}</td>
+				<tr class="spaceMgmt">
+					<td><a href="#" onclick="return false;">${spaceInfo.branchName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.floor}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.officeName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.acreages}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.rent}</a></td>
 				<c:if test="${spaceInfo.occupancy eq 0}">
-					<td style="color:red; background-color:lightyellow">공실</td>
+					<td style="color:red; background-color:lightyellow"><a href="#" onclick="return false;">공실</a></td>
 				</c:if>
 				<c:if test="${spaceInfo.occupancy eq 1}">
-					<td>임대</td>
-				</c:if>
-					<td>${spaceInfo.comName}</td>
-					<td>${spaceInfo.max}</td>
+					<td><a href="#" onclick="return false;">임대</a></td>
+				</c:if></a>
+					<td><a href="#" onclick="return false;">${spaceInfo.comName}</a></td>
+					<td><a href="#" onclick="return false;">${spaceInfo.max}</a></td>
 				</tr>
 				</c:forEach>
 			</table>
 		</td>
 		
 		<td id="reservationMgmt">
-			<a href="#" onclick="return false;" id="more">> 더보기</a><br>
+			<a href="meetingRoomMgmt" id="more">> 더보기</a><br>
 			<%@ include file="chart.jsp" %>
 		</td>
 	</tr>
 	<tr>
-		<td colspan=2 id="signUpMgmt">
-			<a href="#" onclick="return false;" id="more">> 더보기</a>
-			<h2 id="admissionTitle">〈회원가입 승인 대기자 목록〉</h2>
-			<p id="text01">※ 관리자 승인 대기중인 회원가입 신청서</p>
-			<table id="signUpMgmtTable">
+		<td colspan=2 id="masterAccountMgmt">
+			<a href="masterMgmt" id="more">> 더보기</a>
+			<h2 id="masterTitle">〈마스터 계정 리스트〉</h2>
+			<table id="masterAccountMgmtTable">
 				<tr>
-					<th id="signdate">회원가입<br>진행일</th>
-					<th id="comName">회사</th>
-					<th id="memName">이름</th>
-					<th id="emailId">ID/이메일</th>
-					<th id="dept">부서</th>
-					<th id="memPhone">전화번호</th>
-					<th id="memNick">닉네임</th>
+					<th scope="col">회사코드</th>
+					<th scope="col">회사명</th>
+					<th scope="col">대표</th>
+					<th scope="col">담당자</th>
+					<th scope="col">대표번호</th>
+					<th scope="col">마스터계정</th>
+					<th scope="col">가입일</th>
 				</tr>
-				<c:forEach items="${pendingList}" var="pendingList" end="8">
-				<tr>
-					<td>${pendingList.signdate}</td>
-					<td>${pendingList.comName}</td>
-					<td>${pendingList.memName}</td>
-					<td>${pendingList.id}</td>
-					<td>${pendingList.dept}</td>
-					<td>${pendingList.memPhone}</td>
-					<td>${pendingList.memNickName}</td>
-				</tr>
+				<c:forEach items="${masterList}" var="list" end="8">
+					<tr id="masterAccounts" data-toggle="modal" data-target="#accountDetail" data-comcode="${list.companyInfo.comCode}" data-comname="${list.companyInfo.comName}" data-ceo="${list.companyInfo.ceo}" data-manager="${list.companyInfo.manager}" data-comphone="${list.companyInfo.comPhone}" data-id="${list.masteraccount.id}" data-joinedat="${list.masteraccount.signdate}">
+						<td><a href="#" onclick="return false;">${list.companyInfo.comCode}</a></td>
+						<td><a href="#" onclick="return false;">${list.companyInfo.comName}</a></td>
+						<td><a href="#" onclick="return false;">${list.companyInfo.ceo}</a></td>
+						<td><a href="#" onclick="return false;">${list.companyInfo.manager}</a></td>
+						<td><a href="#" onclick="return false;">${list.companyInfo.comPhone}</a></td>
+						<td><a href="#" onclick="return false;">${list.masteraccount.id}</a></td>
+						<td><a href="#" onclick="return false;">${list.masteraccount.signdate}</a></td>
+					</tr>
 				</c:forEach>
 			</table>
 		</td>

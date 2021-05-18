@@ -9,7 +9,6 @@
 			<li class="nav-item"><a class="nav-link companyMgmtLink" href="tenantsMgmt">입주사관리</a></li>
 			<li class="nav-item"><a class="nav-link masterMgmtLink" href="masterMgmt">마스터계정관리</a></li>
 			<li class="nav-item"><a class="nav-link meetingRoomMgmtLink" href="meetingRoomMgmt">회의실관리</a></li>
-			<li class="nav-item"><a class="nav-link signUpMgmtLink" href="signUpMgmt">신청서관리</a></li>
 		</ul>
 	</div>
 </nav>
