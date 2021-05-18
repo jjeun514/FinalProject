@@ -13,4 +13,9 @@ import com.bit.fn.model.vo.join.TenantsMgmtVo;
 @Mapper
 public interface TenantsMgmtMapper {
 	public List<TenantsMgmtVo> selectAllTenants();
+
+	public int editSpaceInfo(String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput,
+			String branchSelected, int comCode);
+	
+	public List<TenantsMgmtVo> selectOffices();
 }

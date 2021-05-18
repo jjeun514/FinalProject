@@ -886,6 +886,16 @@
 			margin-left: -96%;
 			border: 0;
 		}
+	
+	/* 입주사관리 */
+		.contractTd {
+			line-height: 80px;
+		}
+		.branchName {
+			appearance: none;
+			-webkit-appearance : none;
+			-moz-appearance: none;
+		}
 		
 		/* 로그인 페이지 */
 		 #loginIdPw{

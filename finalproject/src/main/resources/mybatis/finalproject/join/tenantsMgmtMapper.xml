@@ -46,11 +46,28 @@
     	<collection property="branch" resultMap="BranchMap"/>
     </resultMap>
     
-    <!-- [관리자페이지] 입주사관리 -->
+    <!-- [관리자페이지] 입주사관리(목록) -->
     <select id="selectAllTenants" resultMap="TenantsMgmtMap">
     	select a.comCode, comName, ceo, manager, comPhone, branchName, officeName, contractDate, rentStartDate, rentFinishDate, id from companyInfo a
 		left outer join masterAccount b on a.comCode=b.comCode
 		left outer join office c on a.officeNum=c.officeNum
 		left outer join branch d on c.branchCode=d.branchCode order by contractDate
+   	</select>
+   	
+   	<!-- [관리자페이지] 입주사관리(수정) -->
+   	<update id="editSpaceInfo">
+   		update companyInfo a left outer join office b on a.officeNum=b.officeNum
+		left outer join branch c on b.branchCode=c.branchCode
+		set b.officeName=#{officeSelected}, a.contractDate=#{contractDateInput}, a. rentStartDate=#{MoveInDateInput}, a.rentFinishDate=#{MoveOutDateInput},
+		b.branchCode=(select c.branchCode from branch c where c.branchName=#{branchSelected})
+		where a.comCode=#{comCode}
+   	</update>
+   	
+   	<!-- [관리자페이지] 입주사관리 (수정 - 지점 변경할 경우) -->
+   	<select id="selectOffices" resultMap="TenantsMgmtMap">
+   		select branchName, officeName, rentStartDate, rentFinishDate from companyInfo a
+		left outer join office c on a.officeNum=c.officeNum
+		left outer join branch b on b.branchCode=c.branchCode
+		group by officeName
    	</select>
 </mapper>

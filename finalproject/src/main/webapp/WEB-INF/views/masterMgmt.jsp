@@ -35,11 +35,8 @@ $(function(){
 			console.log('수정버튼누름');
 			$('.masterAccountTitle').html('['+comName+']의 계정 <font style="color:red;">수정</font>');
 			$('.valueSetting').attr('readonly', false);
-			$('#comCode').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('#comName').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('#joinedAt').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('#masterAccount').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소')
+			$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+			$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소');
 			$('.editBtn').attr('class', 'btn btn-primary okBtn').html('확인');
 			
 			$(document).on('click','.okBtn', function(){
@@ -90,10 +87,7 @@ $(function(){
 	$.cssBack=function(){
 		$('.masterAccountTitle').html('['+comName+']의 계정 정보');
 		$('.valueSetting').attr('readonly', true);
-		$('#comCode').css('background-color', 'transparent').css('color', 'black');
-		$('#comName').css('background-color', 'transparent').css('color', 'black');
-		$('#joinedAt').css('background-color', 'transparent').css('color', 'black');
-		$('#masterAccount').css('background-color', 'transparent').css('color', 'black');
+		$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'transparent').css('color', 'black');
 		$('.cancleBtn').attr('class', 'btn btn-secondary closeBtn').attr('data-dismiss','modal').html('목록');
 		$('.okBtn').attr('class', 'btn btn-primary editBtn').html('수정');
 	}

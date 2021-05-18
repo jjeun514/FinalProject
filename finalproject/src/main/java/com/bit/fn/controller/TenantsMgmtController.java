@@ -1,14 +1,21 @@
 package com.bit.fn.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.fn.model.service.BranchService;
 import com.bit.fn.model.service.join.TenantsMgmtService;
@@ -22,6 +29,11 @@ public class TenantsMgmtController {
 	TenantsMgmtService tenantsMgmtService;
 	List<TenantsMgmtVo> tenantsList;
 	
+	@Autowired
+	BranchService branchService;
+	
+	List<TenantsMgmtVo> officeList;
+	
 	@RequestMapping("/tenantsMgmt")
 	public String tenantsMgmtGet(HttpServletRequest req) throws Exception {
 		System.out.println("[TenantsMgmtController(tenantsMgmtGet())]");
@@ -29,83 +41,60 @@ public class TenantsMgmtController {
 		tenantsList=tenantsMgmtService.selectAllTenants();
 		System.out.println("[TenantsMgmtController(tenantsMgmtGet())] tenantsList: "+tenantsList);
 		req.setAttribute("tenantsList", tenantsList);
+		req.setAttribute("branchList", branchService.selectAllBranchName());
 		
 		return "tenantsMgmt";
 	}
 
-//	@RequestMapping(path="/spaceDetail", method = RequestMethod.POST)
-//	public ResponseEntity spaceDetail(String officeName, HttpServletResponse resp) throws Exception {
-//		System.out.println("[SpaceMgmtController(spaceDetail())]");
-//		resp.setCharacterEncoding("utf-8");
-//		HttpStatus status;
-//		try {
-//			status=HttpStatus.OK;
-//	// 공간 상세 페이지
-//			spaceDetail=officeService.officeDetail(officeName);
-//			System.out.println("[SpaceMgmtController(spaceDetail())] 특정 공간: "+spaceDetail);
-//			
-//			try {
-//				JSONObject jobj=new JSONObject();
-//				PrintWriter out;
-//				jobj.put("spaceDetail", spaceDetail);
-//				out = resp.getWriter();
-//				out.print(jobj.toString());
-//				System.out.println("list:"+spaceDetail);
-//			} catch (IOException e) {
-//				System.out.println("[SpaceMgmtController(spaceDetail())] json 오류");
-//				e.printStackTrace();
-//			}
-//		} catch(NullPointerException e) {
-//			System.out.println("[SpaceMgmtController(spaceDetail())] bad request");
-//			status=HttpStatus.BAD_REQUEST;
-//			e.printStackTrace();
-//			System.out.println("[SpaceMgmtController(spaceDetail())] null");
-//		}
-//		return new ResponseEntity(status);
-//	}
+	@RequestMapping(path="/editSpaceInfo", method = RequestMethod.POST)
+	public ResponseEntity spaceDetail(int comCode, String branchSelected, String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(editSpaceInfo())]");
+		resp.setCharacterEncoding("utf-8");
+		HttpStatus status;
+		try {
+			status=HttpStatus.OK;
+			tenantsMgmtService.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
+		} catch(NullPointerException e) {
+			System.out.println("[SpaceMgmtController(editSpaceInfo())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[SpaceMgmtController(editSpaceInfo())] null");
+		}
+		return new ResponseEntity(status);
+	}
 	
-//	@RequestMapping(path="/officeFacilities", method = RequestMethod.POST)
-//	public ResponseEntity officeFacilities(String officeName, HttpServletResponse resp) throws Exception {
-//		System.out.println("[SpaceMgmtController(officeFacilities())]");
-//		resp.setCharacterEncoding("utf-8");
-//		HttpStatus status;
-//		try {
-//			status=HttpStatus.OK;
-//			// 공간 상세 페이지
-//			officeFacilities=officeFacilitiesService.officeFacilities(officeName);
-//			System.out.println("[SpaceMgmtController(officeFacilities())] 특정 시설: "+officeFacilities);
-//			
-//			try {
-//				JSONObject jobj=new JSONObject();
-//				PrintWriter out;
-//				jobj.put("officeFacilities", officeFacilities);
-//				out = resp.getWriter();
-//				out.print(jobj.toString());
-//				System.out.println("list:"+officeFacilities);
-//			} catch (IOException e) {
-//				System.out.println("[SpaceMgmtController(officeFacilities())] json 오류");
-//				e.printStackTrace();
-//			}
-//		} catch(NullPointerException e) {
-//			System.out.println("[SpaceMgmtController(officeFacilities())] bad request");
-//			status=HttpStatus.BAD_REQUEST;
-//			e.printStackTrace();
-//			System.out.println("[SpaceMgmtController(officeFacilities())] null");
-//		}
-//		return new ResponseEntity(status);
-//	}
-	
-//	@RequestMapping(path="/addSpace", method = RequestMethod.POST)
-//	public String addSpace(String branchInput, int floorInput, int acreagesInput, int rentInput, String officeNameInput, int maxInput) {
-//		System.out.println("[SpaceMgmtController(addSpace())]");
-//		System.out.println("[SpaceMgmtController(addSpace())] branchName: "+branchInput+", floor: "+floorInput+", acreages: "+acreagesInput+", rent: "+rentInput+", officeName: "+officeNameInput+", max: "+maxInput);
-//		branchCodeList=branchService.selectBranchCode(branchInput);
-//		System.out.println("[SpaceMgmtController(addSpace())] branchCodeList: "+branchCodeList);
-//		branchCode=(int) branchCodeList.get(0).get("branchCode");
-//		System.out.println("[SpaceMgmtController(addSpace())] branchCode: "+branchCode);
-//		officeService.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeNameInput, maxInput);
-//		System.out.println("[SpaceMgmtController(addSpace())] insert완료");
-//		
-//		return "redirect:/spaceMgmt";
-//	}
+	@RequestMapping(path="/selectOffices", method = RequestMethod.POST)
+	public ResponseEntity selectOffices(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		System.out.println("[SpaceMgmtController(selectOffices())]");
+		resp.setCharacterEncoding("utf-8");
+		HttpStatus status;
+		try {
+			status=HttpStatus.OK;
+			officeList=tenantsMgmtService.selectOffices();
+			System.out.println("[SpaceMgmtController(selectOffices())] officeList: "+officeList);
+			try {
+				JSONObject jobj=new JSONObject();
+				PrintWriter out;
+				jobj.put("officeList", officeList);
+				for(int index=0; index<officeList.size(); index++) {
+					System.out.println("i: "+index);
+					System.out.println("branchName: "+officeList.get(index).getBranch().getBranchName());
+					System.out.println("officeName: "+officeList.get(index).getOffice().getOfficeName());
+					System.out.println("rentStartDate: "+officeList.get(index).getCompanyInfo().getRentStartDate());
+					System.out.println("rentFinishDate: "+officeList.get(index).getCompanyInfo().getRentFinishDate());
+				}
+				out = resp.getWriter();
+				out.print(jobj.toString());
+			} catch (IOException e) {
+				System.out.println("[MasterMgmtController(branchSelected())] json 오류");
+				e.printStackTrace();
+			}
+		} catch(NullPointerException e) {
+			System.out.println("[SpaceMgmtController(selectOffices())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[SpaceMgmtController(selectOffices())] null");
+		}
+		return new ResponseEntity(status);
+	}
 }

@@ -17,4 +17,12 @@ public class TenantsMgmtService {
 	public List<TenantsMgmtVo> selectAllTenants(){
 		return tenantsMgmtMapper.selectAllTenants();
 	}
+	
+	public int editSpaceInfo(String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, String branchSelected, int comCode) {
+		return tenantsMgmtMapper.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
+	}
+	
+	public List<TenantsMgmtVo> selectOffices(){
+		return tenantsMgmtMapper.selectOffices();
+	}
 }
