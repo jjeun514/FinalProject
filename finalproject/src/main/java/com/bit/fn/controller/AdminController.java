@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.bit.fn.model.service.MemberinfoService;
 import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.ReservationService;
+import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
 import com.bit.fn.model.vo.MemberInfoVo;
 import com.bit.fn.model.vo.OfficeVo;
 import com.bit.fn.model.vo.ReservationVo;
+import com.bit.fn.model.vo.join.MasteraccountAndCompanyInfoVo;
 
 @Controller
 @ComponentScan
@@ -36,13 +38,15 @@ public class AdminController {
 	OfficeService officeService;
 	List<OfficeVo> spaceInfo;
 	
+	@Autowired
+	MasteraccountAndCompanyInfoService masterAndComService;
+	
 	@RequestMapping("/adminPage")
 	public String adminPageGet(HttpServletRequest req) throws Exception {
 		System.out.println("[AdminController(adminPageGet())]");
-	// 신청서 관리(승인 대기중)
-		pendingList=memberInfoService.pending();
-		System.out.println("[AdminController(adminPageGet())] 신청서: "+pendingList);
-		req.setAttribute("pendingList", pendingList);
+	// 마스터 계정 리스트
+		System.out.println("[AdminController(adminPageGet())] 마스터 계정 리스트: "+masterAndComService.selectAllMasterAccounts());
+		req.setAttribute("masterList", masterAndComService.selectAllMasterAccounts());
 		
 	// 회원 관리
 		memberList=memberInfoService.approved();

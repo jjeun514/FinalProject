@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.fn.model.mapper.join.TenantsMgmtMapper">
+    <resultMap type="com.bit.fn.model.vo.CompanyInfoVo" id="CompanyInfoMap">
+    	<id property="comCode" column="comCode"/>
+    	<result property="officeNum" column="officeNum"/>
+    	<result property="comName" column="comName"/>
+    	<result property="ceo" column="ceo"/>
+    	<result property="manager" column="manager"/>
+    	<result property="comPhone" column="comPhone"/>
+    	<result property="contractDate" column="contractDate"/>
+    	<result property="rentStartDate" column="rentStartDate"/>
+    	<result property="rentFinishDate" column="rentFinishDate"/>
+    	<result property="point" column="point"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.MasterAccountVo" id="MasterAccountMap">
+    	<id property="masterNum" column="masterNum"/>
+    	<result property="id" column="id"/>
+    	<result property="comCode" column="comCode"/>
+    	<result property="signdate" column="signdate"/>
+    	<result property="profile" column="profile"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.OfficeVo" id="OfficeMap">
+    	<id property="officeNum" column="officeNum"/>
+    	<result property="officeName" column="officeName"/>
+    	<result property="floor" column="floor"/>
+    	<result property="acreages" column="acreages"/>
+    	<result property="rent" column="rent"/>
+    	<result property="occupancy" column="occupancy"/>
+    	<result property="max" column="max"/>
+    	<result property="photo" column="photo"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.BranchVo" id="BranchMap">
+    	<id property="branchCode" column="branchCode"/>
+    	<result property="branchName" column="branchName"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.join.TenantsMgmtVo" id="TenantsMgmtMap">
+    	<collection property="companyInfo" resultMap="CompanyInfoMap"/>
+    	<collection property="masterAccount" resultMap="MasterAccountMap"/>
+    	<collection property="office" resultMap="OfficeMap"/>
+    	<collection property="branch" resultMap="BranchMap"/>
+    </resultMap>
+    
+    <!-- [관리자페이지] 입주사관리(목록) -->
+    <select id="selectAllTenants" resultMap="TenantsMgmtMap">
+    	select a.comCode, comName, ceo, manager, comPhone, branchName, c.floor, officeName, contractDate, rentStartDate, rentFinishDate, id from companyInfo a
+		left outer join masterAccount b on a.comCode=b.comCode
+		left outer join office c on a.officeNum=c.officeNum
+		left outer join branch d on c.branchCode=d.branchCode order by contractDate
+   	</select>
+   	
+   	<!-- [관리자페이지] 입주사관리(수정) -->
+   	<update id="editSpaceInfo">
+   		update companyInfo a left outer join office b on a.officeNum=b.officeNum
+		left outer join branch c on b.branchCode=c.branchCode
+		set b.officeName=#{officeSelected}, a.contractDate=#{contractDateInput}, a. rentStartDate=#{MoveInDateInput}, a.rentFinishDate=#{MoveOutDateInput},
+		b.branchCode=(select c.branchCode from branch c where c.branchName=#{branchSelected})
+		where a.comCode=#{comCode}
+   	</update>
+   	
+   	<!-- [관리자페이지] 입주사관리 (수정 - 지점 변경할 경우) -->
+   	<select id="selectFloor" resultMap="TenantsMgmtMap">
+   		select branchName, floor from branch a
+		left outer join office b on a.branchCode=b.branchCode
+		where branchName=#{branchName} group by floor
+   	</select>
+   	<select id="selectOffices" resultMap="TenantsMgmtMap">
+   		select branchName, officeName, c.floor, rentStartDate, rentFinishDate from companyInfo a
+		left outer join office c on a.officeNum=c.officeNum
+		left outer join branch b on b.branchCode=c.branchCode
+		where floor=#{floor} and branchName=#{branchName} group by officeName
+   	</select>
+   	
+   	<select id="dateCheck" resultMap="TenantsMgmtMap">
+   		select c.officeNum, branchName, officeName, rentStartDate, rentFinishDate from companyInfo a
+		left outer join office c on a.officeNum=c.officeNum
+		left outer join branch b on b.branchCode=c.branchCode
+		where c.officeName=#{officeName} and b.branchName=#{branchName} and c.floor=#{floor}
+   	</select>
+</mapper>

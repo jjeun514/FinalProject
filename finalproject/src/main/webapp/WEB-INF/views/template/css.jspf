@@ -348,7 +348,7 @@
 			text-align: center;
 			width: 80%;
 		}
-		#priceData a, #spaceInfo a, #highlight a, #masterAccounts a{
+		#priceData a, #spaceInfo a, #highlight a, #masterAccounts a, .spaceMgmt a{
 			display: block;
 			width: 100%;
 			height: 100%;
@@ -356,11 +356,11 @@
 		#priceData>td, #spaceInfo>td, #highlight>td{
 			padding: 0px;
 		}
-		#masterAccounts>td {
+		#masterAccounts>td, .spaceMgmt>td {
 			padding-left: 0px;
 			padding-right: 0px;
 		}
-		#priceData:hover, #spaceInfo:hover, #masterAccounts:hover{
+		#priceData:hover, #spaceInfo:hover, #masterAccounts:hover, .spaceMgmt:hover {
 			background-color: #eaf9f1;
 		}
 		#highlight:hover{
@@ -369,6 +369,7 @@
 		#priceData>td>a:hover, #priceData>td>a:active, #priceData>td>a:visited, #priceData>td>a:link,
 		#spaceInfo>td>a:hover, #spaceInfo>td>a:active, #spaceInfo>td>a:visited, #spaceInfo>td>a:link,
 		#masterAccounts>td>a:hover, #masterAccounts>td>a:active, #masterAccounts>td>a:visited, #masterAccounts>td>a:link,
+		.spaceMgmt>td>a:hover, .spaceMgmt>td>a:active, .spaceMgmt>td>a:visited, .spaceMgmt>td>a:link,
 		#highlight>td>a:hover, #highlight>td>a:active, #highlight>td>a:visited, #highlight>td>a:link{
 			color: black;
 			text-decoration: none;
@@ -721,14 +722,7 @@
 		#adminMain h2{
 			font-weight: bold;
 		}
-		#signUpMgmt{
-			border-top: 3px dotted lightblue;
-			margin-top: 10px;
-		}
-		#spaceMgmt{
-			border-right: 3px dotted lightblue;
-		}
-		#signUpMgmt, #reservationMgmt, #spaceMgmt{
+		#masterAccountMgmt, #reservationMgmt, #spaceMgmt{
 			display: table-cell;
 			vertical-align: top;
 			margin: 0 auto;
@@ -746,29 +740,23 @@
 			border-radius: 5px 5px 5px 5px;
 			padding: 5px;
 		}
-		#admissionTitle, #spaceMgmtTitle{
+		#masterTitle, #spaceMgmtTitle{
 			margin-top: 43px;
 		}
-		#signUpMgmtTable, #spaceMgmtTable{
+		#masterAccountMgmtTable, #spaceMgmtTable{
 			width: 90%;
 			min-width: 350px;
 			margin: 0 auto;
 			margin-top: 20px;
 			text-align: center;
 		}
-		#signUpMgmtTable tr td, th, #spaceMgmtTable tr td, th{
+		#masterAccountMgmtTable tr td, th, #spaceMgmtTable tr td, th{
 			border: 1px solid #e8e4e7;
 		}
-		#signUpMgmtTable tr th, #spaceMgmtTable tr th{
+		#masterAccountMgmtTable tr th, #spaceMgmtTable tr th{
 			background-color: #eaedf1;
 			color: black;
 			font-size: 16px;
-		}
-		#text01{
-			margin-top: 10px;
-			margin-left: 5%;
-			float: left;
-			color: red;
 		}
 		#approval{
 			width: 40px;
@@ -784,7 +772,7 @@
 			margin: 0 auto;
 			text-align: center;
 		}
-		.spaceTitle {
+		.spaceTitle, .tenantsTitle {
 			margin: 0 auto;
 			text-align: center;
 			padding-top: 10px;
@@ -885,6 +873,13 @@
 			text-align: left;
 			margin-left: -96%;
 			border: 0;
+		}
+	
+	/* 입주사관리 */
+		.branchName {
+			appearance: none;
+			-webkit-appearance : none;
+			-moz-appearance: none;
 		}
 		
 		/* 로그인 페이지 */
