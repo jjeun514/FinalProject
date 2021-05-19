@@ -32,9 +32,9 @@
    	
    	<insert id="savePost" parameterType="com.bit.fn.model.vo.BoardVo">
    		insert into board(
-   			memNum, writer, company, title, content, date
+   			memNum, writer, company, title, content, date, showCheck
    		) values (
-   			#{memNum}, #{writer}, #{company}, #{title}, #{content}, sysdate()
+   			#{memNum}, #{writer}, #{company}, #{title}, #{content}, sysdate(), 1
    		)
    	</insert>
    	
