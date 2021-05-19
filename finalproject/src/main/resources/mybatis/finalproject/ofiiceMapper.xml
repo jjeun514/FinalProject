@@ -15,10 +15,10 @@
    	</select>
     
     <select id="spaceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
-    	 select branchName, floor, officeName, acreages, rent, occupancy, comName, max from office a 
-    	 left outer join companyInfo b on a.officeNum=b.officeNum 
-    	 left outer join branch c on a.branchCode=c.branchCode
-    	 where a.deleted=0 and b.deleted=0 and not branchName in ('0') order by officeName
+    	 select b.officeNum, branchName, floor, officeName, acreages, rent, occupancy, comName, max from companyInfo b 
+    	 right outer join office a on a.officeNum=b.officeNum 
+    	 right outer join branch c on a.branchCode=c.branchCode
+    	 where a.deleted=0 and not branchName in ('0') order by officeName
    	</select>
    	
    	<select id="officeDetail" resultType="com.bit.fn.model.vo.OfficeVo">
