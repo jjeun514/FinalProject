@@ -2,7 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bit.fn.model.mapper.CommentMapper">
-    <select id="selectAll" resultType="com.bit.fn.model.vo.CommentVo">
-    	 SELECT * from comment
+
+	<select id="countComment" resultType="int">
+   		select count(*) from comment where checkDelete != 1
    	</select>
+
+	<select id="allComment" resultType="com.bit.fn.model.vo.CommentVo" parameterType = "int">
+   		select commentNum, num, commentWriter, commentContent, commentDate from comment where num = #{num} and checkDelete != 1
+   	</select>
+   	
+   	<select id="searchMaxCommentNumber" resultType="Integer">
+   		select ifnull(max(commentNum),0) from comment where num = #{num}
+   	</select>
+   	
+   	<insert id="insertComment" parameterType="com.bit.fn.model.vo.CommentVo">
+   		insert into comment(
+   			commentNum, num, commentWriter, commentContent, commentDate
+   		) values (
+   			#{commentNum}, #{num}, #{commentWriter}, #{commentContent}, now()
+   		)
+   	</insert>
+   	
+   	<update id="updateComment" parameterType="com.bit.fn.model.vo.CommentVo">
+   		update comment set content = #{content} where commentNum = #{commentNum}
+   	</update>
+   	
+   	<update id="deleteComment" parameterType="com.bit.fn.model.vo.CommentVo">
+   		update comment set checkDelete = #{checkDelete} where commentNum = #{commentNum}
+   	</update>
+   	
 </mapper>

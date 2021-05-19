@@ -1,0 +1,125 @@
+<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+
+
+
+    
+/* 데스크탑에서 사용될 스타일을 여기에 작성합니다. */ 
+@media screen and (min-width: 993.5px) {
+
+}
+
+    
+/* 모바일에 사용될 스트일 시트를 여기에 작성합니다. */   
+@media screen and (max-width: 993.4px) {
+    
+	#navbarSupportedContent{
+		font-size: 15px;
+	}
+	
+	.topRightMenu{
+		padding-left: 10px;
+		font-size: 15px;
+	}
+
+	#topRightTable tr{
+		position: relative;
+	}
+	
+	.nav-link>img{
+		width:30px;
+		margin:25px 25px 25px 46px;
+	}
+
+}
+
+
+
+/* (공통 - PC/모바일) */
+	/* header */
+		html{
+			position: relative;
+			min-height: 100%;
+			margin: 0;
+		}
+		header{
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			min-height: 200px;
+			z-index: 1;
+		}
+		#topHeader{
+			width: 100%;
+			height: 150px;
+			background-color: black;
+			display: table;
+		}
+		#logoDiv{
+			width: 20%;
+			height: 100%;
+			margin: 0 auto;
+			display: table-cell;
+			vertical-align: middle;
+		}
+		#logoImg{
+			width: 200px;
+		}
+		#topRightTable{
+			margin: 0 auto;
+			width: 80%;
+			list-style: none;
+			display: table-cell;
+			vertical-align: middle;
+		}
+		#topRightTable tr{
+			margin: 0 auto;
+			margin-top: -13px;
+			right: 0;
+			text-align: right;
+		}
+		.topRightMenu{
+			margin: 0 auto;
+		}
+		span>a, span>a:hover, span>a:active, span>a:visited, span>a:link{
+			color: white;
+			text-decoration: none;
+		}
+	
+	/* navbar */
+		#navbarSupportedContent{
+			margin: 0 auto;
+			display: inline-block;
+			font-size: 20px;
+			min-width: 100px;
+			width: 100%;
+			text-align: center;
+		}
+		.navbar-nav{
+			width: 100%;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: inline-block;
+		}
+		.nav-item{
+			margin: 0 auto;
+			padding: 0 auto;
+			display: inline-block;
+		}
+		
+		     
+
+	
+
+</style>

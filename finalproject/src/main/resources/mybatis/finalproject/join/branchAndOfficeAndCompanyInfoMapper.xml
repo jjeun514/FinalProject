@@ -45,7 +45,7 @@
 		on a.branchCode=b.branchCode
 		left outer join companyInfo c
 		on a.officeNum=c.officeNum
-		where branchName=#{branchSelected} and floor=#{floorSelected}
+		where branchName=#{branchSelected} and floor=#{floorSelected} and occupancy=0 and a.deleted=0
    	</select>
     
     <!-- 마스터 계정 추가에서 입주 공간 연결할 때 중복 체크 -->
@@ -55,6 +55,6 @@
 		on a.branchCode=b.branchCode
 		left outer join companyInfo c
 		on a.officeNum=c.officeNum
-		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected}
+		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected} and occupancy=0 and a.deleted=0
    	</select>
 </mapper>

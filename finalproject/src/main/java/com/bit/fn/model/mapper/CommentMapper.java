@@ -7,9 +7,20 @@ import org.springframework.stereotype.Repository;
 
 import com.bit.fn.model.vo.CommentVo;
 
-
 @Repository
 @Mapper
 public interface CommentMapper {
-	public List<CommentVo> selectAll();
+	
+	public int countComment();
+	
+	public List<CommentVo> allComment(int num);
+	
+	public Integer searchMaxCommentNumber(int num);
+	
+	public Integer insertComment(CommentVo comment);
+	
+	public int updateComment(CommentVo comment);
+	
+	public int deleteComment(int commentNum);
+	
 }

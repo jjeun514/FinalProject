@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.bit.fn.model.vo.BoardVo;
+import com.bit.fn.model.vo.CommentVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;
@@ -15,8 +16,20 @@ import com.bit.fn.model.vo.ReservationVo;
 @Mapper
 public interface MemberMapper {
 	
+	// 인트로 페이지 게시판 리스트
+	public List<BoardVo> boardListForIntro();
+	
+	// 인트로 페이지 공지 리스트
+	public List<NoticeVo> noticeListForIntro(); 
+	
+	// 인트로 페이지 예약 리스트
+	public List<ReservationVo> reservationListForIntro(int memNum);
+	
 	// 멤버 페이지 게시판 리스트
 	public List<BoardVo> memberBoardList();
+	
+	// 멤버 페이지 게시글 저장
+	public int savePost(BoardVo post);
 	
 	// 멤버 페이지 페이징
 	public List<PaginationVo> memberBoardPaginationList(PaginationVo pagination);
@@ -29,6 +42,12 @@ public interface MemberMapper {
 	
 	// 멤버 페이지 게시글 디테일
 	public BoardVo selectOneContent(int num);
+	
+	// 멤버 페이지 게시글 삭제
+	public int deletePost(int num);
+	
+	// 멤버 페이지 게시글 수정
+	public int updatePost(BoardVo modify);
 	
 	// 멤버 페이지 공지사항 리스트
 	public List<NoticeVo> noticeList(PaginationVo pagination);
@@ -47,6 +66,9 @@ public interface MemberMapper {
 	
 	// 회의실 예약 여부 조회
 	public ReservationVo checkReservaion(int roomNum, String useStartTime, String reservationDay);
+	
+	// 회의실 오늘 전체 예약 건 조회
+	public List<ReservationVo> searchAllReservation();
 	
 	// 회의실 예약 현황 리스트 조회
 	public List<ReservationVo> reservationList(int branchCode, String reservationDay);

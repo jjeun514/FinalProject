@@ -3,15 +3,17 @@ package com.bit.fn.model.vo;
 import java.sql.*;
 
 public class BoardVo {
-	private int num, count;
+	private int num, memNum, count;
 	private String title,content, writer, company;
 	private Date date;
 	
 	public BoardVo() {}
 
-	public BoardVo(int num, int count, String title, String content, String writer, String company, Date date) {
+	public BoardVo(int num, int memNum, int count, String title, String content, String writer, String company,
+			Date date) {
 		super();
 		this.num = num;
+		this.memNum = memNum;
 		this.count = count;
 		this.title = title;
 		this.content = content;
@@ -26,6 +28,14 @@ public class BoardVo {
 
 	public void setNum(int num) {
 		this.num = num;
+	}
+
+	public int getMemNum() {
+		return memNum;
+	}
+
+	public void setMemNum(int memNum) {
+		this.memNum = memNum;
 	}
 
 	public int getCount() {
@@ -84,6 +94,7 @@ public class BoardVo {
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + count;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + memNum;
 		result = prime * result + num;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
@@ -116,6 +127,8 @@ public class BoardVo {
 				return false;
 		} else if (!date.equals(other.date))
 			return false;
+		if (memNum != other.memNum)
+			return false;
 		if (num != other.num)
 			return false;
 		if (title == null) {
@@ -133,8 +146,10 @@ public class BoardVo {
 
 	@Override
 	public String toString() {
-		return "BoardVo [num=" + num + ", count=" + count + ", title=" + title + ", content=" + content + ", writer="
-				+ writer + ", company=" + company + ", date=" + date + "]";
+		return "BoardVo [num=" + num + ", memNum=" + memNum + ", count=" + count + ", title=" + title + ", content="
+				+ content + ", writer=" + writer + ", company=" + company + ", date=" + date + "]";
 	}
+
+	
 
 }

@@ -28,14 +28,14 @@
     	select branchName, floor, officeName from office a
     	left outer join branch b
 		on a.branchCode=b.branchCode
-		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput}
+		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput} and a.deleted=0 and occupancy=0
    	</select>
    	
  	<select id="selectOfficeNum" resultType="int">
     	select officeNum from office a
     	left outer join branch b
 		on a.branchCode=b.branchCode
-		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput}
+		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput} and a.deleted=0
    	</select>
     
     <!-- 마스터계정 추가 시, 입주 공간 중복 체크 -->
@@ -45,20 +45,20 @@
 		on a.branchCode=b.branchCode
 		left outer join companyInfo c
 		on a.officeNum=c.officeNum
-		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected}
+		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected} and a.deleted=0 and occupancy=0
    	</select>
    	
    	<select id="selectFloors" resultMap="BranchAndOfficeMap">
    		select floor from branch a
 		left outer join office b
 		on a.branchCode=b.branchCode
-		where branchName=#{branchSelected} group by floor
+		where branchName=#{branchSelected} and occupancy=0 group by floor
    	</select>
    	
    	<select id="selectOffices" resultMap="BranchAndOfficeMap">
    		select officeName from office a
 		left outer join branch b
 		on a.branchCode=b.branchCode
-		where branchName=#{branchSelected} and floor=#{floorSelected} and occupancy=0
+		where branchName=#{branchSelected} and floor=#{floorSelected} and occupancy=0 and a.deleted=0
    	</select>
 </mapper>

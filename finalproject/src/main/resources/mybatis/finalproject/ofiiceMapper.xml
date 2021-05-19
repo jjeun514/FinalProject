@@ -7,34 +7,45 @@
    	</select>
    	
    	<select id="selectAllFloors" resultType="com.bit.fn.model.vo.OfficeVo">
-   		select floor from office group by floor
+   		select floor from office where deleted=0 group by floor
    	</select>
    	
     <select id="selectPriceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
-    	 select officeName, floor, acreages, rent, max, photo, occupancy from office order by floor
+    	 select officeName, floor, acreages, rent, max, photo, occupancy from office where deleted=0 order by floor
    	</select>
     
     <select id="spaceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
-    	 select branchName, floor, officeName, acreages, rent, occupancy, comName, max from office a 
-    	 left outer join companyInfo b on a.officeNum=b.officeNum 
-    	 left outer join branch c on a.branchCode=c.branchCode order by officeName
+    	 select a.officeNum, branchName, floor, officeName, acreages, rent, occupancy, comName, max from companyInfo b 
+    	 right outer join office a on a.officeNum=b.officeNum 
+    	 right outer join branch c on a.branchCode=c.branchCode
+    	 where a.deleted=0 and not branchName in ('0') order by officeName
    	</select>
    	
    	<select id="officeDetail" resultType="com.bit.fn.model.vo.OfficeVo">
    		select branchName, floor, officeName, acreages, rent, occupancy, max, comName 
    		from office a 
    		left outer join branch b on a.branchCode=b.branchCode 
-   		left outer join companyInfo c on a.officeNum=c.officeNum where a.officeName=#{officeName} and a.floor=#{floorInput}
+   		left outer join companyInfo c on a.officeNum=c.officeNum
+		where a.deleted=0 and a.officeName=#{officeName} and a.floor=#{floorInput}
+   	</select>
+   	
+   	<!-- officeNum 추출 -->
+   	<select id="officeNum" resultType="com.bit.fn.model.vo.OfficeVo">
+   		select officeNum from office a
+		left outer join branch b on a.branchCode=b.branchCode
+		where a.floor=#{floor} and b.branchName=#{branchName} and a.officeName=#{officeName} and a.deleted=0
    	</select>
    	
    	<!-- 공간 추가 -->
    	<insert id="addSpaceInfo" parameterType="map">
-   		insert into office (branchCode, floor, acreages, rent, officeName, max, occupancy) 
-   		values (#{branchCode}, #{floorInput}, #{acreagesInput}, #{rentInput}, #{officeNameInput}, #{maxInput}, #{occupancy})
+   		insert into office (branchCode, floor, acreages, rent, officeName, max, occupancy, deleted) 
+   		values (#{branchCode}, #{floorInput}, #{acreagesInput}, #{rentInput}, #{officeNameInput}, #{maxInput}, #{occupancy}, 0)
    	</insert>
    	
-   	<select id="selectOfficeNum" resultType="int">
-   		select officeNum from office where officeName=#{officeName} and floor=#{floorInput}
+   	<select id="selectOfficeNum" resultType="com.bit.fn.model.vo.OfficeVo">
+   		select officeNum from office a 
+   		left outer join branch b on a.branchCode=b.branchCode
+   		where officeName=#{officeName} and floor=#{floorInput} and branchName=#{branchName} and a.deleted=0
    	</select>
    	
    	<!-- 공간 수정 -->
@@ -45,8 +56,15 @@
    	</update>
    	
    	<!-- 공간 삭제 -->
-   	<delete id="deleteSpace">
-   		delete from office
+   	<update id="deleteSpace">
+   		update office set deleted=1 where officeNum=#{officeNum}
+   	</update>
+   	
+   	<!-- 공간 점유 업데이트 -->
+   	<update id="updateOccupancy">
+   		update office
+		set occupancy=#{occupancy}
 		where officeNum=#{officeNum}
-   	</delete>
+   	</update>
+   	
 </mapper>

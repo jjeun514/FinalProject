@@ -7,42 +7,56 @@
    	</select>
    	
    	<insert id="addNewCompany" parameterType="map">
-   		insert into companyInfo (comCode, officeNum, comName, ceo, manager, comPhone, contractDate, rentStartDate, rentFinishDate)
-   		values (#{comCode}, #{officeNum}, #{comName}, #{ceo}, #{manager}, #{comPhone}, #{contractDateInput}, #{moveInDateInput}, #{moveOutDateInput})
+   		insert into companyInfo (comCode, officeNum, comName, ceo, manager, comPhone, contractDate, rentStartDate, rentFinishDate, deleted)
+   		values (#{comCode}, #{officeNum}, #{comName}, #{ceo}, #{manager}, #{comPhone}, #{contractDateInput}, #{moveInDateInput}, #{moveOutDateInput}, 0)
    	</insert>
    	
+   	<update id="updateOccupancy">
+   		update office set occupancy=1 where officeNum=#{officeNum}
+   	</update>
+   	
    	<select id="selectAllCompany" resultType="com.bit.fn.model.vo.CompanyInfoVo">
-   		select comName from companyInfo
+   		select comName from companyInfo where deleted=0
    	</select>
    	
    	<!-- 마스터계정 추가 시, 회사코드 중복체크 -->
    	<select id="comCodeCheck" resultType="com.bit.fn.model.vo.CompanyInfoVo">
    		select comCode from companyInfo
-   		where comCode=#{comCode}
+   		where comCode=#{comCode} and deleted=0
    	</select>
    	
    	<!-- 마스터계정 추가 시, 회사명 중복체크 -->
    	<select id="comNameCheck" resultType="com.bit.fn.model.vo.CompanyInfoVo">
    		select comName from companyInfo
-   		where comName=#{comName}
+   		where comName=#{comName} and deleted=0
    	</select>
    	
    	<!-- 마스터계정 추가 시, 회사전화 중복체크 -->
    	<select id="comPhoneCheck" resultType="com.bit.fn.model.vo.CompanyInfoVo">
    		select comPhone from companyInfo
-   		where comPhone=#{comPhone}
+   		where comPhone=#{comPhone} and deleted=0
    	</select>
    	
    	<!-- 마스터계정 관리에서 수정 -->
    	<update id="updateCompanyInfo">
    		update companyInfo set ceo=#{ceoValue}, manager=#{managerValue}, comPhone=#{comPhoneValue}
-		where comCode=#{comCode} and comName=#{comName}
+		where comCode=#{comCode} and comName=#{comName} and deleted=0
    	</update>
    	
    	<!-- 마스터계정 수정 시, 회사전화번호 중복 체크 -->
    	<select id="selectComPhone" resultType="com.bit.fn.model.vo.CompanyInfoVo">
    		select comPhone from companyInfo
 		where comPhone=#{comPhone}
-		and not comCode=#{comCode}
+		and not comCode=#{comCode} and deleted=0
    	</select>
+   	
+   	<!-- 회사코드를 통한 오피스 번호 찾기 -->
+   	<select id="selectOfficeNum" resultType="int">
+   		select officeNum from companyInfo where comCode=#{comCode} and deleted=0
+   	</select>
+   	
+   	<!-- 회사 정보 삭제 -->
+   	<update id="deleteCompanyInfo">
+   		update companyInfo set deleted=1, officeNum=0, officeNumDeleted=#{officeNum} where officeNum=#{officeNum}
+   	</update>
 </mapper>
