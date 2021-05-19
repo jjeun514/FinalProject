@@ -18,7 +18,7 @@
     	 select branchName, floor, officeName, acreages, rent, occupancy, comName, max from office a 
     	 left outer join companyInfo b on a.officeNum=b.officeNum 
     	 left outer join branch c on a.branchCode=c.branchCode
-    	 where a.deleted=0 and not branchName in ('0') order by officeName
+    	 where a.deleted=0 and b.deleted=0 and not branchName in ('0') order by officeName
    	</select>
    	
    	<select id="officeDetail" resultType="com.bit.fn.model.vo.OfficeVo">
