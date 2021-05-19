@@ -331,9 +331,7 @@ $(document).ready(function(){
 	<table class="table companyMgmtTable">
 		<thead class="thead-light">
 			<tr>
-				<td colspan="11" id="addSpaceBtn">
-					<button type="button" class="addSpaceBtn" data-toggle="modal" data-target="#addModal" disabled>추가</button>
-				</td>
+				<td colspan="11" id="emptySpace"></td>
 			</tr>
 		    <tr>
 				<th scope="col">회사코드</th>
