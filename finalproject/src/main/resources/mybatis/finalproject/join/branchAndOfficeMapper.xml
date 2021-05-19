@@ -28,7 +28,7 @@
     	select branchName, floor, officeName from office a
     	left outer join branch b
 		on a.branchCode=b.branchCode
-		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput} and a.deleted=0
+		where branchName=#{branchInput} and floor=#{floorInput} and officeName=#{officeNameInput} and a.deleted=0 and occupancy=0
    	</select>
    	
  	<select id="selectOfficeNum" resultType="int">
@@ -45,14 +45,14 @@
 		on a.branchCode=b.branchCode
 		left outer join companyInfo c
 		on a.officeNum=c.officeNum
-		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected} and a.deleted=0
+		where branchName=#{branchSelected} and floor=#{floorSelected} and officeName=#{officeSelected} and a.deleted=0 and occupancy=0
    	</select>
    	
    	<select id="selectFloors" resultMap="BranchAndOfficeMap">
    		select floor from branch a
 		left outer join office b
 		on a.branchCode=b.branchCode
-		where branchName=#{branchSelected} group by floor
+		where branchName=#{branchSelected} and occupancy=0 group by floor
    	</select>
    	
    	<select id="selectOffices" resultMap="BranchAndOfficeMap">

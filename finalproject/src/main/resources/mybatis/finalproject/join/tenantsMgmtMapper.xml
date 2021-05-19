@@ -68,7 +68,7 @@
    	<select id="selectFloor" resultMap="TenantsMgmtMap">
    		select branchName, floor from branch a
 		left outer join office b on a.branchCode=b.branchCode
-		where branchName=#{branchName} and b.deleted=0 group by floor
+		where branchName=#{branchName} and b.deleted=0 and occupancy=0 group by floor
    	</select>
    	
    	<select id="selectOffices" resultMap="TenantsMgmtMap">

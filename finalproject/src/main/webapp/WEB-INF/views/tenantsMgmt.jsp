@@ -340,7 +340,7 @@ $(document).ready(function(){
 		<thead class="thead-light">
 			<tr>
 				<td colspan="11" id="addSpaceBtn">
-					<button type="button" class="btn btn-primary addSpaceBtn" data-toggle="modal" data-target="#addModal">추가</button>
+					<button type="button" class="addSpaceBtn" data-toggle="modal" data-target="#addModal" disabled>추가</button>
 				</td>
 			</tr>
 		    <tr>

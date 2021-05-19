@@ -22,4 +22,5 @@ public interface CompanyInfoMapper {
 	public List<CompanyInfoVo> comPhoneCheck(String comPhone);
 	public int deleteCompanyInfo(int officeNum);
 	public int selectOfficeNum(int comCode);
+	public int updateOccupancy(int officeNum);
 }

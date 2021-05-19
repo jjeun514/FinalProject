@@ -134,6 +134,7 @@ public class MasterMgmtController {
 						officeNum=Num.get(0).getOfficeNum();
 						System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
 						companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
+						companyInfoService.updateOccupancy(officeNum);						
 						// 마스터 계정 추가
 						id=username;
 						masterAccountService.insertOne(id, comCode);

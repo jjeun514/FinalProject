@@ -82,7 +82,7 @@ public class SpaceMgmtController {
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
-	// 공간 상세 페이지
+			// 공간 상세 페이지
 			spaceDetail=officeService.officeDetail(officeName, floorInput);
 			System.out.println("[SpaceMgmtController(spaceDetail())] 특정 공간: "+spaceDetail);
 			
@@ -155,7 +155,7 @@ public class SpaceMgmtController {
 			officeService.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeNameInput, maxInput, 0);
 			System.out.println("[SpaceMgmtController(addSpace())] 공간 추가 완료");
 			// 시설 추가
-			int officeNum=branchAndOfficeService.selectOfficeNum(officeNameInput, floorInput, branchInput);
+			int officeNum=branchAndOfficeService.selectOfficeNum(branchInput, floorInput, officeNameInput);
 			System.out.println("[SpaceMgmtController(addSpace())] officeNum: "+officeNum);
 			officeFacilitiesService.addFacilities(officeNum, deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput);
 			System.out.println("[SpaceMgmtController(addSpace())] 시설 추가 완료");
