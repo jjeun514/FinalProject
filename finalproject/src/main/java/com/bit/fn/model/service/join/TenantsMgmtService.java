@@ -18,8 +18,16 @@ public class TenantsMgmtService {
 		return tenantsMgmtMapper.selectAllTenants();
 	}
 	
-	public int editSpaceInfo(String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, String branchSelected, String comCode) {
-		return tenantsMgmtMapper.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
+	public int setOccupancy(int officeNum) {
+		return tenantsMgmtMapper.setOccupancy(officeNum);
+	}
+	
+	public int occupancyToOne(int officeNum) {
+		return tenantsMgmtMapper.occupancyToOne(officeNum);
+	}
+	
+	public int editSpaceInfo(int officeNum, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, int comCode) {
+		return tenantsMgmtMapper.editSpaceInfo(officeNum, contractDateInput, MoveInDateInput, MoveOutDateInput, comCode);
 	}
 	
 	public List<TenantsMgmtVo> selectFloor(String branchName){
@@ -30,7 +38,19 @@ public class TenantsMgmtService {
 		return tenantsMgmtMapper.selectOffices(floor, branchName);
 	}
 	
-	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, String floor){
+	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, int floor){
 		return tenantsMgmtMapper.dateCheck(officeName, branchName, floor);
+	}
+	
+	public int deleteOffice(int officeNum) {
+		return tenantsMgmtMapper.deleteOffice(officeNum);
+	}
+	
+	public int deleteCompanyInfo(int comCode) {
+		return tenantsMgmtMapper.deleteCompanyInfo(comCode);
+	}
+	
+	public int deleteMasterAccount(int comCode) {
+		return tenantsMgmtMapper.deleteMasterAccount(comCode);
 	}
 }

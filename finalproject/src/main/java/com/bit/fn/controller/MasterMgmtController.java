@@ -28,6 +28,7 @@ import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.join.BranchAndOfficeAndCompanyInfoService;
 import com.bit.fn.model.service.join.BranchAndOfficeService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
+import com.bit.fn.model.vo.OfficeVo;
 import com.bit.fn.model.vo.join.BranchAndOfficeVo;
 import com.bit.fn.model.vo.join.MasteraccountAndCompanyInfoVo;
 import com.bit.fn.security.model.Account;
@@ -129,9 +130,11 @@ public class MasterMgmtController {
 				if(companyInfoService.comPhoneCheck(comPhone).isEmpty()) {
 					if(occupancyCheck.get(0).getOffice().getOccupancy()==0 && occupancyCheck.get(0).getOffice().getComName()==null) {
 						// companyInfo 추가
-						officeNum=officeService.selectOfficeNum(officeSelected, floorSelected);
+						List<OfficeVo> Num=officeService.selectOfficeNum(officeSelected, floorSelected, branchSelected);
+						officeNum=Num.get(0).getOfficeNum();
 						System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
 						companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
+						companyInfoService.updateOccupancy(officeNum);						
 						// 마스터 계정 추가
 						id=username;
 						masterAccountService.insertOne(id, comCode);

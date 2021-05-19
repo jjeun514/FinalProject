@@ -22,6 +22,10 @@ public class CompanyinfoService {
 		return companyInfoMapper.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, moveInDateInput, moveOutDateInput, occupancy);
 	}
 	
+	public int updateOccupancy(int officeNum) {
+		return companyInfoMapper.updateOccupancy(officeNum);
+	}
+	
 	public List<CompanyInfoVo> selectAllCompany(){
 		return companyInfoMapper.selectAllCompany();
 	}
@@ -46,8 +50,8 @@ public class CompanyinfoService {
 		return companyInfoMapper.selectComPhone(comPhone, comCode);
 	}
 	
-	public int deleteCompanyInfo(int comCode) {
-		return companyInfoMapper.deleteCompanyInfo(comCode);
+	public int deleteCompanyInfo(int officeNum) {
+		return companyInfoMapper.deleteCompanyInfo(officeNum);
 	}
 	public int selectOfficeNum(int comCode) {
 		return companyInfoMapper.selectOfficeNum(comCode);

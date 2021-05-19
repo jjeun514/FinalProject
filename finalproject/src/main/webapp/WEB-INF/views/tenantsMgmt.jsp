@@ -83,12 +83,12 @@ $(document).ready(function(){
 				document.getElementById('modalText01').textContent='공간을 선택해주세요.';
 				$('#dangerModal').modal('show');
 			} else {
-				if($('#contractDate').val()>=$('#rentStartDate').val()){
-					console.log('[X]계약일>=입주일');
+				if($('#contractDate').val()>$('#rentStartDate').val()){
+					console.log('[X]계약일>입주일');
 					document.getElementById('modalText01').textContent='계약일을 확인해주세요.';
 					$('#dangerModal').modal('show');
 				} else {
-					console.log('[O]계약일<입주일');
+					console.log('[O]계약일<=입주일');
 					if($('#rentStartDate').val()>=$('#rentEndDate').val()){
 						console.log('[X]계약일>=퇴소일');
 						document.getElementById('modalText01').textContent='입주일과 퇴소일을 확인해주세요.';
@@ -109,7 +109,6 @@ $(document).ready(function(){
 								url: "/editSpaceInfo",
 								type : "POST",
 								contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-								dataType: "JSON",
 								data: {
 									comCode:$('#comCode').text(),
 									branchSelected:$('.editBranch').val(),
@@ -123,6 +122,9 @@ $(document).ready(function(){
 									console.log('[editSpaceInfo] ajax성공 data: '+JSON.stringify(data));
 									document.getElementById('modalText02').textContent='수정이 완료되었습니다';
 									$('#primaryModal').modal('show');
+									$('#primaryModal').on('hidden.bs.modal',function(){
+										location.reload();
+									});
 									
 									branchName=$('.editBranch').val();
 									floor=$('.floor').val();
@@ -144,10 +146,16 @@ $(document).ready(function(){
 										console.log('[editSpaceInfo] ajax - 입주일/퇴소일 확인 필요 data" '+JSON.stringify(data));
 										document.getElementById('modalText01').textContent='입력하신 기간은 공실이 아닙니다.';
 										$('#dangerModal').modal('show');
+									},
+									406: function(data){
+										console.log('[editSpaceInfo] ajax - 사무실 존재X" '+JSON.stringify(data));
+										document.getElementById('modalText01').textContent='입력하신 공간은 선택할 수 없습니다.';
+										$('#dangerModal').modal('show');
 									}
 								},
-								error: function(error){
+								error: function(request, status, error){
 									console.log('[editSpaceInfo] ajax 에러');
+									console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 									document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 									$('#dangerModal').modal('show');
 								}
@@ -209,16 +217,18 @@ $(document).ready(function(){
 								console.log('[selectFloor] floor['+index+']: '+JSON.stringify(value[index].office.floor));
 								if($('.editBranch').val()==value[index].branch.branchName){
 									console.log('[selectFloor] 선택된 지점에 따라서 층/공간 select 동적 구성');
-									if(floor==value[index].office.floor){
-										console.log('[selectFloor] selected floor: '+floor+', option: '+value[index].office.floor);
-										$('.floor').val('<option selected>'+value[index].office.floor+'</option>');
-									}
-									console.log('[selectFloor] selected(다름) floor: '+floor+', option: '+value[index].office.floor);
+									console.log('지점 같음');
+									$('.floor').val('<option selected>'+floor+'</option>');
 									$('.floor').append('<option>'+value[index].office.floor+'</option>');
-									console.log('[selectFloor] floor: '+value[index].office.floor);
+									$('.officeName').val('<option>'+officeName+'</option>');
 								}
 							}
 							$('.floor').val(floor).attr('selected','selected');
+							if($('.floor').val()==null){
+								console.log('[selectOffices] 층 null');
+								$('.floor').prepend('<option>층 선택</option>');
+								$('.floor').val('층 선택').attr('selected','selected');
+							}
 					});
 					console.log('[selectFloor] floor(ajax each 끝나고): '+floor);
 					console.log('[selectFloor] officeName(ajax each 끝나고): '+officeName);
@@ -249,25 +259,21 @@ $(document).ready(function(){
 							$('.officeName').attr('disabled',false);
 							$('.officeName').html('');
 							for(var index=0; index<value.length; index++){
-								console.log('[selectOffices] ajax성공 branchName['+index+']: '+JSON.stringify(value[index].branch.branchName));
-								console.log('[selectOffices] ajax성공 floor['+index+']: '+JSON.stringify(value[index].office.floor));
-								console.log('[selectOffices] ajax성공 officeName['+index+']: '+JSON.stringify(value[index].office.officeName));
-								console.log('[selectOffices] ajax성공 rentStartDate['+index+']: '+JSON.stringify(value[index].companyInfo.rentStartDate));
-								console.log('[selectOffices] ajax성공 rentFinishDate['+index+']: '+JSON.stringify(value[index].companyInfo.rentFinishDate));
 								if($('.editBranch').val()==value[index].branch.branchName){
 									console.log('[selectOffices] 선택된 지점에 따라서 층/공간 select 동적 구성');
+									console.log('지점 같음');
+									$('.officeName').append('<option>'+value[index].office.officeName+'</option>');
 									if(officeName==value[index].office.officeName){
 										console.log('[selectOffices] selected officeName: '+officeName+', option: '+value[index].office.officeName);
-										$('.officeName').val('<option selected>'+value[index].office.officeName+'</option>');
+										$('.officeName').val('<option selected>'+officeName+'</option>');
 									}
-									$('.officeName').append('<option>'+value[index].office.officeName+'</option>');
 									console.log('[selectOffices] selected 다름 officeName: '+value[index].office.officeName);
 								}
 							}
 							$('.officeName').val(officeName).attr('selected','selected');
 							if($('.officeName').val()==null){
 								console.log('[selectOffices] 공간 null');
-								$('.officeName').append('<option>공간 선택</option>');
+								$('.officeName').prepend('<option>공간 선택</option>');
 								$('.officeName').val('공간 선택').attr('selected','selected');
 							}
 					});
@@ -281,6 +287,41 @@ $(document).ready(function(){
 				}
 			});
 		}
+		
+		// 삭제
+		$(document).on('click', '.deleteBtn', function(e){
+			e.stopImmediatePropagation();
+			console.log('[삭제버튼누름]');
+			var branchValue=$('.branchName').val();
+			if(branchValue=='undefined' || branchValue=='' || branchValue==null){
+				branchValue=$('.editBranch').val();
+			}
+			$.ajax({
+				url: "/deleteOffices",
+				type : "POST",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				data: {
+					comCode:$('#comCode').text(),
+					branchInput:branchValue,
+					officeNameInput:$('.officeName').val(),
+					floorInput:$('.floor').val()
+				},
+				success: function(){
+					console.log('[deleteOffices] ajax성공');
+					document.getElementById('modalText02').textContent='삭제가 완료되었습니다';
+					$('#primaryModal').modal('show');
+					$('#primaryModal').on('hidden.bs.modal',function(){
+						location.reload();
+					});
+				},
+				error: function(request, status, error){
+					console.log('[editSpaceInfo] ajax 에러');
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+					$('#dangerModal').modal('show');
+				}
+			});
+		});
 	});
 });
 </script>
@@ -291,7 +332,7 @@ $(document).ready(function(){
 		<thead class="thead-light">
 			<tr>
 				<td colspan="11" id="addSpaceBtn">
-					<button type="button" class="btn btn-primary addSpaceBtn" data-toggle="modal" data-target="#addModal">추가</button>
+					<button type="button" class="addSpaceBtn" data-toggle="modal" data-target="#addModal" disabled>추가</button>
 				</td>
 			</tr>
 		    <tr>
@@ -398,7 +439,7 @@ $(document).ready(function(){
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary closeBtn" data-dismiss="modal">목록</button>
 				<button type="button" class="btn btn-primary editSpace">수정</button>
-				<button type="button" class="btn btn-danger">삭제</button>
+				<button type="button" class="btn btn-danger deleteBtn">삭제</button>
 			</div>
 		</div>
 	</div>

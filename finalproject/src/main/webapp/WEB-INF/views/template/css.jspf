@@ -789,6 +789,11 @@
 		.addSpaceBtn, .addMasterBtn, .goBackBtn {
 			width: 80px;
 		}
+		.addSpaceBtn {
+			background-color: transparent;
+			color: transparent;
+			border: 0;
+		}
 		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable {
 			margin-top: -50px;
 		}
