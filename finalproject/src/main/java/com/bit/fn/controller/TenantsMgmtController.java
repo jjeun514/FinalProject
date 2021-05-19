@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.fn.model.service.BranchService;
+import com.bit.fn.model.service.CompanyinfoService;
 import com.bit.fn.model.service.join.BranchAndOfficeService;
 import com.bit.fn.model.service.join.TenantsMgmtService;
 import com.bit.fn.model.vo.BranchVo;
@@ -42,6 +43,9 @@ public class TenantsMgmtController {
 	@Autowired
 	BranchAndOfficeService branchAndOfficeService;
 	
+	@Autowired
+	CompanyinfoService companyInfoService;
+	
 	@RequestMapping("/tenantsMgmt")
 	public String tenantsMgmtGet(HttpServletRequest req) throws Exception {
 		System.out.println("[TenantsMgmtController(tenantsMgmtGet())]");
@@ -55,7 +59,7 @@ public class TenantsMgmtController {
 	}
 
 	@RequestMapping(path="/editSpaceInfo", method = RequestMethod.POST)
-	public ResponseEntity spaceDetail(String comCode, String branchSelected, String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, String floor, HttpServletResponse resp) throws Exception {
+	public ResponseEntity spaceDetail(int comCode, String branchSelected, String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, int floor, HttpServletResponse resp) throws Exception {
 		System.out.println("[SpaceMgmtController(editSpaceInfo())]");
 		System.out.println("[SpaceMgmtController(editSpaceInfo())] comCode: "+comCode+", branchSelected: "+branchSelected+", officeSelected: "+officeSelected+", contractDateInput: "+contractDateInput+", MoveInDateInput: "+MoveInDateInput+", MoveOutDateInput: "+MoveOutDateInput+", floor: "+floor);
 		resp.setCharacterEncoding("utf-8");
@@ -65,8 +69,20 @@ public class TenantsMgmtController {
 			dateList=tenantsMgmtService.dateCheck(officeSelected, branchSelected, floor);
 			System.out.println("[SpaceMgmtController(editSpaceInfo())] dateList: "+dateList);
 			if(dateList.isEmpty()) {
-				status=HttpStatus.NOT_ACCEPTABLE;
+				System.out.println("[SpaceMgmtController(editSpaceInfo())] dateList null");
+				int officeNum=companyInfoService.selectOfficeNum(comCode);
+				tenantsMgmtService.setOccupancy(officeNum);
+				System.out.println("[SpaceMgmtController(editSpaceInfo())] 기존 공간 공실 처리 완료");
+				
+				int newOfficeNum=branchAndOfficeService.selectOfficeNum(branchSelected, floor, officeSelected);
+				System.out.println("[SpaceMgmtController(editSpaceInfo())] 새로운 공간: "+newOfficeNum);
+				tenantsMgmtService.occupancyToOne(newOfficeNum);
+				System.out.println("[SpaceMgmtController(editSpaceInfo())] 새로운 공간 occupancy=1 처리 완료");
+				tenantsMgmtService.editSpaceInfo(newOfficeNum, contractDateInput, MoveInDateInput, MoveOutDateInput, comCode);
+				System.out.println("[SpaceMgmtController(editSpaceInfo())] 새로운 공간 입주 처리 완료");
 			} else {
+				status=HttpStatus.NOT_ACCEPTABLE;
+				System.out.println("[SpaceMgmtController(editSpaceInfo())] dateList null 아님");
 				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 				for(int index=0; index<dateList.size(); index++) {
 					System.out.println("i: "+index);
@@ -81,7 +97,16 @@ public class TenantsMgmtController {
 					if(MoveInDateInput.compareTo(dbRentStart)<0 && MoveOutDateInput.compareTo(dbRentStart)<0
 							|| MoveInDateInput.compareTo(dbRentEnd)>0 && MoveOutDateInput.compareTo(dbRentEnd)>0) {
 						System.out.println("[O]입주일<DB입주일 && 퇴소일<DB입주일 || 입주일>DB퇴소일 && 퇴소일>DB퇴소일");
-						tenantsMgmtService.editSpaceInfo(officeSelected, contractDateInput, MoveInDateInput, MoveOutDateInput, branchSelected, comCode);
+						int officeNum=companyInfoService.selectOfficeNum(comCode);
+						tenantsMgmtService.setOccupancy(officeNum);
+						System.out.println("[SpaceMgmtController(editSpaceInfo())] 기존 공간 공실 처리 완료");
+						
+						int newOfficeNum=branchAndOfficeService.selectOfficeNum(branchSelected, floor, officeSelected);
+						System.out.println("[SpaceMgmtController(editSpaceInfo())] 새로운 공간: "+newOfficeNum);
+						tenantsMgmtService.occupancyToOne(newOfficeNum);
+						System.out.println("[SpaceMgmtController(editSpaceInfo())] 새로운 공간 occupancy=1 처리 완료");
+						tenantsMgmtService.editSpaceInfo(newOfficeNum, contractDateInput, MoveInDateInput, MoveOutDateInput, comCode);
+						System.out.println("[SpaceMgmtController(editSpaceInfo())] 새로운 공간 입주 처리 완료");
 					} else {
 						System.out.println("입주일/퇴소일 확인 필요");
 						status=HttpStatus.FORBIDDEN;

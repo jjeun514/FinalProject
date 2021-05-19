@@ -14,12 +14,14 @@ import com.bit.fn.model.vo.join.TenantsMgmtVo;
 public interface TenantsMgmtMapper {
 	public List<TenantsMgmtVo> selectAllTenants();
 
-	public int editSpaceInfo(String officeSelected, String contractDateInput, String MoveInDateInput, String MoveOutDateInput,
-			String branchSelected, String comCode);
+	public int setOccupancy(int officeNum);
+	public int occupancyToOne(int officeNum);
+	public int editSpaceInfo(int officeNum, String contractDateInput, String MoveInDateInput, String MoveOutDateInput, int comCode);
 	public List<TenantsMgmtVo> selectFloor(String branchName);
 	public List<TenantsMgmtVo> selectOffices(String floor, String branchName);
-	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, String floor);
+	public List<TenantsMgmtVo> dateCheck(String officeName, String branchName, int floor);
 	public int deleteOffice(int officeNum);
 	public int deleteCompanyInfo(int comCode);
 	public int deleteMasterAccount(int comCode);
+
 }
