@@ -17,9 +17,9 @@
    	
    	<insert id="insertComment" parameterType="com.bit.fn.model.vo.CommentVo">
    		insert into comment(
-   			commentNum, num, commentWriter, commentContent, commentDate
+   			commentNum, num, commentWriter, commentContent, commentDate, checkDelete
    		) values (
-   			#{commentNum}, #{num}, #{commentWriter}, #{commentContent}, now()
+   			#{commentNum}, #{num}, #{commentWriter}, #{commentContent}, now(), 0
    		)
    	</insert>
    	
