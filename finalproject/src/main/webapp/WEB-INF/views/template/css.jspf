@@ -913,6 +913,15 @@
 	 	#accountDetail input:focus {
 	 		outline: none;
 	 	}
+	 	.masterMgmtPaging, .spaceMgmtPaging, .tenantsMgmtPaging {
+	 		display: table;
+	 		margin: 0 auto;
+	 		text-align: center;
+	 		margin-top: 20px;
+	 	}
+	 	.pagingSection {
+	 		display: table-cell;
+	 	}
 	    
 	 /*마이페이지*/
 	    #mypageMargin{
