@@ -89,7 +89,7 @@
 				    </div>
 				
 				<div class="col-md-12">
-					<table id = "noticeTable" class="table table-bordered table-hover">
+					<table id = "noticeTable" class="table table-list-search table-hover">
 						<thead>
 							<tr>
 								<th>번호</th>

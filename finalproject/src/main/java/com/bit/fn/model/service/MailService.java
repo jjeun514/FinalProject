@@ -279,14 +279,15 @@ public class MailService {
 			// 메일 본문
 			msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
 			msg+="<tbody>";
-			msg+="<tr style='background-color: rgb(146,239,181);text-align:center'>";
+			msg+="<tr style='background-color: lightgray; text-align:center'>";
 			msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
 			msg+="<font size=6><strong>9 o'Clock  회의실 예약 안내</strong></font>";
 			msg+="<table style='padding-top:30px'>";
-			msg+="<tr><td style='background-color:black; color:white;'><b>예약하신 회의실이 사용 시간이 30분 후에 시작됩니다.</b></td>"
-					+"<tr><td style='background-color:black; color:white;'><b>회의실:</b></td><td>"+roomNum+"</td></tr>"
-					+"<tr><td style='background-color:black; color:white;'><b>예약자명: </b></td><td>"+memName+"</td></tr>"
-					+"<tr><td style='background-color:black; color:white;'><b>예약일시: </b></td><td>"+useStartTime+"시</td></tr>"
+			msg+="<tr style = 'text-align:center'><td colspan='4' style = 'text-align:center;'>예약하신 회의실이 사용 시간이 30분 후에 시작됩니다.</td></tr>"
+					+"<tr style = 'height: 40px;'></tr>"
+					+"<tr><td style = 'width: 30%'></td><td style='background-color:white; width: 20%;'><b>회의실:</b></td><td>"+roomNum+"</td><td style='width: 30%'></td></tr>"
+					+"<tr><td></td><td style='background-color:white; width: 20%;'><b>예약자명:</b></td><td>"+memName+"</td><td style='width: 30%'></td></tr>"
+					+"<tr><td></td><td style='background-color:white; width: 20%;'><b>예약일시:</b></td><td>"+useStartTime+"시</td><td style='width: 30%'></td></tr>"
 					+"</table>";
 			msg+="</td>";
 			msg+="</tr>";

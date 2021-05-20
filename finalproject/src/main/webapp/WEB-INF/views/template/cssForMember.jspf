@@ -397,9 +397,9 @@
 		padding : 5px;
 		width : 53px;
 		background-color : white;
-		position: relative;
+		position: absolute;
 		left : 80%;
-		top : 50%;
+		top : 90%;
 		color : gray;
 	}
 	
@@ -410,7 +410,7 @@
 		padding : 5px;
 		width : 68px;
 		background-color : rgba(104,159,200,1);
-		position: relative;
+		position: absolute;
 		left : 10%;
 		top : -10%;
 	}

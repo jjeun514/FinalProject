@@ -35,9 +35,6 @@ $(document).ready(function() {
 			dataType : "text",
 			success : function() {
 				location.href = "/board";
-			},
-			error : function(request, status, error) {
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 		
@@ -80,7 +77,7 @@ $(document).ready(function() {
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
-<%@ include file="./template/footer.jspf" %>
+<%@ include file="./template/twoDepthFooter.jspf" %>
 </html>
 
 
