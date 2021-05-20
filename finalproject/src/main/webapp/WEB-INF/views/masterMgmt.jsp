@@ -7,7 +7,6 @@ $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 $(function(){
 	var comName;
@@ -93,12 +92,30 @@ $(function(){
 	$(document).on('click', '.deleteBtn', function(e){
 		e.stopImmediatePropagation();
 		console.log('삭제누름');
-		/*
+		console.log('id: '+$('#masterAccount').text()+', comCode: '+$('#comCode').text());
 		$.ajax({
 			url: "/deleteMaster",
-			
+			type: "POST",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			data: {
+				id:$('#masterAccount').text(),
+				comCode:$('#comCode').text()
+			},
+			success: function() {
+				console.log('수정 완료');
+				document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
+				$('#primaryModal').modal('show');
+				$('#primaryModal').on('hidden.bs.modal',function(){
+					location.reload();
+				});
+				$.cssBack();
+			},
+			error: function(error) {
+				console.log("ajax 에러");
+				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+				$('#dangerModal').modal('show');
+			}
 		});
-		*/
 	});
 	
 	$('#accountDetail').on('hide.bs.modal', function(e) {
