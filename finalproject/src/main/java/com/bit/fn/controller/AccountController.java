@@ -1,11 +1,9 @@
 package com.bit.fn.controller;
 
-import java.net.http.HttpRequest;
 import java.security.Principal;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bit.fn.model.mapper.join.AccountAndMemberInfoMapper;
 import com.bit.fn.model.service.AccountRoleService;
 import com.bit.fn.model.service.AdminAccountService;
 import com.bit.fn.model.service.CompanyinfoService;
@@ -62,15 +58,6 @@ public class AccountController {
 	@Autowired
 	OfficeService officeService;
 	
-	/*
-	@RequestMapping("/index")
-	public ModelAndView index() {
-		ModelAndView mav=new ModelAndView();
-		mav.addObject("list",adminAccountService.selectAll());
-		return mav;
-	}
-	*/
-	
 	//로그인
 	@GetMapping("/login")
 	public String login() {
@@ -82,52 +69,9 @@ public class AccountController {
 		return "/signin";
 	}
 	
-	//지울예정
-	@GetMapping("/resister")
-	public String resister() {
-		
-		return "test/resister";
-	}
-	
-	//지울예정
-	@GetMapping("/jungbok")
-	public String jungbok() {
-		
-		return "test/jungbok";
-	}
-	
-	//지울예정
-	@GetMapping("/user")
-	public String user() {
-		
-		return "test/user";
-	}
-	
-	
-	//지울예정인 예전 회원가입
-	@PostMapping("/resister")
-	public String resister(Account account) {
-		try {
-			s_accountService.memverSave(account);
-		}catch (Exception e) {
-			return "redirect:/jungbok";
-		}
-		return "redirect:/index";
-	}
-	
-	
 	//멤버 회원가입
 	@PostMapping("/joinMember")
 	public String joinMember(Account account, String memName, String username, String memNickName, int comCode,String dept, String memPhone) {
-		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■username="+username);
-		System.out.println(account);
-		System.out.println("memName="+memName);
-		System.out.println("memNickName="+memNickName);
-		System.out.println("id="+username);
-		System.out.println("comCode="+comCode);
-		System.out.println("dept="+dept);
-		System.out.println("memPhone="+memPhone);
-		
 		try {
 		memberinfoService.insertOne(memName, memNickName, username, comCode, dept, memPhone);
 		s_accountService.memverSave(account);
@@ -139,45 +83,17 @@ public class AccountController {
 		return "redirect:/index";
 	}
 	
-	
-	//테스트용(지울예정)
-	@GetMapping("/test/info")
-	public String test(Principal  principal,Model model) {
-		
-		String id = principal.getName();
-		
-		int one=principal.toString().indexOf("ROLE_ADMIN");
-		
-		int two=principal.toString().indexOf("ROLE_MASTER");
-		
-		int three=principal.toString().indexOf("ROLE_MEMBER");
-		
-		System.out.println("아이디 = " + id);
-		System.out.println("admin 인가? = "+one);
-		System.out.println("master 인가? = "+two);
-		System.out.println("member 인가? = "+three);
-		
-		model.addAttribute("list",principal.toString().indexOf("ROLE_ADMIN"));
-		model.addAttribute("ss","send");
-		
-		return "test/info";
-	}
-	
 	//계정 확인
 	@RequestMapping(path="/usercheck", method=RequestMethod.POST)
 	@ResponseBody
 	public String usercheck(@RequestBody String username ) {
 		
 		String id=username.replace("%40", "@").split("username=")[1];
-		System.out.println(id);
 		int count=memberinfoService.idCount(id);
-		System.out.println("바뀐후="+count);
 		   
 		if(count != 0) {
-			System.out.println("Already in use");
 			 id="Already in use";
 		}else {
-			System.out.println("Available");
 			 id="Available";
 		}
 		return id;
@@ -188,16 +104,12 @@ public class AccountController {
 	@ResponseBody
 	public String nickNameCheck(String memNickName ) {
 		
-		System.out.println("---------------받은 닉네임 = "+memNickName);
 		int count=memberinfoService.nicknameCount(memNickName);
-		System.out.println("바뀐후="+count);
 		   
 		if(count != 0) {
-			System.out.println("Already in use");
 			memNickName="Already in use";
 			
 		}else {
-			System.out.println("Available");
 			memNickName="Available";
 		}
 		return memNickName;
@@ -209,11 +121,9 @@ public class AccountController {
 	public String checkPw(String pw, Principal principal) {
 		
 		String username = principal.getName();
-		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■유저네임= "+username);
 		
 		String dbpassword=u_accountService.selectOne(username).getPassword();
 		
-		System.out.println(dbpassword);
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
@@ -234,14 +144,12 @@ public class AccountController {
 	public String updatePw(String newCheckPw, Principal principal) {
 		
 		String username = principal.getName();
-		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■유저네임= "+username);
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		newCheckPw=encoder.encode(newCheckPw);
 		
 		int result=u_accountService.updatePw(newCheckPw, username);
-		System.out.println("결과값="+result);
 		String send="failure";
 		if(result == 1) {
 			send="success";
@@ -254,14 +162,12 @@ public class AccountController {
 		@ResponseBody
 		public String updatePw(String newPwConfirm, String hiddenInputId) {
 			
-			System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■유저네임= "+hiddenInputId);
 			
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			
 			newPwConfirm=encoder.encode(newPwConfirm);
 			
 			int result=u_accountService.updatePw(newPwConfirm, hiddenInputId);
-			System.out.println("결과값="+result);
 			String send="failure";
 			if(result == 1) {
 				send="success";
@@ -282,10 +188,8 @@ public class AccountController {
 		
 		//권한에 따른 계정 정보 삭제
 		if(admin != -1) {
-			System.out.println("탈퇴할 계정은 어드민입니다.");
 			adminAccountService.deleteOne(username);
 		}else if(master != -1) {
-			System.out.println("탈퇴할 계정은 마스터입니다.");
 			//회사 코드 불러오기
 			int comCode = masterAccountService.selectOne(username).getComCode();
 			//사무실 번호 불러오기
@@ -297,7 +201,6 @@ public class AccountController {
 			//사무실 공실 업데이트
 			officeService.updateOccupancy(officeNum, 0);
 		}else if(member != -1) {
-			System.out.println("탈퇴할 계정은 멤버입니다.");
 			memberinfoService.deleteOne(username);
 		}else {
 			return "redirect:/index";
@@ -321,23 +224,15 @@ public class AccountController {
 		@RequestMapping(path="/updateMemberAdmission", method=RequestMethod.PUT, produces = "application/x-www-form-urlencoded; charset=UTF-8")
 		@ResponseBody
 		public String updateMemberAdmission(String currAdmission, String memberId) {
-			System.out.println(currAdmission);
 			int isupdate=-1;
 			//허용->비허용
 			if("허용".equals(currAdmission)) {
-				System.out.println(currAdmission+ "비허용으로 바꿀거임");
 				isupdate = accountAndMemberInfoService.updateMemberAdmission(0, 0, memberId);
-				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				System.out.println(memberinfoService.selectOne(memberId));
 			//비허용->허용
 			}else {
-				System.out.println(currAdmission);
 				isupdate = accountAndMemberInfoService.updateMemberAdmission(1, 1, memberId);
-				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				System.out.println(memberinfoService.selectOne(memberId));
 			}
 			
-			System.out.println(isupdate);
 			if(isupdate==2) {
 				return "updated";
 			}

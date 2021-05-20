@@ -14,12 +14,5 @@ public class JoinController {
 	@Autowired
 	BranchAndAdminService branchAndAdminService;
 	
-	//삭제예정
-	@RequestMapping("/join")
-	public String join() {
-		//mav.addObject("list",branchAndAdminService.selectAll());
-		//mav.addObject("aa",branchAndAdminService.selectaa());
-		return "test/join";
-	}
 	
 }

@@ -15,7 +15,7 @@
      <span class="mr-2"><a href="#">Admin</a></span>
      </sec:authorize>
      <span class="mr-2"><a href="#">Member</a></span>
-     <span class="mr-2"><a href="../mypage">my page</a></span>
+     <span class="mr-2"><a href="http://localhost:8098/mypage">my page</a></span>
      <!-- 로그인한 경우 -->
 	 <sec:authorize access="isAuthenticated()">
      <span class="mr-2"><a href="#" onclick="document.getElementById('logout-form').submit();">logout</a></span>
