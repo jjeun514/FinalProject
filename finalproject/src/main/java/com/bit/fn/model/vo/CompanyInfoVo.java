@@ -7,11 +7,11 @@ public class CompanyInfoVo {
 	private String comName,ceo,manager,comPhone;
 	private Date contractDate,rentStartDate,rentFinishDate;
 	public CompanyInfoVo() {}
-	public CompanyInfoVo(int comCode, int ofiiceNum, int point, String comName, String ceo, String manager,
+	public CompanyInfoVo(int comCode, int officeNum, int point, String comName, String ceo, String manager,
 			String comPhone, Date contractDate, Date rentStartDate, Date rentFinishDate) {
 		super();
 		this.comCode = comCode;
-		this.officeNum = ofiiceNum;
+		this.officeNum = officeNum;
 		this.point = point;
 		this.comName = comName;
 		this.ceo = ceo;
@@ -27,11 +27,11 @@ public class CompanyInfoVo {
 	public void setComCode(int comCode) {
 		this.comCode = comCode;
 	}
-	public int getOfiiceNum() {
+	public int getOfficeNum() {
 		return officeNum;
 	}
-	public void setOfiiceNum(int ofiiceNum) {
-		this.officeNum = ofiiceNum;
+	public void setOfficeNum(int officeNum) {
+		this.officeNum = officeNum;
 	}
 	public int getPoint() {
 		return point;
@@ -151,7 +151,7 @@ public class CompanyInfoVo {
 	}
 	@Override
 	public String toString() {
-		return "CompanyInfoVo [comCode=" + comCode + ", ofiiceNum=" + officeNum + ", point=" + point + ", comName="
+		return "CompanyInfoVo [comCode=" + comCode + ", officeNum=" + officeNum + ", point=" + point + ", comName="
 				+ comName + ", ceo=" + ceo + ", manager=" + manager + ", comPhone=" + comPhone + ", contractDate="
 				+ contractDate + ", rentStartDate=" + rentStartDate + ", rentFinishDate=" + rentFinishDate + "]";
 	}

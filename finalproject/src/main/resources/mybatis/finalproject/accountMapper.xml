@@ -36,4 +36,11 @@
    			username=#{username}
    	</delete>
    	
+   	<select id="selectNum" resultType="int">
+   		select num from account where username=#{id}
+   	</select>
+   	
+   	<update id="enabledToZero">
+   		update account set enabled=0 where username=#{id}
+   	</update>
 </mapper>

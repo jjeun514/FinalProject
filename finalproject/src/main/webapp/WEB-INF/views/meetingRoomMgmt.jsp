@@ -1,8 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
-
+<title>회의실관리</title>
 <script type="text/javascript">
+$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
+$('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
+$('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
+$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink active');
 //10,20,30개씩 selectBox 클릭 이벤트
 function changeSelectBox(currentPage, countPerPage, pageSize){
     var selectValue = $("#cntSelectBox").children("option:selected").val();
@@ -210,23 +214,395 @@ $table.trigger('repaginate');
 
 
 $(function(){
+var revList = $("<div class='content main revervationManage'>").append($(".meetingRoomManage").html());
+var mrList = $("<div class='content main meetingRoomManage'>").append($(".meetingRoomManage").html());
+var mrModal = $(".mrModal").html();
+//각 tr 클릭시마다 데이터 저장
+var reservationDay;
+var memNickName;
+var useStartTime;
+
+//$('.revervationManage').hide();
 
 // table pagination
 
 page('paginatedRev');
 
+$(".meetingRoomManage").remove();
+$(".mrModal").remove();
+
+
+//예약 tr 클릭시 셀렉트 
+$('.revTrClick').click(function(){
+	//console.log(this);
+	reservationDay = $(this).find(".trReservationDay").text();
+	memNickName = $(this).find(".trMemNickName").text();
+	useStartTime = reservationDay+ " " +$(this).find(".trUseStartTime").text()+ ":00.0";
+	
+	var selectRev = {
+			reservationDay : reservationDay,
+			memNickName : memNickName,
+			useStartTime : useStartTime
+		};
+	console.log(reservationDay,memNickName,useStartTime,selectRev);
+	
+	//
+	$.ajax({
+		url: "/selectRevOne",
+		type : "POST",
+		data: selectRev,
+		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		dataType: "json",
+		success: function(data){
+					//console.log(data);
+					//console.log(data.manager);
+					$("#memName").text(data.memName);
+					$("#id").text(data.id);
+					$("#roomNumValue").val(data.roomNum+"호");
+					$("#reservationDayValue").val(data.reservationDay);
+					$("#useStartTimValue").val(data.useStartTime);
+					$("#useFinishTimeValue").val(data.useFinishTime);
+					$("#userCountValue").val(data.userCount+"명");
+					$("#feeValue").val(data.fee);
+					$("#comCode").text(data.comCode);
+					$("#comName").text(data.comName);
+					$("#ceo").text(data.ceo);
+					$("#manager").text(data.manager);
+					$("#comPhone").text(data.comPhone);
+					$("#dept").text(data.dept);
+					$("#memPhone").text(data.memPhone);
+					$("#merchant_uid").text(data.merchant_uid);
+				},			 
+		error: function(error){
+			console.log(error);
+			console.log("ajax 에러");
+		}
+		
+	});
+		
+	
+});
+
+$('.mgmtModal').find('.editBtn').click(function(){
+	//수정 버튼 클릭 이벤트
+	$(document).on('click','.editBtn', function(){
+		$('.valueSetting').attr('readonly', false);
+		
+		$("#memName").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#id").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#comCode").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#comName").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#ceo").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#manager").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#comPhone").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#dept").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#memPhone").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		$("#merchant_uid").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+		
+		$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소')
+		$('.editBtn').attr('class', 'btn btn-primary okBtn').html('확인');
+		
+		$(document).on('click','.okBtn', function(){
+			var updateRoomNum = $("#roomNumValue").val().replace("호","");
+			var updateReservationDay = $("#reservationDayValue").val();
+			var updateUseStartTimValue = updateReservationDay + " " + $("#useStartTimValue").val() + ":00";
+			var updateUseFinishTimeValue = updateReservationDay + " " + $("#useFinishTimeValue").val() + ":00";
+			var updateUserCountValue = $("#userCountValue").val().replace("명","");
+			var updateFeeValue = $("#feeValue").val();
+				$.ajax({
+					url: "/updateReservation",
+					type: "PUT",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					data: {reservationDay, memNickName, useStartTime,
+						   updateRoomNum,updateReservationDay,updateUseStartTimValue,
+						   updateUseFinishTimeValue,updateUserCountValue,updateFeeValue
+					},
+					dataType: "text",
+					success: function(data) {
+						if(data=="updated"){
+							$('#primaryModal').find('#closeBtn').click(function(){
+								window.location.reload();
+							});
+							document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
+							$('#primaryModal').modal('show');
+							
+							
+						}else{
+							document.getElementById('modalText01').textContent='잘못된 요청이거나 수정된 내용이 없습니다.';
+							$('#dangerModal').modal('show');
+						}
+						$.cssBack(); 
+					},
+					error: function(error) {
+						console.log("ajax 에러");
+						document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+						$('#dangerModal').modal('show');
+					}
+				});
+			$.cssBack();
+		});
+	});
+});
+
+
+$('.mgmtModal').find('.deleteBtn').click(function(){
+	var roomNum=$("#roomNumValue").val().replace("호","");
+	$.ajax({
+		url: "/deleteReservation",
+		type: "delete",
+		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		data: {roomNum,reservationDay, useStartTime},
+		dataType: "text",
+		success: function(data) {
+			if(data=="deleted"){
+				$('#primaryModal').find('#closeBtn').click(function(){
+					window.location.reload();
+				});
+				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
+				$('#primaryModal').modal('show');
+				window.location.reload();
+			}else{
+				document.getElementById('modalText01').textContent='잘못된 요청이거나 수정된 내용이 없습니다.';
+				$('#dangerModal').modal('show');
+			}
+			$.cssBack(); 
+		},
+		error: function(error) {
+			console.log("ajax 에러");
+			document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+			$('#dangerModal').modal('show');
+		}
+	});
+});
+
+
+
+$(document).on('click', '.cancleBtn', function(){
+	$.cssBack();
+});
+
+$('#accountDetail').on('hide.bs.modal', function() {
+	$.cssBack();
+});
+
+$.cssBack=function(){
+	$('.valueSetting').attr('readonly', true);
+	
+	$("#memName").css('background-color', 'transparent').css('color', 'black');
+	$("#id").css('background-color', 'transparent').css('color', 'black');
+	$("#comCode").css('background-color', 'transparent').css('color', 'black');
+	$("#comName").css('background-color', 'transparent').css('color', 'black');
+	$("#ceo").css('background-color', 'transparent').css('color', 'black');
+	$("#manager").css('background-color', 'transparent').css('color', 'black');
+	$("#comPhone").css('background-color', 'transparent').css('color', 'black');
+	$("#dept").css('background-color', 'transparent').css('color', 'black');
+	$("#memPhone").css('background-color', 'transparent').css('color', 'black');
+	$("#merchant_uid").css('background-color', 'transparent').css('color', 'black');
+	$("#branchName").css('background-color', 'transparent').css('color', 'black');
+	$("#roomNum").css('background-color', 'transparent').css('color', 'black');
+	
+	
+	
+	$('.cancleBtn').attr('class', 'btn btn-secondary closeBtn').attr('data-dismiss','modal').html('목록');
+	$('.okBtn').attr('class', 'btn btn-primary editBtn').html('수정');
+}
+
+
+//회의실 관리모드 변경
+function mrChange(){
+	$(".revervationManage").remove();
+	$(".changeContent").append(mrList);
+	page('paginatedMr');
+}
+
+//예약 관리모드 변경
+function revChange(){
+	$(".meetingRoomManage").remove();
+	$(".changeContent").append(revList);
+	page('paginatedRev');
+	
+}
+
+
+//모달 폼체인지(회의실 상세정보, 회의실 추가)
+var changeMrModal='<tr><th>지점</th><td id="branchName"></td><th>방번호</th><td id="roomNum">'+
+				  '</td></tr><tr><th>면적</th><td id="acreages"><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>'+
+				  '<th>비용</th><td id="rent"><input type="text" name="rentValue" id="rentValue" class="valueSetting" readonly></td></tr>'+
+				  '<tr><th>수용인원</th><td id="max" colspan="3"><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
+
+var changeAddMrModal='<tr><th>지점</th><td id="branchName"><select class="mrselect" name="branchNameValue" ><c:forEach items="${branchList }" var="bean"><option value="${bean.branchCode }" >${bean.branchName }</option></c:forEach></select></td>'
+					 +'<th>방번호</th><td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" placeholder="(방번호 입력)"></td></tr>'
+					 +'<tr><th>면적</th><td id="acreages"><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" placeholder="(면적 입력)"></td>'
+					 +'<th>비용</th><td id="rent"><input type="text" name="rentValue" id="rentValue" class="valueSetting" placeholder="(비용 입력)"></td></tr>'
+					 +'<tr><th>수용인원</th><td id="max" colspan="3"><input type="text" name="maxValue" id="maxValue" class="valueSetting" placeholder="(인원 입력)"></td></tr>';
+
+//회의실 관리모드 변경
+$('.changeMrManage').click(function(){
+	mrChange();
+	$('.changeMrManage').off('click');
+	$(".changeRevManage").click(function(){
+		window.location.reload();
+	});
+	
+	$("#ModalTitle").text("회의실 상세 정보");
+	$(".spaceTable").html(changeMrModal);
+	
+	//셀렉트 
+	$('.mrTrClick').click(function(){
+		$("#branchName").text($(this).find(".trBranchName").text());
+		$("#roomNum").text($(this).find(".trRoomNum").text());
+		$("#acreagesValue").val($(this).find(".trAcreages").text());
+		$("#rentValue").val($(this).find(".trRent").text());
+		$("#maxValue").val($(this).find(".trMax").text());
+	});
+	
+	$('.mgmtModal').find('.editBtn').click(function(){
+		//수정 버튼 클릭 이벤트
+		$(document).on('click','.editBtn', function(){
+			$('.valueSetting').attr('readonly', false);
+			
+			$("#branchName").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+			$("#roomNum").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+			
+			$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소')
+			$('.editBtn').attr('class', 'btn btn-primary okBtn').html('확인');
+			
+			var branchName = $("#branchName").text();
+			var roomNum = $("#roomNum").text().replace("호","");
+			
+			$(document).off('click',".okBtn");
+			$(document).on('click','.okBtn', function(){
+				var acreagesValue = $("#acreagesValue").val();
+				var rentValue = $("#rentValue").val();
+				var maxValue = $("#maxValue").val().replace("명","");
+					$.ajax({
+						url: "/updateMeetingRoom",
+						type: "PUT",
+						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+						data: {branchName, roomNum, acreagesValue, rentValue, maxValue},
+						dataType: "text",
+						success: function(data) {
+							if(data=="updated"){
+								$('#primaryModal').find('#closeBtn').click(function(){
+									window.location.reload();
+								});
+								document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
+								$('#primaryModal').modal('show');
+							}else{
+								document.getElementById('modalText01').textContent='잘못된 요청이거나 수정된 내용이 없습니다.';
+								$('#dangerModal').modal('show');
+							}
+							$.cssBack(); 
+						},
+						error: function(error) {
+							console.log("ajax 에러");
+							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+							$('#dangerModal').modal('show');
+						}
+					});
+				$.cssBack();
+			});
+
+		});
+	});
+	$('.mgmtModal').find('.deleteBtn').off('click');
+	$('.mgmtModal').find('.deleteBtn').click(function(){
+		var branchName = $("#branchName").text();
+		var roomNum = $("#roomNum").text().replace("호","");
+		$.ajax({
+			url: "/deleteMeetingRoom",
+			type: "delete",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			data: {roomNum,branchName},
+			dataType: "text",
+			success: function(data) {
+				if(data=="deleted"){
+					$('#primaryModal').find('#closeBtn').click(function(){
+						window.location.reload();
+					});
+					document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
+					$('#primaryModal').modal('show');
+				}else{
+					document.getElementById('modalText01').textContent='잘못된 요청이거나 삭제할 내용이 없습니다.';
+					$('#dangerModal').modal('show');
+				}
+				$.cssBack(); 
+			},
+			error: function(error) {
+				console.log("ajax 에러");
+				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+				$('#dangerModal').modal('show');
+			}
+		});
+	});
+	
+	
+	$(".addMasterBtn").click(function(){
+		console.log("gg");
+		$('.mgmtModal').find('.editBtn').removeClass('editBtn').addClass('addBtn').text("추가");
+		$('.mgmtModal').find('.deleteBtn').remove();
+		$('.mgmtModal').find('.closeBtn').text("취소").on('click',function(){
+			window.location.reload();
+		});
+		$("#ModalTitle").text("회의실 추가");
+		$(".spaceTable").html(changeAddMrModal);
+		
+		$('.mgmtModal').find('.addBtn').on('click',function(){
+			var branchNameValue = $("select[name='branchNameValue']").val();
+			var roomNumValue = $('#roomNumValue').val().replace("호","");
+			var acreagesValue = $('#acreagesValue').val();
+			var rentValue = $('#rentValue').val().replace("원","");
+			var maxValue = $('#maxValue').val().replace("명","");
+			
+			$.ajax({
+				url: "/addMeetingRoom",
+				type: "post",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				data: {branchNameValue,roomNumValue,acreagesValue,rentValue,maxValue},
+				dataType: "text",
+				success: function(data) {
+					if(data=="added"){
+						$('#primaryModal').find('#closeBtn').click(function(){
+							window.location.reload();
+						});
+						document.getElementById('modalText02').textContent='추가가 완료되었습니다.';
+						$('#primaryModal').modal('show');
+					}else{
+						document.getElementById('modalText01').textContent='잘못된 요청이거나 추가된 내용이 없습니다.';
+						$('#dangerModal').modal('show');
+					}
+					$.cssBack(); 
+				},
+				error: function(error) {
+					console.log("ajax 에러");
+					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+					$('#dangerModal').modal('show');
+				}
+			});
+			
+		});
+	});
+	
+	
+});
+
+
 });
 </script>
 
 <title>회의실관리</title>
-<div class="content main">
+<div class="changeContent">
 <div class="content main revervationManage">
-	<h1> 예약 관리 </h1>
-	<table class="table masterMgmtTable paginatedRev">
+	<button type="button" class="btn btn-dark changeMrManage">회의실 관리 모드</button>
+	<h1 class="revervationManageText"> 예약 관리</h1> 
+	<table class="table mrMgmtTable paginatedRev">
 		<thead class="thead-light">
 			<tr>
-				<td colspan="8" id="addMasterBtn">
-					<button type="button" class="btn btn-primary addMasterBtn" onclick="location.href='addMasterAccount'">추가</button>
+				<td colspan="12" id="addMasterBtn">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="12" id="addMasterBtn">
 				</td>
 			</tr>
 		    <tr>
@@ -245,14 +621,14 @@ page('paginatedRev');
 		</thead>
 		<tbody>
 			<c:forEach items="${revList }" var="revAllList" varStatus="status">
-			<tr id="masterAccounts" data-toggle="modal" data-target="#accountDetail" >
+			<tr id="masterAccounts" data-toggle="modal" data-target="#accountDetail" class="revTrClick">
 				<td><a href="#" onclick="return false;">${status.index + 1}</a></td>
-				<td><a href="#" onclick="return false;">${revAllList.reservation.reservationDay }</a></td>
-				<td><a href="#" onclick="return false;">${revAllList.memberInfo.memNickName }</a></td>
+				<td class="trReservationDay"><a href="#" onclick="return false;">${revAllList.reservation.reservationDay }</a></td>
+				<td class="trMemNickName"><a href="#" onclick="return false;">${revAllList.memberInfo.memNickName }</a></td>
 				<td><a href="#" onclick="return false;">${revAllList.memberInfo.id }</a></td>
 				<td><a href="#" onclick="return false;">${revAllList.companyInfo.comName }</a></td>
-				<td><a href="#" onclick="return false;">${revAllList.reservation.roomNum }</a></td>
-				<td><a href="#" onclick="return false;">${revAllList.reservation.useStartTime }</a></td>
+				<td><a href="#" onclick="return false;">${revAllList.reservation.roomNum }호</a></td>
+				<td class="trUseStartTime"><a href="#" onclick="return false;">${revAllList.reservation.useStartTime }</a></td>
 				<td><a href="#" onclick="return false;">${revAllList.reservation.useFinishTime }</a></td>
 				<td><a href="#" onclick="return false;">${revAllList.reservation.userCount }</a></td>
 				<td><a href="#" onclick="return false;">${revAllList.reservation.amount }</a></td>
@@ -266,51 +642,111 @@ page('paginatedRev');
 				</c:forEach>
 		</tbody>
 	</table>
-	<div class="btnContent">
-		<div class="pagination paginatedRev" id="pagination">페이지 영역</div>
+	<div class="btnContent meetingRoomPaging">
+		<div class="pagination" id="pagination">페이지 영역</div>
 	</div>
 </div>
 
 <div class="content main meetingRoomManage">
-	<h1> 회의실 관리 </h1>
-	<table class="table masterMgmtTable">
+	<button type="button" class="btn btn-dark changeRevManage">예약 관리 모드</button>
+	<h1 class="mrManageText"> 회의실 관리 </h1>
+	<table class="table masterMgmtTable paginatedMr">
 		<thead class="thead-light">
 			<tr>
 				<td colspan="8" id="addMasterBtn">
-					<button type="button" class="btn btn-primary addMasterBtn" onclick="location.href='addMasterAccount'">추가</button>
+					<button type="button" class="btn btn-primary addMasterBtn" data-toggle="modal" data-target="#accountDetail">추가</button>
 				</td>
 			</tr>
 		    <tr>
-				<th scope="col">회사코드</th>
-				<th scope="col">회사명</th>
-				<th scope="col">대표</th>
-				<th scope="col">담당자</th>
-				<th scope="col">대표번호</th>
-				<th scope="col">마스터계정</th>
-				<th scope="col">가입일</th>
+				<th scope="col">번호</th>
+				<th scope="col">지점</th>
+				<th scope="col">방번호</th>
+				<th scope="col">면적</th>
+				<th scope="col">비용</th>
+				<th scope="col">수용인원</th>
 		    </tr>
 		</thead>
 		<tbody>
-			<tr id="masterAccounts" data-toggle="modal" data-target="#accountDetail" >
-				<td><a href="#" onclick="return false;">ㅎ</a></td>
-				<td><a href="#" onclick="return false;">ㅎ</a></td>
-				<td><a href="#" onclick="return false;">ㅎ</a></td>
-				<td><a href="#" onclick="return false;">ㅎ</a></td>
-				<td><a href="#" onclick="return false;">ㅎ</a></td>
-				<td><a href="#" onclick="return false;">ㅎ</a></td>
-				<td><a href="#" onclick="return false;">ㅎ</a></td>
+			<c:forEach items="${mrList }" var="mrAllList" varStatus="status">
+			<tr id="masterAccounts" data-toggle="modal" data-target="#accountDetail" class="mrTrClick">
+				<td><a href="#" onclick="return false;">${status.index + 1}</a></td>
+				<td><a href="#" onclick="return false;" class="trBranchName">${mrAllList.branch.branchName}</a></td>
+				<td><a href="#" onclick="return false;" class="trRoomNum">${mrAllList.meetingRoom.roomNum}호</a></td>
+				<td><a href="#" onclick="return false;" class="trAcreages">${mrAllList.meetingRoom.acreages}</a></td>
+				<td><a href="#" onclick="return false;" class="trRent">${mrAllList.meetingRoom.rent}</a></td>
+				<td><a href="#" onclick="return false;" class="trMax">${mrAllList.meetingRoom.max}명</a></td>
 			</tr>
+			</c:forEach>
 		</tbody>
 	</table>
-	
-<%//상세 Modal %>
-<div class="modal fade" id="accountDetail" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="btnContent meetingRoomPaging">
+		<div class="pagination" id="pagination">페이지 영역</div>
+	</div>
+</div>
+</div>
+
+<%//예약 상세 Modal %>
+<div class="modal fade mgmtModal" id="accountDetail" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="ModalTitle">마스터계정 상세 정보</h5>
+				<h5 class="modal-title" id="ModalTitle">예약 상세 정보</h5>
 			</div>
-			
+			<div class="modal-body">
+				<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+					<table class="table spaceTable" >
+						<tr>
+							<th>예약자</th>
+							<td id="memName"></td>
+							<th>아이디</th>
+							<td id="id"></td>
+						</tr>
+						<tr>
+							<th>전화번호</th>
+							<td id="memPhone"></td>
+							<th>부서</th>
+							<td id="dept"></td>
+						</tr>
+						<tr>
+							<th>방번호</th>
+							<td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" readonly></td>
+							<th>예약일</th>
+							<td id="reservationDay"><input type="text" name="reservationDayValue" id="reservationDayValue" class="valueSetting" readonly></td>
+						</tr>
+						<tr>
+							<th>입실시간</th>
+							<td id="useStartTime"><input type="text" name="useStartTimValue" id="useStartTimValue" class="valueSetting" readonly></td>
+							<th>퇴실시간</th>
+							<td id="useFinishTime"><input type="text" name="useFinishTimeValue" id="useFinishTimeValue" class="valueSetting" readonly></td>
+						</tr>
+						<tr>
+							<th>인원</th>
+							<td id="userCount"><input type="text" name="userCountValue" id="userCountValue" class="valueSetting" readonly></td>
+							<th>요금</th>
+							<td id="fee"><input type="text" name="feeValue" id="feeValue" class="valueSetting" readonly></td>
+						</tr>
+						<tr>
+							<th>회사코드</th>
+							<td id="comCode"></td>
+							<th>회사명</th>
+							<td id="comName"></td>
+						</tr>
+						<tr>
+							<th>대표</th>
+							<td id="ceo"></td>
+							<th>매니저</th>
+							<td id="manager"></td>
+						</tr>
+						<tr>
+							<th>대표번호</th>
+							<td id="comPhone"></td>
+							<th>주문번호</th>
+							<td id="merchant_uid"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		
 		
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary closeBtn" data-dismiss="modal">목록</button>
@@ -321,7 +757,6 @@ page('paginatedRev');
 	</div>
 </div>
 
-</div>
 
 <%//1. danger Modal%>
 <div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
@@ -344,5 +779,5 @@ page('paginatedRev');
 		</div>
 	</div>
 </div>
-</div>
+
 <%@ include file="template/footer.jspf" %>

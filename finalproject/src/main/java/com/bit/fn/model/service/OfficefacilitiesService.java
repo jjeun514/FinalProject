@@ -29,4 +29,8 @@ public class OfficefacilitiesService {
 	public int updateSpaceInfo(int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, int officeNum){
 		return officeFacilitiesMapper.updateSpaceInfo(deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput, officeNum);
 	}
+	
+	public int deleteSpace(int officeNum) {
+		return officeFacilitiesMapper.deleteSpace(officeNum);
+	}
 }

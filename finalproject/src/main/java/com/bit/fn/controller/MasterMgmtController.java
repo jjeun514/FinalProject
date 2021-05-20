@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.fn.model.mapper.AccountMapper;
+import com.bit.fn.model.service.AccountRoleService;
 import com.bit.fn.model.service.BranchService;
 import com.bit.fn.model.service.CompanyinfoService;
 import com.bit.fn.model.service.MasterAccountService;
@@ -28,6 +29,7 @@ import com.bit.fn.model.service.OfficeService;
 import com.bit.fn.model.service.join.BranchAndOfficeAndCompanyInfoService;
 import com.bit.fn.model.service.join.BranchAndOfficeService;
 import com.bit.fn.model.service.join.MasteraccountAndCompanyInfoService;
+import com.bit.fn.model.vo.OfficeVo;
 import com.bit.fn.model.vo.join.BranchAndOfficeVo;
 import com.bit.fn.model.vo.join.MasteraccountAndCompanyInfoVo;
 import com.bit.fn.security.model.Account;
@@ -64,6 +66,9 @@ public class MasterMgmtController {
 	
 	@Autowired
 	BranchAndOfficeAndCompanyInfoService branchOfficeCompanyInfoService;
+	
+	@Autowired
+	AccountRoleService accountRoleService;
 	
 	@RequestMapping("/masterMgmt")
 	public String masterMgmtGet(HttpServletRequest req) throws Exception {
@@ -129,9 +134,11 @@ public class MasterMgmtController {
 				if(companyInfoService.comPhoneCheck(comPhone).isEmpty()) {
 					if(occupancyCheck.get(0).getOffice().getOccupancy()==0 && occupancyCheck.get(0).getOffice().getComName()==null) {
 						// companyInfo 추가
-						officeNum=officeService.selectOfficeNum(officeSelected, floorSelected);
+						List<OfficeVo> Num=officeService.selectOfficeNum(officeSelected, floorSelected, branchSelected);
+						officeNum=Num.get(0).getOfficeNum();
 						System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
 						companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
+						companyInfoService.updateOccupancy(officeNum);						
 						// 마스터 계정 추가
 						id=username;
 						masterAccountService.insertOne(id, comCode);
@@ -214,7 +221,6 @@ public class MasterMgmtController {
 		HttpStatus status;
 		System.out.println("[MasterMgmtController(updateCompanyInfo())]");
 		System.out.println("[MasterMgmtController(updateCompanyInfo())] ceoValue: "+ceoValue+", managerValue: "+managerValue+", comPhoneValue: "+comPhoneValue+", comCode: "+comCode+", comName: "+comName);
-
 			
 		try {
 			status=HttpStatus.OK;
@@ -230,6 +236,44 @@ public class MasterMgmtController {
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
 			System.out.println("[MasterMgmtController(updateCompanyInfo())] null");
+		}
+		return new ResponseEntity(status);
+	}
+	
+	// 마스터계정 삭제
+	@RequestMapping(path="/deleteMaster", method=RequestMethod.POST)
+	public ResponseEntity deleteMaster(int comCode, String id) {
+		HttpStatus status;
+		System.out.println("[MasterMgmtController(deleteMaster())]");
+		System.out.println("[MasterMgmtController(deleteMaster())]");
+		
+		try {
+			status=HttpStatus.OK;
+			// 마스터 계정 삭제
+			masterAccountService.deleteMaster(id);
+			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 deleted=1 완료");
+			int num=masterAccountService.selectNum(id);
+			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 num: "+num);
+			accountRoleService.deleted(num);
+			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 권한 삭제(account_role: deleted)");
+			masterAccountService.enabledToZero(id);
+			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 권한 삭제(enabled: 0)");
+			
+			// 회사 정보 삭제
+			officeNum=companyInfoService.selectOfficeNum(comCode);
+			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 입주 공간 officeNum: "+officeNum);
+			companyInfoService.deleteCompanyInfo(officeNum);
+			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 회사 정보 삭제");
+			
+			// 입주공간 공실 처리
+			officeService.updateOccupancy(0, officeNum);
+			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 입주 공간 공실 처리 완료");
+			
+		} catch(NullPointerException e) {
+			System.out.println("[MasterMgmtController(deleteMaster())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[MasterMgmtController(deleteMaster())] null");
 		}
 		return new ResponseEntity(status);
 	}

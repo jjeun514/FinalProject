@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
+<title>공간관리</title>
 <script type="text/javascript">
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink active');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 $(document).ready(function(){
 	var company;
@@ -226,6 +226,8 @@ $(document).ready(function(){
 			console.log('상세페이지 닫힘');
 			$('.okBtn').attr('class','btn btn-primary editBtn');
 			$('.editBtn').html('수정');
+			$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','transparent');
+			$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','black');
 		});
 		
 		$(document).on('click','.okBtn', function(){
@@ -234,6 +236,7 @@ $(document).ready(function(){
 				type: "POST",
 				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data: {
+					branchName:$('#branchName').text(),
 					officeName:$('#officeName').text(),
 					floorInput:$('#floor').text(),
 					acreagesInput:$('#acreagesValue').val(),
@@ -266,6 +269,35 @@ $(document).ready(function(){
 				}
 			})
 		});
+	});
+	
+	// 삭제
+	$(document).on('click','.deleteBtn', function(e){
+		e.stopImmediatePropagation();
+		$.ajax({
+			url: "/deleteSpace",
+			type: "POST",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			data: {
+				branchName:$('#branchName').text(),
+				officeName:$('#officeName').text(),
+				floor:$('#floor').text(),
+			},
+			success: function(){
+				console.log('[ajax성공] 공간 삭제(officeFacilities/companyInfo/office삭제)');
+				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
+				$('#primaryModal').modal('show');
+				$('#primaryModal').on('hidden.bs.modal',function(){
+					location.reload();
+				});
+			},
+			error: function(request, status, error){
+				console.log("ajax 에러");
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+				$('#dangerModal').modal('show');
+			}
+		})
 	});
 });
 </script>

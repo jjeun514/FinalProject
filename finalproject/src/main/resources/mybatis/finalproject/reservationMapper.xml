@@ -3,7 +3,7 @@
 
 <mapper namespace="com.bit.fn.model.mapper.ReservationMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.ReservationVo">
-    	 SELECT roomNum,memNum,reservationDay,useStartTime,useFinishTime,userCount,fee,etc,ckeckPay,merchant_uid 
+    	 SELECT roomNum,memNum,reservationDay,useStartTime,useFinishTime,userCount,fee,etc,checkPay,merchant_uid 
     	 from reservation order by reservationDay desc, useStartTime desc
    	</select>
    	

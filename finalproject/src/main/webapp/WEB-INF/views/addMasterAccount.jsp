@@ -64,6 +64,7 @@ $(function(){
 				 },
 				error: function(error){
 					console.log("ajax 에러");
+					$.modalBack()
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -262,6 +263,7 @@ $(function(){
 										},
 										error: function(error){
 											console.log("ajax 에러");
+											$.modalBack()
 											document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 											$('#dangerModal').modal('show');
 										}
@@ -275,6 +277,7 @@ $(function(){
 						},
 						error: function(error){
 							console.log("ajax 에러");
+							$.modalBack()
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
 						}
@@ -330,15 +333,17 @@ $(function(){
 				if(inputCheck==true){
 					$(document.body).css('pointer-events', 'none');
 					document.getElementById('modalText01').textContent='처리중입니다. 잠시만 기다려주세요.';
-					$('.closeDangerModal').hide();
 					$(document.body).css('pointer-events', 'none');
+					$('.closeDangerModal').html('<img src="imgs/Hourglass.gif" style="height:50px">');
+					$('.closeDangerModal').css('background-color','white').attr('disabled', true).css('height','70px').css('border','0');
 					$('#dangerModal').css('color','red');
 					$('#dangerModal').modal('show');
 					
 					$.modalBack=function(){
 						$(document.body).css('pointer-events', 'auto');
 						$('#dangerModal').modal('hide');
-						$('.closeDangerModal').show();
+						$('.closeDangerModal').html('확인');
+						$('.closeDangerModal').css('background-color','red').attr('disabled', false).css('height','60px').css('border','1px solid red');
 						$('#dangerModal').css('color','black');
 					}
 					
@@ -383,8 +388,9 @@ $(function(){
 							} else if(data=='가능') {
 								console.log('입주 가능');
 								document.getElementById('modalText01').textContent='처리중입니다. 잠시만 기다려주세요.';
-								$('.closeDangerModal').hide();
 								$(document.body).css('pointer-events', 'none');
+								$('.closeDangerModal').html('<img src="imgs/Hourglass.gif" style="height:50px">');
+								$('.closeDangerModal').css('background-color','white').attr('disabled', true).css('height','70px').css('border','0');
 								$('#dangerModal').css('color','red');
 								$('#dangerModal').modal('show');
 								location.href='masterMgmt';
@@ -392,6 +398,7 @@ $(function(){
 						},
 						error: function(error){
 							console.log("ajax 에러");
+							$.modalBack()
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
 						}

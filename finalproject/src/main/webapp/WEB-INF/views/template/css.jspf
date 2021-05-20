@@ -1064,12 +1064,18 @@
 		}
 		
 		.meetingRoomPaging{
-			margin: auto;
+			display: table;
+			margin: 0 auto;
 			margin-top : 20px;
-			margin-left: 800px;
 			text-align: center;
 			font-size: 20px;
 		}
+		#pagination {
+			display: table-cell;
+			margin: 0 auto;
+			text-align: center;
+		}
+
 		
 		.addRevBtn{
 			float: right;

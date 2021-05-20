@@ -9,5 +9,8 @@
 		WHERE
 			account_num=#{value}
 	</delete>
+	
+	<update id="deleted">
+		update accountrole set role_num=4 where account_num=#{num}
+	</update>
 </mapper>
-

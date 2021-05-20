@@ -50,15 +50,6 @@
    		select * from memberInfo where memName=#{name} and id=#{id} and memPhone=#{phone}
    	</select>
 
-	<!-- 관리자페이지(신청서 관리) -->
-   	<select id="pending" resultType="com.bit.fn.model.vo.MemberInfoVo">
-   		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
-   		right outer join companyInfo b on a.comCode=b.comCode where admission=0 order by signdate
-   	</select>
-   	<select id="approved" resultType="com.bit.fn.model.vo.MemberInfoVo">
-   		select signdate, comName, memName, id, dept, memPhone, memNickName, admission from memberInfo a 
-   		right outer join companyInfo b on a.comCode=b.comCode where admission=1 order by signdate
-   	</select>
    	<!-- 회사코드를 통한 멤버리스트 불러오기(마스터 계정 마이페이지 멤버관리)-->
    	 	<select id="comMemberList" resultType="com.bit.fn.model.vo.MemberInfoVo">
     	 SELECT 
