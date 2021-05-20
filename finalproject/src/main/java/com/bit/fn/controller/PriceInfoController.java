@@ -24,14 +24,12 @@ public class PriceInfoController {
 	
 	@RequestMapping("/priceInfo")
 	public String priceInfoGet(HttpServletRequest req) {
-		System.out.println("[PriceInfoController(priceInfoGet()]");
 		req.setAttribute("priceItems",officeService.selectPriceInfo());
 		return "priceInfo";
 	}
 	
 	@RequestMapping(path="/priceInfo", method = RequestMethod.POST)
 	public void priceInfoPost(String name, String company, String phone, String email, String crew, String budget, String msg) throws MessagingException {
-		System.out.println("[PriceInfoController(priceInfoPost()]");
 		mailService.sendApplication(to, name, company, phone, email, crew, budget, msg);
 	}
 }

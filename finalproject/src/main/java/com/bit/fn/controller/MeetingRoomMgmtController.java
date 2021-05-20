@@ -32,9 +32,9 @@ public class MeetingRoomMgmtController {
 	@Autowired
 	BranchService branchService;
 	
+	//회의실관리 페이지
 	@RequestMapping("meetingRoomMgmt")
 	public String meetingRoomMgmt(Model model) {
-		//System.out.println(reservationListService.selectAllJoin());
 		List<ReservationListVo> revList = reservationListService.selectAllJoin();
 		for(ReservationListVo list : revList){
 		    list.getReservation().setUseStartTime(list.getReservation().getUseStartTime().substring(11,16));
@@ -47,11 +47,10 @@ public class MeetingRoomMgmtController {
 		return "meetingRoomMgmt";
 	}
 	
+	//예약리스트 선택 ajax
 	@RequestMapping(value = "selectRevOne", method = RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> selectRevOne(MeetingRoomMgmtVo selectRev) {
-		//System.out.println(selectRev);
-		
 		String memNickName = selectRev.getMemNickName();
 		String reservationDay = selectRev.getReservationDay();
 		String useStartTime = selectRev.getUseStartTime();
@@ -77,10 +76,10 @@ public class MeetingRoomMgmtController {
 		result.put("memPhone", revOne.getMemberInfo().getMemPhone());
 		result.put("merchant_uid", revOne.getReservation().getMerchant_uid());
 		
-		
 		return result;
 	}
 	
+	//예약 수정 ajax
 	@PutMapping("updateReservation")
 	@ResponseBody
 	public String updateReservation( 
@@ -89,7 +88,6 @@ public class MeetingRoomMgmtController {
 									String reservationDay, String memNickName, String useStartTime) {
 		int result = reservationListService.updateReservation(updateRoomNum, updateReservationDay, updateUseStartTimValue, updateUseFinishTimeValue,
 				updateUserCountValue, updateFeeValue, memNickName, reservationDay, useStartTime);
-		System.out.println(result);
 		if(result==1) {
 			return "updated";
 		}
@@ -97,11 +95,11 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 
+	//예약 삭제 ajax
 	@DeleteMapping("deleteReservation")
 	@ResponseBody
 	public String deleteReservation(int roomNum, String reservationDay, String useStartTime) {
 		int result = reservationListService.deleteReservation(roomNum,reservationDay, useStartTime);
-		System.out.println(result);
 		if(result==1) {
 			return "deleted";
 		}
@@ -109,14 +107,10 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 	
+	//회의실 수정 ajax
 	@PutMapping("updateMeetingRoom")
 	@ResponseBody
 	public String updateMeetingRoom(String acreagesValue, int rentValue, int maxValue, int roomNum,  String branchName) {
-		System.out.println(acreagesValue);
-		System.out.println(rentValue);
-		System.out.println(maxValue);
-		System.out.println(roomNum);
-		System.out.println(branchName);
 		int result = meetingRoomAndBranchService.updateMeetingRoom(acreagesValue, rentValue, maxValue, roomNum, branchName);
 		if(result==1) {
 			return "updated";
@@ -124,13 +118,12 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 	
+	//회의실 삭제 ajax
 	@DeleteMapping("deleteMeetingRoom")
 	@ResponseBody
 	public String deleteMeetingRoom(int roomNum, String branchName) {
-		System.out.println(branchService.selectBranchCode(branchName).get(0).get("branchCode"));
 		int branchCode=(int) branchService.selectBranchCode(branchName).get(0).get("branchCode");
 		int result = meetingRoomAndBranchService.deleteMeetingRoom(roomNum, branchCode);
-		System.out.println(result);
 		if(result==1) {
 			return "deleted";
 		}
@@ -138,6 +131,7 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 	
+	//회의실 추가 ajax
 	@PostMapping("addMeetingRoom")
 	@ResponseBody
 	public String addMeetingRoom(int branchNameValue, int roomNumValue, String acreagesValue, int rentValue, int maxValue) {

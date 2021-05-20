@@ -86,28 +86,27 @@
 
 		$(document).on('click','#dateBtn',function() {
 			var dateSelected=$('#dateInput').val();
-				$.ajax({
-					url: "/chart",
-					type: "POST",
-					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-					dataType: "JSON",
-					data: {
-						dateSelected: dateSelected
-					},
-					success: function(updatedTotalReservation){
-						$.each(updatedTotalReservation, function(key, value){
-							datas=value;
-						});
+			$.ajax({
+				url: "/chart",
+				type: "POST",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				dataType: "JSON",
+				data: {
+					dateSelected: dateSelected
+				},
+				success: function(updatedTotalReservation){
+					$.each(updatedTotalReservation, function(key, value){
+						datas=value;
+					});
 
-						chart.destroy();
-						drawing();
-					},
-					error: function(request, status, error){
-						console.log("[ajax 에러]");
-						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					}
-				});
+					chart.destroy();
+					drawing();
+				},
+				error: function(){
+					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+					$('#dangerModal').modal('show');
+				}
+			});
 		});
-	
 	});
 	</script>

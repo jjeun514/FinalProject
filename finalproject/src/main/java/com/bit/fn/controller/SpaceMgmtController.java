@@ -58,16 +58,13 @@ public class SpaceMgmtController {
 	
 	@RequestMapping("/spaceMgmt")
 	public String spaceMgmtGet(HttpServletRequest req) throws Exception {
-		System.out.println("[SpaceMgmtController(spaceMgmtGet())]");
 	// 공간 관리
 		spaceInfo=officeService.spaceInfo();
-		System.out.println("[SpaceMgmtController(spaceMgmtGet())] 공간: "+spaceInfo);
 		req.setAttribute("spaceInfo", spaceInfo);
 
 	// 공간 추가
 		branchNameList=branchService.selectAllBranchName();
 		req.setAttribute("branchList", branchNameList);
-		System.out.println("[SpaceMgmtController(addSpace())] branchList: "+branchNameList);
 		
 	// 공간 수정
 		req.setAttribute("companyList", companyService.selectAllCompany());
@@ -77,14 +74,12 @@ public class SpaceMgmtController {
 
 	@RequestMapping(path="/spaceDetail", method = RequestMethod.POST)
 	public ResponseEntity spaceDetail(String officeName, int floorInput, HttpServletResponse resp) throws Exception {
-		System.out.println("[SpaceMgmtController(spaceDetail())]");
 		resp.setCharacterEncoding("utf-8");
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
 			// 공간 상세 페이지
 			spaceDetail=officeService.officeDetail(officeName, floorInput);
-			System.out.println("[SpaceMgmtController(spaceDetail())] 특정 공간: "+spaceDetail);
 			
 			try {
 				JSONObject jobj=new JSONObject();
@@ -92,30 +87,24 @@ public class SpaceMgmtController {
 				jobj.put("spaceDetail", spaceDetail);
 				out = resp.getWriter();
 				out.print(jobj.toString());
-				System.out.println("list:"+spaceDetail);
 			} catch (IOException e) {
-				System.out.println("[SpaceMgmtController(spaceDetail())] json 오류");
 				e.printStackTrace();
 			}
 		} catch(NullPointerException e) {
-			System.out.println("[SpaceMgmtController(spaceDetail())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[SpaceMgmtController(spaceDetail())] null");
 		}
 		return new ResponseEntity(status);
 	}
 	
 	@RequestMapping(path="/officeFacilities", method = RequestMethod.POST)
 	public ResponseEntity officeFacilities(String officeName, int floorInput, HttpServletResponse resp) throws Exception {
-		System.out.println("[SpaceMgmtController(officeFacilities())]");
 		resp.setCharacterEncoding("utf-8");
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
 			// 공간 상세 페이지
 			officeFacilities=officeFacilitiesService.officeFacilities(officeName, floorInput);
-			System.out.println("[SpaceMgmtController(officeFacilities())] 특정 시설: "+officeFacilities);
 			
 			try {
 				JSONObject jobj=new JSONObject();
@@ -123,42 +112,28 @@ public class SpaceMgmtController {
 				jobj.put("officeFacilities", officeFacilities);
 				out = resp.getWriter();
 				out.print(jobj.toString());
-				System.out.println("list:"+officeFacilities);
 			} catch (IOException e) {
-				System.out.println("[SpaceMgmtController(officeFacilities())] json 오류");
 				e.printStackTrace();
 			}
 		} catch(NullPointerException e) {
-			System.out.println("[SpaceMgmtController(officeFacilities())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[SpaceMgmtController(officeFacilities())] null");
 		}
 		return new ResponseEntity(status);
 	}
 	
 	@RequestMapping(path="/addSpace", method = RequestMethod.POST, produces="application/text; charset=utf8")
 	public @ResponseBody String addSpace(String branchInput, int floorInput, int acreagesInput, int rentInput, String officeNameInput, int maxInput, int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, HttpServletResponse resp) {
-		System.out.println("[SpaceMgmtController(addSpace())]");
-		System.out.println("[SpaceMgmtController(addSpace())] branchName: "+branchInput+", floor: "+floorInput+", acreages: "+acreagesInput+", rent: "+rentInput+", officeName: "+officeNameInput+", max: "+maxInput
-						+"\ndeskInput: "+deskInput+", chairInput: "+chairInput+", modemInput: "+modemInput+", fireExtinguisherInput: "+fireExtinguisherInput+", airConditionerInput: "+airConditionerInput+", radiatorInput: "+radiatorInput+", descendingLifeLineInput: "+descendingLifeLineInput+", powerSocketInput: "+powerSocketInput);
 		branchCodeList=branchService.selectBranchCode(branchInput);
-		System.out.println("[SpaceMgmtController(addSpace())] branchCodeList: "+branchCodeList);
 		branchCode=(int) branchCodeList.get(0).get("branchCode");
-		System.out.println("[SpaceMgmtController(addSpace())] branchCode: "+branchCode);
-		
 		branchAndOfficeList=branchAndOfficeService.duplicationCheck(branchInput, floorInput, officeNameInput);
-		System.out.println("[SpaceMgmtController(addSpace())] branch & office & floor: "+branchAndOfficeList);
 
 		if(branchAndOfficeList.isEmpty()) {
 			// 공간 추가
 			officeService.addSpaceInfo(branchCode, floorInput, acreagesInput, rentInput, officeNameInput, maxInput, 0);
-			System.out.println("[SpaceMgmtController(addSpace())] 공간 추가 완료");
 			// 시설 추가
 			int officeNum=branchAndOfficeService.selectOfficeNum(branchInput, floorInput, officeNameInput);
-			System.out.println("[SpaceMgmtController(addSpace())] officeNum: "+officeNum);
 			officeFacilitiesService.addFacilities(officeNum, deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput);
-			System.out.println("[SpaceMgmtController(addSpace())] 시설 추가 완료");
 			return "가능";
 		} else {
 			return "중복";
@@ -167,46 +142,31 @@ public class SpaceMgmtController {
 	
 	@RequestMapping(path="/updateSpaceDetail", method = RequestMethod.POST, produces="application/text; charset=utf8")
 	public void updateSpace(String officeName, int floorInput, String branchName, int acreagesInput, int rentInput, int maxInput, int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, HttpServletResponse resp) {
-		System.out.println("[SpaceMgmtController(updateSpace())]");
-		System.out.println("[SpaceMgmtController(updateSpace())] acreagesInput: "+acreagesInput+", rentInput: "+rentInput+", maxInput: "+maxInput+", deskInput: "+deskInput+", chairInput: "+chairInput+", modemInput: "+modemInput+", fireExtinguisherInput: "+fireExtinguisherInput+", airConditionerInput: "+airConditionerInput+", radiatorInput: "+radiatorInput+", descendingLifeLineInput: "+descendingLifeLineInput+", powerSocketInput: "+powerSocketInput);
-		
 		// officeFacilities 업데이트
 		List<OfficeVo> Num=officeService.selectOfficeNum(officeName, floorInput, branchName);
 		int officeNum=0;
 		if(Num.size()>0) {
 			officeNum=Num.get(0).getOfficeNum();
 		}
-		System.out.println("[SpaceMgmtController(updateSpace())] officeNum: "+officeNum);
 		officeFacilitiesService.updateSpaceInfo(deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput, officeNum);
-		System.out.println("[SpaceMgmtController(updateSpace())] officeFacilities 업데이트 완료");
 		
 		// office 업데이트
 		officeService.updateOffice(acreagesInput, rentInput, maxInput, officeNum);
-		System.out.println("[SpaceMgmtController(updateSpace())] office 업데이트 완료");
 	}
 	
 	@RequestMapping(path="/deleteSpace", method = RequestMethod.POST, produces="application/text; charset=utf8")
 	public void deleteSpace(String branchName, String officeName, int floor, HttpServletResponse resp) {
-		System.out.println("[SpaceMgmtController(deleteSpace())]");
-		System.out.println("[SpaceMgmtController(deleteSpace())] branchName: "+branchName+", officeName: "+officeName+", floor: "+floor);
-		
 		// officeNum 추출
 		List<OfficeVo> Num=officeService.officeNum(floor, branchName, officeName);
-		System.out.println("[SpaceMgmtController(deleteSpace())] Num: "+Num);
 		int officeNum=Num.get(0).getOfficeNum();
-		System.out.println("[SpaceMgmtController(deleteSpace())] officeNum: "+officeNum);
 		
 		// officeFacilities 삭제 (delete)
 		officeFacilitiesService.deleteSpace(officeNum);
-		System.out.println("[SpaceMgmtController(deleteSpace())] officeFacilities 삭제");
 		
 		// companyInfo 삭제 (update) 
 		companyService.deleteCompanyInfo(officeNum);
-		System.out.println("[SpaceMgmtController(deleteSpace())] companyInfo 삭제");
 		
 		// office 삭제 (update)
 		officeService.deleteSpace(officeNum);
-		System.out.println("[SpaceMgmtController(deleteSpace())] office 삭제");
-		
 	}
 }
