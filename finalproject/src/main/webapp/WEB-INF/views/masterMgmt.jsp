@@ -153,6 +153,7 @@ $(function(){
 		$(document).on('click','.editBtn', function(e){
 			e.stopImmediatePropagation();
 			console.log('수정버튼누름');
+			$('.pencil').attr('hidden', false);
 			$('.masterAccountTitle').html('['+comName+']의 계정 <font style="color:red;">수정</font>');
 			$('.valueSetting').attr('readonly', false);
 			$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
@@ -248,6 +249,7 @@ $(function(){
 		$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'transparent').css('color', 'black');
 		$('.cancleBtn').attr('class', 'btn btn-secondary closeBtn').attr('data-dismiss','modal').html('목록');
 		$('.okBtn').attr('class', 'btn btn-primary editBtn').html('수정');
+		$('.pencil').attr('hidden', true);
 	}
 });
 </script>
@@ -309,13 +311,13 @@ $(function(){
 						</tr>
 						<tr>
 							<th>대표</th>
-							<td id="ceo"><input type="text" name="ceoValue" id="ceoValue" class="valueSetting" readonly></td>
+							<td id="ceo"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="ceoValue" id="ceoValue" class="valueSetting" readonly></td>
 							<th>대표변호</th>
-							<td id="comPhone"><input type="text" name="comPhoneValue" id="comPhoneValue" class="valueSetting" readonly></td>
+							<td id="comPhone"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="comPhoneValue" id="comPhoneValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>담당자</th>
-							<td id="manager"><input type="text" name="managerValue" id="managerValue" class="valueSetting" readonly></td>
+							<td id="manager"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="managerValue" id="managerValue" class="valueSetting" readonly></td>
 							<th>가입일</th>
 							<td id="joinedAt"></td>
 						</tr>

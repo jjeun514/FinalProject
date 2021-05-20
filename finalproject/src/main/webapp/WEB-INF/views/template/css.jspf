@@ -878,12 +878,19 @@
 			margin-left: -96%;
 			border: 0;
 		}
-		/* 입주사관리 */
-		.branchName {
-			appearance: none;
-			-webkit-appearance : none;
-			-moz-appearance: none;
+		.pencil, #forImg {
+			width: 30px;
+			position: fixed;
+			text-align: left;
+			margin-top: -3px;
 		}
+		#forImg {
+			marging-top: 3px;
+		}
+		.spaceTable .pencil {
+			margin-left: -5px;
+		}
+		
 		/* 로그인 페이지 */
 		 #loginIdPw{
 			margin: auto;
