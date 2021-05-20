@@ -54,7 +54,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR){
 				</sec:authorize>
 				<!-- 어드민으로 로그인한 경우 -->
 				<sec:authorize access="hasRole('ADMIN')">
-				<td class="topRightMenu" id="adminpageMenu"><span><a href="adminPage">관리자페이지</a></span></td>
+				<td class="topRightMenu" id="adminpageMenu"><span><a href="http://localhost:8098/adminPage">관리자페이지</a></span></td>
 				</sec:authorize>
 			</tr>
 		</table>
