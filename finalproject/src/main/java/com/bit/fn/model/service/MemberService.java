@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.bit.fn.model.mapper.MemberMapper;
 import com.bit.fn.model.vo.BoardVo;
+import com.bit.fn.model.vo.CommentVo;
 import com.bit.fn.model.vo.NoticeVo;
 import com.bit.fn.model.vo.PaginationVo;
 import com.bit.fn.model.vo.ReservationVo;
@@ -17,8 +18,24 @@ public class MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	
+	public List<BoardVo> boardListForIntro(){
+		return memberMapper.boardListForIntro();
+	}
+	
+	public List<NoticeVo> noticeListForIntro(){
+		return memberMapper.noticeListForIntro();
+	}
+	
+	public List<ReservationVo> reservationListForIntro(int memNum){
+		return memberMapper.reservationListForIntro(memNum);
+	}
+	
 	public List<BoardVo> memberBoardList(){
 		return memberMapper.memberBoardList();
+	}
+	
+	public int savePost(BoardVo post) {
+		return memberMapper.savePost(post);
 	}
 	
 	public List<PaginationVo> memberBoardPaginationList(PaginationVo pagination){
@@ -27,6 +44,14 @@ public class MemberService {
 	
 	public BoardVo selectOneContent(int num) {
 		return memberMapper.selectOneContent(num);
+	}
+	
+	public int deletePost(int num) {
+		return memberMapper.deletePost(num);
+	}
+	
+	public int updatePost(BoardVo modify) {
+		return memberMapper.updatePost(modify);
 	}
 	
 	public int countBoardList() {
@@ -59,6 +84,10 @@ public class MemberService {
 	
 	public ReservationVo checkReservaion(int roomNum, String useStartTime, String reservationDay) {
 		return memberMapper.checkReservaion(roomNum, useStartTime, reservationDay);
+	}
+	
+	public List<ReservationVo> searchAllReservation() {
+		return memberMapper.searchAllReservation();
 	}
 	
 	public List<ReservationVo> reservationList(int branchCode, String reservationDay){

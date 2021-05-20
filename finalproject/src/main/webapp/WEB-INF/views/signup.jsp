@@ -392,7 +392,7 @@ $(function(){
 		<div class="row left-side">
 			<div class="col-md-3 register-left">
 				<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
-				<h3>9'o Clock</h3>
+				<h3>9 O' Clock</h3>
 				<p>입주를 환영합니다.</p>
 			</div>
 			

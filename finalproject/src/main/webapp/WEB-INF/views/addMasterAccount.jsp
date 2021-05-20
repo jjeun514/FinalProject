@@ -64,6 +64,7 @@ $(function(){
 				 },
 				error: function(error){
 					console.log("ajax 에러");
+					$.modalBack()
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -262,6 +263,7 @@ $(function(){
 										},
 										error: function(error){
 											console.log("ajax 에러");
+											$.modalBack()
 											document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 											$('#dangerModal').modal('show');
 										}
@@ -275,6 +277,7 @@ $(function(){
 						},
 						error: function(error){
 							console.log("ajax 에러");
+							$.modalBack()
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
 						}
@@ -392,6 +395,7 @@ $(function(){
 						},
 						error: function(error){
 							console.log("ajax 에러");
+							$.modalBack()
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
 						}

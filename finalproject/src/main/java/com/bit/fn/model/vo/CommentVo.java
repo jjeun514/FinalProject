@@ -3,51 +3,73 @@ package com.bit.fn.model.vo;
 import java.sql.*;
 
 public class CommentVo {
-	private int num;
-	private String writer,content;
-	private Date date;
+	private int commentNum, num;
+	private String commentWriter,commentContent;
+	private Date commentDate;
+	
 	public CommentVo() {}
-	public CommentVo(int num, String writer, String content, Date date) {
+
+	public CommentVo(int commentNum, int num, String commentWriter, String commentContent, Date commentDate) {
 		super();
+		this.commentNum = commentNum;
 		this.num = num;
-		this.writer = writer;
-		this.content = content;
-		this.date = date;
+		this.commentWriter = commentWriter;
+		this.commentContent = commentContent;
+		this.commentDate = commentDate;
 	}
+
+	public int getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(int commentNum) {
+		this.commentNum = commentNum;
+	}
+
 	public int getNum() {
 		return num;
 	}
+
 	public void setNum(int num) {
 		this.num = num;
 	}
-	public String getWriter() {
-		return writer;
+
+	public String getCommentWriter() {
+		return commentWriter;
 	}
-	public void setWriter(String writer) {
-		this.writer = writer;
+
+	public void setCommentWriter(String commentWriter) {
+		this.commentWriter = commentWriter;
 	}
-	public String getContent() {
-		return content;
+
+	public String getCommentContent() {
+		return commentContent;
 	}
-	public void setContent(String content) {
-		this.content = content;
+
+	public void setCommentContent(String commentContent) {
+		this.commentContent = commentContent;
 	}
-	public Date getDate() {
-		return date;
+
+	public Date getCommentDate() {
+		return commentDate;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+
+	public void setCommentDate(Date commentDate) {
+		this.commentDate = commentDate;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + ((commentContent == null) ? 0 : commentContent.hashCode());
+		result = prime * result + ((commentDate == null) ? 0 : commentDate.hashCode());
+		result = prime * result + commentNum;
+		result = prime * result + ((commentWriter == null) ? 0 : commentWriter.hashCode());
 		result = prime * result + num;
-		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -57,28 +79,32 @@ public class CommentVo {
 		if (getClass() != obj.getClass())
 			return false;
 		CommentVo other = (CommentVo) obj;
-		if (content == null) {
-			if (other.content != null)
+		if (commentContent == null) {
+			if (other.commentContent != null)
 				return false;
-		} else if (!content.equals(other.content))
+		} else if (!commentContent.equals(other.commentContent))
 			return false;
-		if (date == null) {
-			if (other.date != null)
+		if (commentDate == null) {
+			if (other.commentDate != null)
 				return false;
-		} else if (!date.equals(other.date))
+		} else if (!commentDate.equals(other.commentDate))
+			return false;
+		if (commentNum != other.commentNum)
+			return false;
+		if (commentWriter == null) {
+			if (other.commentWriter != null)
+				return false;
+		} else if (!commentWriter.equals(other.commentWriter))
 			return false;
 		if (num != other.num)
 			return false;
-		if (writer == null) {
-			if (other.writer != null)
-				return false;
-		} else if (!writer.equals(other.writer))
-			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
-		return "CommentVo [num=" + num + ", writer=" + writer + ", content=" + content + ", date=" + date + "]";
+		return "CommentVo [commentNum=" + commentNum + ", num=" + num + ", commentWriter=" + commentWriter
+				+ ", commentContent=" + commentContent + ", commentDate=" + commentDate + "]";
 	}
-	
+
 }

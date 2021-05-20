@@ -3,32 +3,69 @@
 
 <mapper namespace="com.bit.fn.model.mapper.MemberMapper">
 
-    <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
-		select bbs.num, bbs.title, bbs.date, bbs.memName, com.comName
+	<!-- 인트로 -->
+	<select id="boardListForIntro" resultType="com.bit.fn.model.vo.BoardVo">
+		select bbs.num, bbs.title, bbs.writer
 		from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
+		order by date desc, num desc
+		limit 4
+	</select>
+	
+	<select id="noticeListForIntro" resultType="com.bit.fn.model.vo.NoticeVo">
+		select num, title from notice order by date desc, num desc limit 4
+	</select>
+	
+	<select id="reservationListForIntro" resultType="com.bit.fn.model.vo.ReservationVo">
+		select myREZ.* from (select roomNum, reservationDay, useStartTime, useFinishTime, fee from reservation
+		where memNum = #{memNum}) AS myREZ where reservationDay = date_format(sysdate(), '%Y-%m-%d') limit 4
+	</select>
+
+	<!-- 게시판 -->
+    <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">
+		select bbs.num, bbs.title, bbs.date, bbs.writer, com.comName
+		from board bbs left outer join memberInfo mem on bbs.writer=mem.memNum
 		left outer join companyInfo com on mem.comCode=com.comCode
+		where showCheck = 1
 		order by date desc, num
 		limit 7
    	</select>
    	
+   	<insert id="savePost" parameterType="com.bit.fn.model.vo.BoardVo">
+   		insert into board(
+   			memNum, writer, company, title, content, date
+   		) values (
+   			#{memNum}, #{writer}, #{company}, #{title}, #{content}, sysdate()
+   		)
+   	</insert>
+   	
+   	<update id="deletePost">
+   		update board set showCheck = 0 where num = #{num}
+   	</update>
+   	
+   	<update id="updatePost" parameterType="com.bit.fn.model.vo.BoardVo">
+   		update board set title = #{title}, content = #{content} where num = #{num}
+   	</update>
+   	
    	<select id="memberBoardPaginationList" resultType="com.bit.fn.model.vo.BoardVo">
 		select num, title, date, writer, company from board
+		where showCheck = 1
 		order by date desc, num desc limit #{firstRecordIndex}, 7
    	</select>
    	
    	<select id="countBoardList" resultType="int">
-   		select count(*) from board
+   		select count(*) from board where showCheck = 1
    	</select>
    	
    	<select id="countMyBoardList" resultType="int">
    		select count(*) from board bbs left outer join memberInfo mem on bbs.memNum=mem.memNum
-   		where mem.id = #{id}
+   		where mem.id = #{id} and showCheck = 1
    	</select>
    	
    	<select id="selectOneContent" resultType="com.bit.fn.model.vo.BoardVo">
-   		select num, title, date, writer, company, content from board where num = #{selectNum}
+   		select num, memNum, title, date, writer, company, content from board where num = #{selectNum}
    	</select>
    	
+   	<!-- 공지 게시판 -->
    	<select id="countNoticeList" resultType="int">
    		select count(*) from notice
    	</select>
@@ -74,10 +111,16 @@
    		where room.branchCode = ${branchCode} and reservationDay = '${reservationDay}'
    	</select>
    	
+   	<select id="searchAllReservation" resultType="com.bit.fn.model.vo.ReservationVo">
+   		select roomNum, memNum, reservationDay, date_format(useStartTime, '%Y-%m-%d %H') as useStartTime, useFinishTime from reservation
+   		where date_format(useStartTime, '%Y-%m-%d %H') >= date_format(sysdate(), '%Y-%m-%d %H')
+   		AND <![CDATA[ date_format(useStartTime, '%Y-%m-%d') < DATE_FORMAT(date_add(SYSDATE(), interval 1 day), '%Y-%m-%d') ]]>
+   	</select>
+   	
    	<select id="myReservationList" resultType="com.bit.fn.model.vo.ReservationVo">
    		select roomNum, memNum, reservationDay, useStartTime, useFinishTime from reservation
    		where memNum = #{memNum} and
-   		reservationDay >= date_format(sysdate(), '%Y-%m-%d')
+   		date_format(useStartTime, '%Y-%m-%d %H') >= date_format(sysdate(), '%Y-%m-%d %H')
    	</select>
    	
    	<insert id="roomReservationTemp" parameterType="com.bit.fn.model.vo.ReservationVo">
@@ -129,7 +172,7 @@
 		select myList.* from(
 			select bbs.num, bbs.title, bbs.date from board bbs
 			left outer join memberInfo mem on bbs.memNum=mem.memNum
-			where mem.id = #{id}
+			where mem.id = #{id} and showCheck = 1
 		) as myList order by date desc, num desc
 		limit #{pagination.firstRecordIndex}, 10
    	</select>

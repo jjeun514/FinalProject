@@ -44,7 +44,7 @@
 		<div class="row serviceSection">
 			<div class="col">
 				<h2>Service</h2>
-				<p>9'o Clock에 입주하시면 다양한 혜택을 받으실 수 있습니다.</p>
+				<p>9 O' Clock에 입주하시면 다양한 혜택을 받으실 수 있습니다.</p>
 			</div>
 		</div>
 	    <div class="row cardSection">

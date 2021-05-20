@@ -25,4 +25,7 @@ public interface MemberInfoMapper {
 	public List<MemberInfoVo> pending();
 	public List<MemberInfoVo> approved();
 	public List<MemberInfoVo> comMemberList(@Param("comCode") int comCode);
+	
+	public String searchCompanyName(int memNum);
+	public MemberInfoVo searchUserByMemNum(int memNum);
 }

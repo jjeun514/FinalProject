@@ -73,14 +73,14 @@ public class MailService {
 	    Message mimeMessage = new MimeMessage(session);
 	    mimeMessage.setFrom(new InternetAddress(emailBean.getFrom()));
 	    mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-	    mimeMessage.setSubject("[9'o clock] 이메일 인증을 완료해주세요.");
+	    mimeMessage.setSubject("[9 O' clock] 이메일 인증을 완료해주세요.");
 
 	    // 메일 본문
 	    msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
 	    msg+="<tbody>";
 	    msg+="<tr style='background-color:#e2e4f3;text-align:center'>";
 	    msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
-	    msg+="<font size=6><strong>9'o Clock 이메일 인증</strong></font>";
+	    msg+="<font size=6><strong>9 O' Clock 이메일 인증</strong></font>";
 	    msg+="<p style='padding-top:30px'>회원 가입 페이지의 <b style='color:darkblue'>인증번호</b>란에 아래의 인증코드를 입력하여 이메일 인증을 완료해주세요.</p>";
 	    msg+="<p style='font-size:13px;text-decoration:underlined'><strong>인증번호: ";
 	    msg+=code+"</strong></p>";
@@ -168,14 +168,14 @@ public class MailService {
 	    Message mimeMessage = new MimeMessage(session);
 	    mimeMessage.setFrom(new InternetAddress(emailBean.getFrom()));
 	    mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-	    mimeMessage.setSubject("[9'o clock] 입주 상담 신청서가 도착했습니다.");
+	    mimeMessage.setSubject("[9 O' clock] 입주 상담 신청서가 도착했습니다.");
 
 	    // 메일 본문
 	    msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
 	    msg+="<tbody>";
 	    msg+="<tr style='background-color: lightgray;text-align:center'>";
 	    msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
-	    msg+="<font size=6><strong>9'o Clock 입주 상담 신청서</strong></font>";
+	    msg+="<font size=6><strong>9 O' Clock 입주 상담 신청서</strong></font>";
 	    msg+="<table style='padding-top:30px'>";
 	    msg+="<tr><td style='background-color:black; color:white;'><b>신청자:</b></td><td>"+name+"</td></tr>"
 	    	+"<tr><td style='background-color:black; color:white;'><b>회사명: </b></td><td>"+company+"</td></tr>"
@@ -234,14 +234,14 @@ public class MailService {
 		Message mimeMessage = new MimeMessage(session);
 		mimeMessage.setFrom(new InternetAddress(emailBean.getFrom()));
 		mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-		mimeMessage.setSubject("[9'o clock] 마스터계정 임시비밀번호 발급");
+		mimeMessage.setSubject("[9 O' clock] 마스터계정 임시비밀번호 발급");
 		
 		// 메일 본문
 		msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
 		msg+="<tbody>";
 		msg+="<tr style='background-color: rgb(146,239,181);text-align:center'>";
 		msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
-		msg+="<font size=6><strong>9'o Clock  마스터계정 임시비밀번호</strong></font>";
+		msg+="<font size=6><strong>9 O' Clock  마스터계정 임시비밀번호</strong></font>";
 		msg+="<table style='padding-top:30px'>";
 		msg+="<tr><td style='background-color:black; color:white;'><b>아이디:</b></td><td>"+account.getUsername()+"</td></tr>"
 				+"<tr><td style='background-color:black; color:white;'><b>임시 비밀번호: </b></td><td>"+tempPassword+"</td></tr>"
@@ -260,4 +260,67 @@ public class MailService {
 		
 		return tempPassword;
 	}
+	
+	
+	
+	// 회의실 예약 확인 메일
+		public String sendRemindReservation(String id, int roomNum, String memName, String useStartTime) throws MessagingException {
+			System.out.println("[MailService(sendRemindReservation)]");
+			
+			// properties 설정
+			Properties props = new Properties();
+			props.setProperty("mail.transport.protocol", emailBean.getProtocol());
+			props.setProperty("mail.host", emailBean.getHost());
+			
+			props.put("mail.smtp.auth", emailBean.getAuth());  
+			props.put("mail.smtp.port", emailBean.getPort());  
+			props.put("mail.smtp.host", emailBean.getHost());
+			
+			props.put("mail.smtp.ssl.enable", emailBean.getSslEnable());
+			props.put("mail.smtp.ssl.trust", emailBean.getSslTrust());
+			
+			props.put("mail.smtp.socketFactory.port", emailBean.getSocketFactoryPort());  
+			props.put("mail.smtp.socketFactory.class", emailBean.getSocketFactory());  
+			props.put("mail.smtp.socketFactory.fallback", emailBean.getFallback());
+			
+			props.put("mail.debug", emailBean.getDebug());
+			
+			// 메일 세션
+			Session session=Session.getInstance(props, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {  
+					return new PasswordAuthentication(emailBean.getFrom(), emailBean.getPass());  
+				}  
+			});
+			
+			Transport transport = session.getTransport();  
+			Message mimeMessage = new MimeMessage(session);
+			mimeMessage.setFrom(new InternetAddress(emailBean.getFrom()));
+			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(id));
+			mimeMessage.setSubject("[9 o'clock] 회의실 예약 안내");
+			
+			// 메일 본문
+			msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
+			msg+="<tbody>";
+			msg+="<tr style='background-color: rgb(146,239,181);text-align:center'>";
+			msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
+			msg+="<font size=6><strong>9 o'Clock  회의실 예약 안내</strong></font>";
+			msg+="<table style='padding-top:30px'>";
+			msg+="<tr><td style='background-color:black; color:white;'><b>회의실:</b></td><td>"+roomNum+"</td></tr>"
+					+"<tr><td style='background-color:black; color:white;'><b>예약자명: </b></td><td>"+memName+"</td></tr>"
+					+"<tr><td style='background-color:black; color:white;'><b>예약일시: </b></td><td>"+useStartTime+"</td></tr>"
+					+"</table>";
+			msg+="</td>";
+			msg+="</tr>";
+			msg+="</tbody>";
+			msg+="</table>";
+			System.out.println("[MailService(sendRemindReservation)] msg: "+msg);
+			mimeMessage.setContent(msg, "text/html;charset=utf-8");
+			
+			// 메일 발송
+			transport.connect();  
+			Transport.send(mimeMessage);
+			transport.close();
+			
+			return msg;
+		}
 }

@@ -1,121 +1,101 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   <title>MEMBER : INTRO</title>
-<%@ include file="./template/memberPageHeader.jspf" %>
+<link href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css" rel="stylesheet">
+<script src="/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"></script>
+<%@ include file="template/memberNavBar.jspf" %>
+<%@ include file="template/cssForMember.jspf" %>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script>
-//게시판 검색기능//
-  $(document).ready(function() {
-    var activeSystemClass = $('.list-group-item.active');
 
-    //something is entered in search form
-    $('#system-search').keyup( function() {
-       var that = this;
-        // affect all table rows on in systems table
-        var tableBody = $('.table-list-search tbody');
-        var tableRowsClass = $('.table-list-search tbody tr');
-        $('.search-sf').remove();
-        tableRowsClass.each( function(i, val) {
-        
-            //Lower text for case insensitive
-            var rowText = $(val).text().toLowerCase();
-            var inputText = $(that).val().toLowerCase();
-            if(inputText != '')
-            {
-                $('.search-query-sf').remove();
-                tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "'
-                    + $(that).val()
-                    + '"</strong></td></tr>');
-            }
-            else
-            {
-                $('.search-query-sf').remove();
-            }
-
-            if( rowText.indexOf( inputText ) == -1 )
-            {
-                //hide rows
-                tableRowsClass.eq(i).hide();
-                
-            }
-            else
-            {
-                $('.search-sf').remove();
-                tableRowsClass.eq(i).show();
-            }
-        });
-        //all tr elements are hidden
-        if(tableRowsClass.children(':visible').length == 0)
-        {
-            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
-        }
-    });
-});  
-//게시판 검색기능//  
-    
 </script>
 <body>
-	<div class="content main"><!--content start-->
-		<div id="carouselExampleIndicators" class="carousel slide"
-			data-ride="carousel">
-			<ol class="carousel-indicators">
-				<li data-target="#carouselExampleIndicators" data-slide-to="0"
-					class="active"></li>
-				<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-				<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-			</ol>
-			<div class="carousel-inner">
-				<div class="carousel-item active">
-					<img src="imgs/11.jpg" class="d-block w-100" alt="...">
+	<div class="content main">
+		<div class = "container">
+			<div class = "row" id = "introRow">
+			
+				<form action="#">
+				
+				</form>
+			
+				<div class = "col-xs-12 col-md-5" id = "introNotice">
+					<div id = "noticeTitle">notice</div>
+					
+						<table id = "introNoticeContent" class = "table table-bordered">
+							<tbody>
+								<c:forEach var = "content" items = "${noticeContent }">
+									<tr style = "line-height:7px;">
+										<td id = "noticeOverFlow"><a href = "/notice/detail?selectNum=${content.num }" style = "color:black;">${content.title }</a></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					
+					<div id = "moreNotice"><a href = "notice" style = "color:gray;">more</a></div>
 				</div>
-				<div class="carousel-item">
-					<img src="imgs/11.jpg" class="d-block w-100" alt="...">
-				</div>
-				<div class="carousel-item">
-					<img src="imgs/11.jpg" class="d-block w-100" alt="...">
+				
+				<div class = "col-xs-0 col-md-1"></div>
+				
+				<div class = "col-xs-12 col-md-6" id = "introBoard">
+					<div id = "boardTitle">board</div>
+					
+						<table id = "introBoardContent" class = "table table-bordered">
+							<tbody>
+								<c:forEach var = "content" items = "${boardContent }">
+									<tr style = "line-height:7px;">
+										<td id = "boardOverFlow"><a href = "/board/detail?selectNum=${content.num }" style = "color:black;">${content.title }</a></td>
+										<td><a href = "/board/detail?selectNum=${content.num }" style = "color:black;">${content.writer }</a></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					
+					<div id = "moreBoard"><a href = "board" style = "color:gray;">more</a></div>
 				</div>
 			</div>
-			<a class="carousel-control-prev" href="#carouselExampleIndicators"
-				role="button" data-slide="prev"> <span
-				class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-				class="sr-only">Previous</span>
-			</a> <a class="carousel-control-next" href="#carouselExampleIndicators"
-				role="button" data-slide="next"> <span
-				class="carousel-control-next-icon" aria-hidden="true"></span> <span
-				class="sr-only">Next</span>
-			</a>
+			
+			<div class = "row" id = "introRow">
+				<div class = "col-xs-5 col-md-6" id = "introReservation">
+					<div id = "reservationTitle">reservation</div>
+					
+					<c:forEach var = "content" items = "${reservationContent }">
+						<c:if test = "${content ne null }"></c:if>
+							<table id = "introBoardContent" class = "table table-bordered">
+								<tbody>
+									<tr style = "line-height:7px;">
+										<td id = "reservationTd">${content.roomNum } 회의실</td>
+										<c:set var = "useStartTime" value = "${content.useStartTime }"/>
+										<c:set var = "substringStartTime" value = "${fn:substring(useStartTime,11,13)}"/>
+										<c:set var = "useFinishTime" value = "${content.useFinishTime }"/>
+										<c:set var = "substringFinishTime" value = "${fn:substring(useFinishTime,11,13)}"/>
+											<td>${substringStartTime}시-${substringFinishTime}시</td>
+											<td>${substringFinishTime-substringStartTime}시간</td>
+									</tr>
+								</tbody>
+							</table>
+						<c:if test="${content eq null}">
+							<div id = "todayReservationMSG">오늘 회의실 예약이 없습니다 :)</div>
+						</c:if>
+					</c:forEach>
+					
+					
+					<div id = "moreReservation"><a href = "reservation" style = "color:gray;">more</a></div>
+				</div>
+				
+				<div class = "col-xs-1 col-md-1"></div>
+				
+				<div class = "col-xs-6 col-md-5" id = "introEvent">
+					<div id = "eventTitle">event
+					</div>
+						<img id = "introEventIMG"src="imgs/logo_black.png">
+				</div>
+			</div>
+			
 		</div>
-		<div class="container t1">
-			<!-- 이미지템플릿  start-->
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x800"> <span>First
-					floor&nbsp;&nbsp;</span>
-			</div>
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x802"> <span>Second
-					floor</span>
-			</div>
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x804"> <span>Third
-					floor</span>
-			</div>
-			<div class="box_t1">
-				<img src="https://source.unsplash.com/1000x806"> <span>Fourth
-					floor</span>
-			</div>
-		</div>
-		<!--이미지템플릿  end-->
-	</div><!--centent end-->
+	</div>
 </body>
 <!--body end-->
 <%@ include file="./template/footer.jspf" %>
 </html>
-
-
-
-<!--
-justify-content-center= 가운데 정렬
-my-2= 높이주기
-mr-3= 너비주기
-m-3= 전체적인 간격주기
-fixed-top= 위로고정
--->

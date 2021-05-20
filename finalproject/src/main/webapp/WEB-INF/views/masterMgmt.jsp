@@ -13,6 +13,7 @@ $(function(){
 	var comName;
 	var comCode="";
 	$('#accountDetail').on('show.bs.modal', function(event) {
+		event.stopImmediatePropagation();
 		$('#accountDetail').css('margin-top',$(window).height()/4.5);
 		comName=$(event.relatedTarget).data('comname');
 		comCode=$(event.relatedTarget).data('comcode');
@@ -31,19 +32,21 @@ $(function(){
 		$('#joinedAt').html(joinedAt);
 		$('#masterAccount').html(masterAccount);
 		
-		$(document).on('click','.editBtn', function(){
+		$(document).on('click','.editBtn', function(e){
+			e.stopImmediatePropagation();
 			console.log('수정버튼누름');
 			$('.masterAccountTitle').html('['+comName+']의 계정 <font style="color:red;">수정</font>');
 			$('.valueSetting').attr('readonly', false);
-			$('#comCode').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('#comName').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('#joinedAt').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('#masterAccount').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
-			$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소')
+			$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
+			$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소');
 			$('.editBtn').attr('class', 'btn btn-primary okBtn').html('확인');
 			
-			$(document).on('click','.okBtn', function(){
-				$('input').change(function(){
+			$(document).on('click','.okBtn', function(e){
+				e.stopImmediatePropagation();
+				console.log('수정>확인버튼 누름');
+				$('input').change(function(e){
+					e.stopImmediatePropagation();
+					console.log('input변경됨');
 					$.ajax({
 						url: "/updateCompanyInfo",
 						type: "POST",
@@ -65,6 +68,9 @@ $(function(){
 							console.log('수정 완료');
 							document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
 							$('#primaryModal').modal('show');
+							$('#primaryModal').on('hidden.bs.modal',function(){
+								location.reload();
+							});
 							$.cssBack();
 						},
 						error: function(error) {
@@ -79,21 +85,20 @@ $(function(){
 		});
 	});
 	
-	$(document).on('click', '.cancleBtn', function(){
+	$(document).on('click', '.cancleBtn', function(e){
+		e.stopImmediatePropagation();
 		$.cssBack();
 	});
 	
-	$('#accountDetail').on('hide.bs.modal', function() {
+	$('#accountDetail').on('hide.bs.modal', function(e) {
+		e.stopImmediatePropagation();
 		$.cssBack();
 	});
 	
 	$.cssBack=function(){
 		$('.masterAccountTitle').html('['+comName+']의 계정 정보');
 		$('.valueSetting').attr('readonly', true);
-		$('#comCode').css('background-color', 'transparent').css('color', 'black');
-		$('#comName').css('background-color', 'transparent').css('color', 'black');
-		$('#joinedAt').css('background-color', 'transparent').css('color', 'black');
-		$('#masterAccount').css('background-color', 'transparent').css('color', 'black');
+		$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'transparent').css('color', 'black');
 		$('.cancleBtn').attr('class', 'btn btn-secondary closeBtn').attr('data-dismiss','modal').html('목록');
 		$('.okBtn').attr('class', 'btn btn-primary editBtn').html('수정');
 	}
@@ -112,7 +117,7 @@ $(function(){
 		    <tr>
 				<th scope="col">회사코드</th>
 				<th scope="col">회사명</th>
-				<th scope="col" data->대표</th>
+				<th scope="col">대표</th>
 				<th scope="col">담당자</th>
 				<th scope="col">대표번호</th>
 				<th scope="col">마스터계정</th>
