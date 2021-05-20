@@ -162,6 +162,7 @@ public class TenantsMgmtController {
 			int officeNum=branchAndOfficeService.selectOfficeNum(branchInput, floorInput, officeNameInput);
 			tenantsMgmtService.deleteOffice(officeNum);
 			tenantsMgmtService.deleteCompanyInfo(comCode);
+			companyInfoService.deleteCompanyInfo(officeNum);
 			tenantsMgmtService.deleteMasterAccount(comCode);
 		} catch(NullPointerException e) {
 			status=HttpStatus.BAD_REQUEST;
