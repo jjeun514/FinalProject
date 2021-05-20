@@ -287,6 +287,7 @@ $('.mgmtModal').find('.editBtn').click(function(){
 	//수정 버튼 클릭 이벤트
 	$(document).on('click','.editBtn', function(){
 		$('.valueSetting').attr('readonly', false);
+		$('.pencil').attr('hidden', false);
 		
 		$("#memName").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		$("#id").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
@@ -400,7 +401,7 @@ $.cssBack=function(){
 	$("#merchant_uid").css('background-color', 'transparent').css('color', 'black');
 	$("#branchName").css('background-color', 'transparent').css('color', 'black');
 	$("#roomNum").css('background-color', 'transparent').css('color', 'black');
-	
+	$('.pencil').attr('hidden', true);
 	
 	
 	$('.cancleBtn').attr('class', 'btn btn-secondary closeBtn').attr('data-dismiss','modal').html('목록');
@@ -426,9 +427,9 @@ function revChange(){
 
 //모달 폼체인지(회의실 상세정보, 회의실 추가)
 var changeMrModal='<tr><th>지점</th><td id="branchName"></td><th>방번호</th><td id="roomNum">'+
-				  '</td></tr><tr><th>면적</th><td id="acreages"><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>'+
-				  '<th>비용</th><td id="rent"><input type="text" name="rentValue" id="rentValue" class="valueSetting" readonly></td></tr>'+
-				  '<tr><th>수용인원</th><td id="max" colspan="3"><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
+				  '</td></tr><tr><th>면적</th><td id="acreages"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>'+
+				  '<th>비용</th><td id="rent"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="rentValue" id="rentValue" class="valueSetting" readonly></td></tr>'+
+				  '<tr><th>수용인원</th><td id="max" colspan="3"><div id="forImg"><img src="imgs/pencil.png" class="pencil" hidden></div><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
 
 var changeAddMrModal='<tr><th>지점</th><td id="branchName"><select class="mrselect" name="branchNameValue" ><c:forEach items="${branchList }" var="bean"><option value="${bean.branchCode }" >${bean.branchName }</option></c:forEach></select></td>'
 					 +'<th>방번호</th><td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" placeholder="(방번호 입력)"></td></tr>'
@@ -461,6 +462,7 @@ $('.changeMrManage').click(function(){
 		$(document).on('click','.editBtn', function(){
 			$('.valueSetting').attr('readonly', false);
 			
+			$('.pencil').attr('hidden', false);
 			$("#branchName").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 			$("#roomNum").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 			
@@ -709,21 +711,21 @@ $('.changeMrManage').click(function(){
 						</tr>
 						<tr>
 							<th>방번호</th>
-							<td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" readonly></td>
+							<td id="roomNum"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" readonly></td>
 							<th>예약일</th>
-							<td id="reservationDay"><input type="text" name="reservationDayValue" id="reservationDayValue" class="valueSetting" readonly></td>
+							<td id="reservationDay"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="reservationDayValue" id="reservationDayValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>입실시간</th>
-							<td id="useStartTime"><input type="text" name="useStartTimValue" id="useStartTimValue" class="valueSetting" readonly></td>
+							<td id="useStartTime"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="useStartTimValue" id="useStartTimValue" class="valueSetting" readonly></td>
 							<th>퇴실시간</th>
-							<td id="useFinishTime"><input type="text" name="useFinishTimeValue" id="useFinishTimeValue" class="valueSetting" readonly></td>
+							<td id="useFinishTime"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="useFinishTimeValue" id="useFinishTimeValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>인원</th>
-							<td id="userCount"><input type="text" name="userCountValue" id="userCountValue" class="valueSetting" readonly></td>
+							<td id="userCount"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="userCountValue" id="userCountValue" class="valueSetting" readonly></td>
 							<th>요금</th>
-							<td id="fee"><input type="text" name="feeValue" id="feeValue" class="valueSetting" readonly></td>
+							<td id="fee"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="feeValue" id="feeValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>회사코드</th>
