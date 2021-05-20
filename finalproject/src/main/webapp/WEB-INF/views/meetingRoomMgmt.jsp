@@ -296,7 +296,9 @@ $('.mgmtModal').find('.editBtn').click(function(){
 		$("#memPhone").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		$("#merchant_uid").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		
-		$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소')
+		$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소').click(function(){
+				window.location.reload();
+		});
 		$('.editBtn').attr('class', 'btn btn-primary okBtn').html('확인');
 		
 		$(document).on('click','.okBtn', function(){
