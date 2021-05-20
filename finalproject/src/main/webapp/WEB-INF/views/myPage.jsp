@@ -324,7 +324,7 @@
 										$('#dangerModal').modal('show');
 									}else if(nickNameLengthBoo==true && nickNameCharacterBoo==true){
 										$.ajax({
-											url: "/nickNameCheck",
+											url: "/nickNameChecsk",
 											type : "POST",
 											data: {memNickName},
 											contentType : "application/x-www-form-urlencoded; charset=UTF-8",
@@ -444,6 +444,9 @@
 				document.getElementById('modalText01').textContent='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
 				$('#dangerModal').modal('show');
 				}
+			}else if($('.newPw').val()==$(".existingPw").val()){
+				document.getElementById('modalText01').textContent='기존 비밀번호와 다른 비밀번호를 입력해주세요.';
+				$('#dangerModal').modal('show');
 			}else{
 				//$(".usablePw").remove();
 				//$(".unusablePw").remove();
