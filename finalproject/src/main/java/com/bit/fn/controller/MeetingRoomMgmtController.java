@@ -32,6 +32,7 @@ public class MeetingRoomMgmtController {
 	@Autowired
 	BranchService branchService;
 	
+	//회의실관리 페이지
 	@RequestMapping("meetingRoomMgmt")
 	public String meetingRoomMgmt(Model model) {
 		List<ReservationListVo> revList = reservationListService.selectAllJoin();
@@ -46,6 +47,7 @@ public class MeetingRoomMgmtController {
 		return "meetingRoomMgmt";
 	}
 	
+	//예약리스트 선택 ajax
 	@RequestMapping(value = "selectRevOne", method = RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> selectRevOne(MeetingRoomMgmtVo selectRev) {
@@ -77,6 +79,7 @@ public class MeetingRoomMgmtController {
 		return result;
 	}
 	
+	//예약 수정 ajax
 	@PutMapping("updateReservation")
 	@ResponseBody
 	public String updateReservation( 
@@ -92,6 +95,7 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 
+	//예약 삭제 ajax
 	@DeleteMapping("deleteReservation")
 	@ResponseBody
 	public String deleteReservation(int roomNum, String reservationDay, String useStartTime) {
@@ -103,6 +107,7 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 	
+	//회의실 수정 ajax
 	@PutMapping("updateMeetingRoom")
 	@ResponseBody
 	public String updateMeetingRoom(String acreagesValue, int rentValue, int maxValue, int roomNum,  String branchName) {
@@ -113,6 +118,7 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 	
+	//회의실 삭제 ajax
 	@DeleteMapping("deleteMeetingRoom")
 	@ResponseBody
 	public String deleteMeetingRoom(int roomNum, String branchName) {
@@ -125,6 +131,7 @@ public class MeetingRoomMgmtController {
 		return "false";
 	}
 	
+	//회의실 추가 ajax
 	@PostMapping("addMeetingRoom")
 	@ResponseBody
 	public String addMeetingRoom(int branchNameValue, int roomNumValue, String acreagesValue, int rentValue, int maxValue) {

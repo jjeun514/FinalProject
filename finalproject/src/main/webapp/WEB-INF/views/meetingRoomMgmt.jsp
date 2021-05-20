@@ -234,7 +234,6 @@ $(".mrModal").remove();
 
 //예약 tr 클릭시 셀렉트 
 $('.revTrClick').click(function(){
-	//console.log(this);
 	reservationDay = $(this).find(".trReservationDay").text();
 	memNickName = $(this).find(".trMemNickName").text();
 	useStartTime = reservationDay+ " " +$(this).find(".trUseStartTime").text()+ ":00.0";
@@ -244,7 +243,6 @@ $('.revTrClick').click(function(){
 			memNickName : memNickName,
 			useStartTime : useStartTime
 		};
-	console.log(reservationDay,memNickName,useStartTime,selectRev);
 	
 	//
 	$.ajax({
@@ -254,8 +252,6 @@ $('.revTrClick').click(function(){
 		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 		dataType: "json",
 		success: function(data){
-					//console.log(data);
-					//console.log(data.manager);
 					$("#memName").text(data.memName);
 					$("#id").text(data.id);
 					$("#roomNumValue").val(data.roomNum+"호");
@@ -274,8 +270,8 @@ $('.revTrClick').click(function(){
 					$("#merchant_uid").text(data.merchant_uid);
 				},			 
 		error: function(error){
-			console.log(error);
-			console.log("ajax 에러");
+			document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+			$('#dangerModal').modal('show');
 		}
 		
 	});
@@ -300,7 +296,9 @@ $('.mgmtModal').find('.editBtn').click(function(){
 		$("#memPhone").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		$("#merchant_uid").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		
-		$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소')
+		$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소').click(function(){
+				window.location.reload();
+		});
 		$('.editBtn').attr('class', 'btn btn-primary okBtn').html('확인');
 		
 		$(document).on('click','.okBtn', function(){
@@ -335,8 +333,7 @@ $('.mgmtModal').find('.editBtn').click(function(){
 						$.cssBack(); 
 					},
 					error: function(error) {
-						console.log("ajax 에러");
-						document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+						document.getElementById('modalText01').textContent='중복된 예약시간이 존재하지 않는지 확인하시기 바랍니다.';
 						$('#dangerModal').modal('show');
 					}
 				});
@@ -369,13 +366,11 @@ $('.mgmtModal').find('.deleteBtn').click(function(){
 			$.cssBack(); 
 		},
 		error: function(error) {
-			console.log("ajax 에러");
 			document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 			$('#dangerModal').modal('show');
 		}
 	});
 });
-
 
 
 $(document).on('click', '.cancleBtn', function(){
@@ -497,7 +492,6 @@ $('.changeMrManage').click(function(){
 							$.cssBack(); 
 						},
 						error: function(error) {
-							console.log("ajax 에러");
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
 						}
@@ -531,7 +525,6 @@ $('.changeMrManage').click(function(){
 				$.cssBack(); 
 			},
 			error: function(error) {
-				console.log("ajax 에러");
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
@@ -540,7 +533,6 @@ $('.changeMrManage').click(function(){
 	
 	
 	$(".addMasterBtn").click(function(){
-		console.log("gg");
 		$('.mgmtModal').find('.editBtn').removeClass('editBtn').addClass('addBtn').text("추가");
 		$('.mgmtModal').find('.deleteBtn').remove();
 		$('.mgmtModal').find('.closeBtn').text("취소").on('click',function(){
@@ -576,7 +568,6 @@ $('.changeMrManage').click(function(){
 					$.cssBack(); 
 				},
 				error: function(error) {
-					console.log("ajax 에러");
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -645,7 +636,7 @@ $('.changeMrManage').click(function(){
 		</tbody>
 	</table>
 	<div class="btnContent meetingRoomPaging">
-		<div class="pagination" id="pagination">페이지 영역</div>
+		<div class="pagination" id="pagination">&nbsp;</div>
 	</div>
 </div>
 
@@ -682,7 +673,7 @@ $('.changeMrManage').click(function(){
 		</tbody>
 	</table>
 	<div class="btnContent meetingRoomPaging">
-		<div class="pagination" id="pagination">페이지 영역</div>
+		<div class="pagination" id="pagination">&nbsp;</div>
 	</div>
 </div>
 </div>

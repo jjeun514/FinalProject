@@ -1016,9 +1016,10 @@
 			margin-left: 350px;
 		}
 		.mypagePaging2{
-			margin-left: 180px;
+			display : table;
+			margin : 0px auto;
+			text-align: center;
 		}
-		
 		.paginated1{
 			margin-top : 25px;
 			width: 900px;
@@ -1120,6 +1121,5 @@
 			margin: auto;
 			border: 0px;
 		}
-		
 		
 </style>
