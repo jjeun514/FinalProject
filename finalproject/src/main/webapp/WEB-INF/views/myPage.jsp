@@ -324,7 +324,7 @@
 										$('#dangerModal').modal('show');
 									}else if(nickNameLengthBoo==true && nickNameCharacterBoo==true){
 										$.ajax({
-											url: "/nickNameChecsk",
+											url: "/nickNameCheck",
 											type : "POST",
 											data: {memNickName},
 											contentType : "application/x-www-form-urlencoded; charset=UTF-8",
