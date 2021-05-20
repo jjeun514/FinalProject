@@ -15,4 +15,8 @@ public class AccountRoleService {
 	public int deleteOne(int account_num) {
 		return accountRoleMapper.deleteOne(account_num);
 	}
+	
+	public int deleted(int num) {
+		return accountRoleMapper.deleted(num);
+	}
 }

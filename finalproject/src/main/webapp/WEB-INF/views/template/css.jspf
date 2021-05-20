@@ -792,6 +792,10 @@
 		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable, .mrMgmtTable, .revMgmtTable {
 			margin-top: -50px;
 		}
+		#emptySpace {
+			border: 0;
+			height: 70px;
+		}
 		#addModal {
 			position: absolute;
 			width: 100%;
@@ -851,17 +855,20 @@
 		.prevIcon, .nextIcon {
 			background-color: rgba(255, 255, 254, 0.5);
 		}
-		#detail input, #detail select {
+		#detail input, #detail select,
+		#accountDetail input, #accountDetail select {
+			display: inline-block;
 			margin: 0 auto;
 			padding: 0;
 			text-align: center;
 			height: 100%;
-			width: 100%;
+			width: 60%;
 			border-spacing: 0px 0px;
 			text-align-last: center;
 			border: 0;
 			margin-left: 10px;
 			background-color: transparent;
+			margin-right: 0px;
 		}
 		#detail table {
 			border-collapse : collapse;
@@ -878,12 +885,25 @@
 			margin-left: -96%;
 			border: 0;
 		}
-		/* 입주사관리 */
-		.branchName {
-			appearance: none;
-			-webkit-appearance : none;
-			-moz-appearance: none;
+		.pencil, #forImg {
+			display: inline-block;
+			width: 30px;
+			position: static;
+			text-align: left;
+			margin-top: -3px;
 		}
+		#forImg {
+			marging-top: 3px;
+		}
+		.spaceTable .pencil {
+			margin-left: -5px;
+		}
+		.dateCss input[type="date"]::-webkit-calendar-picker-indicator,
+		.dateCss input[type="date"]::-webkit-inner-spin-button {
+		    display: none;
+		    appearance: none;
+		}
+		
 		/* 로그인 페이지 */
 		 #loginIdPw{
 			margin: auto;
@@ -912,6 +932,15 @@
 	 	}
 	 	#accountDetail input:focus {
 	 		outline: none;
+	 	}
+	 	.masterMgmtPaging, .spaceMgmtPaging, .tenantsMgmtPaging {
+	 		display: table;
+	 		margin: 0 auto;
+	 		text-align: center;
+	 		margin-top: 20px;
+	 	}
+	 	.pagingSection {
+	 		display: table-cell;
 	 	}
 	    
 	 /*마이페이지*/
@@ -987,9 +1016,10 @@
 			margin-left: 350px;
 		}
 		.mypagePaging2{
-			margin-left: 180px;
+			display : table;
+			margin : 0px auto;
+			text-align: center;
 		}
-		
 		.paginated1{
 			margin-top : 25px;
 			width: 900px;
@@ -1064,13 +1094,17 @@
 		}
 		
 		.meetingRoomPaging{
+			display: table;
 			margin: auto;
 			margin-top : 20px;
-			margin-left: 800px;
 			text-align: center;
 			font-size: 20px;
 		}
 		
+		#pagination {
+			display: table-cell;
+		}
+
 		.addRevBtn{
 			float: right;
 			width: 100px;
@@ -1087,6 +1121,5 @@
 			margin: auto;
 			border: 0px;
 		}
-		
 		
 </style>

@@ -1,12 +1,131 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
+<title>공간관리</title>
 <script type="text/javascript">
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink active');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
+
+// 페이징
+// 10,20,30개씩 selectBox 클릭 이벤트
+function changeSelectBox(currentPage, countPerPage, pageSize){
+    var selectValue = $("#cntSelectBox").children("option:selected").val();
+    movePage(currentPage, selectValue, pageSize);
+}
+ 
+// 페이지 이동
+function movePage(currentPage, countPerPage, pageSize){
+    var url="/spaceMgmt";
+    url=url+"?currentPage="+currentPage;
+    url=url+"&countPerPage="+countPerPage;
+    url=url+"&pageSize="+pageSize;
+    location.href=url;
+}
+
+// 만들어진 테이블에 페이지 처리
+function page(){
+	$('.spaceMgmtTable').each(function() {
+		var pagesu=10;  // 페이지 번호 갯수
+		var currentPage=0;
+		var numPerPage=10;  // 목록의 수
+		var $table=$(this);    
+		var pagination=$('.pagingSection');
+	
+		// length로 원래 리스트의 전체길이구함
+		var numRows=$table.find('tbody tr').length;
+		
+		// Math.ceil를 이용하여 반올림
+		var numPages=Math.ceil(numRows/numPerPage);
+		
+		// 리스트가 없으면 종료
+		if (numPages==0) return;
+		
+		// pager라는 클래스의 div엘리먼트 작성
+		var $pager=$('<div class="pager"></div>');
+		var nowp=currentPage;
+		var endp=nowp+10;
+		
+		// 페이지를 클릭하면 다시 셋팅
+		$table.bind('repaginate', function() {
+			// 기본적으로 모두 hide하고, (현재페이지+1)*(현재페이지)까지 보여준다
+			$table.find('tbody tr').hide().slice(currentPage*numPerPage, (currentPage+1)*numPerPage).show();
+			$('.pagingSection').html('');
+			if (numPages>1) {     // 한페이지 이상이면
+				if (currentPage < 5 && numPages-currentPage >= 5) {   // 현재 5p 이하이면
+					nowp = 0;     // 1부터 
+					endp = pagesu;    // 10까지
+				} else {
+					nowp = currentPage -5;  // 6넘어가면 2부터 찍고
+					endp = nowp+pagesu;   // 10까지
+					pi = 1;
+				}
+			
+				if (numPages < endp) {   // 10페이지가 안되면
+					endp = numPages;   // 마지막페이지를 갯수 만큼
+					nowp = numPages-pagesu;  // 시작페이지를   갯수 -10
+				}
+				
+				if (nowp < 1) {     // 시작이 음수 or 0 이면
+					nowp = 0;     // 1페이지부터 시작
+				}
+			} else {       // 한페이지 이하이면
+				nowp = 0;      // 한번만 페이징 생성
+				endp = numPages;
+			}
+			
+			// [처음]
+			$('<span class="pageNum first"><<</span>').bind('click', {newPage: page},function(event) {
+				currentPage = 0;   
+				$table.trigger('repaginate');  
+				$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			// [이전]
+			$('<span class="pageNum back">&nbsp;<&nbsp;</span>').bind('click', {newPage: page},function(event) {
+				if(currentPage == 0) return; 
+				currentPage = currentPage-1;
+				$table.trigger('repaginate'); 
+				$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			// [1,2,3,4,5,6,7,8]
+			for (var page = nowp ; page < endp; page++) {
+				$('<span  style="cursor:pointer" class="pageNum"></span>').text(page + 1).append('&nbsp;').bind('click', {newPage: page}, function(event) {
+					currentPage = event.data['newPage'];
+					$table.trigger('repaginate');
+					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+				}).appendTo(pagination).addClass('clickable');
+			} 
+		
+			// [다음]
+			$('<span class="pageNum next">>&nbsp;</span>').bind('click', {newPage: page},function(event) {
+				if(currentPage == numPages-1) return;
+				currentPage = currentPage+1;
+				$table.trigger('repaginate'); 
+				$($('.pageNum')[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			// [끝]
+			$('<span class="pageNum last">>></span>').bind('click', {newPage: page},function(event) {
+				currentPage = numPages-1;
+				$table.trigger('repaginate');
+				$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			$($(".pageNum")[2]).addClass('active');
+		});
+		
+		$pager.insertAfter($table).find('span.pageNum:first').next().next().addClass('active');   
+		$pager.appendTo(pagination);
+		$table.trigger('repaginate');
+	});
+}
+
+$(function(){
+	page();
+});
 
 $(document).ready(function(){
 	var company;
@@ -17,7 +136,6 @@ $(document).ready(function(){
 	$('#detail').on('show.bs.modal', function(event) {
 		var officeName=$(event.relatedTarget).data('officename');
 		var floorInput=$(event.relatedTarget).data('floorvalue');
-		console.log("officeName: "+officeName+", floorInput: "+floorInput);
 
 		$.ajax({
 			url: "/spaceDetail",
@@ -29,7 +147,6 @@ $(document).ready(function(){
 				floorInput:floorInput
 			},
 			success: function(data){
-				console.log('[ajax성공] data: '+JSON.stringify(data));
 				$.each(data, function(key, value){
 					try{
 						if(JSON.stringify(value[0].occupancy)==0||JSON.stringify(value[0].occupancy)==null){
@@ -47,14 +164,10 @@ $(document).ready(function(){
 						$('#maxValue').val(JSON.stringify(value[0].max).replaceAll("\"",""));
 						company=JSON.stringify(value[0].comName).replaceAll("\"","")
 						$('#comName').html(company);
-					} catch(TypeError){
-						console.log('공간 정보 특정 값 null');
-					}
+					} catch(TypeError){}
 				});
 			},
-			error: function(request, status, error){
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			error: function(){
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
@@ -70,11 +183,9 @@ $(document).ready(function(){
 				floorInput:floorInput
 			},
 			success: function(data){
-				console.log('[ajax성공] data: '+JSON.stringify(data));
 				$.each(data, function(key, value){
 					try{
 						if(JSON.stringify(value)=='[]'){
-							console.log('facilities 값이 없음');
 							return false;
 						} else {
 							$('#deskValue').val(JSON.stringify(value[0].desk).replaceAll("\"",""));
@@ -86,14 +197,10 @@ $(document).ready(function(){
 							$('#descendingLifeLineValue').val(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
 							$('#powerSocketValue').val(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
 						}
-					} catch(TypeError){
-						console.log('공간 시설 특정 값 null');
-					}
+					} catch(TypeError){}
 				});
 			},
-			error: function(request, status, error){
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			error: function(){
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
@@ -101,15 +208,14 @@ $(document).ready(function(){
        });
 	
 	$(document).on('click','.closeBtn',function(){
-		console.log('modal 닫힘');
 		$('.valueSetting').html('0');
 		$('.valueSetting').val('0');
 		$('#comName').html('(없음)');
+		$('.pencil').attr('hidden', true);
 	});
 	
 	// 추가
 	$(document).on('click','.submitSpaceBtn',function(){
-		console.log('submit버튼');
 		var deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput;
 		if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
 			document.getElementById('modalText01').textContent='필수 입력값을 입력해주세요.';
@@ -118,49 +224,41 @@ $(document).ready(function(){
 		} else{
 			if($('#deskInput').val()==""){
 				deskInput=0;
-				console.log('deskInput: '+deskInput);
 			} else{
 				deskInput=$('#deskInput').val();
 			}
 			if($('#chairInput').val()==""){
 				chairInput=0;
-				console.log('chairInput: '+chairInput);
 			} else{
 				chairInput=$('#chairInput').val();
 			}
 			if($('#modemInput').val()==""){
 				modemInput=0;
-				console.log('modemInput: '+modemInput);
 			} else{
 				modemInput=$('#modemInput').val();
 			}
 			if($('#fireExtinguisherInput').val()==""){
 				fireExtinguisherInput=0;
-				console.log('fireExtinguisherInput: '+fireExtinguisherInput);
 			} else{
 				fireExtinguisherInput=$('#fireExtinguisherInput').val();
 			}
 			if($('#airConditionerInput').val()==""){
 				airConditionerInput=0;
-				console.log('airConditionerInput: '+airConditionerInput);
 			} else{
 				airConditionerInput=$('#airConditionerInput').val();
 			}
 			if($('#radiatorInput').val()==""){
 				radiatorInput=0;
-				console.log('radiatorInput: '+radiatorInput);
 			} else{
 				radiatorInput=$('#radiatorInput').val();
 			}
 			if($('#descendingLifeLineInput').val()==""){
 				descendingLifeLineInput=0;
-				console.log('descendingLifeLineInput: '+descendingLifeLineInput);
 			} else{
 				descendingLifeLineInput=$('#descendingLifeLineInput').val();
 			}
 			if($('#powerSocketInput').val()==""){
 				powerSocketInput=0;
-				console.log('powerSocketInput: '+powerSocketInput);
 			} else{
 				powerSocketInput=$('#powerSocketInput').val();
 			}
@@ -186,14 +284,11 @@ $(document).ready(function(){
 					powerSocketInput:powerSocketInput
 				},
 				success: function(data){
-					console.log('[ajax성공] data: '+JSON.stringify(data));
 					if(data=='중복'){
-						console.log('branch & office 중복');
 						document.getElementById('modalText01').textContent='입력하신 '+$('#branchInput').val()+'지점 '+$('#floorInput').val()+'층에 '+$('#officeNameInput').val()+' 사무실이 이미 등록되어 있습니다.';
 						$('#dangerModal').modal('show');
 						return false;
 					} else if(data=='가능') {
-						console.log('branch & office 가능');
 						document.getElementById('modalText02').textContent='입력하신 공간이 추가되었습니다.';
 						$('#primaryModal').modal('show');
 						$('#primaryModal').on('hidden.bs.modal',function(){
@@ -201,9 +296,7 @@ $(document).ready(function(){
 						});
 					}
 				},
-				error: function(request, status, error){
-					console.log("ajax 에러");
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				error: function(){
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -215,6 +308,7 @@ $(document).ready(function(){
 	$(document).on('click','.editBtn', function(){
 		$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','#f8f8f5');
 		$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','darkgray');
+		$('.pencil').attr('hidden', false);
 		if($('#comName').text()=='(없음)'){
 			company='(없음)';
 		}
@@ -223,7 +317,6 @@ $(document).ready(function(){
 
 		$('.valueSetting').prop('readonly', false);
 		$('#detail').on('hidden.bs.modal',function(){
-			console.log('상세페이지 닫힘');
 			$('.okBtn').attr('class','btn btn-primary editBtn');
 			$('.editBtn').html('수정');
 			$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','transparent');
@@ -252,7 +345,6 @@ $(document).ready(function(){
 					powerSocketInput:$('#powerSocketValue').val()
 				},
 				success: function(){
-					console.log('[ajax성공] 공간 상세 정보 업데이트됨');
 					document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
 					$('#primaryModal').modal('show');
 					$('#primaryModal').on('hidden.bs.modal',function(){
@@ -260,10 +352,9 @@ $(document).ready(function(){
 						$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','transparent');
 						$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','black');
 					});
+					$('.pencil').attr('hidden', true);
 				},
-				error: function(request, status, error){
-					console.log("ajax 에러");
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				error: function(){
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -284,16 +375,13 @@ $(document).ready(function(){
 				floor:$('#floor').text(),
 			},
 			success: function(){
-				console.log('[ajax성공] 공간 삭제(officeFacilities/companyInfo/office삭제)');
 				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
 				$('#primaryModal').modal('show');
 				$('#primaryModal').on('hidden.bs.modal',function(){
 					location.reload();
 				});
 			},
-			error: function(request, status, error){
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			error: function(){
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
@@ -352,6 +440,9 @@ $(document).ready(function(){
 		</c:forEach>
 		</tbody>
 	</table>
+	<div class="spaceMgmtPaging">
+		<div class="pagingSection">page</div>
+	</div>
 
 <%//상세 Modal %>
 <div class="modal fade" id="detail" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -400,7 +491,7 @@ $(document).ready(function(){
 							<th>지점</th>
 							<td id="branchName" class="valueSetting">-</td>
 							<th>가격</th>
-							<td id="rent"><input type="number" name="rentValue" id="rentValue" class="valueSetting" readonly></td>
+							<td id="rent"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="rentValue" id="rentValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>층</th>
@@ -412,11 +503,11 @@ $(document).ready(function(){
 							<th>호수</th>
 							<td id="officeName" class="valueSetting"></td>
 							<th>가용인원</th>
-							<td id="max"><input type="number" name="maxValue" id="maxValue" class="valueSetting" readonly></td>
+							<td id="max"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="maxValue" id="maxValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>평수</th>
-							<td id="acreages"><input type="number" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>
+							<td id="acreages"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>
 							<th>현재입주사</th>
 							<td id="comName" class="valueSetting"></td>
 						</tr>
@@ -426,27 +517,27 @@ $(document).ready(function(){
 						<tr colspan="4"><h3 class="spaceTitle">기본 제공</h3></tr>	       
 						<tr>
 							<th>책상</th>
-							<td id="desk"><input type="number" name="deskValue" id="deskValue" class="valueSetting" readonly></td>
+							<td id="desk"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="deskValue" id="deskValue" class="valueSetting" readonly></td>
 							<th>의자</th>
-							<td id="chair"><input type="number" name="chairValue" id="chairValue" class="valueSetting" readonly></td>
+							<td id="chair"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="chairValue" id="chairValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>공유기</th>
-							<td id="modem"><input type="number" name="modemValue" id="modemValue" class="valueSetting" readonly></td>
+							<td id="modem"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="modemValue" id="modemValue" class="valueSetting" readonly></td>
 							<th>소화기</th>
-							<td id="fireExtinguisher"><input type="number" name="fireExtinguisherValue" id="fireExtinguisherValue" class="valueSetting" readonly></td>
+							<td id="fireExtinguisher"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="fireExtinguisherValue" id="fireExtinguisherValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>냉반기</th>
-							<td id="airConditioner"><input type="number" name="airConditionerValue" id="airConditionerValue" class="valueSetting" readonly></td>
+							<td id="airConditioner"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="airConditionerValue" id="airConditionerValue" class="valueSetting" readonly></td>
 							<th>난방기</th>
-							<td id="radiator"><input type="number" name="radiatorValue" id="radiatorValue" class="valueSetting" readonly></td>
+							<td id="radiator"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="radiatorValue" id="radiatorValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>완강기</th>
-							<td id="descendingLifeLine"><input type="number" name="descendingLifeLineValue" id="descendingLifeLineValue" class="valueSetting" readonly></td>
+							<td id="descendingLifeLine"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="descendingLifeLineValue" id="descendingLifeLineValue" class="valueSetting" readonly></td>
 							<th>콘센트</th>
-							<td id="powerSocket"><input type="number" name="powerSocketValue" id="powerSocketValue" class="valueSetting" readonly></td>
+							<td id="powerSocket"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="powerSocketValue" id="powerSocketValue" class="valueSetting" readonly></td>
 						</tr>
 					</table>
 	

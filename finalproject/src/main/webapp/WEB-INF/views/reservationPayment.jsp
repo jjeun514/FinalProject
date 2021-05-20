@@ -30,7 +30,8 @@ $(document).ready(function() {
 			reservationDay : $('#REZ').text().substring(0,10),		 // 2021-04-26
 			amount : $('#amount').text(),							 // 20000
 			memNum : $('#memNum').val(),							 // luna
-			userCount : $('#userCount').val() 						 // 이거 왜 0이지?
+			userCount : $('#userCount').val(), 						 // 4
+			etc : $('#etc').val()			 						 // 메모 테스트
 		}
 
 		IMP.request_pay({
@@ -41,14 +42,11 @@ $(document).ready(function() {
 		    name : payContent.name,
 		    amount : payContent.amount
 		}, function(rsp) {
-			console.log(rsp);
 			if ( rsp.success ) {
 			$.ajax({
 				url : "/reservation/payment/" + rsp.imp_uid,
 	        	type : "POST"
 			}).done(function(data) {
-				console.log(data);
-				
 				// 요청 결제 금액과 실제 결제 금액이 같은지 확인
 	        	if(rsp.paid_amount == data.response.amount){
 	        		
@@ -61,7 +59,7 @@ $(document).ready(function() {
 	        			success : function(data) {
 							if ( data.resultCode == 0 ) { // 예약 성공
 								alert(data.resultMessage);
-								location.href = "/reservation" // 여기서 날짜를 가지고 이동할 수 있을까?
+								location.href = "/reservation" 
 							} else if ( data.resultCode == 1 ) { // 예약 실패
 								alert(data.resultMessage);
 								location.href = "/reservation"
@@ -129,6 +127,7 @@ $(document).ready(function() {
 							</tr>
 							<input id = "startT" value = "${content.useStartTime}" type = "hidden">
 							<input id = "userCount" value = "${content.userCount}" type = "hidden">
+							<input id = "etc" value = "${content.etc}" type = "hidden">
 					
 					</table>
 					<input id = "checkPay" type = "checkbox">
@@ -142,6 +141,6 @@ $(document).ready(function() {
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
-<%@ include file="./template/footer.jspf" %>
+<%@ include file="./template/twoDepthFooter.jspf" %>
 </html>
 

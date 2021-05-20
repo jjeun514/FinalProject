@@ -33,9 +33,6 @@ public class ChartController {
 	
 	@RequestMapping(path="/chart", method = RequestMethod.POST)
 	public ResponseEntity chartPost(HttpServletRequest req, HttpServletResponse resp, String dateSelected) throws Exception {
-		System.out.println("[ChartController(chartPost())]");
-		System.out.println("[ChartController(chartPost())] dateSelected: "+dateSelected);
-		
 		HttpStatus status;
 		try {
 			status=HttpStatus.OK;
@@ -45,12 +42,8 @@ public class ChartController {
 				count=new int[totalReservation.size()];
 				for(int j=0; j<totalReservation.size(); j++) {
 					total=totalReservation.get(j).getTotalReservation();
-					System.out.println("index: "+j);
-					System.out.println("total: "+total);
 					count[j]=total;
-					System.out.println("count: "+count.toString());
 				}
-				System.out.println("count: "+count[0]);
 				
 				try {
 					JSONObject jobj=new JSONObject();
@@ -59,17 +52,12 @@ public class ChartController {
 					out = resp.getWriter();
 					out.print(jobj.toString());
 				} catch (IOException e) {
-					System.out.println("[ChartController(chartPost())] json 오류");
 					e.printStackTrace();
 				}
-				System.out.println("[ChartController(chartPost())] totalReservation list: "+totalReservation);
-				System.out.println("totalSize: "+totalReservation.size());
 			}catch (Exception e) {}
 		} catch(NullPointerException e) {
-			System.out.println("[ForgotIdPwController(forgotId())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[ForgotIdPwController(forgotId())] null");
 		}
 		return new ResponseEntity(status);
 	}

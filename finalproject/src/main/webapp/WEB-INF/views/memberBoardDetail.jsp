@@ -78,9 +78,6 @@ function deletePost(num) {
 		success : function(data) {
 			alert("요청하신 게시글 삭제가 정상적으로 처리되었습니다.");
 			location.href = "/board";
-		},
-		error : function(request, status, error) {
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }
@@ -96,9 +93,6 @@ function modifyPost(modify) {
 		success : function(data) {
 			alert("요청하신 게시글 수정이 정상적으로 처리되었습니다.");
 			location.href = "/board";
-		},
-		error : function(request, status, error) {
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }
@@ -123,8 +117,7 @@ function commentList(){
 			}
         	
             $(".commentList").html(a);
-        },
-        error : function (a,b,c) { console.log(a,b,c); }
+        }
     });
 }
 
@@ -181,7 +174,7 @@ function commentInsert(content){
 									<td class = "headerContent"><input id = "title" type = "text" class = "boardBorderStyle" readonly = "readonly" value = "${detail.title }"/></td>
 								</tr>
 								<tr>
-									<th class = "detailHeader">내용</th>
+									<th style = "vertical-align : top;" class = "detailHeader">내용</th>
 									<td id = "textField"><textarea rows="15" cols="63" id = "boardContent" style = "border:none" readonly>${detail.content }</textarea></td>
 								</tr>
 							</thead>
@@ -215,5 +208,5 @@ function commentInsert(content){
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
-
+<%@ include file="./template/twoDepthFooter.jspf" %>
 </html>

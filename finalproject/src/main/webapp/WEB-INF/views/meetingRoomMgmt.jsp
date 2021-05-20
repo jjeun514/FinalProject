@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
-
+<title>회의실관리</title>
 <script type="text/javascript">
-
+$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
+$('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
+$('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
+$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink active');
 //10,20,30개씩 selectBox 클릭 이벤트
 function changeSelectBox(currentPage, countPerPage, pageSize){
     var selectValue = $("#cntSelectBox").children("option:selected").val();
@@ -231,7 +234,6 @@ $(".mrModal").remove();
 
 //예약 tr 클릭시 셀렉트 
 $('.revTrClick').click(function(){
-	//console.log(this);
 	reservationDay = $(this).find(".trReservationDay").text();
 	memNickName = $(this).find(".trMemNickName").text();
 	useStartTime = reservationDay+ " " +$(this).find(".trUseStartTime").text()+ ":00.0";
@@ -241,7 +243,6 @@ $('.revTrClick').click(function(){
 			memNickName : memNickName,
 			useStartTime : useStartTime
 		};
-	console.log(reservationDay,memNickName,useStartTime,selectRev);
 	
 	//
 	$.ajax({
@@ -251,8 +252,6 @@ $('.revTrClick').click(function(){
 		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 		dataType: "json",
 		success: function(data){
-					//console.log(data);
-					//console.log(data.manager);
 					$("#memName").text(data.memName);
 					$("#id").text(data.id);
 					$("#roomNumValue").val(data.roomNum+"호");
@@ -271,8 +270,8 @@ $('.revTrClick').click(function(){
 					$("#merchant_uid").text(data.merchant_uid);
 				},			 
 		error: function(error){
-			console.log(error);
-			console.log("ajax 에러");
+			document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+			$('#dangerModal').modal('show');
 		}
 		
 	});
@@ -284,6 +283,7 @@ $('.mgmtModal').find('.editBtn').click(function(){
 	//수정 버튼 클릭 이벤트
 	$(document).on('click','.editBtn', function(){
 		$('.valueSetting').attr('readonly', false);
+		$('.pencil').attr('hidden', false);
 		
 		$("#memName").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		$("#id").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
@@ -333,8 +333,7 @@ $('.mgmtModal').find('.editBtn').click(function(){
 						$.cssBack(); 
 					},
 					error: function(error) {
-						console.log("ajax 에러");
-						document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+						document.getElementById('modalText01').textContent='중복된 예약시간이 존재하지 않는지 확인하시기 바랍니다.';
 						$('#dangerModal').modal('show');
 					}
 				});
@@ -367,13 +366,11 @@ $('.mgmtModal').find('.deleteBtn').click(function(){
 			$.cssBack(); 
 		},
 		error: function(error) {
-			console.log("ajax 에러");
 			document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 			$('#dangerModal').modal('show');
 		}
 	});
 });
-
 
 
 $(document).on('click', '.cancleBtn', function(){
@@ -399,7 +396,7 @@ $.cssBack=function(){
 	$("#merchant_uid").css('background-color', 'transparent').css('color', 'black');
 	$("#branchName").css('background-color', 'transparent').css('color', 'black');
 	$("#roomNum").css('background-color', 'transparent').css('color', 'black');
-	
+	$('.pencil').attr('hidden', true);
 	
 	
 	$('.cancleBtn').attr('class', 'btn btn-secondary closeBtn').attr('data-dismiss','modal').html('목록');
@@ -425,9 +422,9 @@ function revChange(){
 
 //모달 폼체인지(회의실 상세정보, 회의실 추가)
 var changeMrModal='<tr><th>지점</th><td id="branchName"></td><th>방번호</th><td id="roomNum">'+
-				  '</td></tr><tr><th>면적</th><td id="acreages"><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>'+
-				  '<th>비용</th><td id="rent"><input type="text" name="rentValue" id="rentValue" class="valueSetting" readonly></td></tr>'+
-				  '<tr><th>수용인원</th><td id="max" colspan="3"><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
+				  '</td></tr><tr><th>면적</th><td id="acreages"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>'+
+				  '<th>비용</th><td id="rent"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="rentValue" id="rentValue" class="valueSetting" readonly></td></tr>'+
+				  '<tr><th>수용인원</th><td id="max" colspan="3"><div id="forImg"><img src="imgs/pencil.png" class="pencil" hidden></div><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
 
 var changeAddMrModal='<tr><th>지점</th><td id="branchName"><select class="mrselect" name="branchNameValue" ><c:forEach items="${branchList }" var="bean"><option value="${bean.branchCode }" >${bean.branchName }</option></c:forEach></select></td>'
 					 +'<th>방번호</th><td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" placeholder="(방번호 입력)"></td></tr>'
@@ -460,6 +457,7 @@ $('.changeMrManage').click(function(){
 		$(document).on('click','.editBtn', function(){
 			$('.valueSetting').attr('readonly', false);
 			
+			$('.pencil').attr('hidden', false);
 			$("#branchName").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 			$("#roomNum").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 			
@@ -494,7 +492,6 @@ $('.changeMrManage').click(function(){
 							$.cssBack(); 
 						},
 						error: function(error) {
-							console.log("ajax 에러");
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
 						}
@@ -528,7 +525,6 @@ $('.changeMrManage').click(function(){
 				$.cssBack(); 
 			},
 			error: function(error) {
-				console.log("ajax 에러");
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
@@ -537,7 +533,6 @@ $('.changeMrManage').click(function(){
 	
 	
 	$(".addMasterBtn").click(function(){
-		console.log("gg");
 		$('.mgmtModal').find('.editBtn').removeClass('editBtn').addClass('addBtn').text("추가");
 		$('.mgmtModal').find('.deleteBtn').remove();
 		$('.mgmtModal').find('.closeBtn').text("취소").on('click',function(){
@@ -573,7 +568,6 @@ $('.changeMrManage').click(function(){
 					$.cssBack(); 
 				},
 				error: function(error) {
-					console.log("ajax 에러");
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -642,7 +636,7 @@ $('.changeMrManage').click(function(){
 		</tbody>
 	</table>
 	<div class="btnContent meetingRoomPaging">
-		<div class="pagination" id="pagination">페이지 영역</div>
+		<div class="pagination" id="pagination">&nbsp;</div>
 	</div>
 </div>
 
@@ -679,7 +673,7 @@ $('.changeMrManage').click(function(){
 		</tbody>
 	</table>
 	<div class="btnContent meetingRoomPaging">
-		<div class="pagination" id="pagination">페이지 영역</div>
+		<div class="pagination" id="pagination">&nbsp;</div>
 	</div>
 </div>
 </div>
@@ -708,21 +702,21 @@ $('.changeMrManage').click(function(){
 						</tr>
 						<tr>
 							<th>방번호</th>
-							<td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" readonly></td>
+							<td id="roomNum"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" readonly></td>
 							<th>예약일</th>
-							<td id="reservationDay"><input type="text" name="reservationDayValue" id="reservationDayValue" class="valueSetting" readonly></td>
+							<td id="reservationDay"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="reservationDayValue" id="reservationDayValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>입실시간</th>
-							<td id="useStartTime"><input type="text" name="useStartTimValue" id="useStartTimValue" class="valueSetting" readonly></td>
+							<td id="useStartTime"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="useStartTimValue" id="useStartTimValue" class="valueSetting" readonly></td>
 							<th>퇴실시간</th>
-							<td id="useFinishTime"><input type="text" name="useFinishTimeValue" id="useFinishTimeValue" class="valueSetting" readonly></td>
+							<td id="useFinishTime"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="useFinishTimeValue" id="useFinishTimeValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>인원</th>
-							<td id="userCount"><input type="text" name="userCountValue" id="userCountValue" class="valueSetting" readonly></td>
+							<td id="userCount"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="userCountValue" id="userCountValue" class="valueSetting" readonly></td>
 							<th>요금</th>
-							<td id="fee"><input type="text" name="feeValue" id="feeValue" class="valueSetting" readonly></td>
+							<td id="fee"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="feeValue" id="feeValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>회사코드</th>

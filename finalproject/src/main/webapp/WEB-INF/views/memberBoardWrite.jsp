@@ -35,9 +35,6 @@ $(document).ready(function() {
 			dataType : "text",
 			success : function() {
 				location.href = "/board";
-			},
-			error : function(request, status, error) {
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 		
@@ -62,7 +59,7 @@ $(document).ready(function() {
 									</td>
 								</tr>
 								<tr>
-									<th class = "detailHeader">내용</th>
+									<th style = "vertical-align : top;" class = "detailHeader">내용</th>
 									<td id = "textField">
 										<input id = "writeContent" type = "text" autofocus/>
 									</td>
@@ -80,7 +77,7 @@ $(document).ready(function() {
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
-<%@ include file="./template/footer.jspf" %>
+<%@ include file="./template/twoDepthFooter.jspf" %>
 </html>
 
 

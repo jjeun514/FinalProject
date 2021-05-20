@@ -85,14 +85,9 @@
 	
 	//입력 수 제한 기능
 	function lengthCheck(check, min, max){
-		//console.log(typeof check, typeof min, typeof max);
 		var name= $("."+check);
 		var span= check + "Unavailable";
-		//console.log(span);
 		if(name.val().length < min || name.val().length > max){
-			//$("."+span).remove();
-			//var afterSpan="<span class='"+span+"'>"+min+"자리 이상 "+max+"자리 이내로 입력해주세요"+"<span>";
-			//name.after(afterSpan);
 			document.getElementById('modalText01').textContent=min+"자리 이상 "+max+"자리 이내로 입력해주세요";
 			$('#dangerModal').modal('show');
 			booInfo = false;
@@ -127,15 +122,9 @@
 		}
 		
 		if(u_Character.test($(data).prop('key'))){
-			console.log($(data).prop('key'));
 			if($(data).prop('key')!='Backspace'){
-				console.log($("."+check).val().length -1);
-				//$("."+span).remove();
-				//var afterSpan="<span class='"+span+"'> "+text+"<span>";
-				//name.after(afterSpan);
 				document.getElementById('modalText01').textContent=text;
 				$('#dangerModal').modal('show');
-				//$("."+check).val($("."+check).val().substring(0,$("."+check).val().length -1));
 				booInfo = false;
 				if(check=="memNickName"){
 					nickNameCharacterBoo=false;
@@ -264,7 +253,6 @@
 		
 		//회원정보 수정 버튼 클릭 시 처음엔 readonly를 해제, 수정 버튼 기능 활성화
 		$(".updateInfoBtn").one("click",function(){
-			//$('.modifiable').remove();
 			$('.updateInfoInput').removeAttr("readonly").css('background-color', '#FFFFE0');//.after('<span class="modifiable"> [수정 가능]</span>');
 			oneClick=true;
 			//어드민 계정 닉네임 2자 이상 10자 이내 입력 수 제한, 특수문자 사용 제한, 값 저장
@@ -318,7 +306,6 @@
 							   }).focusout(function(){
 								    lengthCheck("memNickName",2,10);
 								    memNickName = $('.memNickName').val();
-									console.log(memNickName);
 									if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
 										document.getElementById('modalText01').textContent="공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요";
 										$('#dangerModal').modal('show');
@@ -330,7 +317,6 @@
 											contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 											dataType: "text",
 											success: function(data){
-														console.log("data",data);
 														if(data=="Available"){
 															document.getElementById('modalText02').textContent='사용가능한 닉네임입니다.';
 															$('#primaryModal').modal('show');
@@ -349,8 +335,8 @@
 														}
 													 },
 											error: function(error){
-												console.log(error);
-												console.log("ajax 에러");
+												document.getElementById('modalText01').textContent='오류가 발생하였습니다.';
+												$('#dangerModal').modal('show');
 											}
 											
 										});
@@ -388,7 +374,6 @@
 		//포커스아웃 시 기존 비밀번호 비교 검증
 		$(".existingPw").focusout(function(){
 			existingPw=$('.existingPw').val();
-			console.log(existingPw);
 			var pw=existingPw;
 			$.ajax({
 				url: "/checkPw",
@@ -397,13 +382,8 @@
 				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 				dataType: "text",
 				success: function(data){
-						console.log("data",data);
 						//기존 비밀번호 일치 시
 						if(data == "correct"){
-							//$(".incorrectPw").remove();
-							//$(".correctPw").remove();
-							//$(".existingPw").after(' <span class="correctPw">비밀번호가 확인되었습니다</span>')
-							//$(".correctPw").css("color","blue");
 							
 							document.getElementById('modalText02').textContent='비밀번호가 확인되었습니다.';
 							$('#primaryModal').modal('show');
@@ -412,10 +392,6 @@
 							booExPw=true;
 						//기존 비밀번호와 일치하지 않을 시 
 						}else{
-							//$(".incorrectPw").remove();
-							//$(".correctPw").remove();
-							//$(".existingPw").after(' <span class="incorrectPw">비밀번호가 일치하지 않습니다</span>');
-							//$(".incorrectPw").css("color","red");
 							document.getElementById('modalText01').textContent='비밀번호가 일치하지 않습니다.';
 							$('#dangerModal').modal('show');
 							//기존 비밀번호 일치 기능 비활성화
@@ -435,11 +411,6 @@
 			if(!(pattern_spc.test($('.newPw').val())) ||
 					!(pattern_num.test($('.newPw').val())) ||
 					!(pattern_eng.test($('.newPw').val())) ){
-				//$(".usablePw").remove();
-				//$(".unusablePw").remove();
-				//$(".incorrectNewPw").remove();
-				//$('.newPw').after(' <span class="unusablePw">숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요</span>');
-				//$(".unusablePw").css("color","red");
 				if($('.newPw').val()==null){
 				document.getElementById('modalText01').textContent='숫자,영어,특수문자를 포함하여 비밀번호를 입력해주세요.';
 				$('#dangerModal').modal('show');
@@ -448,12 +419,6 @@
 				document.getElementById('modalText01').textContent='기존 비밀번호와 다른 비밀번호를 입력해주세요.';
 				$('#dangerModal').modal('show');
 			}else{
-				//$(".usablePw").remove();
-				//$(".unusablePw").remove();
-				//$(".incorrectNewPw").remove();
-				//$('.newPw').after(' <span class="usablePw">사용 가능한 비밀번호입니다</span>');
-				//$(".usablePw").css("color","blue");
-				
 				document.getElementById('modalText02').textContent='사용 가능한 비밀번호입니다.';
 				$('#primaryModal').modal('show');
 			}
@@ -525,8 +490,8 @@
 								}
 							},
 					error:function(request,status,error){
-						 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-						 console.log(error);
+								document.getElementById('modalText01').textContent='변경 오류.';
+								$('#dangerModal').modal('show');
 						 }
 				});
 				
@@ -542,7 +507,6 @@
 		//포커스아웃 시 기존 비밀번호 비교 검증
 		$(".withdrawalPw").focusout(function(){
 			withdrawalPw=$('.withdrawalPw').val();
-			console.log(withdrawalPw);
 			var pw=withdrawalPw;
 			$.ajax({
 				url: "/checkPw",
@@ -551,25 +515,14 @@
 				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 				dataType: "text",
 				success: function(data){
-						console.log("data",data);
 						//기존 비밀번호 일치 시
 						if(data == "correct"){
-							//$(".incorrectWPw").remove();
-							//$(".correctWPw").remove();
-							//$(".withdrawalPw").after(' <span class="correctWPw">비밀번호가 확인되었습니다</span>')
-							//$(".correctWPw").css("color","blue");
-							
 							document.getElementById('modalText02').textContent='비밀번호가 확인되었습니다.';
 							$('#primaryModal').modal('show');
 							//기존 비밀번호 일치 기능 활성화
 							booWPw=true;
 						//기존 비밀번호와 일치하지 않을 시 
 						}else{
-							//$(".incorrectWPw").remove();
-							//$(".correctWPw").remove();
-							//$(".withdrawalPw").after(' <span class="incorrectWPw">비밀번호가 일치하지 않습니다</span>');
-							//$(".incorrectWPw").css("color","red");
-							
 							document.getElementById('modalText01').textContent='비밀번호가 일치하지 않습니다.';
 							$('#dangerModal').modal('show');
 							//기존 비밀번호 일치 기능 비활성화
@@ -606,9 +559,6 @@
 	
 	//멤버 로그인 권한 부여 기능 start
 		$(".memberAdmission").click(function(){
-			//console.log(this.innerText);
-			//console.log($(this));
-			//console.log($(this).parent().parent().find(".memeberListId").text());
 			//현재 권한 허용, 비허용 여부
 			var currAdmission = this.innerText;
 			var curr=this;
@@ -623,19 +573,19 @@
 				dataType: "text",
 				success: function(data){
 							if(data=="updated"){
-								console.log("업데이트 성공");
 								if(currAdmission=="허용"){
-									console.log(curr.innerText="비허용");
+									curr.innerText="비허용";
 								}else{
-									console.log(curr.innerText="허용");
+									curr.innerText="허용";
 								}
 							}else{
-								console.log("업데이트 실패");
+								document.getElementById('modalText01').textContent='업데이트 실패';
+								$('#dangerModal').modal('show');
 							}
 						},
 				error:function(request,status,error){
-					 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					 console.log(error);
+						document.getElementById('modalText01').textContent='업데이트 실패';
+						$('#dangerModal').modal('show');
 					 }
 			});
 		})
@@ -1157,7 +1107,7 @@ page('paginated2');
         		</tbody>
         	</table>
         	<div class="btnContent">
-			<div class="pagination mypagePaging2" id="pagination">페이지 영역</div>
+			<div class="pagination mypagePaging2" id="pagination">&nbsp;</div>
 			</div>
         </div>
       </div>
@@ -1202,7 +1152,7 @@ page('paginated2');
         		</tbody>
         	</table>
         	<div class="btnContent">
-			<div class="pagination mypagePaging" id="pagination">페이지 영역</div>
+			<div class="pagination mypagePaging" id="pagination">&nbsp;</div>
 			</div>
         </div>
       </div>

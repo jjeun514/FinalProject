@@ -126,12 +126,7 @@ public class ReservationController {
 		
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if(member != -1) {
-			System.out.println("접속하신 계정은 멤버입니다.");
-			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
-			
-		} else {
-			return "redirect:/intro";
 		}
 		
 		List<ReservationVo> roomList = service.meetingRoomList();
@@ -164,7 +159,6 @@ public class ReservationController {
 		// 담겨진 리스트를 뷰로 전달
 		Map<String, Object> roomData = new HashMap<String, Object>();
 		roomData.put("roomData", dataList);
-		// 예약날짜 예약자 정보도 전달해줘야 함
 		
 		return roomData;
 	}
@@ -235,7 +229,7 @@ public class ReservationController {
 		allList.put("allList", REZList);
 		
 		return allList;
-	} // 이 로직 다시 공부해야 할 듯
+	}
 	
 	
 	
@@ -258,6 +252,7 @@ public class ReservationController {
 		String calFinishTime = Integer.toString(startTime+useTime); // 종료 시간 계산
 		String reservationDay = applyContent.getReservationDay();
 		int userCount = applyContent.getUserCount();
+		String etc = applyContent.getEtc();
 		
 		// 파라미터를 객체에 담음
 		ReservationVo reservation = new ReservationVo();
@@ -268,6 +263,7 @@ public class ReservationController {
 		reservation.setUseFinishTime(calFinishTime);
 		reservation.setReservationDay(reservationDay);
 		reservation.setUserCount(userCount);
+		reservation.setEtc(etc);
 		
 		// 신청하기 전에 해당 내역으로 예약이 있는지 여부를 조회
 		ReservationVo checkReservation = service.checkReservaion(roomNum, useStartTime, reservationDay);
@@ -305,6 +301,7 @@ public class ReservationController {
 				result.put("useStartTime", useStartTime);
 				result.put("useFinishTime", useTime);
 				result.put("userCount", userCount);
+				result.put("etc", etc);
 				result.put("amount", amount);
 				
 				return result;
@@ -420,6 +417,8 @@ public class ReservationController {
 		String reservationDay = applyContent.getReservationDay();
 		String useStartTime = applyContent.getUseStartTime();
 		String useFinishTime = applyContent.getUseFinishTime();
+		int userCount = applyContent.getUserCount();
+		String etc = applyContent.getEtc();
 		int amount = applyContent.getAmount();
 		
 		if ( useFinishTime.equals("2") ) { amount = amount * 2; }
@@ -431,6 +430,8 @@ public class ReservationController {
 		content.setUseStartTime(useStartTime);
 		content.setUseFinishTime(useFinishTime);
 		content.setReservationDay(reservationDay);
+		content.setUserCount(userCount);
+		content.setEtc(etc);
 		content.setAmount(amount);
 		
 		model.addAttribute("content", content);
@@ -479,6 +480,7 @@ public class ReservationController {
 		content.setMerchant_uid(payContent.getMerchant_uid());
 		content.setAmount(payContent.getAmount());
 		content.setUserCount(payContent.getUserCount());
+		content.setEtc(payContent.getEtc());
 		
 		// 결제하기 전에 해당 내역으로 예약이 있는지 여부를 최종 조회
 		ReservationVo checkReservation = service.checkReservaion(roomNum, useStartTime, reservationDay);
