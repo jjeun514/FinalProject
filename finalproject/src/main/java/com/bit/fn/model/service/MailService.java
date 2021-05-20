@@ -305,9 +305,10 @@ public class MailService {
 			msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
 			msg+="<font size=6><strong>9 o'Clock  회의실 예약 안내</strong></font>";
 			msg+="<table style='padding-top:30px'>";
-			msg+="<tr><td style='background-color:black; color:white;'><b>회의실:</b></td><td>"+roomNum+"</td></tr>"
+			msg+="<tr><td style='background-color:black; color:white;'><b>예약하신 회의실이 사용 시간이 30분 후에 시작됩니다.</b></td>"
+					+"<tr><td style='background-color:black; color:white;'><b>회의실:</b></td><td>"+roomNum+"</td></tr>"
 					+"<tr><td style='background-color:black; color:white;'><b>예약자명: </b></td><td>"+memName+"</td></tr>"
-					+"<tr><td style='background-color:black; color:white;'><b>예약일시: </b></td><td>"+useStartTime+"</td></tr>"
+					+"<tr><td style='background-color:black; color:white;'><b>예약일시: </b></td><td>"+useStartTime+"시</td></tr>"
 					+"</table>";
 			msg+="</td>";
 			msg+="</tr>";
