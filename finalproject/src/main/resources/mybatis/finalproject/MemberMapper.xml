@@ -16,8 +16,12 @@
 	</select>
 	
 	<select id="reservationListForIntro" resultType="com.bit.fn.model.vo.ReservationVo">
-		select myREZ.* from (select roomNum, reservationDay, useStartTime, useFinishTime, fee from reservation
-		where memNum = #{memNum}) AS myREZ where reservationDay = date_format(sysdate(), '%Y-%m-%d') limit 4
+		select myREZ.* from (
+			select roomNum, reservationDay, useStartTime, useFinishTime, fee from reservation
+			where memNum = #{memNum}) AS myREZ 
+		where date_format(useStartTime, '%Y-%m-%d %H') >= date_format(sysdate(), '%Y-%m-%d %H') 
+		and date_format(reservationDay, '%Y-%m-%d') = date_format(sysdate(), '%Y-%m-%d')
+		limit 4
 	</select>
 
 	<!-- 게시판 -->
@@ -32,9 +36,9 @@
    	
    	<insert id="savePost" parameterType="com.bit.fn.model.vo.BoardVo">
    		insert into board(
-   			memNum, writer, company, title, content, date
+   			memNum, writer, company, title, content, date, showCheck
    		) values (
-   			#{memNum}, #{writer}, #{company}, #{title}, #{content}, sysdate()
+   			#{memNum}, #{writer}, #{company}, #{title}, #{content}, sysdate(), 1
    		)
    	</insert>
    	
@@ -141,7 +145,7 @@
    			roomNum, memNum, reservationDay, useStartTime, useFinishTime, userCount, fee, merchant_uid, etc
    		) values(
    			#{roomNum}, #{memNum}, '${reservationDay}', '${reservationDay} ${useStartTime}:00:00',
-   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, #{amount}, #{merchant_uid},'payment test'
+   			'${reservationDay} ${useFinishTime}:00:00', #{userCount}, #{amount}, #{merchant_uid}, #{etc}
    		)
    	</insert>
    	

@@ -28,25 +28,27 @@ $(document).ready(function() {
 		// 날짜를 선택하지 않았을 경우
 		if ( $('#reservationDay').val() == "" ) {
 			document.getElementById('showAlertForChoice').innerHTML="<b><font color='red'>날짜를 선택해주세요</font><b>";
-			return false;
 		} else if ( $('#reservationDay').val() != "" ) { // 이거 안됨
 			document.getElementById('showAlertForChoice').innerHTML="";
 		}
 		
-		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수 
+		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
+		
+		// 현재 시간 구해서 예약 시간에 option으로 넣어줌
+		
+		var now = new Date();
+		var nowTime = (now.getHours()+1);
+		
+		for ( var time = nowTime; time < 23; time++ ) {
+			$("#useStartTime").append("<option value = "+time+">"+time+"시</option>");
+		}
+		
 		$("#REZModal").modal();
 	});
 	
 	// 예약 신청 버튼을 눌렀을 때 발생하는 이벤트
 	$('#REZapplyClick').click(function() { 
 
-		var memNum = $("#memNum").val();
-		var memName = $("#memName").val();
-		var roomNum = $("#roomNum").val();
-		var useStartTime = $("#useStartTime").val();
-		var useFinishTime = $("#useFinishTime").val();
-		var userCount = $("#userCount").val();
-		var reservationDay = $('#reservationDay').val();
 		
 		if ( $("#roomNum").val() == "선택해주세요" ) {
 			alert("회의실을 선택해주세요");
@@ -63,6 +65,24 @@ $(document).ready(function() {
 			return false;
 		}
 		
+		if ( document.getElementById("useStartTime").value == "22" ) { // 이건 또 왜 안되지?
+			$("#useFinishTime option[value='2']").remove();
+		}
+		
+		if ( document.getElementById("etc").value.length >= 40 ) { // 이거 왜 안되지?
+			document.getElementById("etcBox").innerHTML="<label><font color='red'>20자 이내로 작성해주세요</font></label><input id = \"etc\" type=\"text\" class=\"form-control\" placeholder=\"예 - IT 기획부 월간 회의 / 비트 프로젝트 기획 회의 ...\">";
+			return false;
+		}
+		
+		var memNum = $("#memNum").val();
+		var memName = $("#memName").val();
+		var roomNum = $("#roomNum").val();
+		var useStartTime = $("#useStartTime").val();
+		var useFinishTime = $("#useFinishTime").val();
+		var userCount = $("#userCount").val();
+		var reservationDay = $('#reservationDay').val();
+		var etc = $("#etc").val();
+		
 		// 서버에 전달할 회의실 예약 신청 내용 데이터 셋팅
 		var applyContent = {
 			memNum : memNum,
@@ -71,7 +91,8 @@ $(document).ready(function() {
 			useStartTime : useStartTime,
 			useFinishTime : useFinishTime,
 			userCount : userCount,
-			reservationDay : reservationDay
+			reservationDay : reservationDay,
+			etc : etc
 		};
 		
 		$.ajax({
@@ -380,9 +401,6 @@ function noWeekend(date) {
 										    <div class="col-sm-12">
 											    <select id = "useStartTime" class="form-control">
 											    	<option>선택해주세요</option>
-												    <c:forEach var = "t" begin = "09" end = "22">
-													  		<option value = "${t }">${t }시</option>
-													</c:forEach>
 												</select>
 											</div>
 										  </div>
@@ -394,7 +412,6 @@ function noWeekend(date) {
 											      <option>선택해주세요</option>
 												  <option value = "1">1시간</option>
 												  <option value = "2">2시간</option>
-												  <!-- 여기서 쿼리를 고려해서 value를 어떻게 줄 지 생각해봐야 함 -->
 												</select>
 											</div>
 										  </div>
@@ -402,12 +419,19 @@ function noWeekend(date) {
 										  <div class="form-group">
 										    <label class="col-sm-10 control-label">사용하실 인원을 선택해주세요</label>
 										    <div class="col-sm-12">
-											    <select id = "useCount" class="form-control">
+											    <select id = "userCount" class="form-control">
 											    <option>선택해주세요</option>
 											    	<c:forEach var = "user" begin = "1" end = "5">
 													  <option value = "${user }">${user }명</option>
 											    	</c:forEach>
 												</select>
+											</div>
+										  </div>
+										  
+										  <div class="form-group">
+										    <label class="col-sm-10 control-label">메모를 작성해주세요(20자 이내 작성)</label>
+										    <div id = "etcBox" class="col-sm-12">
+											    <input id = "etc" type="text" class="form-control" placeholder="예 - IT 기획부 월간 회의 / 비트 프로젝트 기획 회의 ...">
 											</div>
 										  </div>
 										</form>

@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface AccountRoleMapper {
 	public int deleteOne(int account_num);
+
+	public int deleted(int num);
 }

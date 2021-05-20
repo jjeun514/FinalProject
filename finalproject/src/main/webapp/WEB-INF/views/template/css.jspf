@@ -790,9 +790,7 @@
 			width: 80px;
 		}
 		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable, .mrMgmtTable, .revMgmtTable {
-		#emptySpace {
-			border: 0;
-			height: 60px;
+			margin-top: -50px;
 		}
 		#addModal {
 			position: absolute;
@@ -880,12 +878,17 @@
 			margin-left: -96%;
 			border: 0;
 		}
-	
-	/* 입주사관리 */
-		.branchName {
-			appearance: none;
-			-webkit-appearance : none;
-			-moz-appearance: none;
+		.pencil, #forImg {
+			width: 30px;
+			position: fixed;
+			text-align: left;
+			margin-top: -3px;
+		}
+		#forImg {
+			marging-top: 3px;
+		}
+		.spaceTable .pencil {
+			margin-left: -5px;
 		}
 		
 		/* 로그인 페이지 */
@@ -916,6 +919,15 @@
 	 	}
 	 	#accountDetail input:focus {
 	 		outline: none;
+	 	}
+	 	.masterMgmtPaging, .spaceMgmtPaging, .tenantsMgmtPaging {
+	 		display: table;
+	 		margin: 0 auto;
+	 		text-align: center;
+	 		margin-top: 20px;
+	 	}
+	 	.pagingSection {
+	 		display: table-cell;
 	 	}
 	    
 	 /*마이페이지*/
@@ -991,9 +1003,10 @@
 			margin-left: 350px;
 		}
 		.mypagePaging2{
-			margin-left: 180px;
+			display : table;
+			margin : 0px auto;
+			text-align: center;
 		}
-		
 		.paginated1{
 			margin-top : 25px;
 			width: 900px;
@@ -1068,13 +1081,17 @@
 		}
 		
 		.meetingRoomPaging{
+			display: table;
 			margin: auto;
 			margin-top : 20px;
-			margin-left: 800px;
 			text-align: center;
 			font-size: 20px;
 		}
 		
+		#pagination {
+			display: table-cell;
+		}
+
 		.addRevBtn{
 			float: right;
 			width: 100px;
@@ -1091,6 +1108,5 @@
 			margin: auto;
 			border: 0px;
 		}
-		
 		
 </style>

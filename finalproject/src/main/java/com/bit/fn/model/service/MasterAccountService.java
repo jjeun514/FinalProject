@@ -38,4 +38,16 @@ public class MasterAccountService {
 	public int deleteOne(String id) {
 		return masterAccountMapper.deleteOne(id);
 	}
+	
+	public int deleteMaster(String id) {
+		return masterAccountMapper.deleteMaster(id);
+	}
+	
+	public int selectNum(String id) {
+		return accountMapper.selectNum(id);
+	}
+	
+	public int enabledToZero(String id) {
+		return accountMapper.enabledToZero(id);
+	}
 }

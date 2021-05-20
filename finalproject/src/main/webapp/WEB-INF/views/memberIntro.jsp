@@ -89,7 +89,7 @@
 				<div class = "col-xs-6 col-md-5" id = "introEvent">
 					<div id = "eventTitle">event
 					</div>
-						<img id = "introEventIMG"src="imgs/logo_black.png">
+						<img id = "introEventIMG" src="imgs/event.png">
 				</div>
 			</div>
 			

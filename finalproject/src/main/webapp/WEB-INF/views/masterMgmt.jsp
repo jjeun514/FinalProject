@@ -7,7 +7,125 @@ $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
+
+// 페이징
+// 10,20,30개씩 selectBox 클릭 이벤트
+function changeSelectBox(currentPage, countPerPage, pageSize){
+    var selectValue = $("#cntSelectBox").children("option:selected").val();
+    movePage(currentPage, selectValue, pageSize);
+}
+ 
+// 페이지 이동
+function movePage(currentPage, countPerPage, pageSize){
+    var url="/masterMgmt";
+    url=url+"?currentPage="+currentPage;
+    url=url+"&countPerPage="+countPerPage;
+    url=url+"&pageSize="+pageSize;
+    location.href=url;
+}
+
+// 만들어진 테이블에 페이지 처리
+function page(){
+	$('.masterMgmtTable').each(function() {
+		var pagesu=10;  // 페이지 번호 갯수
+		var currentPage=0;
+		var numPerPage=10;  // 목록의 수
+		var $table=$(this);    
+		var pagination=$('.pagingSection');
+	
+		// length로 원래 리스트의 전체길이구함
+		var numRows=$table.find('tbody tr').length;
+		
+		// Math.ceil를 이용하여 반올림
+		var numPages=Math.ceil(numRows/numPerPage);
+		
+		// 리스트가 없으면 종료
+		if (numPages==0) return;
+		
+		// pager라는 클래스의 div엘리먼트 작성
+		var $pager=$('<div class="pager"></div>');
+		var nowp=currentPage;
+		var endp=nowp+10;
+		
+		// 페이지를 클릭하면 다시 셋팅
+		$table.bind('repaginate', function() {
+			// 기본적으로 모두 hide하고, (현재페이지+1)*(현재페이지)까지 보여준다
+			$table.find('tbody tr').hide().slice(currentPage*numPerPage, (currentPage+1)*numPerPage).show();
+			$('.pagingSection').html('');
+			if (numPages>1) {     // 한페이지 이상이면
+				if (currentPage < 5 && numPages-currentPage >= 5) {   // 현재 5p 이하이면
+					nowp = 0;     // 1부터 
+					endp = pagesu;    // 10까지
+				} else {
+					nowp = currentPage -5;  // 6넘어가면 2부터 찍고
+					endp = nowp+pagesu;   // 10까지
+					pi = 1;
+				}
+			
+				if (numPages < endp) {   // 10페이지가 안되면
+					endp = numPages;   // 마지막페이지를 갯수 만큼
+					nowp = numPages-pagesu;  // 시작페이지를   갯수 -10
+				}
+				
+				if (nowp < 1) {     // 시작이 음수 or 0 이면
+					nowp = 0;     // 1페이지부터 시작
+				}
+			} else {       // 한페이지 이하이면
+				nowp = 0;      // 한번만 페이징 생성
+				endp = numPages;
+			}
+			
+			// [처음]
+			$('<span class="pageNum first"><<</span>').bind('click', {newPage: page},function(event) {
+				currentPage = 0;   
+				$table.trigger('repaginate');  
+				$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			// [이전]
+			$('<span class="pageNum back">&nbsp;<&nbsp;</span>').bind('click', {newPage: page},function(event) {
+				if(currentPage == 0) return; 
+				currentPage = currentPage-1;
+				$table.trigger('repaginate'); 
+				$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			// [1,2,3,4,5,6,7,8]
+			for (var page = nowp ; page < endp; page++) {
+				$('<span  style="cursor:pointer" class="pageNum"></span>').text(page + 1).append('&nbsp;').bind('click', {newPage: page}, function(event) {
+					currentPage = event.data['newPage'];
+					$table.trigger('repaginate');
+					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+				}).appendTo(pagination).addClass('clickable');
+			} 
+		
+			// [다음]
+			$('<span class="pageNum next">>&nbsp;</span>').bind('click', {newPage: page},function(event) {
+				if(currentPage == numPages-1) return;
+				currentPage = currentPage+1;
+				$table.trigger('repaginate'); 
+				$($('.pageNum')[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			// [끝]
+			$('<span class="pageNum last">>></span>').bind('click', {newPage: page},function(event) {
+				currentPage = numPages-1;
+				$table.trigger('repaginate');
+				$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
+			}).appendTo(pagination).addClass('clickable');
+			
+			$($(".pageNum")[2]).addClass('active');
+		});
+		
+		$pager.insertAfter($table).find('span.pageNum:first').next().next().addClass('active');   
+		$pager.appendTo(pagination);
+		$table.trigger('repaginate');
+	});
+}
+
+$(function(){
+	page();
+});
 
 $(function(){
 	var comName;
@@ -35,6 +153,7 @@ $(function(){
 		$(document).on('click','.editBtn', function(e){
 			e.stopImmediatePropagation();
 			console.log('수정버튼누름');
+			$('.pencil').attr('hidden', false);
 			$('.masterAccountTitle').html('['+comName+']의 계정 <font style="color:red;">수정</font>');
 			$('.valueSetting').attr('readonly', false);
 			$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
@@ -90,6 +209,35 @@ $(function(){
 		$.cssBack();
 	});
 	
+	$(document).on('click', '.deleteBtn', function(e){
+		e.stopImmediatePropagation();
+		console.log('삭제누름');
+		console.log('id: '+$('#masterAccount').text()+', comCode: '+$('#comCode').text());
+		$.ajax({
+			url: "/deleteMaster",
+			type: "POST",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			data: {
+				id:$('#masterAccount').text(),
+				comCode:$('#comCode').text()
+			},
+			success: function() {
+				console.log('수정 완료');
+				document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
+				$('#primaryModal').modal('show');
+				$('#primaryModal').on('hidden.bs.modal',function(){
+					location.reload();
+				});
+				$.cssBack();
+			},
+			error: function(error) {
+				console.log("ajax 에러");
+				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
+				$('#dangerModal').modal('show');
+			}
+		});
+	});
+	
 	$('#accountDetail').on('hide.bs.modal', function(e) {
 		e.stopImmediatePropagation();
 		$.cssBack();
@@ -101,6 +249,7 @@ $(function(){
 		$('#comCode, #comName, #joinedAt, #masterAccount').css('background-color', 'transparent').css('color', 'black');
 		$('.cancleBtn').attr('class', 'btn btn-secondary closeBtn').attr('data-dismiss','modal').html('목록');
 		$('.okBtn').attr('class', 'btn btn-primary editBtn').html('수정');
+		$('.pencil').attr('hidden', true);
 	}
 });
 </script>
@@ -138,6 +287,9 @@ $(function(){
 		</c:forEach>
 		</tbody>
 	</table>
+	<div class="masterMgmtPaging">
+		<div class="pagingSection">page</div>
+	</div>
 	
 <%//상세 Modal %>
 <div class="modal fade" id="accountDetail" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -159,13 +311,13 @@ $(function(){
 						</tr>
 						<tr>
 							<th>대표</th>
-							<td id="ceo"><input type="text" name="ceoValue" id="ceoValue" class="valueSetting" readonly></td>
+							<td id="ceo"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="ceoValue" id="ceoValue" class="valueSetting" readonly></td>
 							<th>대표변호</th>
-							<td id="comPhone"><input type="text" name="comPhoneValue" id="comPhoneValue" class="valueSetting" readonly></td>
+							<td id="comPhone"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="comPhoneValue" id="comPhoneValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>담당자</th>
-							<td id="manager"><input type="text" name="managerValue" id="managerValue" class="valueSetting" readonly></td>
+							<td id="manager"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="managerValue" id="managerValue" class="valueSetting" readonly></td>
 							<th>가입일</th>
 							<td id="joinedAt"></td>
 						</tr>

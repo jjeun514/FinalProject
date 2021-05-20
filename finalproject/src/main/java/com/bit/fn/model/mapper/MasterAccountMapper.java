@@ -17,4 +17,5 @@ public interface MasterAccountMapper {
 	public int insertOne(String id, int comCode);
 	public int deleteOne(String id);
 	public int idCount(String id);
+	public int deleteMaster(String id);
 }

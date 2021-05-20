@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/navbar.jspf" %>
+<title>입주문의</title>
 <script type="text/javascript">
 $(document).ready(function(){
 	var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -26,7 +27,9 @@ $(document).ready(function(){
 			$("#yourBudget").attr('disabled',true);
 			$("#yourMessage").attr('disabled',true);
 			document.getElementById('modalText01').textContent='처리중입니다. 잠시만 기다려주세요.';
-			$('.closeDangerModal').hide()
+			$(document.body).css('pointer-events', 'none');
+			$('.closeDangerModal').html('<img src="imgs/Hourglass.gif" style="height:50px">');
+			$('.closeDangerModal').css('background-color','white').attr('disabled', true).css('height','70px').css('border','0');
 			$('#dangerModal').css('color','red');
 			$('#dangerModal').modal('show');
 			$.ajax({
