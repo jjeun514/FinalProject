@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.fn.model.mapper.join.MeetingRoomAndBranchMapper">
+    <resultMap type="com.bit.fn.model.vo.BranchVo" id="BranchMap">
+    	<id property="branchCode" column="branchCode"/>
+    	<result property="branchName" column="branchName"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.MettingRoomVo" id="MettingRoomMap">
+    	<id property="roomNum" column="roomNum"/>
+    	<result property="branchCode" column="branchCode"/>
+    	<result property="acreages" column="acreages"/>
+    	<result property="rent" column="rent"/>
+    	<result property="max" column="max"/>
+    </resultMap>
+    
+    <resultMap type="com.bit.fn.model.vo.join.MeetingRoomAndBranchVo" id="MeetingRoomAndBranchMap">
+    	<collection property="meetingRoom" resultMap="MettingRoomMap"/>
+    	<collection property="branch" resultMap="BranchMap"/>
+    </resultMap>
+    
+    <select id="selectAll" resultMap="MeetingRoomAndBranchMap">
+    	 SELECT 
+    	 m.roomNum, m.branchCode, m.acreages, m.rent, m.max, b.branchCode, b.branchName
+    	 FROM 
+    	 meetingRoom m inner join branch b 
+    	 ON 
+    	 m.branchCode=b.branchCode
+    	 order by m.branchCode, m.roomNum
+   	</select>
+   	<update id="updateMeetingRoom">
+   			UPDATE 
+   				meetingRoom m inner join branch b 
+				on m.branchCode=b.branchCode 
+			SET 
+				m.acreages=#{acreages}, m.rent=#{rent}, m.max=#{max} 
+			WHERE 
+				m.roomNum=#{roomNum} and b.branchName=#{branchName}
+   	</update>
+   	<delete id="deleteMeetingRoom">
+   			DELETE FROM 
+   				meetingRoom 
+			WHERE 
+				roomNum=#{roomNum} and branchCode=#{branchCode}
+   	</delete>
+   	<insert id="addMeetingRoom">
+   		Insert into meetingRoom (roomNum,branchCode,acreages,rent,max) values (#{roomNum}, #{branchCode}, #{acreages}, #{rent},  #{max});
+   	</insert>
+   	
+</mapper>
+

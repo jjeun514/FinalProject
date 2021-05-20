@@ -51,5 +51,30 @@
 		FROM reservation r INNER JOIN memberInfo m on r.memNum=m.memNum inner join companyInfo c ON m.comCode=c.comCode
 		order by r.reservationDay desc, r.useStartTime desc;
    	</select>
+   	
+   	<select id="selectOneJoin" resultMap="ReservationListMap">
+   		SELECT r.roomNum, r.memNum, r.reservationDay, r.useStartTime, r.useFinishTime, r.userCount, r.fee, r.etc, r.merchant_uid,
+		 m.memNum,m.memName,m.id,m.memNickName,m.comCode,m.dept,m.memPhone,m.signdate,m.admission, 
+		 c.comCode,c.officeNum,c.comName,c.ceo,c.manager,c.comPhone,c.contractDate,c.rentStartDate,c.rentFinishDate,c.point 
+		FROM reservation r INNER JOIN memberInfo m on r.memNum=m.memNum inner join companyInfo c ON m.comCode=c.comCode
+		WHERE m.memNickName=#{memNickName} and r.reservationDay=#{reservationDay} and r.useStartTime=#{useStartTime} 
+		order by r.reservationDay desc, r.useStartTime desc;
+   	</select>
+   	
+   	<update id="updateReservation">
+   			UPDATE 
+   				reservation r inner join memberInfo m 
+				on r.memNum=m.memNum 
+			SET 
+				r.roomNum=#{roomNum}, r.reservationDay=#{updateReservationDay}, r.useStartTime=#{updateUseStartTime}, r.useFinishTime=#{useFinishTime}, r.userCount=#{userCount}, r.fee=#{fee}  
+			WHERE
+				m.memNickName=#{memNickName} and r.reservationDay=#{reservationDay} and r.useStartTime=#{useStartTime}
+   	</update>
+   	<delete id="deleteReservation">
+   			DELETE FROM 
+   				reservation 
+			WHERE 
+				roomNum=#{roomNum} and reservationDay=#{reservationDay} and useStartTime=#{useStartTime}
+   	</delete>
 </mapper>
 
