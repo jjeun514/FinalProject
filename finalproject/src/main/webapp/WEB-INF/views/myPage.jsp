@@ -24,7 +24,7 @@
 <%@ include file="./template/header.jspf" %>
 
 <meta name="_csrf" content="${_csrf.token}"/>
-
+<title>마이페이지</title>
 
 <script type="text/javascript">
 	//csrf 토큰 타입별 전송 기능

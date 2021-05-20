@@ -59,11 +59,6 @@ public class AccountController {
 	OfficeService officeService;
 	
 	//로그인
-	@GetMapping("/login")
-	public String login() {
-		return "test/login";
-	}
-	
 	@GetMapping("/signin")
 	public String signin() {
 		return "/signin";
