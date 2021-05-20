@@ -3,6 +3,6 @@
 
 <mapper namespace="com.bit.fn.model.mapper.MettingRoomFacilitiesMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.MettingRoomFacilitiesVo">
-    	 SELECT * from mettingRoomFacilities
+    	 SELECT * from meetingRoomFacilities
    	</select>
 </mapper>
