@@ -10,7 +10,7 @@ import com.bit.fn.model.vo.OfficeVo;
 
 
 @Service
-public class OfficeService {
+public class OfficeService implements OfficeMapper{
 	@Autowired
 	OfficeMapper officeMapper;
 	

@@ -10,7 +10,7 @@ import com.bit.fn.model.vo.CompanyInfoVo;
 
 
 @Service
-public class CompanyinfoService {
+public class CompanyinfoService implements CompanyInfoMapper{
 	@Autowired
 	CompanyInfoMapper companyInfoMapper;
 	
@@ -26,6 +26,7 @@ public class CompanyinfoService {
 		return companyInfoMapper.updateOccupancy(officeNum);
 	}
 	
+	@Override
 	public List<CompanyInfoVo> selectAllCompany(){
 		return companyInfoMapper.selectAllCompany();
 	}

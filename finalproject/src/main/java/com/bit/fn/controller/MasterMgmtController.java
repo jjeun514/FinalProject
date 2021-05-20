@@ -36,7 +36,7 @@ import com.bit.fn.security.model.Account;
 import com.bit.fn.security.service.AccountService;
 
 @Controller
-@ComponentScan
+@ComponentScan	// [관리자페이지] 마스터계정관리
 public class MasterMgmtController {
 	@Autowired
 	MasteraccountAndCompanyInfoService masterAndComService;
