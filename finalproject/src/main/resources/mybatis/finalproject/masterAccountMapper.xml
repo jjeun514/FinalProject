@@ -21,4 +21,9 @@
    	<delete id="deleteOne">
    		delete from masterAccount where id=#{value}
    	</delete>
+   	
+   	<!-- 마스터 계정 삭제 -->
+   	<update id="deleteMaster">
+   		update masterAccount set deleted=1 where id=#{id}
+   	</update>
 </mapper>

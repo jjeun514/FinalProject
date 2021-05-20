@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
-
+<title>회의실관리</title>
 <script type="text/javascript">
-
+$('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
+$('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
+$('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
+$('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink active');
 //10,20,30개씩 selectBox 클릭 이벤트
 function changeSelectBox(currentPage, countPerPage, pageSize){
     var selectValue = $("#cntSelectBox").children("option:selected").val();

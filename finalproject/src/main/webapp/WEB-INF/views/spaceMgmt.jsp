@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="template/AdminNavbar.jspf" %>
+<title>공간관리</title>
 <script type="text/javascript">
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink active');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 $(document).ready(function(){
 	var company;

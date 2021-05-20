@@ -7,7 +7,6 @@ $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink active');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 $(document).ready(function(){
 	$('#detail').on('show.bs.modal', function(event) {
