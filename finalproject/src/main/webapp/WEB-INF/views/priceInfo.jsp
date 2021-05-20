@@ -13,7 +13,6 @@ $(document).ready(function(){
 	// 상담 신청 버튼 클릭
 	$(document).on('click','#submitApplication',function() {
 		if($('#yourName').val()==""||$('#yourCompany').val()==""||$('#yourPhone').val()==""||$('#yourEmail').val()==""||$('#yourCrew').val()==""||$('#yourBudget').val()==""){
-			console.log('이름/회사명/연락처/이메일/인원/금액 공백임');
 			document.getElementById('modalText01').textContent='필수 항목을 모두 입력해주세요.';
 			$('#dangerModal').modal('show');
 			return false;
@@ -51,13 +50,10 @@ $(document).ready(function(){
 					document.getElementById('modalText02').textContent='상담 신청을 해주셔서 감사합니다. 곧 연락드리겠습니다.';
 					$('#primaryModal').modal('show');
 					$('#primaryModal').on('hidden.bs.modal',function(){
-						console.log('modal 닫힘');
 						location.reload();
 					});
 				},
-				error: function(request, status, error){
-					console.log("ajax 에러");
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				error: function(){
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}

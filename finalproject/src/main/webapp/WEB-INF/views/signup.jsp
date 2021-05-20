@@ -21,7 +21,6 @@ var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
 var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글체크
 
 $(document).on('click','#authBtn',function() {
-	console.log("인증 버튼 누름");
 	var code='';
 	var codeVerification=false;
 	var email=$('#emailInput').val().replace(/\s/gi, '');
@@ -29,7 +28,6 @@ $(document).on('click','#authBtn',function() {
 		이 프로젝트에서는 gmail 인증만 진행하도록 함
 		따라서, gamil이 아닌 경우에도 알림띄움 */
 	if (email==""||!(email.endsWith("@gmail.com"))) {
-		console.log("공백/지메일 아님");
 		document.getElementById('modalText01').textContent='올바른 이메일을 입력해주세요.';
 		$('#dangerModal').modal('show');
 		return false;
@@ -39,7 +37,6 @@ $(document).on('click','#authBtn',function() {
 		$('#msg').show();
 		document.getElementById('modalText01').textContent='잠시만 기다려주세요.';
 		$('#dangerModal').modal('show');
-		console.log("이메일 넘겨서 인증번호 전송될 차례");
 		
 		// 비동기 통신(POST: 데이터를 body에 담아서 보냄)
 		$.ajax({
@@ -50,9 +47,6 @@ $(document).on('click','#authBtn',function() {
 				email:$("#emailInput").val().replace(/\s/gi,"")
 			},
 			success: function(data){
-				console.log("ajax 성공");
-				console.log("인증번호 전송 완료");
-				console.log("email: "+email);
 				$('#msg').hide();
 				$('#codeInput').attr("disabled", false);
 				$('#codeInput').show();
@@ -76,7 +70,6 @@ $(document).on('click','#authBtn',function() {
 					var codeInput=$('#codeInput').val();
 					if(codeInput!=""||code!=""){
 						if(codeInput==code){
-							console.log('인증코드 일치');
 							
 							document.getElementById('modalText02').textContent='감사합니다. 인증에 성공하였습니다.';
 							$('#primaryModal').modal('show');
@@ -100,7 +93,6 @@ $(document).on('click','#authBtn',function() {
 							var check=0;
 							$(".nickNameCheck").click(function(){
 								var memNickName = $('.memNickName').val();
-								console.log(memNickName);
 								if(memNickName.length>10 || memNickName.length<2 || pattern_spc.test(memNickName)){
 									document.getElementById('modalText01').textContent='공백 및 2자 이상 10자리 이하, 특수문자 사용 여부를 확인해주세요.';
 									$('#dangerModal').modal('show');
@@ -112,7 +104,6 @@ $(document).on('click','#authBtn',function() {
 										contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 										dataType: "text",
 										success: function(data){
-													console.log("data",data);
 													if(data=="Available"){
 														document.getElementById('modalText02').textContent='사용가능한 닉네임입니다.';
 														$('#primaryModal').modal('show');
@@ -124,9 +115,7 @@ $(document).on('click','#authBtn',function() {
 														$('#dangerModal').modal('show');
 													}
 												 },
-										error: function(error){
-											console.log(error);
-											console.log("ajax 에러");
+										error: function(){
 											$('#error').modal('show');
 											$('#emailInput').attr('disabled', false);
 											$('#authBtn').attr('disabled', false);
@@ -232,7 +221,6 @@ $(document).on('click','#authBtn',function() {
 							
 							
 						} else{
-							console.log('인증코드 불일치');
 							document.getElementById('modalText01').textContent='인증번호가 일치하지 않습니다.';
 							$('#dangerModal').modal('show');
 							$(".btnRegister").click(function(){
@@ -244,7 +232,6 @@ $(document).on('click','#authBtn',function() {
 				});
 			},
 			error: function(){
-				console.log("ajax 에러");
 				$('#error').modal('show');
 				$('#emailInput').attr('disabled', false);
 				$('#authBtn').attr('disabled', false);
@@ -269,7 +256,6 @@ $(function(){
 	//비동기 통신 (아이디 중복검사)
 	$(".userCheck").click(function(){
 		var username = $(".username").val().replace(/\s/gi,"");
-		console.log(username);
 		if(username==""||!(username.endsWith("@gmail.com"))){
 			document.getElementById('modalText01').textContent='공백 및 지메일 아이디를 확인해주세요';
 			$('#dangerModal').modal('show');
@@ -280,7 +266,6 @@ $(function(){
 				data: {username},
 				contentType : "application/json; charset=utf-8",
 				success: function(data){
-							console.log("data",data);
 							if(data=="Available"){
 								document.getElementById('modalText02').textContent='사용가능한 아이디입니다.';
 								$('#username').val(username);
@@ -297,7 +282,6 @@ $(function(){
 							}
 						 },
 				error: function(error){
-					console.log("ajax 에러");
 					$('#error').modal('show');
 					$('#emailInput').attr('disabled', false);
 					$('#authBtn').attr('disabled', false);
