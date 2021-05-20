@@ -90,6 +90,17 @@ $(function(){
 		$.cssBack();
 	});
 	
+	$(document).on('click', '.deleteBtn', function(e){
+		e.stopImmediatePropagation();
+		console.log('삭제누름');
+		/*
+		$.ajax({
+			url: "/deleteMaster",
+			
+		});
+		*/
+	});
+	
 	$('#accountDetail').on('hide.bs.modal', function(e) {
 		e.stopImmediatePropagation();
 		$.cssBack();

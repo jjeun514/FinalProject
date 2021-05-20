@@ -3,7 +3,7 @@
 
 <mapper namespace="com.bit.fn.model.mapper.BranchMapper">
     <select id="selectAll" resultType="com.bit.fn.model.vo.BranchVo">
-    	 SELECT * from branch
+    	 select * from branch where branchName not in ('0')
    	</select>
    	
    	<select id="selectAllBranchName" resultType="com.bit.fn.model.vo.BranchVo">

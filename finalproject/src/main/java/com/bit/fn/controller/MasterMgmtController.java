@@ -217,7 +217,6 @@ public class MasterMgmtController {
 		HttpStatus status;
 		System.out.println("[MasterMgmtController(updateCompanyInfo())]");
 		System.out.println("[MasterMgmtController(updateCompanyInfo())] ceoValue: "+ceoValue+", managerValue: "+managerValue+", comPhoneValue: "+comPhoneValue+", comCode: "+comCode+", comName: "+comName);
-
 			
 		try {
 			status=HttpStatus.OK;
@@ -236,4 +235,27 @@ public class MasterMgmtController {
 		}
 		return new ResponseEntity(status);
 	}
+	/*
+	// 마스터계정 삭제
+	@RequestMapping(path="/deleteMaster", method=RequestMethod.POST)
+	public ResponseEntity deleteMaster(int comCode, ) {
+		HttpStatus status;
+		System.out.println("[MasterMgmtController(deleteMaster())]");
+		System.out.println("[MasterMgmtController(deleteMaster())] ceoValue: "+ceoValue+", managerValue: "+managerValue+", comPhoneValue: "+comPhoneValue+", comCode: "+comCode+", comName: "+comName);
+		
+		try {
+			status=HttpStatus.OK;
+			// 마스터 계정 삭제
+			
+			// 입주공간 공실 처리
+			
+		} catch(NullPointerException e) {
+			System.out.println("[MasterMgmtController(deleteMaster())] bad request");
+			status=HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+			System.out.println("[MasterMgmtController(deleteMaster())] null");
+		}
+		return new ResponseEntity(status);
+	}
+	*/
 }
