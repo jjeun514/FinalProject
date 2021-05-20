@@ -162,6 +162,7 @@ $(document).ready(function(){
 		$(document).on('click','.editSpace', function(e){
 			e.stopImmediatePropagation();
 			console.log('[수정버튼누름]');
+			$('.pencil').attr('hidden', false);
 			$('.spaceTitle').html('입주 공간 정보 수정').css('color','red');
 			$('#comCode, #ceo, #manager, #comPhone, #masterAccount').css('background-color','rgba(230, 230, 230, 0.4)').css('color','darkgray');
 			$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소');
@@ -303,6 +304,7 @@ $(document).ready(function(){
 			$('.okBtn').attr('class', 'btn btn-primary editSpace').html('수정');
 			$('.editBranch').attr('disabled',true).attr('class', 'form-control branchName');
 			$('#contractDate, #rentStartDate, #rentEndDate, .officeName, .floor').attr('disabled', true);
+			$('.pencil').attr('hidden', true);
 		}
 		
 		$.dataBack=function(){
@@ -522,6 +524,9 @@ $(document).ready(function(){
 						<tr>
 							<th>지점</th>
 							<td class="valueSetting" id="branch">
+							<div id="forImg">
+								<img src="imgs/pencil.png" class="pencil" hidden>
+							</div>
 							<select class="form-control branchName" name="branch" disabled>  
 								<c:forEach items="${branchList }" var="list">
 						        	<option id="branchName" value="${list.branchName }" >${list.branchName }</option>
@@ -530,6 +535,9 @@ $(document).ready(function(){
 							</td>
 							<th>공간</th>
 							<td class="valueSetting">
+							<div id="forImg">
+								<img src="imgs/pencil.png" class="pencil" hidden>
+							</div>
 							<select class="form-control officeName" name="officeName" disabled>  
 								<option id="officeName"></option>
 							</select>
@@ -538,18 +546,21 @@ $(document).ready(function(){
 						<tr>
 							<th>층</th>
 							<td class="valueSetting">
+							<div id="forImg">
+								<img src="imgs/pencil.png" class="pencil" hidden>
+							</div>
 							<select class="form-control floor" name="floor" disabled>  
 								<option id="floor"></option>
 							</select>
 							</td>
 							<th>계약일</th>
-							<td><input type="date" id="contractDate" name="contractDate" class="valueSetting" disabled></td>
+							<td><img src="imgs/pencil.png" class="pencil" hidden><input type="date" id="contractDate" name="contractDate" class="valueSetting" disabled></td>
 						</tr>
 						<tr>
 							<th>입주일</th>
-							<td><input type="date" id="rentStartDate" name="rentStartDate" class="valueSetting" disabled></td>
+							<td><img src="imgs/pencil.png" class="pencil" hidden><input type="date" id="rentStartDate" name="rentStartDate" class="valueSetting" disabled></td>
 							<th>퇴소일</th>
-							<td><input type="date" id="rentEndDate" name="rentEndDate" class="valueSetting" disabled></td>
+							<td><img src="imgs/pencil.png" class="pencil" hidden><input type="date" id="rentEndDate" name="rentEndDate" class="valueSetting" disabled></td>
 						</tr>
 					</table>
 				</div>

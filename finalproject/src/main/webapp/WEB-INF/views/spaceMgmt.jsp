@@ -224,6 +224,7 @@ $(document).ready(function(){
 		$('.valueSetting').html('0');
 		$('.valueSetting').val('0');
 		$('#comName').html('(없음)');
+		$('.pencil').attr('hidden', true);
 	});
 	
 	// 추가
@@ -334,6 +335,7 @@ $(document).ready(function(){
 	$(document).on('click','.editBtn', function(){
 		$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','#f8f8f5');
 		$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','darkgray');
+		$('.pencil').attr('hidden', false);
 		if($('#comName').text()=='(없음)'){
 			company='(없음)';
 		}
@@ -379,6 +381,7 @@ $(document).ready(function(){
 						$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','transparent');
 						$('#branchName, #floor, #officeName, #occupancy, #comName').css('color','black');
 					});
+					$('.pencil').attr('hidden', true);
 				},
 				error: function(request, status, error){
 					console.log("ajax 에러");
@@ -522,7 +525,7 @@ $(document).ready(function(){
 							<th>지점</th>
 							<td id="branchName" class="valueSetting">-</td>
 							<th>가격</th>
-							<td id="rent"><input type="number" name="rentValue" id="rentValue" class="valueSetting" readonly></td>
+							<td id="rent"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="rentValue" id="rentValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>층</th>
@@ -534,11 +537,11 @@ $(document).ready(function(){
 							<th>호수</th>
 							<td id="officeName" class="valueSetting"></td>
 							<th>가용인원</th>
-							<td id="max"><input type="number" name="maxValue" id="maxValue" class="valueSetting" readonly></td>
+							<td id="max"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="maxValue" id="maxValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>평수</th>
-							<td id="acreages"><input type="number" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>
+							<td id="acreages"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>
 							<th>현재입주사</th>
 							<td id="comName" class="valueSetting"></td>
 						</tr>
@@ -548,27 +551,27 @@ $(document).ready(function(){
 						<tr colspan="4"><h3 class="spaceTitle">기본 제공</h3></tr>	       
 						<tr>
 							<th>책상</th>
-							<td id="desk"><input type="number" name="deskValue" id="deskValue" class="valueSetting" readonly></td>
+							<td id="desk"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="deskValue" id="deskValue" class="valueSetting" readonly></td>
 							<th>의자</th>
-							<td id="chair"><input type="number" name="chairValue" id="chairValue" class="valueSetting" readonly></td>
+							<td id="chair"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="chairValue" id="chairValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>공유기</th>
-							<td id="modem"><input type="number" name="modemValue" id="modemValue" class="valueSetting" readonly></td>
+							<td id="modem"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="modemValue" id="modemValue" class="valueSetting" readonly></td>
 							<th>소화기</th>
-							<td id="fireExtinguisher"><input type="number" name="fireExtinguisherValue" id="fireExtinguisherValue" class="valueSetting" readonly></td>
+							<td id="fireExtinguisher"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="fireExtinguisherValue" id="fireExtinguisherValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>냉반기</th>
-							<td id="airConditioner"><input type="number" name="airConditionerValue" id="airConditionerValue" class="valueSetting" readonly></td>
+							<td id="airConditioner"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="airConditionerValue" id="airConditionerValue" class="valueSetting" readonly></td>
 							<th>난방기</th>
-							<td id="radiator"><input type="number" name="radiatorValue" id="radiatorValue" class="valueSetting" readonly></td>
+							<td id="radiator"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="radiatorValue" id="radiatorValue" class="valueSetting" readonly></td>
 						</tr>
 						<tr>
 							<th>완강기</th>
-							<td id="descendingLifeLine"><input type="number" name="descendingLifeLineValue" id="descendingLifeLineValue" class="valueSetting" readonly></td>
+							<td id="descendingLifeLine"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="descendingLifeLineValue" id="descendingLifeLineValue" class="valueSetting" readonly></td>
 							<th>콘센트</th>
-							<td id="powerSocket"><input type="number" name="powerSocketValue" id="powerSocketValue" class="valueSetting" readonly></td>
+							<td id="powerSocket"><img src="imgs/pencil.png" class="pencil" hidden><input type="number" name="powerSocketValue" id="powerSocketValue" class="valueSetting" readonly></td>
 						</tr>
 					</table>
 	
