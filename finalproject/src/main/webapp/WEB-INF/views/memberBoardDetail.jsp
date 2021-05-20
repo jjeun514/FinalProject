@@ -181,7 +181,7 @@ function commentInsert(content){
 									<td class = "headerContent"><input id = "title" type = "text" class = "boardBorderStyle" readonly = "readonly" value = "${detail.title }"/></td>
 								</tr>
 								<tr>
-									<th class = "detailHeader">내용</th>
+									<th style = "vertical-align : top;" class = "detailHeader">내용</th>
 									<td id = "textField"><textarea rows="15" cols="63" id = "boardContent" style = "border:none" readonly>${detail.content }</textarea></td>
 								</tr>
 							</thead>
@@ -215,5 +215,5 @@ function commentInsert(content){
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
-
+<%@ include file="./template/footer.jspf" %>
 </html>

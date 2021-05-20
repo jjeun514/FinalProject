@@ -62,7 +62,7 @@ $(document).ready(function() {
 									</td>
 								</tr>
 								<tr>
-									<th class = "detailHeader">내용</th>
+									<th style = "vertical-align : top;" class = "detailHeader">내용</th>
 									<td id = "textField">
 										<input id = "writeContent" type = "text" autofocus/>
 									</td>

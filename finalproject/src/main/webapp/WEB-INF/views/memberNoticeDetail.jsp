@@ -19,31 +19,29 @@
 					<table id = "bbsTable" class="table table-bordered table-hover">
 						<thead>
 							<tr>
-								<th>글번호</th>
-								<th>${detail.num }</th>
+								<th class = "detailHeader">글번호</th>
+								<td class = "headerContent">${detail.num }</td>
 							</tr>
 							<tr>
-								<th>지점명</th>
-								<th>${detail.nickName }</th>
+								<th class = "detailHeader">지점명</th>
+								<td class = "headerContent">${detail.nickName }</td>
 							</tr>
 							<tr>
-								<th>날짜</th>
-								<th>${detail.date }</th>
+								<th class = "detailHeader">날짜</th>
+								<td class = "headerContent">${detail.date }</td>
+							</tr>
+							<tr>
+								<th style = "vertical-align : top;"  class = "detailHeader">내용</th>
+								<td id = "textField"><textarea rows="15" cols="63" id = "boardContent" style = "border:none" readonly>${detail.content }</textarea></td>
 							</tr>
 						</thead>
-						
-						<tbody>
-								<tr>
-									<td colspan = "2" id = "textField">${detail.content }</td>
-								</tr>
-						</tbody>
 					</table>
 					
 					<div id = "detailbtn">
 						<button id = "backbtn" type="button" class="btn btn-default" onclick = "history.back()">뒤로</button>
 						<!-- 어드민이 아닐경우 아래 버튼 히든 상태로 만들어야 함 -->
-						<button id = "modifybtn" type="button" class="btn btn-default">수정</button>
-						<button id = "deletebtn" type="button" class="btn btn-default">삭제</button>
+						<!--<button id = "modifybtn" type="button" class="btn btn-default">수정</button> -->
+						<!-- <button id = "deletebtn" type="button" class="btn btn-default">삭제</button> -->
 					</div>
 				</div>
 			</div>
