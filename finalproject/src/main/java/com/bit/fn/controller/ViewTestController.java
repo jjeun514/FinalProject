@@ -60,11 +60,6 @@ public class ViewTestController {
 		return "bbs";
 	} 
 	
-	@RequestMapping("/detail")
-	public String detail() {
-		return "detail";
-	}
-	
 	//마이페이지
 	@RequestMapping("/mypage")
 	public String myPage(Principal  principal,Model model,

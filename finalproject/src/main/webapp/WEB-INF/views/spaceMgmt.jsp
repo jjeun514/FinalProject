@@ -136,7 +136,6 @@ $(document).ready(function(){
 	$('#detail').on('show.bs.modal', function(event) {
 		var officeName=$(event.relatedTarget).data('officename');
 		var floorInput=$(event.relatedTarget).data('floorvalue');
-		console.log("officeName: "+officeName+", floorInput: "+floorInput);
 
 		$.ajax({
 			url: "/spaceDetail",
@@ -148,7 +147,6 @@ $(document).ready(function(){
 				floorInput:floorInput
 			},
 			success: function(data){
-				console.log('[ajax성공] data: '+JSON.stringify(data));
 				$.each(data, function(key, value){
 					try{
 						if(JSON.stringify(value[0].occupancy)==0||JSON.stringify(value[0].occupancy)==null){
@@ -166,14 +164,10 @@ $(document).ready(function(){
 						$('#maxValue').val(JSON.stringify(value[0].max).replaceAll("\"",""));
 						company=JSON.stringify(value[0].comName).replaceAll("\"","")
 						$('#comName').html(company);
-					} catch(TypeError){
-						console.log('공간 정보 특정 값 null');
-					}
+					} catch(TypeError){}
 				});
 			},
-			error: function(request, status, error){
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			error: function(){
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
@@ -189,11 +183,9 @@ $(document).ready(function(){
 				floorInput:floorInput
 			},
 			success: function(data){
-				console.log('[ajax성공] data: '+JSON.stringify(data));
 				$.each(data, function(key, value){
 					try{
 						if(JSON.stringify(value)=='[]'){
-							console.log('facilities 값이 없음');
 							return false;
 						} else {
 							$('#deskValue').val(JSON.stringify(value[0].desk).replaceAll("\"",""));
@@ -205,14 +197,10 @@ $(document).ready(function(){
 							$('#descendingLifeLineValue').val(JSON.stringify(value[0].descendingLifeLine).replaceAll("\"",""));
 							$('#powerSocketValue').val(JSON.stringify(value[0].powerSocket).replaceAll("\"",""));
 						}
-					} catch(TypeError){
-						console.log('공간 시설 특정 값 null');
-					}
+					} catch(TypeError){}
 				});
 			},
-			error: function(request, status, error){
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			error: function(){
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}
@@ -220,7 +208,6 @@ $(document).ready(function(){
        });
 	
 	$(document).on('click','.closeBtn',function(){
-		console.log('modal 닫힘');
 		$('.valueSetting').html('0');
 		$('.valueSetting').val('0');
 		$('#comName').html('(없음)');
@@ -229,7 +216,6 @@ $(document).ready(function(){
 	
 	// 추가
 	$(document).on('click','.submitSpaceBtn',function(){
-		console.log('submit버튼');
 		var deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput;
 		if($('#rentInput').val()==""||$('#floorInput').val()==""||$('#officeNameInput').val()==""||$('#acreagesInput').val()==""||$('#maxInput').val()==""){
 			document.getElementById('modalText01').textContent='필수 입력값을 입력해주세요.';
@@ -238,49 +224,41 @@ $(document).ready(function(){
 		} else{
 			if($('#deskInput').val()==""){
 				deskInput=0;
-				console.log('deskInput: '+deskInput);
 			} else{
 				deskInput=$('#deskInput').val();
 			}
 			if($('#chairInput').val()==""){
 				chairInput=0;
-				console.log('chairInput: '+chairInput);
 			} else{
 				chairInput=$('#chairInput').val();
 			}
 			if($('#modemInput').val()==""){
 				modemInput=0;
-				console.log('modemInput: '+modemInput);
 			} else{
 				modemInput=$('#modemInput').val();
 			}
 			if($('#fireExtinguisherInput').val()==""){
 				fireExtinguisherInput=0;
-				console.log('fireExtinguisherInput: '+fireExtinguisherInput);
 			} else{
 				fireExtinguisherInput=$('#fireExtinguisherInput').val();
 			}
 			if($('#airConditionerInput').val()==""){
 				airConditionerInput=0;
-				console.log('airConditionerInput: '+airConditionerInput);
 			} else{
 				airConditionerInput=$('#airConditionerInput').val();
 			}
 			if($('#radiatorInput').val()==""){
 				radiatorInput=0;
-				console.log('radiatorInput: '+radiatorInput);
 			} else{
 				radiatorInput=$('#radiatorInput').val();
 			}
 			if($('#descendingLifeLineInput').val()==""){
 				descendingLifeLineInput=0;
-				console.log('descendingLifeLineInput: '+descendingLifeLineInput);
 			} else{
 				descendingLifeLineInput=$('#descendingLifeLineInput').val();
 			}
 			if($('#powerSocketInput').val()==""){
 				powerSocketInput=0;
-				console.log('powerSocketInput: '+powerSocketInput);
 			} else{
 				powerSocketInput=$('#powerSocketInput').val();
 			}
@@ -306,14 +284,11 @@ $(document).ready(function(){
 					powerSocketInput:powerSocketInput
 				},
 				success: function(data){
-					console.log('[ajax성공] data: '+JSON.stringify(data));
 					if(data=='중복'){
-						console.log('branch & office 중복');
 						document.getElementById('modalText01').textContent='입력하신 '+$('#branchInput').val()+'지점 '+$('#floorInput').val()+'층에 '+$('#officeNameInput').val()+' 사무실이 이미 등록되어 있습니다.';
 						$('#dangerModal').modal('show');
 						return false;
 					} else if(data=='가능') {
-						console.log('branch & office 가능');
 						document.getElementById('modalText02').textContent='입력하신 공간이 추가되었습니다.';
 						$('#primaryModal').modal('show');
 						$('#primaryModal').on('hidden.bs.modal',function(){
@@ -321,9 +296,7 @@ $(document).ready(function(){
 						});
 					}
 				},
-				error: function(request, status, error){
-					console.log("ajax 에러");
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				error: function(){
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -344,7 +317,6 @@ $(document).ready(function(){
 
 		$('.valueSetting').prop('readonly', false);
 		$('#detail').on('hidden.bs.modal',function(){
-			console.log('상세페이지 닫힘');
 			$('.okBtn').attr('class','btn btn-primary editBtn');
 			$('.editBtn').html('수정');
 			$('#branchName, #floor, #officeName, #occupancy, #comName').css('background-color','transparent');
@@ -373,7 +345,6 @@ $(document).ready(function(){
 					powerSocketInput:$('#powerSocketValue').val()
 				},
 				success: function(){
-					console.log('[ajax성공] 공간 상세 정보 업데이트됨');
 					document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
 					$('#primaryModal').modal('show');
 					$('#primaryModal').on('hidden.bs.modal',function(){
@@ -383,9 +354,7 @@ $(document).ready(function(){
 					});
 					$('.pencil').attr('hidden', true);
 				},
-				error: function(request, status, error){
-					console.log("ajax 에러");
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				error: function(){
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -406,16 +375,13 @@ $(document).ready(function(){
 				floor:$('#floor').text(),
 			},
 			success: function(){
-				console.log('[ajax성공] 공간 삭제(officeFacilities/companyInfo/office삭제)');
 				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
 				$('#primaryModal').modal('show');
 				$('#primaryModal').on('hidden.bs.modal',function(){
 					location.reload();
 				});
 			},
-			error: function(request, status, error){
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			error: function(){
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}

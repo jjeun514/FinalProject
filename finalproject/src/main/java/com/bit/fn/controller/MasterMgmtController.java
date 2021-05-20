@@ -72,21 +72,17 @@ public class MasterMgmtController {
 	
 	@RequestMapping("/masterMgmt")
 	public String masterMgmtGet(HttpServletRequest req) throws Exception {
-		System.out.println("[MasterMgmtController(masterMgmtGet())]");
 	// 마스터 계정 리스트
 		req.setAttribute("masterList",masterAndComService.selectAllMasterAccounts());
-		
 		return "masterMgmt";
 	}
 	
 	// 마스터 계정 추가(get)
 	@RequestMapping("/addMasterAccount")
 	public String addMasterAccountGet(Model model) {
-		System.out.println("[MasterMgmtController(addMasterAccountGet())]");
 		model.addAttribute("officeInfoList", officeService.selectAll());
 		model.addAttribute("branchList", branchService.selectAllBranchName());
 		model.addAttribute("floorList", officeService.selectAllFloors());
-		
 		return "addMasterAccount";
 	}
 	
@@ -94,20 +90,11 @@ public class MasterMgmtController {
 	@RequestMapping(path="/masterIdCheck", method=RequestMethod.POST)
 	@ResponseBody
 	public String masterIdCheck(@RequestBody String username) {
-		System.out.println("[MasterMgmtController(masterIdCheck())]");
-		System.out.println("[MasterMgmtController(masterIdCheck())] username: "+username);
 		String id=username.replace("%40", "@").split("username=")[1];
-		System.out.println("[MasterMgmtController(masterIdCheck())] id: "+id);
 		int count=accountMapper.idCount(id);
-		System.out.println("[MasterMgmtController(masterIdCheck())] count: "+count);
 		   
 		if(count != 0) {
-			System.out.println("[MasterMgmtController(masterIdCheck())] 아이디 중복");
 			 id="notallowed";
-			 System.out.println("[MasterMgmtController(masterIdCheck())] id: "+id);
-		}else {
-			System.out.println("[MasterMgmtController(masterIdCheck())] 아이디 사용 가능");
-			System.out.println("[MasterMgmtController(masterIdCheck())] id: "+id);
 		}
 		return id;
 	}
@@ -118,15 +105,7 @@ public class MasterMgmtController {
 			int comCode, String comName, String ceo, String manager, String comPhone,
 			String branchSelected, int floorSelected, String officeSelected,
 			String contractDateInput, String MoveInDateInput, String MoveOutDateInput) {
-		System.out.println("[MasterMgmtController(addMasterAccountPost())]");
-		System.out.println("[MasterMgmtController(addMasterAccountPost())]\n"
-				+ " account: "+account+"\n id: "+username+"\n"
-				+ " comCode: "+comCode+"\n comName: "+comName+"\n ceo: "+ceo+"\n manager: "+manager+"\n comPhone: "+comPhone+"\n"
-				+ " contractDateInput: "+contractDateInput+"\n MoveInDateInput: "+MoveInDateInput+"\n MoveOutDateInput: "+MoveOutDateInput);
 		occupancyCheck=branchAndOfficeService.OccupancyCheck(branchSelected, floorSelected, officeSelected);
-		System.out.println("[MasterMgmtController(addMasterAccountPost())] occupancyCheck: "+occupancyCheck);
-		System.out.println("★★★★★"+occupancyCheck.get(0).getOffice().getOccupancy());
-		System.out.println("★★★★★"+occupancyCheck.get(0).getOffice().getComName());
 		
 		// 회사코드 & 회사명 중복 체크
 		if(companyInfoService.comCodeCheck(comCode).isEmpty()) {
@@ -136,7 +115,6 @@ public class MasterMgmtController {
 						// companyInfo 추가
 						List<OfficeVo> Num=officeService.selectOfficeNum(officeSelected, floorSelected, branchSelected);
 						officeNum=Num.get(0).getOfficeNum();
-						System.out.println("[MasterMgmtController(addMasterAccountPost())] officeNum: "+officeNum);
 						companyInfoService.addNewCompany(comCode, officeNum, comName, ceo, manager, comPhone, contractDateInput, MoveInDateInput, MoveOutDateInput, 1);
 						companyInfoService.updateOccupancy(officeNum);						
 						// 마스터 계정 추가
@@ -145,7 +123,6 @@ public class MasterMgmtController {
 						s_accountService.masterSave(account);
 						return "가능";
 					} else {
-						System.out.println("[MasterMgmtController(addMasterAccountPost())] 입주중복");
 						return "중복";
 					}
 				} else {
@@ -161,7 +138,6 @@ public class MasterMgmtController {
 
 	@RequestMapping(path="/branchSelected", method=RequestMethod.POST)
 	public ResponseEntity branchSelected(String branchSelected, HttpServletResponse resp) throws Exception {
-		System.out.println("[MasterMgmtController(branchSelected())]");
 		resp.setCharacterEncoding("utf-8");
 		HttpStatus status;
 		try {
@@ -173,23 +149,18 @@ public class MasterMgmtController {
 				jobj.put("floorsByBranch", branchAndOfficeService.selectFloors(branchSelected));
 				out = resp.getWriter();
 				out.print(jobj.toString());
-				System.out.println("list: "+branchAndOfficeService.selectFloors(branchSelected));
 			} catch (IOException e) {
-				System.out.println("[MasterMgmtController(branchSelected())] json 오류");
 				e.printStackTrace();
 			}
 		} catch(NullPointerException e) {
-			System.out.println("[MasterMgmtController(branchSelected())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[MasterMgmtController(branchSelected())] null");
 		}
 		return new ResponseEntity(status);
 	}
 	
 	@RequestMapping(path="/floorSelected", method=RequestMethod.POST)
 	public ResponseEntity floorSelected(String branchSelected, int floorSelected, HttpServletResponse resp) throws Exception {
-		System.out.println("[MasterMgmtController(officeSelected())]");
 		resp.setCharacterEncoding("utf-8");
 		HttpStatus status;
 		try {
@@ -201,16 +172,12 @@ public class MasterMgmtController {
 				jobj.put("offices", branchAndOfficeService.selectOffices(branchSelected, floorSelected));
 				out = resp.getWriter();
 				out.print(jobj.toString());
-				System.out.println("list: "+branchAndOfficeService.selectOffices(branchSelected, floorSelected));
 			} catch (IOException e) {
-				System.out.println("[MasterMgmtController(floorSelected())] json 오류");
 				e.printStackTrace();
 			}
 		} catch(NullPointerException e) {
-			System.out.println("[MasterMgmtController(floorSelected())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[MasterMgmtController(floorSelected())] null");
 		}
 		return new ResponseEntity(status);
 	}
@@ -219,23 +186,17 @@ public class MasterMgmtController {
 	@RequestMapping(path="/updateCompanyInfo", method=RequestMethod.POST)
 	public ResponseEntity updateCompanyInfo(String ceoValue, String managerValue, String comPhoneValue, int comCode, String comName) {
 		HttpStatus status;
-		System.out.println("[MasterMgmtController(updateCompanyInfo())]");
-		System.out.println("[MasterMgmtController(updateCompanyInfo())] ceoValue: "+ceoValue+", managerValue: "+managerValue+", comPhoneValue: "+comPhoneValue+", comCode: "+comCode+", comName: "+comName);
 			
 		try {
 			status=HttpStatus.OK;
 			if(companyInfoService.selectComPhone(comPhoneValue, comCode).isEmpty()) {
 				companyInfoService.updateCompanyInfo(ceoValue, managerValue, comPhoneValue, comCode, comName);
-				System.out.println("[MasterMgmtController(updateCompanyInfo())] "+comName+" 정보 수정 완료");
 			} else {
 				status=HttpStatus.NOT_ACCEPTABLE;
-				System.out.println("[MasterMgmtController(updateCompanyInfo())] comPhone 중복");
 			}
 		} catch(NullPointerException e) {
-			System.out.println("[MasterMgmtController(updateCompanyInfo())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[MasterMgmtController(updateCompanyInfo())] null");
 		}
 		return new ResponseEntity(status);
 	}
@@ -244,36 +205,25 @@ public class MasterMgmtController {
 	@RequestMapping(path="/deleteMaster", method=RequestMethod.POST)
 	public ResponseEntity deleteMaster(int comCode, String id) {
 		HttpStatus status;
-		System.out.println("[MasterMgmtController(deleteMaster())]");
-		System.out.println("[MasterMgmtController(deleteMaster())]");
 		
 		try {
 			status=HttpStatus.OK;
 			// 마스터 계정 삭제
 			masterAccountService.deleteMaster(id);
-			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 deleted=1 완료");
 			int num=masterAccountService.selectNum(id);
-			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 num: "+num);
 			accountRoleService.deleted(num);
-			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 권한 삭제(account_role: deleted)");
 			masterAccountService.enabledToZero(id);
-			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 권한 삭제(enabled: 0)");
 			
 			// 회사 정보 삭제
 			officeNum=companyInfoService.selectOfficeNum(comCode);
-			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 입주 공간 officeNum: "+officeNum);
 			companyInfoService.deleteCompanyInfo(officeNum);
-			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 회사 정보 삭제");
 			
 			// 입주공간 공실 처리
 			officeService.updateOccupancy(0, officeNum);
-			System.out.println("[MasterMgmtController(deleteMaster())] 마스터계정 입주 공간 공실 처리 완료");
 			
 		} catch(NullPointerException e) {
-			System.out.println("[MasterMgmtController(deleteMaster())] bad request");
 			status=HttpStatus.BAD_REQUEST;
 			e.printStackTrace();
-			System.out.println("[MasterMgmtController(deleteMaster())] null");
 		}
 		return new ResponseEntity(status);
 	}

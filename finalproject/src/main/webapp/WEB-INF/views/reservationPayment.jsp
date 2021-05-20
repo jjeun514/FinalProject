@@ -143,7 +143,4 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div><!--centent end-->
-</body><!--body end-->
-<%@ include file="./template/footer.jspf" %>
-</html>
-
+<%@ include file="template/footer.jspf" %>

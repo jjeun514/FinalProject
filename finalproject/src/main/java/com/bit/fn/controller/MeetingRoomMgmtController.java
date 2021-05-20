@@ -51,7 +51,6 @@ public class MeetingRoomMgmtController {
 	@RequestMapping(value = "selectRevOne", method = RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> selectRevOne(MeetingRoomMgmtVo selectRev) {
-		
 		String memNickName = selectRev.getMemNickName();
 		String reservationDay = selectRev.getReservationDay();
 		String useStartTime = selectRev.getUseStartTime();
@@ -76,7 +75,6 @@ public class MeetingRoomMgmtController {
 		result.put("dept", revOne.getMemberInfo().getDept());
 		result.put("memPhone", revOne.getMemberInfo().getMemPhone());
 		result.put("merchant_uid", revOne.getReservation().getMerchant_uid());
-		
 		
 		return result;
 	}

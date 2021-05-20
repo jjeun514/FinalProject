@@ -792,6 +792,10 @@
 		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable, .mrMgmtTable, .revMgmtTable {
 			margin-top: -50px;
 		}
+		#emptySpace {
+			border: 0;
+			height: 70px;
+		}
 		#addModal {
 			position: absolute;
 			width: 100%;
@@ -851,17 +855,20 @@
 		.prevIcon, .nextIcon {
 			background-color: rgba(255, 255, 254, 0.5);
 		}
-		#detail input, #detail select {
+		#detail input, #detail select,
+		#accountDetail input, #accountDetail select {
+			display: inline-block;
 			margin: 0 auto;
 			padding: 0;
 			text-align: center;
 			height: 100%;
-			width: 100%;
+			width: 60%;
 			border-spacing: 0px 0px;
 			text-align-last: center;
 			border: 0;
 			margin-left: 10px;
 			background-color: transparent;
+			margin-right: 0px;
 		}
 		#detail table {
 			border-collapse : collapse;
@@ -879,8 +886,9 @@
 			border: 0;
 		}
 		.pencil, #forImg {
+			display: inline-block;
 			width: 30px;
-			position: fixed;
+			position: static;
 			text-align: left;
 			margin-top: -3px;
 		}
@@ -889,6 +897,11 @@
 		}
 		.spaceTable .pencil {
 			margin-left: -5px;
+		}
+		.dateCss input[type="date"]::-webkit-calendar-picker-indicator,
+		.dateCss input[type="date"]::-webkit-inner-spin-button {
+		    display: none;
+		    appearance: none;
 		}
 		
 		/* 로그인 페이지 */

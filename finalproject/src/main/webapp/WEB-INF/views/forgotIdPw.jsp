@@ -26,17 +26,10 @@ $(document).on('click','#forgotIdBtn',function() {
 	var idPhone=$("#idPhoneInput").val().replace(/\s/gi,"");
 	var memberId="";
 	if (idName==""||idPhone=="") {
-		console.log("이름/pw 공백");
 		document.getElementById('modalText01').innerHTML='입력값을 확인해주세요.';
 		$('#dangerModal').modal('show');
-		console.log("[id찾기 input] name: "+idName);
-		console.log("[id찾기 input] phone: "+idPhone);
 		return false;
 	} else {
-		console.log("이름/비밀번호 입력됨");
-		console.log("[id찾기 input] "+idName);
-		console.log("[id찾기 input] "+idPhone);
-		
 		$.ajax({
 			url: "/forgotId",
 			type: "POST",
@@ -47,14 +40,10 @@ $(document).on('click','#forgotIdBtn',function() {
 				phone:idPhone
 			},
 			success: function(id){
-				console.log('[ajax성공] name: '+idName);
-				console.log('[ajax성공] phone: '+idPhone);
 				$.each(id, function(key, value){
 					memberId=value;
 				});
-				console.log('[ajax성공] memberId: '+memberId);
 				if(memberId==null||memberId==""){
-					console.log('정보일치, but 아이디 없음');
 					document.getElementById('modalText02').innerHTML='아이디가 존재하지 않습니다.';
 					$('#primaryModal').modal('show');
 				} else{
@@ -62,10 +51,8 @@ $(document).on('click','#forgotIdBtn',function() {
 					$('#primaryModal').modal('show');
 				}
 			},
-			error: function(request, status, error){
+			error: function(){
 				memberId="";
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				document.getElementById('modalText01').innerHTML='아이디가 존재하지 않습니다.';
 				$('#dangerModal').modal('show');
 			}
@@ -81,18 +68,10 @@ $(document).on('click','#forgotPwBtn',function() {
 	var code='';
 	var codeVerification=false;
 	if (pwName==""||pwId==""||!(pwId.endsWith("@gmail.com"))||pwPhone=="") {
-		console.log("이름/id/pw/인증번호 공백");
 		document.getElementById('modalText01').innerHTML='입력값을 확인해주세요.';
 		$('#dangerModal').modal('show');
-		console.log("[pw찾기 input] name: "+pwName);
-		console.log("[pw찾기 input] id: "+pwId);
-		console.log("[pw찾기 input] phone: "+pwPhone);
 		return false;
 	} else{
-		console.log("이름/아이디/비밀번호 입력됨");
-		console.log("[pw찾기 input] name: "+pwName);
-		console.log("[pw찾기 input] id: "+pwId);
-		console.log("[pw찾기 input] phone: "+pwPhone);
 		document.getElementById('modalText01').innerHTML='잠시만 기다려주세요.';
 		$('#dangerModal').modal('show');
 		$('#msg').show();
@@ -115,9 +94,6 @@ $(document).on('click','#forgotPwBtn',function() {
 				$('#codeInput').attr("disabled",false);
 				$('#forgotPwBtn').attr("disabled",false);
 				$('#primaryModal').modal('show');
-				console.log('[ajax성공] name: '+pwName);
-				console.log('[ajax성공] id: '+pwId);
-				console.log('[ajax성공] phone: '+pwPhone);
 					document.getElementById('modalText02').innerHTML='입력하신 이메일로 인증번호가 전송되었습니다.';
 					$('#msg').hide();
 					$('#forgotPwBtn').attr('id','verification');
@@ -132,7 +108,6 @@ $(document).on('click','#forgotPwBtn',function() {
 						var codeInput=$('#codeInput').val();
 						if(codeInput!=""||code!=""){
 							if(codeInput==code){
-								console.log('인증코드 일치');
 								$('#pwNameInput').attr("disabled",true);
 								$('#pwIdInput').attr("disabled",true);
 								$('#pwPhoneInput').attr("disabled",true);
@@ -144,14 +119,13 @@ $(document).on('click','#forgotPwBtn',function() {
 									$(".newPw").submit();
 								});
 							} else{
-								console.log('인증코드 불일치');
 								document.getElementById('modalText01').innerHTML='인증코드가 일치하지 않습니다.';
 								$('#dangerModal').modal('show');
 							}
 						}
 					});
 			},
-			error: function(request, status, error){
+			error: function(){
 				$('#msg').hide();
 				$('#forgotPwBtn').attr("disabled",false);
 				$('#pwNameInput').attr("disabled",false);
@@ -159,8 +133,6 @@ $(document).on('click','#forgotPwBtn',function() {
 				$('#pwPhoneInput').attr("disabled",false);
 				$('#codeInput').attr("disabled",true);
 				memberpw="";
-				console.log("ajax 에러");
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				document.getElementById('modalText01').innerHTML='입력하신 정보가 일치하지 않습니다.';
 				$('#dangerModal').modal('show');
 			}
