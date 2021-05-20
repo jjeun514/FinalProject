@@ -790,9 +790,7 @@
 			width: 80px;
 		}
 		.spaceMgmtTable, .companyMgmtTable, .masterMgmtTable, .mrMgmtTable, .revMgmtTable {
-		#emptySpace {
-			border: 0;
-			height: 60px;
+			margin-top: -50px;
 		}
 		#addModal {
 			position: absolute;
@@ -880,14 +878,12 @@
 			margin-left: -96%;
 			border: 0;
 		}
-	
-	/* 입주사관리 */
+		/* 입주사관리 */
 		.branchName {
 			appearance: none;
 			-webkit-appearance : none;
 			-moz-appearance: none;
 		}
-		
 		/* 로그인 페이지 */
 		 #loginIdPw{
 			margin: auto;
