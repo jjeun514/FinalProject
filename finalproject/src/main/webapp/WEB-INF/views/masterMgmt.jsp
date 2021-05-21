@@ -161,7 +161,6 @@ $(function(){
 			$(document).on('click','.okBtn', function(e){
 				e.stopImmediatePropagation();
 				$('input').change(function(e){
-					e.stopImmediatePropagation();
 					$.ajax({
 						url: "/updateCompanyInfo",
 						type: "POST",

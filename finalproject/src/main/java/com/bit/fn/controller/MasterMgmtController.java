@@ -186,7 +186,6 @@ public class MasterMgmtController {
 	@RequestMapping(path="/updateCompanyInfo", method=RequestMethod.POST)
 	public ResponseEntity updateCompanyInfo(String ceoValue, String managerValue, String comPhoneValue, int comCode, String comName) {
 		HttpStatus status;
-			
 		try {
 			status=HttpStatus.OK;
 			if(companyInfoService.selectComPhone(comPhoneValue, comCode).isEmpty()) {
