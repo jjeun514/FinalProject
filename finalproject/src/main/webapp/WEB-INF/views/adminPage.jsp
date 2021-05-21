@@ -27,10 +27,10 @@
 					<td><a href="#" onclick="return false;">${spaceInfo.acreages}</a></td>
 					<td><a href="#" onclick="return false;">${spaceInfo.rent}</a></td>
 				<c:if test="${spaceInfo.occupancy eq 0}">
-					<td style="color:red; background-color:lightyellow"><a href="#" onclick="return false;">공실</a></td>
+					<td><a href="#" onclick="return false;"><font style="color:rgba(255,72,72,0.9)">공실</font></a></td>
 				</c:if>
 				<c:if test="${spaceInfo.occupancy eq 1}">
-					<td><a href="#" onclick="return false;">임대</a></td>
+					<td><a href="#" onclick="return false;"><font style="color:darkgray">임대</font></a></td>
 				</c:if></a>
 					<td><a href="#" onclick="return false;">${spaceInfo.comName}</a></td>
 					<td><a href="#" onclick="return false;">${spaceInfo.max}</a></td>

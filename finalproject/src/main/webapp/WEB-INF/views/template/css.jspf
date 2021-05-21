@@ -898,9 +898,9 @@
 		}
 		#forImg2 {
 			marging-top: 3px;
-			width: 100px;
+			margin-left: -20px;
 		}
-		#max {
+		.max2 {
 			padding-right: 200px;
 		}
 		.spaceTable .pencil {
