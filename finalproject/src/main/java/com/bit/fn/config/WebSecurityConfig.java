@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						,"/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"
 						,"/https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
 						,"/https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
-						,"/","/home","/index","/priceInfo"
+						,"/","/home","/index","/priceInfo","/privacy"
 						,"/bbs","/detail"
 						,"/newPw","/signup","/signin","/logout","/forgotIdPw","/forgotId","/forgotPw"
 						).permitAll()
