@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						,"/","/home","/index","/priceInfo","/privacy"
 						,"/bbs","/detail"
 						,"/newPw","/signup","/signin","/logout","/forgotIdPw","/forgotId","/forgotPw"
+						,"/usercheck","/nickNameCheck","/joinMember","/checkPw","/updatePw","/forgotUpdatePw"
 						).permitAll()
 			//어드민 계정만 접근 가능
 				.antMatchers("/adminPage","/spaceMgmt","/chart","/masterMgmt",

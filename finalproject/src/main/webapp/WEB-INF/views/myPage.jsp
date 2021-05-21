@@ -979,13 +979,6 @@ page('paginated2');
 			</form>
 		</div>
       </div>
-      <!-- 
-      <div class="tab-pane fade profile" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-      	<div id="mypageMargin">
-      	프로필 수정
-      	</div>
-      </div>
-       -->
       <div class="tab-pane fade updatePw" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
       	<div id="mypageMargin">
       	   <h5 class="mypagePw">비밀번호 변경</h5>

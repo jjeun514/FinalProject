@@ -85,7 +85,6 @@ public class AccountController {
 		
 		String id=username.replace("%40", "@").split("username=")[1];
 		int count=memberinfoService.idCount(id);
-		   
 		if(count != 0) {
 			 id="Already in use";
 		}else {

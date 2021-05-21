@@ -1109,7 +1109,7 @@
 			font-size: 20px;
 		}
 		
-		#pagination {
+		#gg {
 			display: table-cell;
 		}
 
@@ -1128,6 +1128,9 @@
 			text-align-last: center;
 			margin: auto;
 			border: 0px;
+		}
+		.mypageBbsPaginate a{
+			text-decoration: none;
 		}
 		
 </style>
