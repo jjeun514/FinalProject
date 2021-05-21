@@ -3,6 +3,7 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>공간관리</title>
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink active');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
