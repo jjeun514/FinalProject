@@ -885,7 +885,7 @@
 			margin-left: -96%;
 			border: 0;
 		}
-		.pencil, #forImg {
+		.pencil, #forImg, #forImg2 {
 			display: inline-block;
 			width: 30px;
 			position: static;
@@ -894,6 +894,14 @@
 		}
 		#forImg {
 			marging-top: 3px;
+			margin-left: 10px;
+		}
+		#forImg2 {
+			marging-top: 3px;
+			width: 100px;
+		}
+		#max {
+			padding-right: 200px;
 		}
 		.spaceTable .pencil {
 			margin-left: -5px;
