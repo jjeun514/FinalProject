@@ -13,7 +13,6 @@ $(document).ready(function(){
 	// 상담 신청 버튼 클릭
 	$(document).on('click','#submitApplication',function() {
 		if($('#yourName').val()==""||$('#yourCompany').val()==""||$('#yourPhone').val()==""||$('#yourEmail').val()==""||$('#yourCrew').val()==""||$('#yourBudget').val()==""){
-			console.log('이름/회사명/연락처/이메일/인원/금액 공백임');
 			document.getElementById('modalText01').textContent='필수 항목을 모두 입력해주세요.';
 			$('#dangerModal').modal('show');
 			return false;
@@ -51,13 +50,10 @@ $(document).ready(function(){
 					document.getElementById('modalText02').textContent='상담 신청을 해주셔서 감사합니다. 곧 연락드리겠습니다.';
 					$('#primaryModal').modal('show');
 					$('#primaryModal').on('hidden.bs.modal',function(){
-						console.log('modal 닫힘');
 						location.reload();
 					});
 				},
-				error: function(request, status, error){
-					console.log("ajax 에러");
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				error: function(){
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
 				}
@@ -140,22 +136,22 @@ $(document).ready(function(){
 	<%//층별 이미지 %>	
 	<div class="container t1" >
 		<div class="box_t1">
-			<img src="imgs/2.jpg">
+			<img src="imgs/photo-1587702068694-a909ef4aa346.jpg">
 			<span>1F</span>
 		</div>
 
 		<div class="box_t1">
-			<img src="imgs/3.jpg">
+			<img src="imgs/photo-1497366216548-37526070297c.jpg">
 			<span>2F</span>
 		</div>
 	  
 		<div class="box_t1">
-			<img src="imgs/4.jpg">
+			<img src="imgs/photo-1531973576160-7125cd663d86.jpg">
 			<span>3F</span>
 		  </div>
 		  
 		<div class="box_t1">
-			<img src="imgs/5.jpg">
+			<img src="imgs/photo-1497366412874-3415097a27e7.jpg">
 			<span>4F</span>
 		</div>
 	</div>

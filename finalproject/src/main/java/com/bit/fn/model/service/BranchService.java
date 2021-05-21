@@ -11,7 +11,7 @@ import com.bit.fn.model.vo.BranchVo;
 
 
 @Service
-public class BranchService {
+public class BranchService implements BranchMapper {
 	@Autowired
 	BranchMapper branchMapper;
 	
@@ -19,6 +19,7 @@ public class BranchService {
 		return branchMapper.selectAll();
 	}
 	
+	@Override
 	public List<BranchVo> selectAllBranchName(){
 		return branchMapper.selectAllBranchName();
 	}

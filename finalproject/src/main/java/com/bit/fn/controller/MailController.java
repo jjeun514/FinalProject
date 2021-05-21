@@ -25,7 +25,6 @@ public class MailController {
 	// 회원 가입 페이지
 	@RequestMapping("/signup")
 	String signup(Model model) {
-		System.out.println("[MailController(signup())]");
 		model.addAttribute("company",companyinfoService.selectAll());
 		return "signup";
 	}
@@ -35,17 +34,12 @@ public class MailController {
 	@ResponseBody
 	public String auth(String email) {
 		String code="";
-		System.out.println("[MailController(auth())]");
 		to=email;
-		System.out.println("[MailController(auth())] to: "+to);
 		
 		try {
 			// 인증번호 메일 보내기
 			code=mailService.sendMail(to);
-			System.out.println("[MailController(auth())] code: "+code);
-			System.out.println("[MailController(auth())] 메일 발송 성공");
 		} catch (MessagingException e) {
-			System.out.println("[MailController(auth())] 메일 발송 실패");
 			e.printStackTrace();
 		}
 		
@@ -57,21 +51,14 @@ public class MailController {
 	@ResponseBody
 	public String forgotPw(String email) {
 		String code="";
-		System.out.println("[MailController(forgotPw())]");
 		to=email;
-		System.out.println("[MailController(forgotPw())] to: "+to);
 			
 		try {
 			// 인증번호 메일 보내기
 			code=mailService.sendMail(to);
-			System.out.println("[MailController(forgotPw())] code: "+code);
-			System.out.println("[MailController(forgotPw())] 인증번호 발송 성공");
 			// 비밀번호 변경 링크 전송
 			mailService.sendMail(to);
-			System.out.println("[MailController(forgotPw())] code: "+code);
-			System.out.println("[MailController(forgotPw()] 메일 발송 성공");
 		} catch (MessagingException e) {
-			System.out.println("[MailController(forgotPw()] 메일 발송 실패");
 			e.printStackTrace();
 		}
 		return code;

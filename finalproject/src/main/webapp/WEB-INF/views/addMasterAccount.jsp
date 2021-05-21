@@ -4,11 +4,11 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 var pattern_num = /[0-9]/;	// 숫자 
 var pattern_eng = /[a-zA-Z]/;	// 문자 
@@ -30,7 +30,6 @@ $(function(){
 	// 아이디 중복 검사
 	$(".userCheck").click(function(){
 		username=$(".username").val().replace(/\s/gi,"");
-		console.log('username: '+username);
 		if(username==""){
 			document.getElementById('modalText01').textContent='아이디를 입력해주세요.';
 			$('#dangerModal').modal('show');
@@ -39,15 +38,12 @@ $(function(){
 			$('#dangerModal').modal('show');
 	    	return false;
 		} else{
-			console.log('ajax이전 username: '+username);
 			$.ajax({
 				url: "/masterIdCheck",
 				type : "POST",
 				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data: {username},
 				success: function(data){
-					console.log('ajax이후 username: '+username);
-					console.log("data: "+data);
 					if(data=="notallowed"){
 						document.getElementById('modalText01').textContent='사용중인 아이디입니다.';
 						$('#dangerModal').modal('show');
@@ -62,8 +58,7 @@ $(function(){
 						check=1;
 					}
 				 },
-				error: function(error){
-					console.log("ajax 에러");
+				error: function(){
 					$.modalBack()
 					document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 					$('#dangerModal').modal('show');
@@ -74,17 +69,14 @@ $(function(){
 	
 	// 1) 계약일 선택
 	$('.contractDateInput').change(function(){
-		console.log('계약일 선택');
 		var date=new Date();
 		var today=date.getFullYear()+"-"+("0"+(date.getMonth()+1)).slice(-2)+"-"+("0"+date.getDate()).slice(-2);
-		console.log('today: '+today);
 		var contractDate=$('.contractDateInput').val();
 		var moveInDate;
 		var moveOutDate;
 		
 		var ContractFromToday=Math.ceil(new Date(contractDate).getTime()-new Date(today).getTime());
 		ContractFromToday=Math.ceil(ContractFromToday/(1000*3600*24));
-		console.log('오늘-계약일: '+ContractFromToday);
 		
 		if(ContractFromToday>0){
 			document.getElementById('modalText01').textContent='계약일이 잘못 입력되었습니다.';
@@ -97,7 +89,6 @@ $(function(){
 			$('#primaryModal').modal('show');
 			contractCheck=true;
 		} else {
-			console.log('계약일 정상');
 			document.getElementById('modalText02').textContent=Math.abs(ContractFromToday)+'일 전에 계약되었습니다.';
 			$('#primaryModal').modal('show');
 			contractCheck=true;
@@ -107,7 +98,6 @@ $(function(){
 			$('.branchSelected').attr('disabled', false);
 			// 2) 지점 선택
 			$('.branchSelected').change(function(){
-				console.log('지점 선택');
 				$('.officeSelected').attr('disabled', true);
 				$('.officeSelected').html('<option selected>공간선택</option>');
 				$('.floorSelected').html('<option selected>층선택</option>');
@@ -122,13 +112,9 @@ $(function(){
 							branchSelected:$('.branchSelected').val()
 						},
 						success: function(data){
-							console.log('[ajax성공] data: '+JSON.stringify(data));
 							$('.floorSelected').attr('disabled', false);
 							$.each(data, function (floorsByBranch, item) {
-								console.log("floorsByBranch : "+floorsByBranch);
-								console.log("item : "+JSON.stringify(item.length));
 								for(var index=0; index<item.length; index++){
-									console.log("[반복문]floor : "+JSON.stringify(item[index].office.floor));
 									if(index==0){
 										$('.floorSelected').html('<option selected>층선택</option>');
 										$('.floorSelected').append('<option>'+JSON.stringify(item[index].office.floor)+'</option>');
@@ -140,9 +126,7 @@ $(function(){
 							
 							// 3) 층 선택
 							$('.floorSelected').change(function(){
-								console.log('층 선택');
 								if($('.floorSelected').val()!='층선택'){
-									console.log('층 선택 ajax');
 									$.ajax({
 										url: "/floorSelected",
 										type : "POST",
@@ -153,18 +137,14 @@ $(function(){
 											floorSelected:$('.floorSelected').val()
 										},
 										success: function(data){
-											console.log('[ajax성공] data: '+JSON.stringify(data));
 											$('.officeSelected').attr('disabled', false);
 											$.each(data, function (offices, item) {
-												console.log("offices : "+offices);
-												console.log("item : "+JSON.stringify(item.length));
 												if(JSON.stringify(item.length)==0){
 													document.getElementById('modalText01').textContent=$('.branchSelected').val()+'지점 '+$('.floorSelected').val()+'층에 입주 가능한 공간이 없습니다. 다른 곳을 선택해주세요.';
 													$('#dangerModal').modal('show');
 													$('.officeSelected').attr('disabled', true);
 												} else {
 													for(var index=0; index<item.length; index++){
-														console.log("[반복문]offices : "+JSON.stringify(item[index].office.officeName));
 														if(index==0){
 															$('.officeSelected').html('<option selected>공간선택</option>');
 															$('.officeSelected').append('<option>'+JSON.stringify(item[index].office.officeName).replaceAll("\"","")+'</option>');
@@ -181,28 +161,20 @@ $(function(){
 												if($('.MoveInDateInput').val()!=''){
 													$('.MoveOutDateInput').attr('disabled', false);
 												}
-												console.log('입주공간 선택');
 												if($('.officeSelected').val()!='공간선택'){
-													console.log('공간 선택 ajax');
-													
 													$('.MoveInDateInput').change(function(){
 														moveInDate=$('.MoveInDateInput').val();
 														var MoveinFromToday=Math.ceil(new Date(moveInDate).getTime()-new Date(today).getTime());
 														MoveinFromToday=Math.ceil(MoveinFromToday/(1000*3600*24));
-														console.log('오늘-입주일: '+MoveinFromToday);
 														var ContractFromMovein=Math.ceil(new Date(contractDate).getTime()-new Date(moveInDate).getTime());
 														ContractFromMovein=Math.ceil(ContractFromMovein/(1000*3600*24));
-														console.log('계약일-입주일: '+ContractFromMovein);
 														
 														if(MoveinFromToday<0){
-															console.log('오늘보다 이전');
 															if(ContractFromMovein<=0){
-																console.log('계약일이 입주일보다 먼저이거나 같음');
 																document.getElementById('modalText02').textContent='입주일이 오늘로부터 '+Math.abs(MoveinFromToday)+'일 전입니다.';
 																$('#primaryModal').modal('show');
 																moveInCheck=true;
 															} else if (ContractFromMovein>0){
-																console.log('계약일이 입주일보다 늦음');
 																document.getElementById('modalText01').textContent='계약일은 입주일보다 늦을 수 없습니다.';
 																$('#dangerModal').modal('show');
 																$('.MoveInDateInput').val('');
@@ -210,7 +182,6 @@ $(function(){
 																return false;
 															}
 														} else{
-															console.log('오늘보다 이후');
 															if(MoveinFromToday>7){
 																document.getElementById('modalText01').textContent='입주일까지 '+MoveinFromToday+'일 남았습니다. 입주 7일 전 등록을 권장합니다.';
 																$('#dangerModal').modal('show');
@@ -231,10 +202,8 @@ $(function(){
 															moveOutDate=$('.MoveOutDateInput').val();
 															var MoveoutFromToday=Math.ceil(new Date(moveOutDate).getTime()-new Date(today).getTime());
 															MoveoutFromToday=Math.ceil(MoveoutFromToday/(1000*3600*24));
-															console.log('today-퇴소일: '+MoveoutFromToday);
 															var MoveoutFromMovein=Math.ceil(new Date(moveOutDate).getTime()-new Date(moveInDate).getTime());
 															MoveoutFromMovein=Math.ceil(MoveoutFromMovein/(1000*3600*24));
-															console.log('입주일-퇴소일: '+MoveoutFromMovein);
 															
 															if(MoveoutFromToday<=0||MoveoutFromMovein<=0){
 																document.getElementById('modalText01').textContent='퇴소일이 잘못 입력되었습니다.';
@@ -247,7 +216,6 @@ $(function(){
 																$('#dangerModal').modal('show');
 																moveOutCheck=true;
 															} else if(MoveoutFromToday>0 || MoveoutFromMovein>0){
-																console.log('퇴소일 정상');
 																document.getElementById('modalText02').textContent='입력하신 입주기간은 '+MoveoutFromMovein+'일 입니다.';
 																$('#primaryModal').modal('show');
 																moveOutCheck=true;
@@ -261,8 +229,7 @@ $(function(){
 												}
 											});
 										},
-										error: function(error){
-											console.log("ajax 에러");
+										error: function(){
 											$.modalBack()
 											document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 											$('#dangerModal').modal('show');
@@ -275,8 +242,7 @@ $(function(){
 								}
 							});
 						},
-						error: function(error){
-							console.log("ajax 에러");
+						error: function(){
 							$.modalBack()
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
@@ -366,10 +332,8 @@ $(function(){
 							MoveOutDateInput:$('.MoveOutDateInput').val()						
 						},
 						success: function(data){
-							console.log('[ajax성공] data: '+JSON.stringify(data));
 							if(data=='중복'){
 								$.modalBack();
-								console.log('입주 중복');
 								document.getElementById('modalText01').textContent='선택하신 '+$('.branchSelected').val()+'지점 '+$('.floorSelected').val()+'층 '+$('.officeSelected').val()+' 사무실은 공실이 아닙니다.';
 								$('#dangerModal').modal('show');
 								return false;
@@ -386,7 +350,6 @@ $(function(){
 								document.getElementById('modalText01').textContent='회사대표전화['+$('#comPhoneInput').val()+']: 이미 등록되어 있는 전화번호입니다.';
 								$('#dangerModal').modal('show');
 							} else if(data=='가능') {
-								console.log('입주 가능');
 								document.getElementById('modalText01').textContent='처리중입니다. 잠시만 기다려주세요.';
 								$(document.body).css('pointer-events', 'none');
 								$('.closeDangerModal').html('<img src="imgs/Hourglass.gif" style="height:50px">');
@@ -396,8 +359,7 @@ $(function(){
 								location.href='masterMgmt';
 							}
 						},
-						error: function(error){
-							console.log("ajax 에러");
+						error: function(){
 							$.modalBack()
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
@@ -406,7 +368,6 @@ $(function(){
 				} else {
 					document.getElementById('modalText01').textContent='올바른 계약일/입주일/퇴소일을 입력해주세요.';
 					$('#dangerModal').modal('show');
-					console.log('inputCheck: '+inputCheck+', contractCheck: '+contractCheck+', moveInCheck: '+moveInCheck+', moveOutCheck: '+moveOutCheck);
 				}
 			}
 		}

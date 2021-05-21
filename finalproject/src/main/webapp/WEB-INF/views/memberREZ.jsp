@@ -191,7 +191,6 @@ function myREZ() {
 		data : { memNum },
 		dataType : "json",
 		success : function(data) {
-			console.log(data);
 			$('#myREZList *').remove();
 			for ( var no = 0; no < data.myList.length; no++ ){
 				$('#myREZList').append("<option value = "+data.myList[no].roomNum+"/"+data.myList[no].memNum+"/"+data.myList[no].reservationDay+"/"+data.myList[no].useStartTime+">"+data.myList[no].roomNum+" | "+data.myList[no].reservationDay+" | "+data.myList[no].useStartTime+"시</option>");
@@ -220,8 +219,8 @@ function paymentApplyFunction2(data) {
 	브라우저 정책에 따른 결과인 것으로 생각중.
 	따라서 아래와 같이 for문으로 출력해야 한다.
 	*/
-	for (let key of formdata.keys()) { console.log(key); }
-	for (let value of formdata.values()) { console.log(value); }
+	for (let key of formdata.keys()) {  }
+	for (let value of formdata.values()) {  }
 	
 	$.ajax({
 		url : "/reservation/payment",

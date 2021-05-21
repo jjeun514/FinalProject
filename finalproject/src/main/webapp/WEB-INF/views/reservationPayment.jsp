@@ -42,14 +42,11 @@ $(document).ready(function() {
 		    name : payContent.name,
 		    amount : payContent.amount
 		}, function(rsp) {
-			console.log(rsp);
 			if ( rsp.success ) {
 			$.ajax({
 				url : "/reservation/payment/" + rsp.imp_uid,
 	        	type : "POST"
 			}).done(function(data) {
-				console.log(data);
-				
 				// 요청 결제 금액과 실제 결제 금액이 같은지 확인
 	        	if(rsp.paid_amount == data.response.amount){
 	        		
@@ -144,6 +141,6 @@ $(document).ready(function() {
 		</div>
 	</div><!--centent end-->
 </body><!--body end-->
-<%@ include file="./template/footer.jspf" %>
+<%@ include file="./template/twoDepthFooter.jspf" %>
 </html>
 

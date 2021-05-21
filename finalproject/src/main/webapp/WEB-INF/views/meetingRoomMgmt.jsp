@@ -3,6 +3,7 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>회의실관리</title>
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
@@ -296,7 +297,9 @@ $('.mgmtModal').find('.editBtn').click(function(){
 		$("#memPhone").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		$("#merchant_uid").css('background-color', 'rgba(230, 230, 230, 0.4)').css('color', 'darkgray');
 		
-		$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소')
+		$('.closeBtn').attr('class', 'btn btn-secondary cancleBtn').attr('data-dismiss','none').html('취소').click(function(){
+				window.location.reload();
+		});
 		$('.editBtn').attr('class', 'btn btn-primary okBtn').html('확인');
 		
 		$(document).on('click','.okBtn', function(){
@@ -422,7 +425,7 @@ function revChange(){
 var changeMrModal='<tr><th>지점</th><td id="branchName"></td><th>방번호</th><td id="roomNum">'+
 				  '</td></tr><tr><th>면적</th><td id="acreages"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>'+
 				  '<th>비용</th><td id="rent"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="rentValue" id="rentValue" class="valueSetting" readonly></td></tr>'+
-				  '<tr><th>수용인원</th><td id="max" colspan="3"><div id="forImg"><img src="imgs/pencil.png" class="pencil" hidden></div><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
+				  '<tr><th>수용인원</th><td id="max" class="max2" colspan="3"><div id="forImg2"><img src="imgs/pencil.png" class="pencil" hidden></div><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
 
 var changeAddMrModal='<tr><th>지점</th><td id="branchName"><select class="mrselect" name="branchNameValue" ><c:forEach items="${branchList }" var="bean"><option value="${bean.branchCode }" >${bean.branchName }</option></c:forEach></select></td>'
 					 +'<th>방번호</th><td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" placeholder="(방번호 입력)"></td></tr>'

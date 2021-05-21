@@ -11,8 +11,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,8 +23,6 @@ import com.bit.fn.security.model.Account;
 @Component
 @PropertySource("email.properties")
 public class MailService {
-	Logger logger=LoggerFactory.getLogger(MailService.class);
-	
 	@Autowired
 	JavaMailSender javaMailSender;
 	
@@ -37,13 +33,9 @@ public class MailService {
 	public String code="";
 	
     public String sendMail(String to) throws MessagingException {
-    	System.out.println("[MailService] sendMail()");
     	// 메일 보내기 전에 인증번호 생성
     	code=codeGenerator();
-    	System.out.println("[MailService] code: "+code);
-    	System.out.println("[MailService] from: "+emailBean.getFrom());
     	// 회원가입 페이지의 emailInput값 받아와야함
-    	System.out.println("[MailService] to: "+to);
     	// properties 설정
 	    Properties props = new Properties();  
 	    props.setProperty("mail.transport.protocol", emailBean.getProtocol());
@@ -88,7 +80,6 @@ public class MailService {
 	    msg+="</tr>";
 	    msg+="</tbody>";
 	    msg+="</table>";
-	    System.out.println("[MailService] msg: "+msg);
 	    mimeMessage.setContent(msg, "text/html;charset=utf-8");
 	    
 	    // 메일 발송
@@ -101,16 +92,13 @@ public class MailService {
     
 //	인증코드 생성
 	public String codeGenerator() {
-		System.out.println("[MailService] codeGenerator()");
 		StringBuffer code=new StringBuffer();
 		Random random=new Random();
 
 		// 6자리
 		for (int i=1; i<7; i++) {
-		System.out.println("[MailService] i: "+i);
 			// 3개의 랜덤 수를 뽑아서, 영문 대소문자+숫자 섞어주자
 			int index=random.nextInt(3);
-			System.out.println("[MailService] index(3개의 랜덤 수): "+index);
 			switch (index) {
 				// 1이 나오면
 				case 0:
@@ -129,16 +117,12 @@ public class MailService {
 					break;
 			}
 			// 이렇게 총 6자리수를 뽑아냄 (영문 대소문자+숫자 섞어서)
-			System.out.println("[MailService] code(for문 안): "+code);
 		}
-		System.out.println("[MailService] codeGenerator() - code: "+code.toString());
 		return code.toString();
 	}
 	
 	// 입주 상담 신청서
 	public void sendApplication(String to, String name, String company, String phone, String email, String crew, String budget, String message) throws MessagingException {
-    	System.out.println("[MailService(sendApplication())]");
-    	
     	// properties 설정
 	    Properties props = new Properties();  
 	    props.setProperty("mail.transport.protocol", emailBean.getProtocol());
@@ -189,7 +173,6 @@ public class MailService {
 	    msg+="</tr>";
 	    msg+="</tbody>";
 	    msg+="</table>";
-	    System.out.println("[MailService(sendApplication())] msg: "+msg);
 	    mimeMessage.setContent(msg, "text/html;charset=utf-8");
 	    
 	    // 메일 발송
@@ -200,10 +183,8 @@ public class MailService {
 	
 	// 마스터 계정 임시 비밀번호
 	public String sendTmpPassword(Account account) throws MessagingException {
-		System.out.println("[MailService(sendTmpPassword())]");
 		String to=emailBean.email;
 		String tempPassword=codeGenerator();
-		System.out.println("[MailService(sendTmpPassword())] 임시 비밀번호: "+tempPassword);
 		
 		// properties 설정
 		Properties props = new Properties();
@@ -250,7 +231,6 @@ public class MailService {
 		msg+="</tr>";
 		msg+="</tbody>";
 		msg+="</table>";
-		System.out.println("[MailService(sendApplication())] msg: "+msg);
 		mimeMessage.setContent(msg, "text/html;charset=utf-8");
 		
 		// 메일 발송
@@ -265,8 +245,6 @@ public class MailService {
 	
 	// 회의실 예약 확인 메일
 		public String sendRemindReservation(String id, int roomNum, String memName, String useStartTime) throws MessagingException {
-			System.out.println("[MailService(sendRemindReservation)]");
-			
 			// properties 설정
 			Properties props = new Properties();
 			props.setProperty("mail.transport.protocol", emailBean.getProtocol());
@@ -301,20 +279,20 @@ public class MailService {
 			// 메일 본문
 			msg="<table width='90%' cellpadding='0' cellspacing='0' border='0' align='center' style='margin:0 auto;table-layout:fixed;border-collapse: collapse'>";
 			msg+="<tbody>";
-			msg+="<tr style='background-color: rgb(146,239,181);text-align:center'>";
+			msg+="<tr style='background-color: lightgray; text-align:center'>";
 			msg+="<td width='100%' style='padding:40px;border-radius:10px;font-size:12px;'>";
 			msg+="<font size=6><strong>9 o'Clock  회의실 예약 안내</strong></font>";
 			msg+="<table style='padding-top:30px'>";
-			msg+="<tr><td style='background-color:black; color:white;'><b>예약하신 회의실이 사용 시간이 30분 후에 시작됩니다.</b></td>"
-					+"<tr><td style='background-color:black; color:white;'><b>회의실:</b></td><td>"+roomNum+"</td></tr>"
-					+"<tr><td style='background-color:black; color:white;'><b>예약자명: </b></td><td>"+memName+"</td></tr>"
-					+"<tr><td style='background-color:black; color:white;'><b>예약일시: </b></td><td>"+useStartTime+"시</td></tr>"
+			msg+="<tr style = 'text-align:center'><td colspan='4' style = 'text-align:center;'>예약하신 회의실이 사용 시간이 30분 후에 시작됩니다.</td></tr>"
+					+"<tr style = 'height: 40px;'></tr>"
+					+"<tr><td style = 'width: 30%'></td><td style='background-color:white; width: 20%;'><b>회의실:</b></td><td>"+roomNum+"</td><td style='width: 30%'></td></tr>"
+					+"<tr><td></td><td style='background-color:white; width: 20%;'><b>예약자명:</b></td><td>"+memName+"</td><td style='width: 30%'></td></tr>"
+					+"<tr><td></td><td style='background-color:white; width: 20%;'><b>예약일시:</b></td><td>"+useStartTime+"시</td><td style='width: 30%'></td></tr>"
 					+"</table>";
 			msg+="</td>";
 			msg+="</tr>";
 			msg+="</tbody>";
 			msg+="</table>";
-			System.out.println("[MailService(sendRemindReservation)] msg: "+msg);
 			mimeMessage.setContent(msg, "text/html;charset=utf-8");
 			
 			// 메일 발송

@@ -3,6 +3,7 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>마스터계정관리</title>
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
@@ -140,7 +141,6 @@ $(function(){
 		var managerValue=$(event.relatedTarget).data('manager');
 		var joinedAt=$(event.relatedTarget).data('joinedat');
 		var masterAccount=$(event.relatedTarget).data('id');
-		console.log(comName+", "+comCode+", "+ceoValue+", "+comPhoneValue+", "+managerValue+", "+joinedAt+", "+masterAccount);
 		$('.masterAccountTitle').html('['+comName+']의 계정 정보');
 		$('#comCode').html(comCode);
 		$('#comName').html(comName);
@@ -152,7 +152,6 @@ $(function(){
 		
 		$(document).on('click','.editBtn', function(e){
 			e.stopImmediatePropagation();
-			console.log('수정버튼누름');
 			$('.pencil').attr('hidden', false);
 			$('.masterAccountTitle').html('['+comName+']의 계정 <font style="color:red;">수정</font>');
 			$('.valueSetting').attr('readonly', false);
@@ -162,10 +161,7 @@ $(function(){
 			
 			$(document).on('click','.okBtn', function(e){
 				e.stopImmediatePropagation();
-				console.log('수정>확인버튼 누름');
 				$('input').change(function(e){
-					e.stopImmediatePropagation();
-					console.log('input변경됨');
 					$.ajax({
 						url: "/updateCompanyInfo",
 						type: "POST",
@@ -184,7 +180,6 @@ $(function(){
 							}
 						},
 						success: function(data) {
-							console.log('수정 완료');
 							document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
 							$('#primaryModal').modal('show');
 							$('#primaryModal').on('hidden.bs.modal',function(){
@@ -192,8 +187,7 @@ $(function(){
 							});
 							$.cssBack();
 						},
-						error: function(error) {
-							console.log("ajax 에러");
+						error: function() {
 							document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 							$('#dangerModal').modal('show');
 						}
@@ -211,8 +205,6 @@ $(function(){
 	
 	$(document).on('click', '.deleteBtn', function(e){
 		e.stopImmediatePropagation();
-		console.log('삭제누름');
-		console.log('id: '+$('#masterAccount').text()+', comCode: '+$('#comCode').text());
 		$.ajax({
 			url: "/deleteMaster",
 			type: "POST",
@@ -222,7 +214,6 @@ $(function(){
 				comCode:$('#comCode').text()
 			},
 			success: function() {
-				console.log('수정 완료');
 				document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
 				$('#primaryModal').modal('show');
 				$('#primaryModal').on('hidden.bs.modal',function(){
@@ -230,8 +221,7 @@ $(function(){
 				});
 				$.cssBack();
 			},
-			error: function(error) {
-				console.log("ajax 에러");
+			error: function() {
 				document.getElementById('modalText01').textContent='오류가 발생했습니다. 다시 시도해주세요.';
 				$('#dangerModal').modal('show');
 			}

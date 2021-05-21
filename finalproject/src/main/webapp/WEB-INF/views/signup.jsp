@@ -115,7 +115,7 @@ $(document).on('click','#authBtn',function() {
 														$('#dangerModal').modal('show');
 													}
 												 },
-										error: function(error){
+										error: function(){
 											$('#error').modal('show');
 											$('#emailInput').attr('disabled', false);
 											$('#authBtn').attr('disabled', false);
