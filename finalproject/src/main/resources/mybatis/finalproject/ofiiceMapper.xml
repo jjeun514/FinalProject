@@ -11,7 +11,7 @@
    	</select>
    	
     <select id="selectPriceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
-    	 select officeName, floor, acreages, rent, max, photo, occupancy from office where deleted=0 order by floor
+    	 select officeName, floor, acreages, rent, max, photo, occupancy from office where deleted=0 order by floor, officeName
    	</select>
     
     <select id="spaceInfo" resultType="com.bit.fn.model.vo.OfficeVo">
