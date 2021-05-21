@@ -136,22 +136,22 @@ $(document).ready(function(){
 	<%//층별 이미지 %>	
 	<div class="container t1" >
 		<div class="box_t1">
-			<img src="imgs/2.jpg">
+			<img src="imgs/photo-1587702068694-a909ef4aa346.jpg">
 			<span>1F</span>
 		</div>
 
 		<div class="box_t1">
-			<img src="imgs/3.jpg">
+			<img src="imgs/photo-1497366216548-37526070297c.jpg">
 			<span>2F</span>
 		</div>
 	  
 		<div class="box_t1">
-			<img src="imgs/4.jpg">
+			<img src="imgs/photo-1531973576160-7125cd663d86.jpg">
 			<span>3F</span>
 		  </div>
 		  
 		<div class="box_t1">
-			<img src="imgs/5.jpg">
+			<img src="imgs/photo-1497366412874-3415097a27e7.jpg">
 			<span>4F</span>
 		</div>
 	</div>

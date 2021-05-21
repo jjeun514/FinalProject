@@ -58,19 +58,16 @@ public class MemberController {
 		
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if( member != -1 ) {
-			System.out.println("접속하신 계정은 멤버입니다.");
-			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
-			
+			List<ReservationVo> reservationContent = service.reservationListForIntro(memberinfoService.selectOne(id).getMemNum());
+			model.addAttribute("reservationContent",reservationContent);
 		}
 		
 		List<BoardVo> boardContent = service.boardListForIntro();
 		List<NoticeVo> noticeContent = service.noticeListForIntro();
-		List<ReservationVo> reservationContent = service.reservationListForIntro(memberinfoService.selectOne(id).getMemNum());
 		
 		model.addAttribute("boardContent",boardContent);
 		model.addAttribute("noticeContent",noticeContent);
-		model.addAttribute("reservationContent",reservationContent);
 		
 		return "memberIntro";
 	}
@@ -112,8 +109,6 @@ public class MemberController {
 		
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if( member != -1 ) {
-			System.out.println("접속하신 계정은 멤버입니다.");
-			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
 			
 		} 
@@ -312,7 +307,6 @@ public class MemberController {
 		comment.setCommentWriter(memberinfoService.selectOne(id).getMemName());
 		comment.setCommentContent(content.getCommentContent());
 		int insertResult = commentService.insertComment(comment);
-		System.out.println("댓글 입력 결과 : "+insertResult);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("insertResult", insertResult);

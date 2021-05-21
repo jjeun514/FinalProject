@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<div class="container-fluid footerDiv">
+<footer>
+	<table id="footerTable">
+		<tr>
+			<td id="btmLeftTd">
+				<div id="btmLinks">
+					<a href="/privacy">개인정보처리방침</a>
+				</div>
+			</td>
+			<td id="iconTd">
+				<div id="icon">
+					<a href="https://www.instagram.com/"><img src="../imgs/instagram.png" ></a>
+					<a href="https://www.facebook.com/"><img src="../imgs/facebook.png" ></a>
+					<a href="https://twitter.com/"><img src="../imgs/twitter.png" ></a>
+				</div>
+		  	</td>
+  		</tr>
+	</table>
+  	<address>
+		서울시 강남구 역삼1동 1057 170-10<br>
+		Copyright &copy; <strong>9 O' Clock</strong>
+	</address>
+</footer>
+</div>
+</body>
+</html>

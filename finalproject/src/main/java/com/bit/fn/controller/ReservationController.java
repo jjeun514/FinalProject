@@ -126,12 +126,7 @@ public class ReservationController {
 		
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if(member != -1) {
-			System.out.println("접속하신 계정은 멤버입니다.");
-			System.out.println(memberinfoService.selectOne(id).getMemNum());
 			model.addAttribute("member",memberinfoService.selectOne(id));
-			
-		} else {
-			return "redirect:/intro";
 		}
 		
 		List<ReservationVo> roomList = service.meetingRoomList();
@@ -164,7 +159,6 @@ public class ReservationController {
 		// 담겨진 리스트를 뷰로 전달
 		Map<String, Object> roomData = new HashMap<String, Object>();
 		roomData.put("roomData", dataList);
-		// 예약날짜 예약자 정보도 전달해줘야 함
 		
 		return roomData;
 	}
@@ -235,7 +229,7 @@ public class ReservationController {
 		allList.put("allList", REZList);
 		
 		return allList;
-	} // 이 로직 다시 공부해야 할 듯
+	}
 	
 	
 	

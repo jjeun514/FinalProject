@@ -45,7 +45,7 @@ public class Scheduler {
 	
 	
 	
-	@Scheduled(cron = "0 0/30 7-23 * * MON-FRI")
+	@Scheduled(cron = "0 30 7-23 * * MON-FRI")
 	//@Scheduled(fixedDelay = 3000)
 	public void reservationReminder() {
 
@@ -75,8 +75,6 @@ public class Scheduler {
 			int calculateTime = convertTime-now;
 			
 			if ( ( calculateTime ) == 1 ) {
-				System.out.println("예약하신 회의실 사용 1시간 전입니다 :)");
-				
 				MemberInfoVo member = memberinfoService.searchUserByMemNum(reservationList.get(i).getMemNum());
 				
 				String id = member.getId();
