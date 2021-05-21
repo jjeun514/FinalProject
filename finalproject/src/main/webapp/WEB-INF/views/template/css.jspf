@@ -1109,10 +1109,6 @@
 			font-size: 20px;
 		}
 		
-		#gg {
-			display: table-cell;
-		}
-
 		.addRevBtn{
 			float: right;
 			width: 100px;

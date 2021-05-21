@@ -59,13 +59,13 @@ public class MemberController {
 		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
 		if( member != -1 ) {
 			model.addAttribute("member",memberinfoService.selectOne(id));
-			List<ReservationVo> reservationContent = service.reservationListForIntro(memberinfoService.selectOne(id).getMemNum());
-			model.addAttribute("reservationContent",reservationContent);
 		}
 		
+		List<ReservationVo> reservationContent = service.reservationListForIntro(memberinfoService.selectOne(id).getMemNum());
 		List<BoardVo> boardContent = service.boardListForIntro();
 		List<NoticeVo> noticeContent = service.noticeListForIntro();
 		
+		model.addAttribute("reservationContent",reservationContent);
 		model.addAttribute("boardContent",boardContent);
 		model.addAttribute("noticeContent",noticeContent);
 		
