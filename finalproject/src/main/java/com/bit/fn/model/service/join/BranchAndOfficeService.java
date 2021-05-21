@@ -11,7 +11,7 @@ import com.bit.fn.model.vo.join.BranchAndOfficeVo;
 
 
 @Service
-public class BranchAndOfficeService {
+public class BranchAndOfficeService implements BranchAndOfficeMapper {
 	@Autowired
 	BranchAndOfficeMapper branchAndOfficeMapper;
 	

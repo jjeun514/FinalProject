@@ -10,7 +10,7 @@ import com.bit.fn.model.vo.OfficeFacilitiesVo;
 
 
 @Service
-public class OfficefacilitiesService {
+public class OfficefacilitiesService implements OfficeFacilitiesMapper {
 	@Autowired
 	OfficeFacilitiesMapper officeFacilitiesMapper;
 	
@@ -25,7 +25,7 @@ public class OfficefacilitiesService {
 	public int addFacilities(int officeNum, int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput){
 		return officeFacilitiesMapper.addFacilities(officeNum, deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput);
 	}
-	
+
 	public int updateSpaceInfo(int deskInput, int chairInput, int modemInput, int fireExtinguisherInput, int airConditionerInput, int radiatorInput, int descendingLifeLineInput, int powerSocketInput, int officeNum){
 		return officeFacilitiesMapper.updateSpaceInfo(deskInput, chairInput, modemInput, fireExtinguisherInput, airConditionerInput, radiatorInput, descendingLifeLineInput, powerSocketInput, officeNum);
 	}
