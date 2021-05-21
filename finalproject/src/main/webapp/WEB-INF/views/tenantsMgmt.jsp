@@ -3,6 +3,7 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>입주사관리</title>
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink active');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
