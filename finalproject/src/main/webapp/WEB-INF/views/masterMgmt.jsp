@@ -214,7 +214,7 @@ $(function(){
 				comCode:$('#comCode').text()
 			},
 			success: function() {
-				document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
+				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
 				$('#primaryModal').modal('show');
 				$('#primaryModal').on('hidden.bs.modal',function(){
 					location.reload();

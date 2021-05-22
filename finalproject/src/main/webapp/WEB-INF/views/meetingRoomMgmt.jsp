@@ -359,7 +359,6 @@ $('.mgmtModal').find('.deleteBtn').click(function(){
 				});
 				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
 				$('#primaryModal').modal('show');
-				window.location.reload();
 			}else{
 				document.getElementById('modalText01').textContent='잘못된 요청이거나 수정된 내용이 없습니다.';
 				$('#dangerModal').modal('show');
