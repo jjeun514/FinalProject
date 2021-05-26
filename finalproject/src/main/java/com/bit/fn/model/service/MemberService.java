@@ -30,6 +30,10 @@ public class MemberService {
 		return memberMapper.reservationListForIntro(memNum);
 	}
 	
+	public List<ReservationVo> reservationListForIntroNotMember(){
+		return memberMapper.reservationListForIntroNotMember();
+	}
+	
 	public List<BoardVo> memberBoardList(){
 		return memberMapper.memberBoardList();
 	}

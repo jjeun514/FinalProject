@@ -23,6 +23,15 @@
 		and date_format(reservationDay, '%Y-%m-%d') = date_format(sysdate(), '%Y-%m-%d')
 		limit 4
 	</select>
+	
+	<select id="reservationListForIntroNotMember" resultType="com.bit.fn.model.vo.ReservationVo">
+		select myREZ.* from (
+			select roomNum, reservationDay, useStartTime, useFinishTime, fee from reservation
+		) AS myREZ 
+		where date_format(useStartTime, '%Y-%m-%d %H') >= date_format(sysdate(), '%Y-%m-%d %H') 
+		and date_format(reservationDay, '%Y-%m-%d') = date_format(sysdate(), '%Y-%m-%d')
+		limit 4
+	</select>
 
 	<!-- 게시판 -->
     <select id="memberBoardList" resultType="com.bit.fn.model.vo.BoardVo">

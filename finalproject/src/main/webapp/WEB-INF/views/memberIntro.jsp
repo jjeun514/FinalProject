@@ -61,7 +61,6 @@
 					<div id = "reservationTitle">reservation</div>
 					
 					<c:forEach var = "content" items = "${reservationContent }">
-						<c:if test = "${content ne null }"></c:if>
 							<table id = "introBoardContent" class = "table table-bordered">
 								<tbody>
 									<tr style = "line-height:7px;">
@@ -75,9 +74,34 @@
 									</tr>
 								</tbody>
 							</table>
-						<c:if test="${content eq null}">
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+						<c:if test="${'' eq content}"> <!-- 여기 수행하지 않음 -->
 							<div id = "todayReservationMSG">오늘 회의실 예약이 없습니다 :)</div>
 						</c:if>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 					</c:forEach>
 					
 					

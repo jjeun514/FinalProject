@@ -25,6 +25,9 @@ public interface MemberMapper {
 	// 인트로 페이지 예약 리스트
 	public List<ReservationVo> reservationListForIntro(int memNum);
 	
+	// 인트로 페이지 예약 리스트(멤버 외)
+	public List<ReservationVo> reservationListForIntroNotMember();
+	
 	// 멤버 페이지 게시판 리스트
 	public List<BoardVo> memberBoardList();
 	
