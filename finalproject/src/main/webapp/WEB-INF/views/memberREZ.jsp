@@ -207,6 +207,8 @@ function myREZ() {
 	});
 }
 
+
+// select option에 맞게 날짜 변환 함수
 function getFormatDate(date){
     var year = date.getFullYear();              //yyyy
     var month = (1 + date.getMonth());          //M
