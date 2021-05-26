@@ -157,9 +157,9 @@
 		padding : 5px;
 		width : 53px;
 		background-color : white;
-		position: relative;
+		position: absolute;
 		left : 80%;
-		top : 50%;
+		top : 90%;
 		color : gray;
 	}
 	

@@ -28,19 +28,26 @@ $(document).ready(function() {
 		// 날짜를 선택하지 않았을 경우
 		if ( $('#reservationDay').val() == "" ) {
 			document.getElementById('showAlertForChoice').innerHTML="<b><font color='red'>날짜를 선택해주세요</font><b>";
-		} else if ( $('#reservationDay').val() != "" ) { // 이거 안됨
-			document.getElementById('showAlertForChoice').innerHTML="";
+			return false;
 		}
 		
 		roomInfo(); // 예약 신청 모달에 회의실 관련 정보를 불러오는 함수
-		
-		// 현재 시간 구해서 예약 시간에 option으로 넣어줌
+		$('#useStartTime *').remove();
 		
 		var now = new Date();
 		var nowTime = (now.getHours()+1);
+		var day = getFormatDate(now);
 		
-		for ( var time = nowTime; time < 23; time++ ) {
-			$("#useStartTime").append("<option value = "+time+">"+time+"시</option>");
+		if ( $('#reservationDay').val() == day ) { // 오늘 날짜와 예약 신청일이 같다면
+			$("#useStartTime").append("<option>선택해주세요</option>");
+			for ( var time = nowTime; time < 23; time++ ) { // 현재 시간 이후부터 예약 가능
+				$("#useStartTime").append("<option value = "+time+">"+time+"시</option>");
+			}
+		} else if ( $('#reservationDay').val() != day ) { // 오늘 날짜와 예약 신청일이 다르다면
+			$("#useStartTime").append("<option>선택해주세요</option>");
+			for ( var time = 9; time < 23; time++ ) { // 모든 시간대 예약 가능
+				$("#useStartTime").append("<option value = "+time+">"+time+"시</option>");
+			}
 		}
 		
 		$("#REZModal").modal();
@@ -200,6 +207,16 @@ function myREZ() {
 	});
 }
 
+// select option에 맞게 날짜 변환 함수
+function getFormatDate(date){
+    var year = date.getFullYear();              //yyyy
+    var month = (1 + date.getMonth());          //M
+    month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+    var day = date.getDate();                   //d
+    day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+    return  year + '-' + month + '-' + day;       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
+}
+
 // paymentApplyFunction2 이 펑션은 수행하지 않음
 function paymentApplyFunction2(data) {
 	
@@ -274,6 +291,7 @@ $( function() {
     	beforeShowDay: noWeekend,
     	
     	onSelect : function(dateText, inst) {
+    		document.getElementById('showAlertForChoice').innerHTML="";
 			$.ajax({
 				url : "/reservation/reservationList",
 				type : "GET",
