@@ -3,6 +3,7 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>회의실관리</title>
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink');
@@ -358,7 +359,6 @@ $('.mgmtModal').find('.deleteBtn').click(function(){
 				});
 				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
 				$('#primaryModal').modal('show');
-				window.location.reload();
 			}else{
 				document.getElementById('modalText01').textContent='잘못된 요청이거나 수정된 내용이 없습니다.';
 				$('#dangerModal').modal('show');
@@ -424,7 +424,7 @@ function revChange(){
 var changeMrModal='<tr><th>지점</th><td id="branchName"></td><th>방번호</th><td id="roomNum">'+
 				  '</td></tr><tr><th>면적</th><td id="acreages"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="acreagesValue" id="acreagesValue" class="valueSetting" readonly></td>'+
 				  '<th>비용</th><td id="rent"><img src="imgs/pencil.png" class="pencil" hidden><input type="text" name="rentValue" id="rentValue" class="valueSetting" readonly></td></tr>'+
-				  '<tr><th>수용인원</th><td id="max" colspan="3"><div id="forImg"><img src="imgs/pencil.png" class="pencil" hidden></div><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
+				  '<tr><th>수용인원</th><td id="max" class="max2" colspan="3"><div id="forImg2"><img src="imgs/pencil.png" class="pencil" hidden></div><input type="text" name="maxValue" id="maxValue" class="valueSetting" readonly></td></tr>';
 
 var changeAddMrModal='<tr><th>지점</th><td id="branchName"><select class="mrselect" name="branchNameValue" ><c:forEach items="${branchList }" var="bean"><option value="${bean.branchCode }" >${bean.branchName }</option></c:forEach></select></td>'
 					 +'<th>방번호</th><td id="roomNum"><input type="text" name="roomNumValue" id="roomNumValue" class="valueSetting" placeholder="(방번호 입력)"></td></tr>'

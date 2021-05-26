@@ -207,6 +207,7 @@ function myREZ() {
 	});
 }
 
+
 // select option에 맞게 날짜 변환 함수
 function getFormatDate(date){
     var year = date.getFullYear();              //yyyy
@@ -497,7 +498,7 @@ function noWeekend(date) {
 			</div>
 			<p>* 회의실 예약은 최대 2시간까지 가능합니다.</p>
 			<p>* 회의실 예약은 결제가 완료되어야 확정됩니다.</p>
-			<p>* 문의 : 112</p>
+			<p>* 문의 : 내선번호 08번</p>
 		</div>
 	</div>
 </body>

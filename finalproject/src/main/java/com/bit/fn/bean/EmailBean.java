@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("email.properties")
 public class EmailBean {
-	// properties 설정값 불러오기
 	@Value("${mail.transport.protocol}")
 	public String protocol;
 

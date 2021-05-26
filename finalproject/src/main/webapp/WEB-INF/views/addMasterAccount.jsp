@@ -4,11 +4,11 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
 $('.meetingRoomMgmtLink').attr('class','nav-link meetingRoomMgmtLink');
-$('.signUpMgmtLink').attr('class','nav-link signUpMgmtLink');
 
 var pattern_num = /[0-9]/;	// 숫자 
 var pattern_eng = /[a-zA-Z]/;	// 문자 

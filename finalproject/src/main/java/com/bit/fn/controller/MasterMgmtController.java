@@ -36,7 +36,7 @@ import com.bit.fn.security.model.Account;
 import com.bit.fn.security.service.AccountService;
 
 @Controller
-@ComponentScan
+@ComponentScan	// [관리자페이지] 마스터계정관리
 public class MasterMgmtController {
 	@Autowired
 	MasteraccountAndCompanyInfoService masterAndComService;
@@ -186,7 +186,6 @@ public class MasterMgmtController {
 	@RequestMapping(path="/updateCompanyInfo", method=RequestMethod.POST)
 	public ResponseEntity updateCompanyInfo(String ceoValue, String managerValue, String comPhoneValue, int comCode, String comName) {
 		HttpStatus status;
-			
 		try {
 			status=HttpStatus.OK;
 			if(companyInfoService.selectComPhone(comPhoneValue, comCode).isEmpty()) {

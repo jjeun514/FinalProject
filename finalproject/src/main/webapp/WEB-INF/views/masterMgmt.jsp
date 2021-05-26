@@ -3,6 +3,7 @@
 <%@ include file="template/AdminNavbar.jspf" %>
 <title>마스터계정관리</title>
 <script type="text/javascript">
+$('.homeLink').attr('class','nav-link homeLink');
 $('.spaceMgmtLink').attr('class','nav-link spaceMgmtLink');
 $('.companyMgmtLink').attr('class','nav-link companyMgmtLink');
 $('.masterMgmtLink').attr('class','nav-link masterMgmtLink active');
@@ -161,7 +162,6 @@ $(function(){
 			$(document).on('click','.okBtn', function(e){
 				e.stopImmediatePropagation();
 				$('input').change(function(e){
-					e.stopImmediatePropagation();
 					$.ajax({
 						url: "/updateCompanyInfo",
 						type: "POST",
@@ -214,7 +214,7 @@ $(function(){
 				comCode:$('#comCode').text()
 			},
 			success: function() {
-				document.getElementById('modalText02').textContent='수정이 완료되었습니다.';
+				document.getElementById('modalText02').textContent='삭제가 완료되었습니다.';
 				$('#primaryModal').modal('show');
 				$('#primaryModal').on('hidden.bs.modal',function(){
 					location.reload();

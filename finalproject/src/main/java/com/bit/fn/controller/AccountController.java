@@ -59,11 +59,6 @@ public class AccountController {
 	OfficeService officeService;
 	
 	//로그인
-	@GetMapping("/login")
-	public String login() {
-		return "test/login";
-	}
-	
 	@GetMapping("/signin")
 	public String signin() {
 		return "/signin";
@@ -90,7 +85,6 @@ public class AccountController {
 		
 		String id=username.replace("%40", "@").split("username=")[1];
 		int count=memberinfoService.idCount(id);
-		   
 		if(count != 0) {
 			 id="Already in use";
 		}else {

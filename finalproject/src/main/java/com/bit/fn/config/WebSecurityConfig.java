@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,15 +27,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 			.authorizeRequests()
 			//로그인 인증 없어도 접근 가능한 영역(이미지,css파일 영억은 main에서부터 시작한다)
-				.antMatchers("/","/..","/resource/**","/home","/index","/join","/resister","/jungbok"
-						,"/bbs","/detail","/index","/mypage","/signUp","/test,/test/info"
-						,"/imgs/**","/libs/**","/newPw"
+				.antMatchers("/resource/**","/imgs/**","**/template/**","/libs/**","*.jspf"
+						,"/assets/img/favicon.ico","/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css"
+						,"/webjars/bootstrap/4.6.0-1/js/bootstrap.min.js"
+						,"/https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+						,"/https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+						,"/","/home","/index","/priceInfo","/privacy"
+						,"/bbs","/detail"
+						,"/newPw","/signup","/signin","/logout","/forgotIdPw","/forgotId","/forgotPw"
+						,"/usercheck","/nickNameCheck","/joinMember","/checkPw","/updatePw","/forgotUpdatePw"
 						).permitAll()
-				.antMatchers("/**").permitAll()
 			//어드민 계정만 접근 가능
-				.antMatchers("/user").hasRole("ADMIN")
+				.antMatchers("/adminPage","/spaceMgmt","/chart","/masterMgmt",
+						"/addMasterAccount","/meetingRoomMgmt",
+						"/spaceMgmt","/tenantsMgmt").hasRole("ADMIN")
 			//로그인한 사용자 접근
-				.antMatchers("/withdraw").hasAnyRole("ADMIN","MASTER","MEMBER")
+				.antMatchers().hasAnyRole("ADMIN","MASTER","MEMBER")
 			//그 외 모든 요청은 인증된 사용자만 접근이 가능하다
 				.anyRequest().authenticated()
 				.and()
@@ -49,7 +57,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				//로그아웃 경로
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/index")
-				.permitAll();
+				.permitAll()
+				.and()
+			//권한 접근 불가 시 이동 페이지
+			.exceptionHandling()
+				.accessDeniedPage("/WEB-INF/views/signin.jsp");
 	}
 
 @Autowired

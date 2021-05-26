@@ -885,7 +885,7 @@
 			margin-left: -96%;
 			border: 0;
 		}
-		.pencil, #forImg {
+		.pencil, #forImg, #forImg2 {
 			display: inline-block;
 			width: 30px;
 			position: static;
@@ -894,6 +894,14 @@
 		}
 		#forImg {
 			marging-top: 3px;
+			margin-left: 10px;
+		}
+		#forImg2 {
+			marging-top: 3px;
+			margin-left: -20px;
+		}
+		.max2 {
+			padding-right: 200px;
 		}
 		.spaceTable .pencil {
 			margin-left: -5px;
@@ -1101,10 +1109,6 @@
 			font-size: 20px;
 		}
 		
-		#pagination {
-			display: table-cell;
-		}
-
 		.addRevBtn{
 			float: right;
 			width: 100px;
@@ -1120,6 +1124,9 @@
 			text-align-last: center;
 			margin: auto;
 			border: 0px;
+		}
+		.mypageBbsPaginate a{
+			text-decoration: none;
 		}
 		
 </style>
