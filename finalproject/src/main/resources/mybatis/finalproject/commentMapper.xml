@@ -8,7 +8,7 @@
    	</select>
 
 	<select id="allComment" resultType="com.bit.fn.model.vo.CommentVo" parameterType = "int">
-   		select commentNum, num, commentWriter, commentContent, commentDate from comment where num = #{num} and checkDelete != 1
+   		select commentNum, num, commentWriter, writerNum, commentContent, commentDate from comment where num = #{num} and checkDelete != 1 order by commentNum desc
    	</select>
    	
    	<select id="searchMaxCommentNumber" resultType="Integer">
@@ -17,9 +17,9 @@
    	
    	<insert id="insertComment" parameterType="com.bit.fn.model.vo.CommentVo">
    		insert into comment(
-   			commentNum, num, commentWriter, commentContent, commentDate, checkDelete
+   			commentNum, num, commentWriter, writerNum, commentContent, commentDate, checkDelete
    		) values (
-   			#{commentNum}, #{num}, #{commentWriter}, #{commentContent}, now(), 0
+   			#{commentNum}, #{num}, #{commentWriter}, #{writerNum}, #{commentContent}, now(), 0
    		)
    	</insert>
    	

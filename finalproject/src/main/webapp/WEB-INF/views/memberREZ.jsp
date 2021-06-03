@@ -287,8 +287,8 @@ $( function() {
     	dateFormat : 'yy-mm-dd',
     	immediateUpdates: true,
     	todayHighlight : true,
-    	minDate : 0,
-    	firstDay : 1,
+    	//minDate : 0,
+    	//firstDay : 1,
     	beforeShowDay: noWeekend,
     	
     	onSelect : function(dateText, inst) {

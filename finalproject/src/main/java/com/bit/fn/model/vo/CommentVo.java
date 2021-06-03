@@ -3,16 +3,18 @@ package com.bit.fn.model.vo;
 import java.sql.*;
 
 public class CommentVo {
-	private int commentNum, num;
+	private int commentNum, num, writerNum;
 	private String commentWriter,commentContent;
 	private Date commentDate;
 	
 	public CommentVo() {}
 
-	public CommentVo(int commentNum, int num, String commentWriter, String commentContent, Date commentDate) {
+	public CommentVo(int commentNum, int num, int writerNum, String commentWriter, String commentContent,
+			Date commentDate) {
 		super();
 		this.commentNum = commentNum;
 		this.num = num;
+		this.writerNum = writerNum;
 		this.commentWriter = commentWriter;
 		this.commentContent = commentContent;
 		this.commentDate = commentDate;
@@ -32,6 +34,14 @@ public class CommentVo {
 
 	public void setNum(int num) {
 		this.num = num;
+	}
+
+	public int getWriterNum() {
+		return writerNum;
+	}
+
+	public void setWriterNum(int writerNum) {
+		this.writerNum = writerNum;
 	}
 
 	public String getCommentWriter() {
@@ -67,6 +77,7 @@ public class CommentVo {
 		result = prime * result + commentNum;
 		result = prime * result + ((commentWriter == null) ? 0 : commentWriter.hashCode());
 		result = prime * result + num;
+		result = prime * result + writerNum;
 		return result;
 	}
 
@@ -98,13 +109,15 @@ public class CommentVo {
 			return false;
 		if (num != other.num)
 			return false;
+		if (writerNum != other.writerNum)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "CommentVo [commentNum=" + commentNum + ", num=" + num + ", commentWriter=" + commentWriter
-				+ ", commentContent=" + commentContent + ", commentDate=" + commentDate + "]";
+		return "CommentVo [commentNum=" + commentNum + ", num=" + num + ", writerNum=" + writerNum + ", commentWriter="
+				+ commentWriter + ", commentContent=" + commentContent + ", commentDate=" + commentDate + "]";
 	}
 
 }

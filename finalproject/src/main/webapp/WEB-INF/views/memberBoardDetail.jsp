@@ -106,15 +106,25 @@ function commentList(){
         dataType : "json",
         success : function(data){
             var a ='';
+            var dataLength = data.commetData.length;
             
-        	for (var no = 0; no < data.commetData.length; no++ ) {
-        		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
-                a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
-                a += '<a onclick="commentUpdate('+data.commetData[no].commentNum+',\''+data.commetData[no].commentContent+'\');"></a>';
-                a += '<a onclick="commentDelete('+data.commetData[no].commentNum+');"></a> </div>';
-                a += '<div class="commentContent'+data.commetData[no].commentNum+'"> <p>    '+data.commetData[no].commentContent +'</p>';
-                a += '</div></div>';
-			}
+            for (var no = 0; no < dataLength; no++ ) {
+            	if ( $("#memNum").val() == data.commentData[no].writerNum ) {
+            		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
+	                a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
+	                a += '<a onclick="commentUpdate('+data.commetData[no].commentNum+',\''+data.commetData[no].commentContent+'\');"> 수정 | </a>';
+	                a += '<a onclick="commentDelete('+data.commetData[no].commentNum+');"> 삭제</a> </div>';
+	                a += '<div class="commentContent'+data.commetData[no].commentNum+'"> <p>    '+data.commetData[no].commentContent +'</p>';
+	                a += '<input id = "boardNum" hidden = "hidden" value = "'+writerNum+'"/>';
+	                a += '</div></div>';
+            	} else {
+	        		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
+	                a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
+	                a += '<div class="commentContent'+data.commetData[no].commentNum+'"> <p>    '+data.commetData[no].commentContent +'</p>';
+	                a += '<input id = "boardNum" hidden = "hidden" value = "'+writerNum+'"/>';
+	                a += '</div></div>';
+            	}
+            }
         	
             $(".commentList").html(a);
         }

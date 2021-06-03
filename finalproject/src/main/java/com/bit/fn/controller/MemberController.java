@@ -66,20 +66,40 @@ public class MemberController {
 	@RequestMapping("/intro")
 	public String intro(Model model, Principal  principal) {
 		
-		String id = role(principal);
+//		String id = role(principal);
+//		
+//		if ( id.equals("NotMember") ) { // 멤버가 아닌 경우 인트로 페이지에 전달할 모델 객체 셋팅
+//			
+//			List<ReservationVo> reservationContent = service.reservationListForIntroNotMember();
+//			List<BoardVo> boardContent = service.boardListForIntro();
+//			List<NoticeVo> noticeContent = service.noticeListForIntro();
+//			
+//			model.addAttribute("reservationContent",reservationContent);
+//			model.addAttribute("boardContent",boardContent);
+//			model.addAttribute("noticeContent",noticeContent);
+//			
+//		} else { // 멤버인 경우 인트로 페이지에 전달할 모델 객체 셋팅
+//			
+//			List<ReservationVo> reservationContent = service.reservationListForIntro(memberinfoService.selectOne(id).getMemNum());
+//			List<BoardVo> boardContent = service.boardListForIntro();
+//			List<NoticeVo> noticeContent = service.noticeListForIntro();
+//			
+//			model.addAttribute("member",memberinfoService.selectOne(id));
+//			model.addAttribute("reservationContent",reservationContent);
+//			model.addAttribute("boardContent",boardContent);
+//			model.addAttribute("noticeContent",noticeContent);
+//			
+//		}
 		
-		if ( id.equals("NotMember") ) { // 멤버가 아닌 경우 인트로 페이지에 전달할 모델 객체 셋팅
-			
-			List<ReservationVo> reservationContent = service.reservationListForIntroNotMember();
-			List<BoardVo> boardContent = service.boardListForIntro();
-			List<NoticeVo> noticeContent = service.noticeListForIntro();
-			
-			model.addAttribute("reservationContent",reservationContent);
-			model.addAttribute("boardContent",boardContent);
-			model.addAttribute("noticeContent",noticeContent);
-			
-		} else { // 멤버인 경우 인트로 페이지에 전달할 모델 객체 셋팅
-			
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		if( member != -1 ) {
 			List<ReservationVo> reservationContent = service.reservationListForIntro(memberinfoService.selectOne(id).getMemNum());
 			List<BoardVo> boardContent = service.boardListForIntro();
 			List<NoticeVo> noticeContent = service.noticeListForIntro();
@@ -88,7 +108,14 @@ public class MemberController {
 			model.addAttribute("reservationContent",reservationContent);
 			model.addAttribute("boardContent",boardContent);
 			model.addAttribute("noticeContent",noticeContent);
+		} else {
+			List<ReservationVo> reservationContent = service.reservationListForIntroNotMember();
+			List<BoardVo> boardContent = service.boardListForIntro();
+			List<NoticeVo> noticeContent = service.noticeListForIntro();
 			
+			model.addAttribute("reservationContent",reservationContent);
+			model.addAttribute("boardContent",boardContent);
+			model.addAttribute("noticeContent",noticeContent);
 		}
 		
 		return "memberIntro";
@@ -103,7 +130,17 @@ public class MemberController {
             @RequestParam(value = "countPerPage", required = false, defaultValue = "10") int countPerPage,
             @RequestParam(value = "pageSize", required = false, defaultValue = "7") int pageSize) {
 		
-		String id = role(principal);
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		} 
 		
 		// 페이징 처리를 위한 셋팅
 		int listCount = service.countBoardList();
@@ -134,10 +171,29 @@ public class MemberController {
 	@RequestMapping(value = "/board/detail", method = RequestMethod.GET)
 	public String boardDetail(Model model, Principal  principal, @RequestParam(value = "selectNum") int selectNum) {
 		
-		String id = role(principal);
-		model.addAttribute("member",memberinfoService.selectOne(id));
+//		String id = role(principal);
+//		model.addAttribute("member",memberinfoService.selectOne(id));
+//		
+//		BoardVo detail = service.selectOneContent(selectNum);
+//		model.addAttribute("detail", detail);
+//		
+//		return "memberBoardDetail";
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		}
 		
 		BoardVo detail = service.selectOneContent(selectNum);
+		
 		model.addAttribute("detail", detail);
 		
 		return "memberBoardDetail";
@@ -149,23 +205,39 @@ public class MemberController {
 	@RequestMapping("/board/write")
 	public String boardWrite(Model model, Principal  principal) {
 
-		if ( id.equals("NotMember") ) {
-			
-			return "redirect:/intro";
-			
-		} else {
-			
-			String id = role(principal);
-			model.addAttribute("member",memberinfoService.selectOne(id));
-			
-			return "memberBoardWrite";
-			
-		}
+//		if ( id.equals("NotMember") ) {
+//			
+//			return "redirect:/intro";
+//			
+//		} else {
+//			
+//			String id = role(principal);
+//			model.addAttribute("member",memberinfoService.selectOne(id));
+//			
+//			return "memberBoardWrite";
+//			
+//		}
 		
 		/* member가 아닐 경우 return값은 뷰에 뿌릴 메시지이고,
 		 * member일 경우 해당 문자열로 파싱된 페이지로 이동해야 하는데
 		 * 두개의 리턴값 타입이 다른 경우 어떻게 해야 할까? 
 		*/
+		
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		} else {
+			return "redirect:/intro";
+		}
+		
+		return "memberBoardWrite";
 		
 	}
 	
@@ -174,10 +246,20 @@ public class MemberController {
 	// 멤버 파트 게시판 글쓰기 저장
 	@RequestMapping(value = "/board/save", method = RequestMethod.POST)
 	@ResponseBody
-	public void savePost(Model model, Principal  principal, HttpServletRequest request) {
+	public Map<String, Object> savePost(Model model, Principal  principal, HttpServletRequest request) {
 		
-		String id = role(principal);
-		model.addAttribute("member",memberinfoService.selectOne(id));
+		//아이디
+		String id = principal.getName();
+		
+		//권한 여부
+		int admin=principal.toString().indexOf("ROLE_ADMIN");
+		int master=principal.toString().indexOf("ROLE_MASTER");
+		int member=principal.toString().indexOf("ROLE_MEMBER");
+		
+		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
+		if( member != -1 ) {
+			model.addAttribute("member",memberinfoService.selectOne(id));
+		} 
 		
 		int memNum = memberinfoService.selectOne(id).getMemNum();
 		
@@ -190,7 +272,12 @@ public class MemberController {
 		post.setContent(request.getParameter("content"));
 		
 		// 게시글 저장 쿼리 실행
-		service.savePost(post);
+		int savePostResult = service.savePost(post);
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", savePostResult);
+		
+		return result;
 
 	}
 	
@@ -199,13 +286,10 @@ public class MemberController {
 	// 멤버 파트 게시글 삭제
 	@RequestMapping(value = "/board/detail/delete")
 	@ResponseBody
-	public ResponseEntity deletePost(@RequestParam(value = "num") int num) {
+	public void deletePost(@RequestParam(value = "num") int num) {
 		
-		// 항상 조회 먼저 해야지
+		service.deletePost(num);
 		
-		int result = service.deletePost(num);
-		
-		return ResponseEntity.ok().build().ok(result);
 	}
 	
 	
@@ -237,10 +321,7 @@ public class MemberController {
 		int master=principal.toString().indexOf("ROLE_MASTER");
 		int member=principal.toString().indexOf("ROLE_MEMBER");
 		
-		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-		if( member != -1 ) {
-			model.addAttribute("member",memberinfoService.selectOne(id));
-		}
+		if( member != -1 ) { model.addAttribute("member",memberinfoService.selectOne(id)); }
 		
 		// 데이터 담을 객체 생성
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
@@ -255,6 +336,7 @@ public class MemberController {
 			data.put("commentNum", Integer.toString(content.getCommentNum()));
 			data.put("num", Integer.toString(content.getNum()));
 			data.put("commentWriter", content.getCommentWriter());
+			data.put("writerNum", Integer.toString(content.getWriterNum()));
 			data.put("commentContent", content.getCommentContent());
 			data.put("commentDate", transFormat.format(content.getCommentDate()));
 			dataList.add(data);
@@ -282,14 +364,12 @@ public class MemberController {
 		int master=principal.toString().indexOf("ROLE_MASTER");
 		int member=principal.toString().indexOf("ROLE_MEMBER");
 		
-		//여기서 중점! 권한 여부에 따라 불러오는 테이블 값을 다르게 줄 수 있다!
-		if( member != -1 ) {
-			model.addAttribute("member",memberinfoService.selectOne(id));
-		} 
+		if( member != -1 ) { model.addAttribute("member",memberinfoService.selectOne(id)); } 
 		
 		CommentVo comment = new CommentVo();
 		comment.setCommentNum(commentService.searchMaxCommentNumber(content.getNum())+1);
 		comment.setNum(content.getNum());
+		comment.setWriterNum(memberinfoService.selectOne(id).getMemNum());
 		comment.setCommentWriter(memberinfoService.selectOne(id).getMemName());
 		comment.setCommentContent(content.getCommentContent());
 		int insertResult = commentService.insertComment(comment);

@@ -43,6 +43,9 @@ public interface MemberMapper {
 	// 멤버 페이지 나의 게시글 카운팅
 	public int countMyBoardList(String id);
 	
+	// 멤버 페이지 게시글 존재 여부
+	public int searchPost(int num);
+	
 	// 멤버 페이지 게시글 디테일
 	public BoardVo selectOneContent(int num);
 	

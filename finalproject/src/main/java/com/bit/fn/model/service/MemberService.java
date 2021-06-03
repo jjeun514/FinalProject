@@ -50,7 +50,7 @@ public class MemberService {
 		return memberMapper.selectOneContent(num);
 	}
 	
-	public int deletePost(int num) {
+	public int deletePost(int num) { // 왜일까 ... ?
 		return memberMapper.deletePost(num);
 	}
 	

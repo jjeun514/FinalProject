@@ -75,31 +75,9 @@
 								</tbody>
 							</table>
 							
-							
-							
-							
-							
-							
-							
-							
-							
-							
 						<c:if test="${'' eq content}"> <!-- 여기 수행하지 않음 -->
 							<div id = "todayReservationMSG">오늘 회의실 예약이 없습니다 :)</div>
 						</c:if>
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
 						
 						
 					</c:forEach>
