@@ -109,6 +109,10 @@ function commentList(){
             var dataLength = data.commetData.length;
             
             for (var no = 0; no < dataLength; no++ ) {
+            	
+            	console.log(data.commentData.[no].writerNum);
+            	console.log(data.commentData.[no].memNum);
+            	
             	if ( $("#memNum").val() == data.commentData[no].writerNum ) {
             		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
 	                a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
