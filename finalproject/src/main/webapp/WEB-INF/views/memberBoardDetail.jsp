@@ -107,27 +107,28 @@ function commentList(){
         success : function(data){
             var a ='';
             var dataLength = data.commetData.length;
+            var comment = data.commetData;
             
             for (var no = 0; no < dataLength; no++ ) {
             	
-            	console.log(data.commentData.[no].writerNum);
-            	console.log(data.commentData.[no].memNum);
-            	
-            	if ( $("#memNum").val() == data.commentData[no].writerNum ) {
+            	if ( $("#memNum").val() == comment[no].writerNum ) {
             		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
-	                a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
-	                a += '<a onclick="commentUpdate('+data.commetData[no].commentNum+',\''+data.commetData[no].commentContent+'\');"> 수정 | </a>';
-	                a += '<a onclick="commentDelete('+data.commetData[no].commentNum+');"> 삭제</a> </div>';
-	                a += '<div class="commentContent'+data.commetData[no].commentNum+'"> <p>    '+data.commetData[no].commentContent +'</p>';
-	                a += '<input id = "boardNum" hidden = "hidden" value = "'+writerNum+'"/>';
-	                a += '</div></div>';
+	                a += '<div class="commentInfo'+comment[no].commentNum+'" style="font-size:14px;">';
+	                a += comment[no].commentNum+'   |   '+comment[no].commentWriter+'   |   '+comment[no].commentDate;
+	                a += '<a onclick="commentUpdate('+comment[no].commentNum+',\''+comment[no].commentContent+'\');"> | 수정 | </a>';
+	                a += '<a onclick="commentDelete('+comment[no].commentNum+');"> 삭제</a> </div>';
+	                a += '<div class="commentContent'+comment[no].commentNum+'"> <p>    '+comment[no].commentContent +'</p>';
+	                a += '<input id = "boardNum" hidden = "hidden" value = "'+comment[no].writerNum+'"/>';
+	            	a += '</div></div>';
             	} else {
-	        		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
-	                a += '<div class="commentInfo'+data.commetData[no].commentNum+'" style="font-size:14px;">'+data.commetData[no].commentNum+'   |   '+data.commetData[no].commentWriter+'   |   '+data.commetData[no].commentDate;
-	                a += '<div class="commentContent'+data.commetData[no].commentNum+'"> <p>    '+data.commetData[no].commentContent +'</p>';
-	                a += '<input id = "boardNum" hidden = "hidden" value = "'+writerNum+'"/>';
-	                a += '</div></div>';
+            		a += '<div class="commentArea" style="border-bottom:1px solid lightgray; margin-bottom: 15px;">';
+	                a += '<div class="commentInfo'+comment[no].commentNum+'" style="font-size:14px;">'+comment[no].commentNum+'   |   '+comment[no].commentWriter+'   |   '+comment[no].commentDate;
+	                a += '<div class="commentContent'+comment[no].commentNum+'"> <p>    '+comment[no].commentContent +'</p>';
+	                a += '<input id = "boardNum" hidden = "hidden" value = "'+comment[no].writerNum+'"/>';
+	            	a += '</div></div>';
             	}
+
+
             }
         	
             $(".commentList").html(a);
@@ -155,7 +156,7 @@ function commentInsert(content){
 
 <body>
 
-	<div class="content bbs"><!--content start-->
+	<div class="content bbs" style = "height : 55%;"><!--content start-->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
